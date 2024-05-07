@@ -1,0 +1,117 @@
+{{!-- UPDATE --}}
+{{#if this._id}}
+<div class="modal fade" id="exampleModal{{this._id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal__size" role="document">
+        <div class="modal-content model__content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Cập nhật vị trị , chức danh</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" class="width: 100%">
+                <form method="POST" action="/workPosition/update/{{this._id}}">
+                    <div class="form-row">
+                        {{!-- code --}}
+                        <div class="col-md-4 mb-3">
+                            <label for="code">Mã</label>
+                            <input value="{{this.code}}" name="code" type="text" class="form-control" id="code"
+                                required>
+                        </div>
+                        {{!-- title --}}
+                        <div class="col-md-8 mb-3">
+                            <label for="title">Tên vị trí , chức danh</label>
+                            <input value="{{this.title}}" name="title" type="text" class="form-control" id="title"
+                                required>
+                        </div>
+                        {{!-- status --}}
+                        <div class="custom-control custom-switch col-md-2"
+                            style="display: flex; justify-content: center;align-items: center;">
+                            {{#if this.manager}}
+                            <input name="manager" type="checkbox" class="custom-control-input" id="manager{{this._id}}"
+                                checked>
+                            {{else}}
+                            <input name="manager" type="checkbox" class="custom-control-input" id="manager{{this._id}}">
+                            {{/if}}
+                            <label class="custom-control-label block" for="manager{{this._id}}">Quản lí</label>
+                        </div>
+                        <div class="custom-control custom-switch col-md-2"
+                            style="display: flex; justify-content: center;align-items: center;">
+                            {{#if this.active}}
+                            <input name="active" type="checkbox" class="custom-control-input" id="active{{this._id}}"
+                                checked>
+                            {{else}}
+                            <input name="active" type="checkbox" class="custom-control-input" id="active{{this._id}}">
+                            {{/if}}
+                            <label class="custom-control-label block" for="active{{this._id}}">Áp dụng</label>
+                        </div>
+                        {{!-- note --}}
+                        <div class="col-md-8 mb-3 mt-3">
+                            <label for="note">Ghi
+                                chú</label>
+                            <input value="{{this.note}}" name="note" type="text" class="form-control" id="note">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        <button class="btn btn-warning">Câp nhật tiêu chí</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{{/if}}
+{{!-- POST --}}
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal__size" role="document">
+        <div class="modal-content model__content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Thêm mới nhóm sản phẩm</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" class="width: 100%">
+                <form method="POST" action="/workPosition/add">
+                    <div class="form-row">
+                        {{!-- code --}}
+                        <div class="col-md-4 mb-3">
+                            <label for="code">Mã</label>
+                            <input name="code" type="text" class="form-control" id="code" required>
+                        </div>
+                        {{!-- title --}}
+                        <div class="col-md-8 mb-3">
+                            <label for="title">Tên vị trí , chức danh</label>
+                            <input name="title" type="text" class="form-control" id="title" required>
+                        </div>
+                        {{!-- status --}}
+                        <div class="custom-control custom-switch col-md-2"
+                            style="display: flex; justify-content: center;align-items: center;">
+                            <input name="manager" type="checkbox" class="custom-control-input" id="manager">
+
+                            <label class="custom-control-label block" for="manager">Quản lí</label>
+                        </div>
+                        <div class="custom-control custom-switch col-md-2"
+                            style="display: flex; justify-content: center;align-items: center;">
+                            <input name="active" type="checkbox" class="custom-control-input" id="active">
+                            <label class="custom-control-label block" for="active">Áp dụng</label>
+                        </div>
+                        {{!-- note --}}
+                        <div class="col-md-8 mb-3 mt-3">
+                            <label for="note">Ghi
+                                chú</label>
+                            <input name="note" type="text" class="form-control" id="note">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        <button class="btn btn-success">Thêm tiêu chí</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

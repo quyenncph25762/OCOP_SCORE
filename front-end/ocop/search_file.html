@@ -1,0 +1,1075 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+  <meta name="description" content=""/>
+  <meta name="author" content=""/>
+  <title>Phần mềm chấm điểm OCOP</title>
+  <!-- loader-->
+  <link href="assets/css/pace.min.css" rel="stylesheet"/>
+  <script src="assets/js/pace.min.js"></script>
+  <!--favicon-->
+  <link rel="icon" href="assets/images/favicon.ico" type="image/x-icon">
+  <!-- Vector CSS -->
+  <link href="assets/plugins/vectormap/jquery-jvectormap-2.0.2.css" rel="stylesheet"/>
+  <!-- simplebar CSS-->
+  <link href="assets/plugins/simplebar/css/simplebar.css" rel="stylesheet"/>
+  <!-- Bootstrap core CSS-->
+  <link href="assets/css/bootstrap.min.css" rel="stylesheet"/>
+  <!-- animate CSS-->
+  <link href="assets/css/animate.css" rel="stylesheet" type="text/css"/>
+  <!-- Icons CSS-->
+  <link href="assets/css/icons.css" rel="stylesheet" type="text/css"/>
+  <!-- Sidebar CSS-->
+  <link href="assets/css/sidebar-menu.css" rel="stylesheet"/>
+  <!-- Custom Style-->
+  <link href="assets/css/app-style.css" rel="stylesheet"/>
+  <!--Leaflet CSS-->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <!--leaflet draw css-->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.css" />
+  <!--Leaflet JS-->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <!--leaflet draw js-->
+  <script src="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.js"></script>
+  <!-- Include jQuery first -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  
+  <!-- Then include DataTables -->
+  <!-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css"> -->
+  <link href="dataTable/datatables.min.css" rel="stylesheet">
+
+  <style>
+    #map { height: 100vh; width: 100%; }
+
+    /* Styles for modal overlay */
+    .modal-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
+        z-index: 1000; /* Ensure modal is on top of other content */
+    }
+
+    /* Styles for modal content */
+    .modal-content {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: rgba(0,0,0,1);
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Style for the button */
+    #showFormButton {
+        background-color: #4CAF50; /* Green */
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add shadow */
+    }
+
+    /* Change the button background color on hover */
+    #showFormButton:hover {
+        background-color: #45a049;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Style for the "Import File" button */
+    #importFileButton {
+        background-color: #007bff; /* Blue */
+        border: none;
+        color: white;
+        padding: 15px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    /* Change the button background color on hover */
+    #importFileButton:hover {
+        background-color: #0056b3;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    .custom-select-year {
+      position: relative;
+      font-family: Arial;
+      border-radius: 30px;
+    }
+
+    .custom-select-year select {
+      display: none; /*hide original SELECT element:*/
+    }
+
+    /*the container must be positioned relative:*/
+    .custom-select {
+      position: relative;
+      font-family: Arial;
+      border-radius: 30px;
+    }
+
+    .custom-select select {
+      display: none; /*hide original SELECT element:*/
+    }
+
+    .select-selected {
+      background-color: transparent;
+    }
+
+    /*style the arrow inside the select element:*/
+    .select-selected:after {
+      position: absolute;
+      content: "";
+      top: 14px;
+      right: 10px;
+      width: 0;
+      height: 0;
+      border: 6px solid transparent;
+      border-color: #fff transparent transparent transparent;
+    }
+
+    /*point the arrow upwards when the select box is open (active):*/
+    .select-selected.select-arrow-active:after {
+      border-color: transparent transparent #fff transparent;
+      top: 7px;
+    }
+
+    /*style the items (options), including the selected item:*/
+    .select-items div,.select-selected {
+      color: #ffffff;
+      /* padding: 8px 16px; */
+      border: 1px solid transparent;
+      border-color: transparent transparent rgba(0, 0, 0, 0.1) transparent;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    /*style items (options):*/
+    .select-items {
+      position: absolute;
+      background-color: rgba(0, 0, 0, 1); 
+      top: 100%;
+      left: 0;
+      right: 0;
+      z-index: 99;
+      padding: 0.7% 0% 0.7% 1.2%;
+      max-height: 200px; /* Đặt kích thước tối đa cho danh sách */
+      overflow-y: auto; /* Cho phép thanh cuộn nếu danh sách quá dài */
+    }
+
+    /*hide the items when the select box is closed:*/
+    .select-hide {
+      display: none;
+      padding: 0.7% 0% 0.7% 1.2%;
+    }
+
+    .select-items div:hover, .same-as-selected {
+      background-color: rgba(0, 0, 0, 0.1);
+    }
+
+
+
+  </style>
+
+  <script>
+    $(document).ready(function() {
+    $('#myTable').dataTable({
+        "paging": true, // Bật tính năng phân trang
+        "lengthChange": true, // Bật tính năng thay đổi số lượng dòng trên mỗi trang
+        "searching": true, // Bật tính năng tìm kiếm
+        "ordering": true, // Bật tính năng sắp xếp
+        "info": true, // Hiển thị thông tin số trang, số dòng trên trang
+        "autoWidth": false, // Tắt tính năng tự động thay đổi kích thước cột
+        "columnDefs": [
+            { "width": "10%", "targets": 0 }, // Cột chỉnh sửa
+            { "width": "10%", "targets": 1 }, // Cột tên sản phẩm
+            { "width": "40%", "targets": 2 }, // Cột nhóm sản phẩm
+            { "width": "20%", "targets": 3 }, // Cột xếp hạng ocop
+            { "width": "20%", "targets": 4 }, // Cột năm đánh giá
+            { "width": "10%", "targets": 5 }, // Cột chủ thể
+            { "width": "20%", "targets": 6 }, // Cột tài liệu
+            { "orderable": false, "targets": 0 },
+            { "orderable": false, "targets": 6 }
+            // Thêm các cột khác nếu cần
+        ],
+        "language": {
+            "emptyTable":     "Không có dữ liệu",
+            "info":           "Hiển thị _START_ đến _END_ của _TOTAL_ mục",
+            "infoEmpty":      "Hiển thị 0 đến 0 của 0 mục",
+            "infoFiltered":   "(đã lọc từ tổng số _MAX_ mục)",
+            "infoPostFix":    "",
+            "thousands":      ",",
+            "lengthMenu":     "Hiển thị _MENU_ mục",
+            "loadingRecords": "Đang tải...",
+            "processing":     "Đang xử lý...",
+            "search":         "Tìm kiếm:",
+            "zeroRecords":    "Không tìm thấy bản ghi nào phù hợp",
+            "aria": {
+                "sortAscending":  ": kích hoạt để sắp xếp cột tăng dần",
+                "sortDescending": ": kích hoạt để sắp xếp cột giảm dần"
+            }
+        }
+        // Các tùy chọn khác nếu cần
+    });
+});
+  </script>
+
+</head>
+
+<body class="bg-theme bg-theme1">
+ 
+<!-- Start wrapper-->
+ <div id="wrapper">
+ 
+  <!--Start sidebar-wrapper-->
+   <div id="sidebar-wrapper" data-simplebar="" data-simplebar-auto-hide="true">
+     <div class="brand-logo">
+      <a href="index.html">
+       <img src="assets/images/logo-ocop.svg" class="logo-icon" alt="logo icon">
+     </a>
+   </div>
+   <ul class="sidebar-menu do-nicescrol">
+      <li class="sidebar-header">MAIN NAVIGATION</li>
+      <li>
+        <a href="index.html">
+          <i class="zmdi zmdi-view-dashboard"></i> <span>Trang chủ</span>
+        </a>
+      </li>
+
+      <li>
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+          <i class="zmdi zmdi-view-dashboard"></i> <span>Báo cáo thống kê</span>
+          <b class="caret"></b>
+        </a>
+        <ul class="dropdown-menu">
+          <li><a href="officer_report.html"><i class="zmdi zmdi-view-dashboard"></i> <span>Báo cáo cán bộ</span></a></li>
+          <li><a href="customer_report.html"><i class="zmdi zmdi-view-dashboard"></i> <span>Báo cáo chủ thể</span></a></li>
+          <li><a href="product_report.html"><i class="zmdi zmdi-view-dashboard"></i> <span>Báo cáo sản phẩm OCOP</span></a></li>
+          <li><a href="area_report.html"><i class="zmdi zmdi-view-dashboard"></i> <span>Báo cáo số liệu theo khu vực</span></a></li>
+        </ul>
+      </li>      
+
+      <li>
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+          <i class="zmdi zmdi-view-dashboard"></i> <span>Cơ cấu tổ chức</span>
+          <b class="caret"></b>
+        </a>
+        <ul class="dropdown-menu">
+          <li><a href="room.html"><i class="zmdi zmdi-view-dashboard"></i> <span>Phòng ban, bộ phận</span></a></li>
+          <li><a href="office.html"><i class="zmdi zmdi-view-dashboard"></i> <span>Vị trí, chức danh</span></a></li>
+          <li><a href="info.html"><i class="zmdi zmdi-view-dashboard"></i> <span>Thông tin đơn vị</span></a></li>
+        </ul>
+      </li>  
+
+      <li>
+        <a href="officer_manage.html">
+          <i class="zmdi zmdi-view-dashboard"></i> <span>Quản lý cán bộ</span>
+        </a>
+      </li>
+
+      <li>
+        <a href="customer_manage.html">
+          <i class="zmdi zmdi-view-dashboard"></i> <span>Quản lý chủ thể</span>
+        </a>
+      </li>
+
+      <li>
+        <a href="product_manage.html">
+          <i class="zmdi zmdi-view-dashboard"></i> <span>Quản lý sản phẩm</span>
+        </a>
+      </li>
+
+      <li>
+        <a href="search_file.html">
+          <i class="zmdi zmdi-view-dashboard"></i> <span>Tra cứu hồ sơ OCOP</span>
+        </a>
+      </li>
+
+      <li>
+        <a href="council_score.html">
+          <i class="zmdi zmdi-view-dashboard"></i> <span>Hội đồng chấm</span>
+        </a>
+      </li>
+
+      <li>
+        <a href="ocop_score_district.html">
+          <i class="zmdi zmdi-view-dashboard"></i> <span>Chấm điểm OCOP huyện</span>
+        </a>
+      </li>
+
+      <li>
+        <a href="ocop_score_province.html">
+          <i class="zmdi zmdi-view-dashboard"></i> <span>Chấm điểm OCOP tỉnh</span>
+        </a>
+      </li>
+
+
+      <li>
+        <a href="icons.html">
+          <i class="zmdi zmdi-invert-colors"></i> <span>UI Icons</span>
+        </a>
+      </li>
+
+      <li>
+        <a href="forms.html">
+          <i class="zmdi zmdi-format-list-bulleted"></i> <span>Forms</span>
+        </a>
+      </li>
+
+      <li>
+        <a href="tables.html">
+          <i class="zmdi zmdi-grid"></i> <span>Tables</span>
+        </a>
+      </li>
+
+      <li>
+        <a href="calendar.html">
+          <i class="zmdi zmdi-calendar-check"></i> <span>Calendar</span>
+          <small class="badge float-right badge-light">New</small>
+        </a>
+      </li>
+
+      <li>
+        <a href="login.html" target="_blank">
+          <i class="zmdi zmdi-lock"></i> <span>Login</span>
+        </a>
+      </li>
+
+       <li>
+        <a href="register.html" target="_blank">
+          <i class="zmdi zmdi-account-circle"></i> <span>Registration</span>
+        </a>
+      </li>
+
+      <li class="sidebar-header">LABELS</li>
+      <li><a href="javaScript:void();"><i class="zmdi zmdi-coffee text-danger"></i> <span>Important</span></a></li>
+      <li><a href="javaScript:void();"><i class="zmdi zmdi-chart-donut text-success"></i> <span>Warning</span></a></li>
+      <li><a href="javaScript:void();"><i class="zmdi zmdi-share text-info"></i> <span>Information</span></a></li>
+
+    </ul>
+   
+   </div>
+   <!--End sidebar-wrapper-->
+
+<!--Start topbar header-->
+<header class="topbar-nav">
+ <nav class="navbar navbar-expand fixed-top">
+  <ul class="navbar-nav mr-auto align-items-center">
+    <li class="nav-item">
+      <a class="nav-link toggle-menu" href="javascript:void();">
+       <i class="icon-menu menu-icon"></i>
+     </a>
+    </li>
+    <li class="nav-item">
+      <form class="search-bar">
+        <input type="text" class="form-control" placeholder="Enter keywords">
+         <a href="javascript:void();"><i class="icon-magnifier"></i></a>
+      </form>
+    </li>
+  </ul>
+     
+  <ul class="navbar-nav align-items-center right-nav-link">
+    <li class="nav-item dropdown-lg">
+      <a class="nav-link dropdown-toggle dropdown-toggle-nocaret waves-effect" data-toggle="dropdown" href="javascript:void();">
+      <i class="fa fa-bell-o"></i></a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link dropdown-toggle dropdown-toggle-nocaret" data-toggle="dropdown" href="#">
+        <span class="user-profile"><img src="https://via.placeholder.com/110x110" class="img-circle" alt="user avatar"></span>
+      </a>
+      <ul class="dropdown-menu dropdown-menu-right">
+       <li class="dropdown-item user-details">
+        <a href="javaScript:void();">
+           <div class="media">
+             <div class="avatar"><img class="align-self-start mr-3" src="https://via.placeholder.com/110x110" alt="user avatar"></div>
+            <div class="media-body">
+            <h6 class="mt-2 user-title">Admin</h6>
+            <p class="user-subtitle">admin@example.com</p>
+            </div>
+           </div>
+          </a>
+        </li>
+        <li class="dropdown-divider"></li>
+        <li class="dropdown-item">
+          <a href="profile.html">
+            <i class="icon-settings mr-2"></i> Cài đặt
+          </a>
+        </li>
+        <li class="dropdown-divider"></li>
+        <li class="dropdown-item">
+          <a href="login.html">
+            <i class="icon-power mr-2"></i> Đăng xuất
+          </a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+</header>
+<!--End topbar header-->
+
+<div class="clearfix"></div>
+	
+  <div class="content-wrapper">
+    <div class="container-fluid">
+
+  <div class="row" style="max-width: 100%; display: contents;">
+    <ul class="search-customer" style="list-style: none; display:flex; justify-content: space-between; align-items: center;">
+    </ul>
+  </div>
+
+	<div class="row" style="display: contents;">
+    <div class="col-lg-6" style="max-width: 100%;">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Danh sách hồ sơ OCOP</h5>
+          <div class="table-responsive">
+          <table id="myTable" class="table table-hover">
+            <thead>
+              <tr>
+                <th scope="col">Hành động</th>
+                <th scope="col">Tên sản phẩm</th>
+                <th scope="col">Nhóm sản phẩm</th>
+                <th scope="col">Xếp hạng OCOP</th>
+                <th scope="col">Năm đánh giá</th>
+                <th scope="col">Chủ thể</th>
+                <th scope="col">Tài liệu</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row" style="display: flex;">
+                  <div class="action_center">
+                    <button class="edit-button" onclick="toggleEditForm(1)" style="background-color: transparent;
+                    border: none;
+                    cursor: pointer;">
+                      <i class="icon-note" style="font-size: 20px;
+                      color: white; /* Màu của icon */"></i>
+                    </button>
+                    <div id="editForm-1" style="display: none;">
+                      <!-- Form chỉnh sửa thông tin -->
+                      <form id="editInfoForm">
+                          <!-- Các trường chỉnh sửa thông tin -->
+                          <div class="card">
+                            <div class="card-body">
+                              <div class="card-title">Chỉnh sửa thông tin</div>
+                              <hr>
+                              <form>
+                                  <div class="form-group">
+                                  <label for="input-6">Tên sản phẩm</label>
+                                  <input type="text" class="form-control form-control-rounded" id="input-6" placeholder="Điền tên của chủ thể">
+                                  </div>
+                                  <div class="form-group">
+                                  <label for="input-7">Nhóm sản phẩm</label>
+                                  <input type="text" class="form-control form-control-rounded" id="input-7" placeholder="Điền số điện thoại của chủ thể">
+                                  </div>
+                                  <div class="form-group">
+                                  <label for="input-8">Xếp hạng OCOP</label>
+                                  <input type="text" class="form-control form-control-rounded" id="input-8" placeholder="Xếp hạng sao OCOP">
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="input-9">Năm đánh giá</label>
+                                    <input type="text" class="form-control form-control-rounded" id="input-9" placeholder="Năm đánh giá">
+                                    </div>
+                                    <div class="form-group">
+                                      <label for="input-10">Chủ thể</label>
+                                      <input type="text" class="form-control form-control-rounded" id="input-9" placeholder="Tên chủ thể">
+                                      </div>
+                                  <div class="form-group py-2">
+                                    <div class="icheck-material-white">
+                                  <input type="checkbox" id="user-checkbox2" checked=""/>
+                                  <label for="user-checkbox2">Tôi đồng ý với các điều khoản & điều kiện</label>
+                                  </div>
+                                  </div>
+                                  <div class="form-group">
+                                  <button type="submit" class="btn btn-light btn-round px-5"><i class="icon-lock"></i> Lưu</button>
+                                </div>
+                              </form>
+                            </div>
+                          </div>
+                      </form>
+                    </div>
+                  </div>
+                  <div class="delete_action">
+                    <button class="delete-button" onclick="" style="background-color: transparent; border: none; cursor: pointer;">
+                      <i class="icon-trash" style="font-size: 20px; color:yellow; cursor: pointer;"></i>
+                    </button>
+                  </div>                  
+                </th>
+                <td>1</td>
+                <td>Mark</td>
+                <td>Otto</td>
+                <td>2018</td>
+                <td>abc</td>
+                <td>
+                  <a href="assets/images/logo-icon.png" download>
+                    <i class="icon-folder" style="font-size: 20px;
+                    color: white; /* Màu của icon */"></i>
+                  </a>                
+                </td>
+              </tr>
+              <tr>
+                <th scope="row" style="display: flex;">
+                  <div class="action_center">
+                    <button class="edit-button" onclick="toggleEditForm(2)" style="background-color: transparent;
+                    border: none;
+                    cursor: pointer;">
+                      <i class="icon-note" style="font-size: 20px;
+                      color: white; /* Màu của icon */"></i>
+                    </button>
+                    <div id="editForm-2" style="display: none;">
+                      <!-- Form chỉnh sửa thông tin -->
+                      <form id="editInfoForm">
+                          <!-- Các trường chỉnh sửa thông tin -->
+                          <div class="card">
+                            <div class="card-body">
+                              <div class="card-title">Chỉnh sửa thông tin</div>
+                              <hr>
+                              <form>
+                                <div class="form-group">
+                                <label for="input-6">Tên sản phẩm</label>
+                                <input type="text" class="form-control form-control-rounded" id="input-6" placeholder="Điền tên của chủ thể">
+                                </div>
+                                <div class="form-group">
+                                <label for="input-7">Nhóm sản phẩm</label>
+                                <input type="text" class="form-control form-control-rounded" id="input-7" placeholder="Điền số điện thoại của chủ thể">
+                                </div>
+                                <div class="form-group">
+                                <label for="input-8">Xếp hạng OCOP</label>
+                                <input type="text" class="form-control form-control-rounded" id="input-8" placeholder="Xếp hạng sao OCOP">
+                                </div>
+                                <div class="form-group">
+                                  <label for="input-9">Năm đánh giá</label>
+                                  <input type="text" class="form-control form-control-rounded" id="input-9" placeholder="Năm đánh giá">
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="input-10">Chủ thể</label>
+                                    <input type="text" class="form-control form-control-rounded" id="input-9" placeholder="Tên chủ thể">
+                                    </div>
+                                <div class="form-group py-2">
+                                  <div class="icheck-material-white">
+                                <input type="checkbox" id="user-checkbox2" checked=""/>
+                                <label for="user-checkbox2">Tôi đồng ý với các điều khoản & điều kiện</label>
+                                </div>
+                                </div>
+                                <div class="form-group">
+                                <button type="submit" class="btn btn-light btn-round px-5"><i class="icon-lock"></i> Lưu</button>
+                              </div>
+                            </form>
+                            </div>
+                          </div>
+                      </form>
+                    </div>
+                  </div>
+                  <div class="delete_action">
+                    <button class="delete-button" onclick="" style="background-color: transparent; border: none; cursor: pointer;">
+                      <i class="icon-trash" style="font-size: 20px; color:yellow; cursor: pointer;"></i>
+                    </button>
+                  </div>                  
+                </th>
+                <td>2</td>
+                <td>Jacob</td>
+                <td>Thornton</td>
+                <td>2020</td>
+                <td>abc</td>
+                <td>
+                  <a href="assets/images/logo-icon.png" download>
+                    <i class="icon-folder" style="font-size: 20px;
+                    color: white; /* Màu của icon */"></i>
+                  </a>  
+                </td>
+              </tr>
+              <tr>
+                <th scope="row" style="display: flex;">
+                  <div class="action_center">
+                    <button class="edit-button" onclick="toggleEditForm(3)" style="background-color: transparent;
+                    border: none;
+                    cursor: pointer;">
+                      <i class="icon-note" style="font-size: 20px;
+                      color: white; /* Màu của icon */"></i>
+                    </button>
+                    <div id="editForm-3" style="display: none;">
+                      <!-- Form chỉnh sửa thông tin -->
+                      <form id="editInfoForm">
+                          <!-- Các trường chỉnh sửa thông tin -->
+                          <div class="card">
+                            <div class="card-body">
+                              <div class="card-title">Chỉnh sửa thông tin</div>
+                              <hr>
+                              <form>
+                                <div class="form-group">
+                                <label for="input-6">Tên sản phẩm</label>
+                                <input type="text" class="form-control form-control-rounded" id="input-6" placeholder="Điền tên của chủ thể">
+                                </div>
+                                <div class="form-group">
+                                <label for="input-7">Nhóm sản phẩm</label>
+                                <input type="text" class="form-control form-control-rounded" id="input-7" placeholder="Điền số điện thoại của chủ thể">
+                                </div>
+                                <div class="form-group">
+                                <label for="input-8">Xếp hạng OCOP</label>
+                                <input type="text" class="form-control form-control-rounded" id="input-8" placeholder="Xếp hạng sao OCOP">
+                                </div>
+                                <div class="form-group">
+                                  <label for="input-9">Năm đánh giá</label>
+                                  <input type="text" class="form-control form-control-rounded" id="input-9" placeholder="Năm đánh giá">
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="input-10">Chủ thể</label>
+                                    <input type="text" class="form-control form-control-rounded" id="input-9" placeholder="Tên chủ thể">
+                                    </div>
+                                <div class="form-group py-2">
+                                  <div class="icheck-material-white">
+                                <input type="checkbox" id="user-checkbox2" checked=""/>
+                                <label for="user-checkbox2">Tôi đồng ý với các điều khoản & điều kiện</label>
+                                </div>
+                                </div>
+                                <div class="form-group">
+                                <button type="submit" class="btn btn-light btn-round px-5"><i class="icon-lock"></i> Lưu</button>
+                              </div>
+                            </form>
+                            </div>
+                          </div>
+                      </form>
+                    </div>
+                  </div>
+                  <div class="delete_action">
+                    <button class="delete-button" onclick="" style="background-color: transparent; border: none; cursor: pointer;">
+                      <i class="icon-trash" style="font-size: 20px; color:yellow; cursor: pointer;"></i>
+                    </button>
+                  </div>                  
+                </th>
+                <td>3</td>
+                <td>retron</td> 
+                <td>Larry the Bird</td>
+                <td>2024</td>
+                <td>def</td>
+                <td>
+                  <a href="assets/images/logo-icon.png" download>
+                    <i class="icon-folder" style="font-size: 20px;
+                    color: white; /* Màu của icon */"></i>
+                  </a>  
+                </td>
+              </tr>
+              <tr>
+                <th scope="row" style="display: flex;">
+                  <div class="action_center">
+                    <button class="edit-button" onclick="toggleEditForm(3)" style="background-color: transparent;
+                    border: none;
+                    cursor: pointer;">
+                      <i class="icon-note" style="font-size: 20px;
+                      color: white; /* Màu của icon */"></i>
+                    </button>
+                    <div id="editForm-3" style="display: none;">
+                      <!-- Form chỉnh sửa thông tin -->
+                      <form id="editInfoForm">
+                          <!-- Các trường chỉnh sửa thông tin -->
+                          <div class="card">
+                            <div class="card-body">
+                              <div class="card-title">Chỉnh sửa thông tin</div>
+                              <hr>
+                              <form>
+                                <div class="form-group">
+                                <label for="input-6">Tên sản phẩm</label>
+                                <input type="text" class="form-control form-control-rounded" id="input-6" placeholder="Điền tên của chủ thể">
+                                </div>
+                                <div class="form-group">
+                                <label for="input-7">Nhóm sản phẩm</label>
+                                <input type="text" class="form-control form-control-rounded" id="input-7" placeholder="Điền số điện thoại của chủ thể">
+                                </div>
+                                <div class="form-group">
+                                <label for="input-8">Xếp hạng OCOP</label>
+                                <input type="text" class="form-control form-control-rounded" id="input-8" placeholder="Xếp hạng sao OCOP">
+                                </div>
+                                <div class="form-group">
+                                  <label for="input-9">Năm đánh giá</label>
+                                  <input type="text" class="form-control form-control-rounded" id="input-9" placeholder="Năm đánh giá">
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="input-10">Chủ thể</label>
+                                    <input type="text" class="form-control form-control-rounded" id="input-9" placeholder="Tên chủ thể">
+                                    </div>
+                                <div class="form-group py-2">
+                                  <div class="icheck-material-white">
+                                <input type="checkbox" id="user-checkbox2" checked=""/>
+                                <label for="user-checkbox2">Tôi đồng ý với các điều khoản & điều kiện</label>
+                                </div>
+                                </div>
+                                <div class="form-group">
+                                <button type="submit" class="btn btn-light btn-round px-5"><i class="icon-lock"></i> Lưu</button>
+                              </div>
+                            </form>
+                            </div>
+                          </div>
+                      </form>
+                    </div>
+                  </div>
+                  <div class="delete_action">
+                    <button class="delete-button" onclick="" style="background-color: transparent; border: none; cursor: pointer;">
+                      <i class="icon-trash" style="font-size: 20px; color:yellow; cursor: pointer;"></i>
+                    </button>
+                  </div>                  
+                </th>
+                <td>4</td>
+                <td>abc</td> 
+                <td>Larry the Bird</td>
+                <td>2018</td>
+                <td>def</td>
+                <td>
+                  <a href="assets/images/logo-icon.png" download>
+                    <i class="icon-folder" style="font-size: 20px;
+                    color: white; /* Màu của icon */"></i>
+                  </a>  
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+	</div><!--End Row-->
+
+      <!--End Dashboard Content-->
+	  
+	<!--start overlay-->
+		  <div class="overlay toggle-menu"></div>
+		<!--end overlay-->
+		
+    </div>
+    <!-- End container-fluid-->
+    
+    </div><!--End content-wrapper-->
+   <!--Start Back To Top Button-->
+    <a href="javaScript:void();" class="back-to-top"><i class="fa fa-angle-double-up"></i> </a>
+    <!--End Back To Top Button-->
+	
+	<!--Start footer-->
+	<footer class="footer">
+      <div class="container">
+        <div class="text-center">
+          Copyright © 2024 Lam Hai
+        </div>
+      </div>
+    </footer>
+	<!--End footer-->
+	
+  <!--start color switcher-->
+   <div class="right-sidebar">
+    <div class="switcher-icon">
+      <i class="zmdi zmdi-settings zmdi-hc-spin"></i>
+    </div>
+    <div class="right-sidebar-content">
+
+      <p class="mb-0">Gaussion Texture</p>
+      <hr>
+      
+      <ul class="switcher">
+        <li id="theme1"></li>
+        <li id="theme2"></li>
+        <li id="theme3"></li>
+        <li id="theme4"></li>
+        <li id="theme5"></li>
+        <li id="theme6"></li>
+      </ul>
+
+      <p class="mb-0">Gradient Background</p>
+      <hr>
+      
+      <ul class="switcher">
+        <li id="theme7"></li>
+        <li id="theme8"></li>
+        <li id="theme9"></li>
+        <li id="theme10"></li>
+        <li id="theme11"></li>
+        <li id="theme12"></li>
+		<li id="theme13"></li>
+        <li id="theme14"></li>
+        <li id="theme15"></li>
+      </ul>
+      
+     </div>
+   </div>
+  <!--end color switcher-->
+   
+  </div><!--End wrapper-->
+
+  <!-- Bootstrap core JavaScript-->
+  <script src="assets/js/jquery.min.js"></script>
+  <script src="assets/js/popper.min.js"></script>
+  <script src="assets/js/bootstrap.min.js"></script>
+	
+ <!-- simplebar js -->
+  <script src="assets/plugins/simplebar/js/simplebar.js"></script>
+  <!-- sidebar-menu js -->
+  <script src="assets/js/sidebar-menu.js"></script>
+  <!-- loader scripts -->
+  <script src="assets/js/jquery.loading-indicator.js"></script>
+  <!-- Custom scripts -->
+  <script src="assets/js/app-script.js"></script>
+  <!-- Chart js -->
+  
+  <script src="assets/plugins/Chart.js/Chart.min.js"></script>
+ 
+  <!-- Index js -->
+  <script src="assets/js/index.js"></script>
+
+  <script>
+    function toggleMenu() {
+      var submenu = document.getElementById("submenu");
+      submenu.classList.toggle("show");
+    }
+
+    // Đóng submenu nếu click ra ngoài menu
+    window.onclick = function(event) {
+      if (!event.target.matches('.dropbtn')) {
+        var submenus = document.getElementsByClassName("dropdown-content");
+        for (var i = 0; i < submenus.length; i++) {
+          var submenu = submenus[i];
+          if (submenu.classList.contains('show')) {
+            submenu.classList.remove('show');
+          }
+        }
+      }
+    }
+
+    function toggleEditForm(rowId) {
+      var editForm = document.getElementById("editForm-" + rowId);
+      
+      if (editForm.style.display === "none") {
+          // Ẩn tất cả các form chỉnh sửa trước khi hiển thị form của hàng được chọn
+          var allEditForms = document.querySelectorAll("[id^='editForm-']");
+          allEditForms.forEach(function(form) {
+              form.style.display = "none";
+          });
+          
+          // Hiển thị form chỉnh sửa của hàng được chọn
+          editForm.style.display = "block";
+          
+          // Cập nhật dữ liệu trong form chỉnh sửa tùy thuộc vào hàng được chọn
+          var selectedRow = document.getElementById("myTable").rows[rowId];
+          var rowData = selectedRow.cells;
+          var inputFields = editForm.getElementsByTagName("input");
+          
+          for (var i = 1; i < rowData.length; i++) {
+              inputFields[i - 1].value = rowData[i].innerText;
+          }
+      } else {
+          editForm.style.display = "none";
+      }
+    }
+
+    // Function to show the modal overlay and form when the button is clicked
+    document.getElementById("showFormButton").addEventListener("click", function() {
+        document.getElementById("modalOverlay").style.display = "block";
+    });
+
+    // Function to close the modal if the overlay is clicked outside the form
+    document.getElementById("modalOverlay").addEventListener("click", function(event) {
+        if (event.target === document.getElementById("modalOverlay")) {
+            document.getElementById("modalOverlay").style.display = "none";
+        }
+    });
+
+    //Function of selection box
+    var x, i, j, l, ll, selElmnt, a, b, c;
+    /*look for any elements with the class "custom-select":*/
+    x = document.getElementsByClassName("custom-select");
+    l = x.length;
+    for (i = 0; i < l; i++) {
+      selElmnt = x[i].getElementsByTagName("select")[0];
+      ll = selElmnt.length;
+      /*for each element, create a new DIV that will act as the selected item:*/
+      a = document.createElement("DIV");
+      a.setAttribute("class", "select-selected");
+      a.innerHTML = selElmnt.options[selElmnt.selectedIndex].innerHTML;
+      x[i].appendChild(a);
+      /*for each element, create a new DIV that will contain the option list:*/
+      b = document.createElement("DIV");
+      b.setAttribute("class", "select-items select-hide");
+      for (j = 1; j < ll; j++) {
+        /*for each option in the original select element,
+        create a new DIV that will act as an option item:*/
+        c = document.createElement("DIV");
+        c.innerHTML = selElmnt.options[j].innerHTML;
+        c.addEventListener("click", function(e) {
+            /*when an item is clicked, update the original select box,
+            and the selected item:*/
+            var y, i, k, s, h, sl, yl;
+            s = this.parentNode.parentNode.getElementsByTagName("select")[0];
+            sl = s.length;
+            h = this.parentNode.previousSibling;
+            for (i = 0; i < sl; i++) {
+              if (s.options[i].innerHTML == this.innerHTML) {
+                s.selectedIndex = i;
+                h.innerHTML = this.innerHTML;
+                y = this.parentNode.getElementsByClassName("same-as-selected");
+                yl = y.length;
+                for (k = 0; k < yl; k++) {
+                  y[k].removeAttribute("class");
+                }
+                this.setAttribute("class", "same-as-selected");
+                break;
+              }
+            }
+            h.click();
+        });
+        b.appendChild(c);
+      }
+      x[i].appendChild(b);
+      a.addEventListener("click", function(e) {
+          /*when the select box is clicked, close any other select boxes,
+          and open/close the current select box:*/
+          e.stopPropagation();
+          closeAllSelect(this);
+          this.nextSibling.classList.toggle("select-hide");
+          this.classList.toggle("select-arrow-active");
+        });
+    }
+    function closeAllSelect(elmnt) {
+      /*a function that will close all select boxes in the document,
+      except the current select box:*/
+      var x, y, i, xl, yl, arrNo = [];
+      x = document.getElementsByClassName("select-items");
+      y = document.getElementsByClassName("select-selected");
+      xl = x.length;
+      yl = y.length;
+      for (i = 0; i < yl; i++) {
+        if (elmnt == y[i]) {
+          arrNo.push(i)
+        } else {
+          y[i].classList.remove("select-arrow-active");
+        }
+      }
+      for (i = 0; i < xl; i++) {
+        if (arrNo.indexOf(i)) {
+          x[i].classList.add("select-hide");
+        }
+      }
+    }
+    /*if the user clicks anywhere outside the select box,
+    then close all select boxes:*/
+    document.addEventListener("click", closeAllSelect);
+
+
+    //Function of selection box year test
+    var x, i, j, l, ll, selElmnt, a, b, c;
+    /*look for any elements with the class "custom-select":*/
+    x = document.getElementsByClassName("custom-select-year");
+    l = x.length;
+    for (i = 0; i < l; i++) {
+      selElmnt = x[i].getElementsByTagName("select")[0];
+      ll = selElmnt.length;
+      /*for each element, create a new DIV that will act as the selected item:*/
+      a = document.createElement("DIV");
+      a.setAttribute("class", "select-selected");
+      // Set default selected option to current year
+      var currentYear = new Date().getFullYear();
+      for (var k = 0; k < ll; k++) {
+        if (selElmnt.options[k].value == currentYear) {
+          selElmnt.selectedIndex = k;
+          a.innerHTML = selElmnt.options[k].innerHTML;
+          break;
+        }
+      }
+      if (a.innerHTML === "") {
+        a.innerHTML = selElmnt.options[0].innerHTML;
+      }
+      x[i].appendChild(a);
+      /*for each element, create a new DIV that will contain the option list:*/
+      b = document.createElement("DIV");
+      b.setAttribute("class", "select-items select-hide");
+      for (j = 1; j < ll; j++) {
+        /*for each option in the original select element,
+        create a new DIV that will act as an option item:*/
+        c = document.createElement("DIV");
+        c.innerHTML = selElmnt.options[j].innerHTML;
+        c.addEventListener("click", function(e) {
+          /*when an item is clicked, update the original select box,
+          and the selected item:*/
+          var y, i, k, s, h, sl, yl;
+          s = this.parentNode.parentNode.getElementsByTagName("select")[0];
+          sl = s.length;
+          h = this.parentNode.previousSibling;
+          for (i = 0; i < sl; i++) {
+            if (s.options[i].innerHTML == this.innerHTML) {
+              s.selectedIndex = i;
+              h.innerHTML = this.innerHTML;
+              y = this.parentNode.getElementsByClassName("same-as-selected");
+              yl = y.length;
+              for (k = 0; k < yl; k++) {
+                y[k].removeAttribute("class");
+              }
+              this.setAttribute("class", "same-as-selected");
+              break;
+            }
+          }
+          h.click();
+        });
+        b.appendChild(c);
+      }
+      x[i].appendChild(b);
+      a.addEventListener("click", function(e) {
+        /*when the select box is clicked, close any other select boxes,
+        and open/close the current select box:*/
+        e.stopPropagation();
+        closeAllSelect(this);
+        this.nextSibling.classList.toggle("select-hide");
+        this.classList.toggle("select-arrow-active");
+      });
+    }
+    function closeAllSelect(elmnt) {
+      /*a function that will close all select boxes in the document,
+      except the current select box:*/
+      var x, y, i, xl, yl, arrNo = [];
+      x = document.getElementsByClassName("select-items");
+      y = document.getElementsByClassName("select-selected");
+      xl = x.length;
+      yl = y.length;
+      for (i = 0; i < yl; i++) {
+        if (elmnt == y[i]) {
+          arrNo.push(i)
+        } else {
+          y[i].classList.remove("select-arrow-active");
+        }
+      }
+      for (i = 0; i < xl; i++) {
+        if (arrNo.indexOf(i)) {
+          x[i].classList.add("select-hide");
+        }
+      }
+    }
+    /*if the user clicks anywhere outside the select box,
+    then close all select boxes:*/
+    document.addEventListener("click", closeAllSelect);
+
+    function downloadFile() {
+        window.location.href = 'assets/images/logo-icon.png';
+    }
+
+  </script>
+  <!-- <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script> -->
+  <script type="text/javascript" language="javascript" src="dataTable/datatables.js"></script>
+  <!-- <script type="text/javascript" language="javascript" src="js/jquery.js"></script> -->
+  <script src="dataTable/datatables.min.js"></script>
+  <script src="assets/js/custom.js"></script>
+</body>
+</html>

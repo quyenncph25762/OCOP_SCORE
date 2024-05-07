@@ -1,0 +1,152 @@
+{{> header}}
+
+<div class="content-wrapper">
+  <div class="container-fluid">
+
+    <div class="row" style="max-width: 100%; display: contents;">
+      <ul class="search-customer"
+        style="list-style: none; display:flex; justify-content: space-between; align-items: center;">
+        <button class="btn btn-danger btnDeleteAll" style="float: left;">Xóa mục đã chọn</button>
+        <div class="import_customer_button"
+          style="list-style: none; display:flex; justify-content: space-between; align-items: center;">
+          <button class="btn btn-success" data-toggle="modal" data-target="#exampleModal">Thêm mới</button>
+        </div>
+        {{> modalCustomer}}
+      </ul>
+    </div>
+
+    <div class="row" style="display: contents;">
+      <div class="col-lg-6" style="max-width: 100%;">
+        <div class="card">
+          <div class="card-body">
+            <div class="d-flex align-items">
+              <h5 class="card-title">Danh sách chủ thể</h5>
+              <span class="d-inline-block ml-3" tabindex="0" data-toggle="tooltip" title="Thùng rác của bạn">
+                <a href="/customer-manage/trash">
+                  <i class="icon-trash" style="font-size: 20px; color:red; cursor: pointer;"></i>
+                </a>
+              </span>
+            </div>
+            <div class="table-responsive">
+              <table id="myTable" class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>
+                      <div class="checkbox">
+                        <input type="checkbox" class="check" id="checkAll">
+                      </div>
+                    </th>
+                    <th scope="col">#</th>
+                    <th scope="col">Chủ thể</th>
+                    <th scope="col">Điện thoại</th>
+                    <th scope="col">Địa chỉ</th>
+                    <th scope="col">Hành động</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {{#each data}}
+                  <tr>
+                    <td>
+                      <div class="">
+                        <div class="checkbox">
+                          <input type="checkbox" class="check" data-idCheckBox="{{this._id}}">
+                        </div>
+                      </div>
+                    </td>
+                    <td>{{@index}}</td>
+                    <td>{{this.customer_name}}</td>
+                    <td>{{this.customer_phone}}</td>
+                    <td>{{this.customer_address}}</td>
+                    <td style="display: flex;">
+                      <div class="action_center">
+                        <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
+                          title="Chỉnh sửa chủ thể: {{this.customer_name}}">
+                          <button data-toggle="modal" data-target="#exampleModal{{this._id}}" style="background-color: transparent;
+                    border: none;
+                    cursor: pointer;">
+                            <i class="icon-note" style="font-size: 20px;
+                      color: white; /* Màu của icon */"></i>
+                          </button>
+                        </span>
+                      </div>
+                      <div class="delete_action">
+                        <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
+                          title="Xóa chủ thể: {{this.customer_name}}">
+                          <i id="icon_moveToTrash" data-id="{{this._id}}" class="icon-trash"
+                            style="font-size: 20px; color:red; cursor: pointer;"></i>
+                        </span>
+                      </div>
+                    </td>
+                    {{> modalCustomer}}
+                  </tr>
+                  {{else}}
+                  <tr>
+                    <td colspan="9" class="text-center">Không tìm thấy từ khoá nào</td>
+                  </tr>
+                  {{/each }}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div><!--End Row-->
+    </div>
+    <!-- End container-fluid-->
+
+  </div><!--End content-wrapper-->
+
+  {{> footer}}
+
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="/helpers/custom.js"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag('js', new Date());
+    gtag('config', 'UA-56159088-1');
+    // checkbox All
+    $("#checkAll").click(function (e) {
+      $(".check").prop('checked', $(this).prop('checked'));
+    });
+  </script>
+  <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
+
+
+  <script>
+    const btnTrash = document.querySelectorAll("#icon_moveToTrash");
+    //remove One
+    for (let btn of btnTrash) {
+      btn.addEventListener("click", (event) => {
+        const isRemove = window.confirm("Are u sure deleted ?")
+        if (isRemove) {
+          const id = event.target.dataset.id
+          fetch(`/customer-manage/${id}`, {
+            method: "DELETE"
+          })
+          alert("Xóa thành công!")
+          window.location.reload()
+        }
+      })
+    }
+    //removeAll
+    const btnsCheck = document.querySelectorAll(".check")
+    const btnDeleteAll = document.querySelector(".btnDeleteAll")
+    btnDeleteAll.addEventListener("click", async (e) => {
+      const isConfirmDeleteByCheckbox = window.confirm("Xác nhận xóa những đối tượng bạn đã chọn ?")
+      if (isConfirmDeleteByCheckbox) {
+        for (let btnCheck of btnsCheck) {
+          if (btnCheck.checked) {
+            const id = btnCheck.dataset.idcheckbox
+            fetch(`/customer-manage/${id}`, {
+              method: "DELETE"
+            })
+          }
+        }
+        alert("Xóa thành công!")
+        window.location.reload()
+      }
+    })
+  </script>

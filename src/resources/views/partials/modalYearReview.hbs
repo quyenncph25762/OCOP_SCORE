@@ -1,0 +1,90 @@
+{{!-- UPDATE --}}
+{{#if this._id}}
+<div class="modal fade" id="exampleModal{{this._id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal__size" role="document">
+        <div class="modal-content model__content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Cập nhật nhóm sản phẩm</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" class="width: 100%">
+                <form method="POST" action="/product-group/update/{{this._id}}">
+                    <div class="form-row">
+                        {{!-- title --}}
+                        <div class="col-md-8 mb-3">
+                            <label for="productGroup_name">Tên năm</label>
+                            <input value="{{this.yearName}}" name="yearName" type="text" class="form-control"
+                                id="yearName" required>
+                        </div>
+                        {{!-- status --}}
+                        <div class="custom-control custom-switch col-md-3 ml-3"
+                            style="display: flex; justify-content: center;align-items: center;">
+                            {{#if this.status}}
+                            <input name="status" type="checkbox" class="custom-control-input" id="status{{this._id}}"
+                                checked>
+                            {{else}}
+                            <input name="status" type="checkbox" class="custom-control-input" id="status{{this._id}}">
+                            {{/if}}
+                            <label class="custom-control-label block" for="status">Áp dụng</label>
+                        </div>
+                        {{!-- note --}}
+                        <div class="col-md-12 mb-3 mt-3">
+                            <label for="note">Ghi
+                                chú</label>
+                            <input value="{{this.note}}" name="note" type="text" class="form-control" id="note">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        <button class="btn btn-warning">Câp nhật tiêu chí</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{{/if}}
+{{!-- POST --}}
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal__size" role="document">
+        <div class="modal-content model__content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Thêm mới năm</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" class="width: 100%">
+                <form method="POST" action="/year-review/add">
+                    <div class="form-row">
+                        {{!-- title --}}
+                        <div class="col-md-8 mb-3">
+                            <label for="yearName">Số năm</label>
+                            <input name="yearName" type="text" class="form-control" id="yearName" required>
+                        </div>
+                        {{!-- status --}}
+                        <div class="custom-control custom-switch col-md-3 ml-3"
+                            style="display: flex; justify-content: center;align-items: center;">
+                            <input name="status" type="checkbox" class="custom-control-input" id="status">
+                            <label class="custom-control-label block" for="status">Áp dụng</label>
+                        </div>
+                        {{!-- note --}}
+                        <div class="col-md-12 mb-3 mt-3">
+                            <label for="note">Ghi
+                                chú</label>
+                            <input name="note" type="text" class="form-control" id="note">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        <button class="btn btn-success">Thêm mới năm</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

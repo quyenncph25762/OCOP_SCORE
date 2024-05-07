@@ -1,0 +1,303 @@
+<div class="clearfix"></div>
+	
+  <div class="content-wrapper">
+    <div class="container-fluid">
+
+  <!--Start Dashboard Content-->
+
+	<div class="card mt-3">
+    <div class="card-content">
+        <div class="row row-group m-0">
+            <div class="col-12 col-lg-6 col-xl-3 border-light">
+                <div class="card-body">
+                  <h5 class="text-white mb-0">9526 
+                  </h5>
+                    <div class="progress my-3" style="height:3px;">
+                       <div class="progress-bar" style="width:55%"></div>
+                    </div>
+                  <p class="mb-0 text-white small-font">Chủ thể <span class="float-right">+4.2% <i class="zmdi zmdi-long-arrow-up"></i></span></p>
+                </div>
+            </div>
+            <div class="col-12 col-lg-6 col-xl-3 border-light">
+                <div class="card-body">
+                  <h5 class="text-white mb-0">8323 
+                  </h5>
+                    <div class="progress my-3" style="height:3px;">
+                       <div class="progress-bar" style="width:55%"></div>
+                    </div>
+                  <p class="mb-0 text-white small-font">Sản phẩm 3 sao <span class="float-right">+1.2% <i class="zmdi zmdi-long-arrow-up"></i></span>
+                  </p>
+                </div>
+            </div>
+            <div class="col-12 col-lg-6 col-xl-3 border-light">
+                <div class="card-body">
+                  <h5 class="text-white mb-0">6200 
+                  </h5>
+                    <div class="progress my-3" style="height:3px;">
+                       <div class="progress-bar" style="width:55%"></div>
+                    </div>
+                  <p class="mb-0 text-white small-font">Sản phẩm 4 sao  <span class="float-right">+5.2% <i class="zmdi zmdi-long-arrow-up"></i></span></p>
+                </div>
+            </div>
+            <div class="col-12 col-lg-6 col-xl-3 border-light">
+                <div class="card-body">
+                  <h5 class="text-white mb-0">5630 
+                  </h5>
+                    <div class="progress my-3" style="height:3px;">
+                       <div class="progress-bar" style="width:55%"></div>
+                    </div>
+                  <p class="mb-0 text-white small-font">Sản phẩm 5 sao  <span class="float-right">+2.2% <i class="zmdi zmdi-long-arrow-up"></i></span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+ </div>  
+	  
+	<div class="row">
+     <div class="col-12 col-lg-8 col-xl-8">
+	    <div class="card">
+		 <div class="card-header">Biểu đồ tổng lượng sản phẩm ocop theo hạng sao
+		 </div>
+		 <div class="card-body">
+		    <ul class="list-inline">
+			  <li class="list-inline-item"><i class="fa fa-circle mr-2 text-white"></i>Sản phẩm 3 sao</li>
+			  <li class="list-inline-item"><i class="fa fa-circle mr-2 text-success"></i>Sản phẩm 4 sao</li>
+        <li class="list-inline-item"><i class="fa fa-circle mr-2 text-light"></i>Sản phẩm 5 sao</li>
+			</ul>
+			<div class="chart-container-1">
+			  <canvas id="chart1"></canvas>
+			</div>
+		 </div>
+		 
+		 <div class="row m-0 row-group text-center border-top border-light-3">
+		   <div class="col-12 col-lg-4">
+		     <div class="p-3">
+		       <h5 class="mb-0">45.87M</h5>
+			   <small class="mb-0">Tổng số sản phẩm hiện có<span> <i class="fa fa-arrow-up"></i> 2.43%</span></small>
+		     </div>
+		   </div>
+		   <div class="col-12 col-lg-4">
+		     <div class="p-3">
+		       <h5 class="mb-0">15:48</h5>
+			   <small class="mb-0">Tổng số sản phẩm dự kiến <span> <i class="fa fa-arrow-up"></i> 12.65%</span></small>
+		     </div>
+		   </div>
+		   <div class="col-12 col-lg-4">
+		     <div class="p-3">
+		       <h5 class="mb-0">245.65</h5>
+			   <small class="mb-0">Tổng số chủ thể <span> <i class="fa fa-arrow-up"></i> 5.62%</span></small>
+		     </div>
+		   </div>
+		 </div>
+		 
+		</div>
+	 </div>
+
+     <div class="col-12 col-lg-4 col-xl-4">
+        <div class="card">
+           <div class="card-header">Biểu đồ tỷ lệ sản phẩm ocop theo vùng
+           </div>
+           <div class="card-body">
+		     <div class="chart-container-2">
+               <canvas id="chart2"></canvas>
+			  </div>
+           </div>
+           <div class="table-responsive" style="max-height: 187px; overflow-y: auto;">
+            <table class="table align-items-center">
+              <tbody>
+                <tr>
+                  <td><i class="fa fa-circle text-white mr-2"></i> Thành phố Thái Bình</td>
+                  <td>$5856</td>
+                </tr>
+                <tr>
+                  <td><i class="fa fa-circle text-light-1 mr-2"></i>Huyện Vũ Thư</td>
+                  <td>$2602</td>
+                </tr>
+                <tr>
+                  <td><i class="fa fa-circle text-light-2 mr-2"></i>Huyện Quỳnh Phụ</td>
+                  <td>$1802</td>
+                </tr>
+                <tr>
+                  <td><i class="fa fa-circle text-light-3 mr-2"></i>Huyện Hưng Hà</td>
+                  <td>$1105</td>
+                </tr>
+                <tr>
+                 <td><i class="fa fa-circle text-center mr-2"></i>Huyện Đông Hưng</td>
+                 <td>$1105</td>
+               </tr>
+               <tr>
+                 <td><i class="fa fa-circle text-info mr-2"></i>Huyện Thái Thuỵ</td>
+                 <td>$1105</td>
+               </tr>
+               <tr>
+                 <td><i class="fa fa-circle text-danger mr-2"></i>Huyện Tiền Hải</td>
+                 <td>$1105</td>
+               </tr>
+               <tr>
+                 <td><i class="fa fa-circle text-success mr-2"></i>Huyện Kiến Xương</td>
+                 <td>$1105</td>
+               </tr>
+              </tbody>
+            </table>
+             
+           </div>
+         </div>
+     </div>
+	</div><!--End Row-->
+
+	<div class="row">
+	 <div class="col-12 col-lg-12">
+	   <div class="card">
+	     <div class="card-header">Số liệu theo Quận/Huyện
+		 </div>
+	       <div class="table-responsive">
+                 <table class="table align-items-center table-flush table-borderless">
+                  <thead>
+                   <tr>
+                     <th>Quận/Huyện</th>
+                     <th>1 sao</th>
+                     <th>2 sao</th>
+                     <th>3 sao</th>
+                     <th>4 sao</th>
+                     <th>5 sao</th>
+                   </tr>
+                   </thead>
+                   <tbody><tr>
+                    <td>Thành phố Thái Bình</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>15</td>
+                    <td>5</td>
+                    <td>1</td>
+                   </tr>
+
+                   <tr>
+                    <td>Huyện Vũ Thư</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>15</td>
+                    <td>5</td>
+                    <td>1</td>
+                   </tr>
+
+                   <tr>
+                    <td>Huyện Quỳnh Phụ</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>15</td>
+                    <td>5</td>
+                    <td>1</td>
+                   </tr>
+
+                   <tr>
+                    <td>Huyện Hưng Hà</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>15</td>
+                    <td>5</td>
+                    <td>1</td>
+                   </tr>
+
+                   <tr>
+                    <td>Huyện Đông Hưng</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>15</td>
+                    <td>5</td>
+                    <td>1</td>
+                   </tr>
+				   
+				   <tr>
+                    <td>Huyện Thái Thuỵ</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>15</td>
+                    <td>5</td>
+                    <td>1</td>
+                   </tr>
+
+                   <tr>
+                    <td>Huyện Tiền Hải</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>15</td>
+                    <td>5</td>
+                    <td>1</td>
+                   </tr>
+
+                   <tr>
+                    <td>Huyện Kiến Xương</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>15</td>
+                    <td>5</td>
+                    <td>1</td>
+                   </tr>
+
+                 </tbody></table>
+               </div>
+	   </div>
+	 </div>
+	</div><!--End Row-->
+
+      <!--End Dashboard Content-->
+	  
+	<!--start overlay-->
+		  <div class="overlay toggle-menu"></div>
+		<!--end overlay-->
+		
+    </div>
+    <!-- End container-fluid-->
+    
+    </div><!--End content-wrapper-->
+   <!--Start Back To Top Button-->
+    <a href="javaScript:void();" class="back-to-top"><i class="fa fa-angle-double-up"></i> </a>
+    <!--End Back To Top Button-->
+	
+	<!--Start footer-->
+	<footer class="footer">
+      <div class="container">
+        <div class="text-center">
+          Copyright © 2024 Lam Hai
+        </div>
+      </div>
+    </footer>
+	<!--End footer-->
+	
+  <!--start color switcher-->
+   <div class="right-sidebar">
+        <div class="switcher-icon">
+        <i class="zmdi zmdi-settings zmdi-hc-spin"></i>
+        </div>
+        <div class="right-sidebar-content">
+
+        <p class="mb-0">Gaussion Texture</p>
+        <hr>
+        
+        <ul class="switcher">
+            <li id="theme1"></li>
+            <li id="theme2"></li>
+            <li id="theme3"></li>
+            <li id="theme4"></li>
+            <li id="theme5"></li>
+            <li id="theme6"></li>
+        </ul>
+
+        <p class="mb-0">Gradient Background</p>
+        <hr>
+        
+        <ul class="switcher">
+            <li id="theme7"></li>
+            <li id="theme8"></li>
+            <li id="theme9"></li>
+            <li id="theme10"></li>
+            <li id="theme11"></li>
+            <li id="theme12"></li>
+            <li id="theme13"></li>
+            <li id="theme14"></li>
+            <li id="theme15"></li>
+        </ul>
+        
+        </div>
+   </div>
+  <!--end color switcher-->

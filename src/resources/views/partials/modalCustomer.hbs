@@ -1,0 +1,101 @@
+{{#if this._id}}
+<div class="modal fade" id="exampleModal{{this._id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="width: 800px;">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Thêm chủ thể</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" action="/customer-manage/{{this._id}}/update">
+                    <div class="form-row">
+                        {{!-- title --}}
+                        <div class="col-md-8 mb-3">
+                            <label for="customer_name">Tên chủ thể</label>
+                            <input value="{{this.customer_name}}" name="customer_name" type="text" class="form-control"
+                                id="customer_name" required>
+                        </div>
+                        {{!-- status --}}
+                        <div class="col-md-4 mb-3">
+                            <label for="customer_otherName">Người đại diện</label>
+                            <input value="{{this.customer_otherName}}" name="customer_otherName" type="text"
+                                class="form-control" id="customer_otherName" required>
+                        </div>
+                        {{!-- code --}}
+                        <div class="col-md-6 mb-3">
+                            <label for="customer_phone">Số điện thoại</label>
+                            <input value="{{this.customer_phone}}" name="customer_phone" type="text"
+                                class="form-control" id="customer_phone" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="customer_email">Email</label>
+                            <input value="{{this.customer_email}}" name="customer_email" type="email"
+                                class="form-control" id="customer_email" required>
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            <label for="customer_address">Address</label>
+                            <input value="{{this.customer_address}}" name="customer_address" type="text"
+                                class="form-control" id="customer_address" required>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button class="btn btn-warning">Câp nhật chủ thể</button>
+                        </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{{/if}}
+
+{{!-- post --}}
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="width: 800px;">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Thêm chủ thể</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" action="/customer-manage/create">
+                    <div class="form-row">
+                        {{!-- title --}}
+                        <div class="col-md-8 mb-3">
+                            <label for="customer_name">Tên chủ thể</label>
+                            <input name="customer_name" type="text" class="form-control" id="customer_name" required>
+                        </div>
+                        {{!-- status --}}
+                        <div class="col-md-4 mb-3">
+                            <label for="customer_otherName">Người đại diện</label>
+                            <input name="customer_otherName" type="text" class="form-control" id="customer_otherName"
+                                required>
+                        </div>
+                        {{!-- code --}}
+                        <div class="col-md-6 mb-3">
+                            <label for="customer_phone">Số điện thoại</label>
+                            <input name="customer_phone" type="text" class="form-control" id="customer_phone" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="customer_email">Email</label>
+                            <input name="customer_email" type="email" class="form-control" id="customer_email" required>
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            <label for="customer_address">Address</label>
+                            <input name="customer_address" type="text" class="form-control" id="customer_address"
+                                required>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button class="btn btn-primary">Thêm chủ thể</button>
+                        </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

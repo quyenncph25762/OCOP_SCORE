@@ -1,0 +1,81 @@
+{{!-- PUT --}}
+
+
+{{!-- POST --}}
+<div class="modal fade" id="exampleModalAdd" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal__size" role="document">
+        <div class="modal-content model__content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Thêm mới sản phẩm</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" class="width: 100%">
+                <form method="POST" action="/product-manage/create">
+                    <div class="form-row">
+                        {{!-- code --}}
+                        <div class="col-md-4 mb-3">
+                            <label for="code">Mã</label>
+                            <input name="product_code" type="text" class="form-control" id="code" required>
+                        </div>
+                        {{!-- title --}}
+                        <div class="col-md-8 mb-3">
+                            <label for="product_name">Tên sản phẩm</label>
+                            <input name="product_name" type="text" class="form-control" id="product_name" required>
+                        </div>
+                        {{!-- mô tả sản phẩm --}}
+                        <div class="col-md-12 mb-3 mt-3">
+                            <label for="note">Mô tả</label>
+                            <textarea name="description" class="form-control"></textarea>
+                        </div>
+                        {{!-- Customer --}}
+                        <div class="col-md-6 mb-3 mt-3">
+                            <label for="note">Chủ thể</label>
+                            <select name="customer_id" class="form-control">
+                                {{#each Customer}}
+                                <option value="{{this._id}}">{{this.customer_name}}</option>
+                                {{/each}}
+                            </select>
+                        </div>
+                        {{!-- Product- group --}}
+                        <div class="col-md-6 mb-3 mt-3">
+                            <label for="note">Nhóm sản phẩm</label>
+                            <select name="productGroup_id" class="form-control">
+                                {{#each ProductGroup}}
+                                {{#if this.status}}
+                                <option value="{{this._id}}">{{this.productGroup_name}}</option>
+                                {{/if}}
+                                {{/each}}
+                            </select>
+                        </div>
+                        {{!-- Product- group --}}
+                        <div class="col-md-3 mb-3 mt-3">
+                            <label for="note">Năm đánh giá</label>
+                            <select name="productYearId" class="form-control">
+                                {{#each Review}}
+                                {{#if this.status}}
+                                <option value="{{this._id}}">{{this.yearName}}</option>
+                                {{/if}}
+                                {{/each}}
+                            </select>
+                        </div>
+                        {{!-- note --}}
+                        <div class="col-md-9 mb-3 mt-3">
+                            <label for="note">Ghi
+                                chú</label>
+                            <input name="product_note" type="text" class="form-control" id="note">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        <button class="btn btn-success">Thêm tiêu chí</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"></script>

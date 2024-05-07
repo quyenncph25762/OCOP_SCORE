@@ -1,0 +1,83 @@
+{{!-- UPDATE --}}
+{{#if this._id}}
+<div class="modal fade" id="exampleModal{{this._id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal__size" role="document">
+        <div class="modal-content model__content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Cập nhật phòng ban</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" class="width: 100%">
+                <form method="POST" action="/workDepartment/update/{{this._id}}">
+                    <div class="form-row">
+                        {{!-- code --}}
+                        <div class="col-md-4 mb-3">
+                            <label for="code">Mã</label>
+                            <input value="{{this.code}}" name="code" type="text" class="form-control" id="code"
+                                required>
+                        </div>
+                        {{!-- title --}}
+                        <div class="col-md-8 mb-3">
+                            <label for="productGroup_name">Tên phòng ban</label>
+                            <input value="{{this.title}}" name="productGroup_name" type="text" class="form-control"
+                                id="productGroup_name" required>
+                        </div>
+                        {{!-- note --}}
+                        <div class="col-md-12 mb-3 mt-3">
+                            <label for="note">Ghi
+                                chú</label>
+                            <textarea name="description" class="form-control" id="">{{this.description}}</textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        <button class="btn btn-warning">Câp nhật tiêu chí</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{{/if}}
+{{!-- POST --}}
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal__size" role="document">
+        <div class="modal-content model__content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Thêm mới phòng ban</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" class="width: 100%">
+                <form method="POST" action="/workDepartment/add">
+                    <div class="form-row">
+                        {{!-- code --}}
+                        <div class="col-md-4 mb-3">
+                            <label for="code">Mã</label>
+                            <input name="code" type="text" class="form-control" id="code" required>
+                        </div>
+                        {{!-- title --}}
+                        <div class="col-md-8 mb-3">
+                            <label for="title">Tên phòng ban</label>
+                            <input name="title" type="text" class="form-control" id="title" required>
+                        </div>
+                        {{!-- note --}}
+                        <div class="col-md-12 mb-3 mt-3">
+                            <label for="note">Mô tả</label>
+                            <textarea name="description" class="form-control" id=""></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        <button class="btn btn-success">Thêm phòng ban</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

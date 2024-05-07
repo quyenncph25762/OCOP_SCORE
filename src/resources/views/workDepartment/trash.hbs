@@ -1,0 +1,192 @@
+{{> header}}
+
+<div class="content-wrapper">
+    <div class="container-fluid">
+
+        <div class="row" style="max-width: 100%; display: contents;">
+            <ul class="search-customer"
+                style="list-style: none; display:flex; justify-content: space-between; align-items: center;">
+                <li>
+                    <ul class="search-customer"
+                        style="list-style: none; display:flex; justify-content: space-between; align-items: center;">
+                        <div class="">
+                            <button class="btn btn-danger btnDeleteAll">Xóa mục đã chọn</button>
+                            <button class="btn btn-primary btnRevertAll ml-3">Khôi phục mục đã
+                                chọn</button>
+                        </div>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+        <div class="row" style="display: contents;">
+            <div class="col-lg-6" style="max-width: 100%;">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex align-items">
+                            <span style="cursor: pointer;" class="d-inline-block mr-3" tabindex="0"
+                                data-toggle="tooltip" title="Trở về">
+                                <a href="/workDepartment">
+                                    <ion-icon name="arrow-undo-outline"></ion-icon>
+                                </a>
+                            </span>
+                            <h5 class="card-title">Khôi phục phòng ban</h5>
+                        </div>
+                        <div class="table-responsive">
+                            <table id="myTable" class="table table-hover">
+
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            <div class="checkbox">
+                                                <input type="checkbox" class="check" id="checkAll">
+                                            </div>
+                                        </th>
+                                        <th>#</th>
+                                        <th>Code</th>
+                                        <th>Tên phòng ban</th>
+                                        <th>Mô tả phòng ban</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {{#each workDepartment}}
+                                    <tr>
+                                        <td>
+                                            <div class="">
+                                                <div class="checkbox">
+                                                    <input type="checkbox" class="check" data-idCheckBox="{{this._id}}">
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>{{@index}}</td>
+                                        <td>{{this.code}}</td>
+                                        <td>{{this.title}}</td>
+                                        <td>{{this.description}}</td>
+                                        <td style="display: flex;">
+                                            <div class="action_center">
+                                                <button data-toggle="modal" data-target="#exampleModal{{this._id}}"
+                                                    style="background-color: transparent;border: none;cursor: pointer;">
+                                                    <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
+                                                        title="Khôi phục: {{this.title}}">
+                                                        <ion-icon name="sync-outline"
+                                                            style="color: white; font-size: 18px;" id="icon_revert"
+                                                            data-id="{{this._id}}"></ion-icon>
+                                                    </span>
+                                                </button>
+                                            </div>
+                                            <div class="delete_action">
+                                                <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
+                                                    title="Xóa vĩnh viễn: {{this.title}}">
+                                                    <button class="delete-button"
+                                                        style="background-color: transparent;border: none;">
+                                                        <i id="icon_moveToTrash" data-id="{{this._id}}"
+                                                            class="icon-trash"
+                                                            style="font-size: 20px; color:red; cursor: pointer;"></i>
+                                                    </button>
+                                                </span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {{else}}
+                                    <tr>
+                                        <td colspan="9" class="text-center">Không tìm thấy từ khoá nào</td>
+                                    </tr>
+                                    {{/each }}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div><!--End Row-->
+        </div>
+        <!-- End container-fluid-->
+
+    </div><!--End content-wrapper-->
+
+    {{> footer}}
+
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="/helpers/custom.js"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+        gtag('config', 'UA-56159088-1');
+        // checkbox All
+        $("#checkAll").click(function (e) {
+            $(".check").prop('checked', $(this).prop('checked'));
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
+
+
+    <script>
+        const btnReverts = document.querySelectorAll("#icon_revert")
+        const btnTrash = document.querySelectorAll("#icon_moveToTrash");
+        //removeOne
+        for (let btn of btnTrash) {
+            btn.addEventListener("click", (event) => {
+                const isRemove = window.confirm("Are u sure deleted ?")
+                if (isRemove) {
+                    const id = event.target.dataset.id
+                    fetch(`/workDepartment/remove/${id}`, {
+                        method: "DELETE"
+                    })
+                    alert("Xóa thành công")
+                    window.location.reload()
+                }
+            })
+        }
+        //revertOne
+        for (let btnRevert of btnReverts) {
+            btnRevert.addEventListener("click", async (event) => {
+                const isRemove = window.confirm("Khôi phục đối tượng này ?")
+                if (isRemove) {
+                    const id = event.target.dataset.id
+                    await fetch(`/workDepartment/revert/${id}`, {
+                        method: "PATCH"
+                    })
+                    window.location.reload()
+                }
+            })
+        }
+        //removeAll
+        const btnsCheck = document.querySelectorAll(".check")
+        const btnDeleteAll = document.querySelector(".btnDeleteAll")
+        btnDeleteAll.addEventListener("click", async (e) => {
+            const isConfirmDeleteByCheckbox = window.confirm("Xác nhận xóa những đối tượng bạn đã chọn ?")
+            if (isConfirmDeleteByCheckbox) {
+                for (let btnCheck of btnsCheck) {
+                    if (btnCheck.checked) {
+                        const id = btnCheck.dataset.idcheckbox
+                        fetch(`/workDepartment/remove/${id}`, {
+                            method: "DELETE"
+                        })
+                    }
+                }
+                alert("Xóa thành công!")
+                window.location.reload()
+            }
+        })
+        //RevertByCheckBox
+        const btnRevertAll = document.querySelector(".btnRevertAll")
+        btnRevertAll.addEventListener("click", async (e) => {
+            const isConfirmRevertByCheckbox = window.confirm("Xác nhận khôi phục những đối tượng bạn đã chọn ?")
+            if (isConfirmRevertByCheckbox) {
+                for (let btnCheck of btnsCheck) {
+                    if (btnCheck.checked) {
+                        const id = btnCheck.dataset.idcheckbox
+                        fetch(`/workDepartment/revert/${id}`, {
+                            method: "PATCH"
+                        })
+                    }
+                }
+                alert("Khôi phục thành công!")
+                window.location.reload()
+            }
+        })
+    </script>
