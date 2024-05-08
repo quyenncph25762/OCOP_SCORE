@@ -26,11 +26,11 @@
                         <div class="d-flex align-items">
                             <span style="cursor: pointer;" class="d-inline-block mr-3" tabindex="0"
                                 data-toggle="tooltip" title="Trở về">
-                                <a href="/product-group">
+                                <a href="/employee">
                                     <ion-icon name="arrow-undo-outline"></ion-icon>
                                 </a>
                             </span>
-                            <h5 class="card-title">Khôi phục nhóm sản phẩm</h5>
+                            <h5 class="card-title">Khôi phục cán bộ</h5>
                         </div>
                         <div class="table-responsive">
                             <table id="myTable" class="table table-hover">
@@ -42,16 +42,17 @@
                                                 <input type="checkbox" class="check" id="checkAll">
                                             </div>
                                         </th>
-                                        <th>#</th>
-                                        <th>Active</th>
-                                        <th>Tên nhóm sản phẩm</th>
-                                        <th>Code</th>
-                                        <th>Ghi chú</th>
+                                        <th>Mã tài khoản</th>
+                                        <th>Họ và tên</th>
+                                        <th>Giới tính</th>
+                                        <th>Vị trí chức danh</th>
+                                        <th>Tổ / phòng ban</th>
+                                        <th>Vai trò</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {{#each ProductGroup}}
+                                    {{#each Employee}}
                                     <tr>
                                         <td>
                                             <div class="">
@@ -60,23 +61,18 @@
                                                 </div>
                                             </div>
                                         </td>
-                                        <td>{{@index}}</td>
-                                        <td>
-                                            {{#if this.status}}
-                                            <div class="active"></div>
-                                            {{else}}
-                                            <div class="inactive"></div>
-                                            {{/if}}
-                                        </td>
-                                        <td>{{this.productGroup_name}}</td>
                                         <td>{{this.code}}</td>
-                                        <td>{{this.note}}</td>
+                                        <td>{{this.fullName}}</td>
+                                        <td>{{this.gender}}</td>
+                                        <td>{{this.workposition_name}}</td>
+                                        <td>{{this.workdepartment_name}}</td>
+                                        <td>{{this.role_name}}</td>
                                         <td style="display: flex;">
                                             <div class="action_center">
                                                 <button data-toggle="modal" data-target="#exampleModal{{this._id}}"
                                                     style="background-color: transparent;border: none;cursor: pointer;">
                                                     <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
-                                                        title="Khôi phục: {{this.customer_name}}">
+                                                        title="Khôi phục: {{this.product_name}}">
                                                         <ion-icon name="sync-outline"
                                                             style="color: white; font-size: 18px;" id="icon_revert"
                                                             data-id="{{this._id}}"></ion-icon>
@@ -85,7 +81,7 @@
                                             </div>
                                             <div class="delete_action">
                                                 <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
-                                                    title="Xóa vĩnh viễn: {{this.customer_name}}">
+                                                    title="Xóa vĩnh viễn: {{this.product_name}}">
                                                     <button class="delete-button"
                                                         style="background-color: transparent;border: none;">
                                                         <i id="icon_moveToTrash" data-id="{{this._id}}"
@@ -114,9 +110,7 @@
 
     {{> footer}}
 
-
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="/helpers/custom.js"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag() {
@@ -141,7 +135,7 @@
                 const isRemove = window.confirm("Are u sure deleted ?")
                 if (isRemove) {
                     const id = event.target.dataset.id
-                    fetch(`/product-group/remove/${id}`, {
+                    fetch(`/employee/remove/${id}`, {
                         method: "DELETE"
                     })
                     alert("Xóa thành công")
@@ -155,7 +149,7 @@
                 const isRemove = window.confirm("Khôi phục đối tượng này ?")
                 if (isRemove) {
                     const id = event.target.dataset.id
-                    await fetch(`/product-group/revert/${id}`, {
+                    await fetch(`/employee/revert/${id}`, {
                         method: "PATCH"
                     })
                     window.location.reload()
@@ -171,7 +165,7 @@
                 for (let btnCheck of btnsCheck) {
                     if (btnCheck.checked) {
                         const id = btnCheck.dataset.idcheckbox
-                        fetch(`/product-group/remove/${id}`, {
+                        fetch(`/employee/remove/${id}`, {
                             method: "DELETE"
                         })
                     }
@@ -188,7 +182,7 @@
                 for (let btnCheck of btnsCheck) {
                     if (btnCheck.checked) {
                         const id = btnCheck.dataset.idcheckbox
-                        fetch(`/product-group/revert/${id}`, {
+                        fetch(`/employee/revert/${id}`, {
                             method: "PATCH"
                         })
                     }

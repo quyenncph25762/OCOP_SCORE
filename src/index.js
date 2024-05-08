@@ -12,11 +12,17 @@ const port = 3000;
 
 //Midleware
 app.use(bodyParser.urlencoded({ extended: false }));
+
+// helpers
 Handlebars.registerHelper('ifCond', function (v1, v2, options) {
     if (v1 === v2) {
         return options.fn(this);
     }
     return options.inverse(this);
+});
+
+Handlebars.registerHelper('toLowerCase', function (str) {
+    return str.toLowerCase();
 });
 
 
@@ -32,7 +38,7 @@ app.set('view engine', 'hbs');
 app.set('views', path.join(__dirname, 'resources', 'views'));
 //Morgan
 app.use(morgan('combined'));
-
+app.use('/Uploads', express.static('Uploads'))
 // app.use(express.json);
 
 //route init

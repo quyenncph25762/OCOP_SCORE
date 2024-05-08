@@ -6,8 +6,10 @@ const reviewYearRouter = require("./yearreiview.routes")
 const workDepartmentRouter = require("./workDepartment.routes")
 const workPositionRouter = require("./workPosition.routes")
 const roleRouter = require("./role.routes")
-const employeeRouter = require("./employee.routes")
+const employeeRouter = require("./employee.routes");
+
 function route(app) {
+    // image
     // employee
     app.use("/employee", employeeRouter)
     // Quản lí vai trò

@@ -1,5 +1,7 @@
 const EmployeeModel = require("../models/EmployeeModel")
-
+const workDepartmentModel = require("../models/WorkDepartmentModel")
+const workPositionModel = require("../models/WorkPositionModel")
+const roleModel = require("../models/RoleModel")
 class ProductGroupControllers {
     // fetchAll
     index(req, res, next) {
@@ -14,7 +16,29 @@ class ProductGroupControllers {
                     message: "Lỗi"
                 })
             }
-            res.render("employee/employee", { Employee: Employee })
+            workDepartmentModel.fetchAllWorkDepartment((err, WorkDepartMent) => {
+                if (err) {
+                    return res.status(400).json({
+                        message: err
+                    })
+                }
+                workPositionModel.fetchAllWorkPosition((err, WorkPosition) => {
+                    if (err) {
+                        return res.status(400).json({
+                            message: err
+                        })
+                    }
+                    roleModel.fetchAllRole((err, Role) => {
+                        if (err) {
+                            return res.status(400).json({
+                                message: err
+                            })
+                        }
+                        res.render("employee/employee", { Employee: Employee, WorkDepartMent: WorkDepartMent, WorkPosition: WorkPosition, Role: Role })
+                    })
+                })
+            })
+
         })
     }
     // hien thi trong thung rac
@@ -34,11 +58,13 @@ class ProductGroupControllers {
         })
     }
     // them
-    create(req, res, next) {
+    create = async (req, res, next) => {
+
         EmployeeModel.AddEmployee({
             code: req.body.code,
             fullName: req.body.fullName,
-            avatar: req.body.avatar,
+            email: req.body.email,
+            avatar: req.file.path,
             gender: req.body.gender,
             birthDay: req.body.birthDay,
             tel: req.body.tel,
@@ -98,12 +124,12 @@ class ProductGroupControllers {
     }
     // update
     update(req, res, next) {
-        console.log(req.body)
         const id = req.params.id
         EmployeeModel.updateEmployee(id, ({
             code: req.body.code,
             fullName: req.body.fullName,
-            avatar: req.body.avatar,
+            email: req.body.email,
+            avatar: req.file ? req.file.path : req.body.image,
             gender: req.body.gender,
             birthDay: req.body.birthDay,
             tel: req.body.tel,
@@ -117,7 +143,7 @@ class ProductGroupControllers {
                     message: `${err}: Loi updateEmployee`
                 })
             }
-            return res.status(200).json(res.redirect("back"))
+            res.redirect("back")
         })
 
     }

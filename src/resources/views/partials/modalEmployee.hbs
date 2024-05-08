@@ -1,0 +1,161 @@
+{{!-- PUT --}}
+{{#if this._id}}
+
+{{/if}}
+
+{{!-- POST --}}
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal__size" role="document">
+        <div class="modal-content model__content" style="width: 850px;">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Thêm cán bộ</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="overflow-y: auto;height: 90vh;">
+                <form method="POST" action="/employee/add" class="row" enctype="multipart/form-data">
+                    <div class="col-md-4">
+                        <h1 style="font-size: 16px; text-align: center;font-weight: 600;">Ảnh đại diện</h1>
+                        <div class="file-upload">
+                            <div class="image-upload-wrap">
+                                {{!-- avatar --}}
+                                <input class="file-upload-input" type='file' name="avatar" onchange="readURL(this);"
+                                    accept="image/*" />
+                                <div class="drag-text">
+                                </div>
+                            </div>
+                            <div class="file-upload-content">
+                                <img class="file-upload-image" src="#" alt="your image" />
+                                <div class="image-title-wrap">
+                                    <button type="button" onclick="removeUpload()"
+                                        class="remove-image mt-2">Remove</button>
+                                </div>
+                            </div>
+                            {{!-- gender --}}
+                            <div class="d-flex justify-content-center mt-3">
+                                <div class="">
+                                    <input type="radio" name="gender" id="nam" value="nam">
+                                    <label for="nam">Nam</label>
+                                </div>
+                                <div class="ml-3">
+                                    <input type="radio" name="gender" id="nu" value="nu">
+                                    <label for="nu">Nữ</label>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-md-8">
+                        <div class="form-row">
+                            {{!-- code --}}
+                            <div class="col-md-6 mb-3">
+                                <label for="code">Mã</label>
+                                <input name="code" type="text" class="form-control" id="code" required>
+                            </div>
+                            {{!-- Email --}}
+                            <div class="col-md-6 mb-3">
+                                <label for="email">E-mail</label>
+                                <input name="email" type="text" class="form-control" id="email" required>
+                            </div>
+                            {{!-- fullName --}}
+                            <div class="col-md-12 mb-3 mt-3">
+                                <label for="fullName">Họ và tên</label>
+                                <input name="fullName" type="text" class="form-control" id="fullName" required>
+                            </div>
+                            {{!-- birthDay --}}
+                            <div class="col-md-6 mb-3 mt-3">
+                                <label for="birthDay">Ngày sinh</label>
+                                <input name="birthDay" type="date" class="form-control" id="birthDay" required>
+                            </div>
+                            {{!-- tel --}}
+                            <div class="col-md-6 mb-3 mt-3">
+                                <label for="tel">Số điện thoại</label>
+                                <input name="tel" type="data" class="form-control" id="tel">
+                            </div>
+                            {{!-- address --}}
+                            <div class="col-md-12 mb-3 mt-3">
+                                <label for="address">Địa chỉ</label>
+                                <input name="address" type="data" class="form-control" id="address">
+                            </div>
+                            {{!-- Customer --}}
+                            <div class="col-md-6 mb-3 mt-3">
+                                <label for="workDepartmentId">Tổ / Phòng ban</label>
+                                <select name="workDepartmentId" class="form-control" required>
+                                    {{#each WorkDepartMent}}
+                                    <option value="{{this._id}}">{{this.title}}</option>
+                                    {{/each}}
+                                </select>
+                            </div>
+                            {{!-- workPostitionId--}}
+                            <div class="col-md-6 mb-3 mt-3">
+                                <label for="workPositionId">Vị trí chức danh</label>
+                                <select name="workPositionId" class="form-control">
+                                    {{#each WorkPosition}}
+                                    {{#if this.active}}
+                                    <option value="{{this._id}}">{{this.title}}</option>
+                                    {{/if}}
+                                    {{/each}}
+                                </select>
+                            </div>
+                            {{!-- role --}}
+                            <div class="col-md-12 mb-3 mt-3">
+                                <label for="roleId">Vai trò</label>
+                                <select name="roleId" class="form-control">
+                                    {{#each Role}}
+                                    {{#if this.status}}
+                                    <option value="{{this._id}}">{{this.title}}</option>
+                                    {{/if}}
+                                    {{/each}}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-success">Thêm cán bộ</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"></script>
+
+<script>
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('.image-upload-wrap').hide();
+
+                $('.file-upload-image').attr('src', e.target.result);
+                $('.file-upload-content').show();
+
+                $('.image-title').html(input.files[0].name);
+            };
+
+            reader.readAsDataURL(input.files[0]);
+
+        } else {
+            removeUpload();
+        }
+    }
+
+    function removeUpload() {
+        $('.file-upload-input').replaceWith($('.file-upload-input').clone());
+        $('.file-upload-content').hide();
+        $('.image-upload-wrap').show();
+    }
+    $('.image-upload-wrap').bind('dragover', function () {
+        $('.image-upload-wrap').addClass('image-dropping');
+    });
+    $('.image-upload-wrap').bind('dragleave', function () {
+        $('.image-upload-wrap').removeClass('image-dropping');
+    });
+
+</script>

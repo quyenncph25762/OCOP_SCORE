@@ -2,7 +2,22 @@ const connection = require("../../config/db")
 const EmployeeModel = {
     // fetch tat ca
     fetchAllEmployee: (callback) => {
-        const query = `SELECT * FROM employee WHERE employee.isDeleted = 0`
+        const query = `SELECT employee.*,
+        workdepartment.title AS workdepartment_name,
+        workposition.title AS workposition_name,
+        role.title AS role_name
+            FROM
+        employee
+        JOIN
+            workdepartment ON workdepartment._id = employee.workDepartmentId
+        JOIN
+            workposition ON workposition._id = employee.workPositionId
+        JOIN
+            role ON role._id = employee.roleId
+        WHERE 
+        employee.isDeleted = 0;
+            
+        `
         connection.query(query, callback)
     },
     // lay tat ca trong thung rac
@@ -12,8 +27,8 @@ const EmployeeModel = {
     },
     // them
     AddEmployee: (employee, callback) => {
-        const query = `INSERT INTO employee (code,fullName,avatar,gender,birthDay,tel,address,workDepartmentId,workPositionId,roleId) VALUES (?,?,?,?,?,?,?,?,?,?)`
-        const values = [employee.code, employee.fullName, employee.avatar, employee.gender, employee.birthDay, employee.tel, employee.address, employee.workDepartmentId, employee.workPositionId, employee.roleId]
+        const query = `INSERT INTO employee (code,fullName,email,avatar,gender,birthDay,tel,address,workDepartmentId,workPositionId,roleId) VALUES (?,?,?,?,?,?,?,?,?,?,?)`
+        const values = [employee.code, employee.fullName, employee.email, employee.avatar, employee.gender, employee.birthDay, employee.tel, employee.address, employee.workDepartmentId, employee.workPositionId, employee.roleId]
         connection.query(query, values, callback)
     },
     // xoa vao thung rac
@@ -37,9 +52,9 @@ const EmployeeModel = {
         connection.query(query, [id], callback)
     },
     //  cap nhat doi tuong
-    updateEmployee: (id, productGroup, callback) => {
-        const query = `UPDATE employee SET code = ? , fullName = ?,avatar = ? , gender = ? , birthDay = ? ,tel = ?,address = ? . workDepartmentId = ? , workPositionId = ? , roleId = ?  WHERE _id=${id}`
-        const values = [employee.code, employee.fullName, employee.avatar, employee.gender, employee.birthDay, employee.tel, employee.address, employee.workDepartmentId, employee.workPositionId, employee.roleId]
+    updateEmployee: (id, employee, callback) => {
+        const query = `UPDATE employee SET code = ? , fullName = ? , email = ? , avatar = ? , gender = ? , birthDay = ? , tel = ? , address = ? , workDepartmentId = ? , workPositionId = ? , roleId = ?  WHERE _id = ?`
+        const values = [employee.code, employee.fullName, employee.email, employee.avatar, employee.gender, employee.birthDay, employee.tel, employee.address, employee.workDepartmentId, employee.workPositionId, employee.roleId, id]
         connection.query(query, values, callback)
     },
 }
