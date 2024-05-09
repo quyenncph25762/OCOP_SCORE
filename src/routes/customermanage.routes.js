@@ -1,6 +1,6 @@
 const express = require('express');
-const CustomermanageController = require('../app/controllers/CustomermanageController');
 const router = express.Router();
+const CustomermanageController = require('../app/controllers/CustomermanageController');
 
 //route phải khớp từ trên xuống nên route gốc phải để dưới cùng
 router.get('/trash', CustomermanageController.getAllTrash);

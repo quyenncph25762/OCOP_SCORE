@@ -24,7 +24,8 @@
                         <h5 class="card-title">Danh sách vị chí chức danh</h5>
                         <span class="d-inline-block ml-3" tabindex="0" data-toggle="tooltip" title="Thùng rác của bạn">
                             <a href="/workPosition/trash">
-                                <i class="icon-trash" style="font-size: 20px; color:red; cursor: pointer;"></i>
+                                <ion-icon name="trash-outline">
+                                </ion-icon>
                             </a>
                         </span>
                     </div>
@@ -78,17 +79,21 @@
                                         <div class="action_center">
                                             <button
                                                 style="background-color: transparent;border: none ;cursor: pointer;">
-                                                <i class="icon-note" style="font-size: 20px;color: white;"
-                                                    data-toggle="modal" data-target="#exampleModal{{this._id}}"></i>
+                                                <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
+                                                    title="Chỉnh sửa">
+                                                    <ion-icon name="create-outline" data-toggle="modal"
+                                                        data-target="#exampleModal{{this._id}}"></ion-icon>
+                                                </span>
                                             </button>
                                             {{> modalWorkPosition}}
                                         </div>
                                         <div class="delete_action">
-                                            <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
-                                                title="Xóa chủ thể: {{this.title}}">
-                                                <i id="icon_moveToTrash" data-id="{{this._id}}" class="icon-trash"
-                                                    style="font-size: 20px; color:red; cursor: pointer;"></i>
+                                            <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Xóa">
+                                                <ion-icon id="icon_moveToTrash" name="trash-outline"
+                                                    data-id="{{this._id}}">
+                                                </ion-icon>
                                             </span>
+
                                         </div>
                                     </td>
                                 </tr>

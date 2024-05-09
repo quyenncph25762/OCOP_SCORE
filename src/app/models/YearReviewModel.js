@@ -38,8 +38,8 @@ const YearReviewModel = {
     },
     //  cap nhat doi tuong
     updateYear: (id, year, callback) => {
-        const query = `UPDATE yearreview SET code = ? , yearName = ? , status = ? , note = ? WHERE _id=${id}`
-        const values = [year.code, year.yearName, year.status, year.note]
+        const query = `UPDATE yearreview SET  yearName = ? , status = ? , note = ? WHERE _id=${id}`
+        const values = [year.yearName, year.status, year.note]
         connection.query(query, values, callback)
     },
 }

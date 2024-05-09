@@ -1,0 +1,87 @@
+{{> header}}
+<div class="content-wrapper">
+    <div class="container-fluid">
+        {{!-- subHeader --}}
+        <div class="row" style="max-width: 100%; display: contents;">
+            <ul class="search-customer"
+                style="list-style: none; display:flex; justify-content: space-between; align-items: center;">
+                <button class="btn btn-danger btnDeleteAll" style="float: left;">Xóa mục đã chọn</button>
+                <a href="/scoreTemp/add">
+                    <div class="import_customer_button"
+                        style="list-style: none; display:flex; justify-content: space-between; align-items: center;">
+                        <button class="btn btn-success">Thêm mới</button>
+                    </div>
+                </a>
+            </ul>
+            </li>
+            </ul>
+        </div>
+        {{!-- endSubheader --}}
+        <div class="row">
+            <div class="row" style="display: contents;">
+                <div class="col-lg-12" style="max-width: 100%;">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex align-items">
+                                <h5 class="card-title">Danh sách sản phẩm</h5>
+                            </div>
+                            <div class="table-responsive">
+                                <table id="myTable" class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Active</th>
+                                            <th>Name</th>
+                                            <th>Đối tượng</th>
+                                            <th>note</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {{#each ScoreTemp}}
+                                        <tr>
+                                            <td>
+                                                {{#if this.status}}
+                                                <div class="active"></div>
+                                                {{else}}
+                                                <div class="inactive"></div>
+                                                {{/if}}
+                                            </td>
+                                            <td>{{this.title}}</td>
+                                            <td>{{this.customerName}}</td>
+                                            <td>{{this.note}}</td>
+                                            <td>
+                                                <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
+                                                    title="Nhân bản">
+                                                    <i class="fe fe-copy icon__table"></i>
+                                                </span>
+                                                <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
+                                                    title="Chỉnh sửa">
+                                                    <i class="fe fe-edit-3 icon__table icon__table-edit"></i>
+                                                </span>
+                                                <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
+                                                    title="Xem chi tiết">
+                                                    <i data-toggle="modal" data-target="#exampleModalLong"
+                                                        class="fe fe-eye icon__table icon__table-eye"
+                                                        style="color: green;"></i>
+                                                </span>
+                                                <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
+                                                    title="Chuyển vào thùng rác">
+                                                    <i class="fe fe-trash-2 icon__table icon__table-trash"></i>
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        {{/each}}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div><!--End content-wrapper-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><!--End Row-->
+</div>
+{{> footer}}
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="/helpers/custom.js"></script>

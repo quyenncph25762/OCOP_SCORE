@@ -13,7 +13,7 @@ const ProductGroupModel = {
     // them
     AddProductGroup: (productGroup, callback) => {
         const query = `INSERT INTO productgroup (productGroup_name,code,status,note) VALUES (?,?,?,?)`
-        const values = [productGroup.code, productGroup.productGroup_name, productGroup.status, productGroup.note]
+        const values = [productGroup.productGroup_name, productGroup.code, productGroup.status, productGroup.note]
         connection.query(query, values, callback)
     },
     // xoa vao thung rac

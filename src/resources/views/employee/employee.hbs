@@ -66,14 +66,17 @@
                                         <div class="action_center">
                                             <button
                                                 style="background-color: transparent;border: none ;cursor: pointer;">
-                                                <i class="icon-note" style="font-size: 20px;color: white;"
-                                                    data-toggle="modal" data-target="#exampleModal{{this._id}}"></i>
+                                                <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
+                                                    title="Chỉnh sửa">
+                                                    <ion-icon name="create-outline" data-toggle="modal"
+                                                        data-target="#exampleModal{{this._id}}"></ion-icon>
+                                                </span>
                                             </button>
                                             {{!-- modal --}}
                                             <div class="modal fade" id="exampleModal{{this._id}}" tabindex="-1"
                                                 role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                 <div class="modal-dialog modal__size" role="document">
-                                                    <div class="modal-content model__content" style="width: 850px;">
+                                                    <div class="modal-content model__content">
                                                         <div class="modal-header">
                                                             <h5 class="modal-title" id="exampleModalLabel">Sửa cán bộ
                                                             </h5>
@@ -82,7 +85,7 @@
                                                                 <span aria-hidden="true">&times;</span>
                                                             </button>
                                                         </div>
-                                                        <div class="modal-body" style="overflow-y: auto;height: 90vh;">
+                                                        <div class="modal-body" style="overflow-y: auto;height: 100vh;">
                                                             <form method="POST" action="/employee/update/{{this._id}}"
                                                                 enctype="multipart/form-data" class="row">
                                                                 <div class="col-md-4">
@@ -231,10 +234,10 @@
                                             {{!-- end-modal --}}
                                         </div>
                                         <div class="delete_action">
-                                            <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
-                                                title="Xóa chủ thể: {{this.title}}">
-                                                <i id="icon_moveToTrash" data-id="{{this._id}}" class="icon-trash"
-                                                    style="font-size: 20px; color:red; cursor: pointer;"></i>
+                                            <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Xóa">
+                                                <ion-icon id="icon_moveToTrash" name="trash-outline"
+                                                    data-id="{{this._id}}">
+                                                </ion-icon>
                                             </span>
                                         </div>
                                     </td>

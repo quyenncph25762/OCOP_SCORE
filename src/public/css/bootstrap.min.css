@@ -6128,13 +6128,13 @@ a.badge-dark:focus {
     font-size: 1.5rem;
     font-weight: 700;
     line-height: 1;
-    color: #000;
+    color: #fff;
     text-shadow: 0 1px 0 #fff;
     opacity: .5
 }
 
 .close:hover {
-    color: #000;
+    color: #fff;
     text-decoration: none
 }
 
@@ -6395,8 +6395,7 @@ a.close.disabled {
 
 @media (min-width:576px) {
     .modal-dialog {
-        max-width: 500px;
-        margin: 1.75rem auto
+        max-width: auto;
     }
 
     .modal-dialog-scrollable {
@@ -6404,7 +6403,7 @@ a.close.disabled {
     }
 
     .modal-dialog-scrollable .modal-content {
-        max-height: auto
+        max-height: auto;
     }
 
     .modal-dialog-centered {

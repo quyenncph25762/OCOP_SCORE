@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(document).ready(function () {
     $('#myTable').dataTable({
         "paging": true, // Bật tính năng phân trang
         "lengthChange": true, // Bật tính năng thay đổi số lượng dòng trên mỗi trang
@@ -16,22 +16,38 @@ $(document).ready(function() {
             // Thêm các cột khác nếu cần
         ],
         "language": {
-            "emptyTable":     "Không có dữ liệu",
-            "info":           "Hiển thị _START_ đến _END_ của _TOTAL_ mục",
-            "infoEmpty":      "Hiển thị 0 đến 0 của 0 mục",
-            "infoFiltered":   "(đã lọc từ tổng số _MAX_ mục)",
-            "infoPostFix":    "",
-            "thousands":      ",",
-            "lengthMenu":     "Hiển thị _MENU_ mục",
+            "emptyTable": "Không có dữ liệu",
+            "info": "Hiển thị _START_ đến _END_ của _TOTAL_ mục",
+            "infoEmpty": "Hiển thị 0 đến 0 của 0 mục",
+            "infoFiltered": "(đã lọc từ tổng số _MAX_ mục)",
+            "infoPostFix": "",
+            "thousands": ",",
+            "lengthMenu": "Hiển thị _MENU_ mục",
             "loadingRecords": "Đang tải...",
-            "processing":     "Đang xử lý...",
-            "search":         "Tìm kiếm:",
-            "zeroRecords":    "Không tìm thấy bản ghi nào phù hợp",
+            "processing": "Đang xử lý...",
+            "search": "Tìm kiếm:",
+            "zeroRecords": "Không tìm thấy bản ghi nào phù hợp",
             "aria": {
-                "sortAscending":  ": kích hoạt để sắp xếp cột tăng dần",
+                "sortAscending": ": kích hoạt để sắp xếp cột tăng dần",
                 "sortDescending": ": kích hoạt để sắp xếp cột giảm dần"
             }
         }
         // Các tùy chọn khác nếu cần
+    });
+});
+
+$(document).ready(function () {
+    var table = $('#myTable').DataTable();
+    $('#productGroupFilter').on('change', function (e) {
+        var productGroup = $(this).val();
+        table.column(1).search(productGroup).draw();
+    });
+});
+
+$(document).ready(function () {
+    var table = $('#myTable').DataTable();
+    $('#YearFilter').on('change', function (e) {
+        var productGroup = $(this).val();
+        table.column(2).search(productGroup).draw();
     });
 });

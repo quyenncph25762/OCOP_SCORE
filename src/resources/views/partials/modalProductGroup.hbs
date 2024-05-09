@@ -29,11 +29,10 @@
                         <div class="custom-control custom-switch col-md-3"
                             style="display: flex; justify-content: center;align-items: center;">
                             {{#if this.status}}
-                            <input name="status{{this._id}}" type="checkbox" class="custom-control-input"
-                                id="status{{this._id}}" checked>
+                            <input name="status" type="checkbox" class="custom-control-input" id="status{{this._id}}"
+                                checked>
                             {{else}}
-                            <input name="status{{this._id}}" type="checkbox" class="custom-control-input"
-                                id="status{{this._id}}">
+                            <input name="status" type="checkbox" class="custom-control-input" id="status{{this._id}}">
                             {{/if}}
                             <label class="custom-control-label block" for="status{{this._id}}">Áp dụng</label>
                         </div>
@@ -46,7 +45,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                        <button class="btn btn-warning">Câp nhật tiêu chí</button>
+                        <button class="btn btn-warning">Câp nhật nhóm sản phẩm</button>
                     </div>
                 </form>
             </div>

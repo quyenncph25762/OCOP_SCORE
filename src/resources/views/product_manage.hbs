@@ -20,10 +20,11 @@
         <div class="card">
           <div class="card-body">
             <div class="d-flex align-items">
-              <h5 class="card-title">Danh sách nhóm sản phẩm</h5>
+              <h5 class="card-title">Danh sách sản phẩm</h5>
               <span class="d-inline-block ml-3" tabindex="0" data-toggle="tooltip" title="Thùng rác của bạn">
                 <a href="/product-manage/trash">
-                  <i class="icon-trash" style="font-size: 20px; color:red; cursor: pointer;"></i>
+                  <ion-icon name="trash-outline">
+                  </ion-icon>
                 </a>
               </span>
             </div>
@@ -64,8 +65,10 @@
                     <td scope="row" style="display: flex;">
                       <div class="action_center">
                         <button style="background-color: transparent;border: none ;cursor: pointer;">
-                          <i class="icon-note" style="font-size: 20px;color: white;" data-toggle="modal"
-                            data-target="#exampleModal{{this._id}}"></i>
+                          <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Chỉnh sửa">
+                            <ion-icon name="create-outline" data-toggle="modal"
+                              data-target="#exampleModal{{this._id}}"></ion-icon>
+                          </span>
                         </button>
                         {{!-- modal --}}
                         <div class="modal fade" id="exampleModal{{this._id}}" tabindex="-1" role="dialog"
@@ -139,7 +142,7 @@
                                   </div>
                                   <div class="modal-footer">
                                     <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                                    <button class="btn btn-warning">Câp nhật tiêu chí</button>
+                                    <button class="btn btn-warning">Câp nhật sản phẩm</button>
                                   </div>
                                 </form>
                               </div>
@@ -149,10 +152,9 @@
                         {{!-- modal --}}
                       </div>
                       <div class="delete_action">
-                        <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
-                          title="Xóa chủ thể: {{this.productName_name}}">
-                          <i id="icon_moveToTrash" data-id="{{this._id}}" class="icon-trash"
-                            style="font-size: 20px; color:red; cursor: pointer;"></i>
+                        <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Xóa">
+                          <ion-icon id="icon_moveToTrash" name="trash-outline" data-id="{{this._id}}">
+                          </ion-icon>
                         </span>
                       </div>
                     </td>
@@ -171,231 +173,232 @@
     </div>
     <!-- End container-fluid-->
   </div><!--End content-wrapper-->
-  {{> footer}}
+</div>
+{{> footer}}
 
-  <script>
+<script>
 
-    //Function of selection box
-    var x, i, j, l, ll, selElmnt, a, b, c;
-    /*look for any elements with the class "custom-select":*/
-    x = document.getElementsByClassName("custom-select");
-    l = x.length;
-    for (i = 0; i < l; i++) {
-      selElmnt = x[i].getElementsByTagName("select")[0];
-      ll = selElmnt.length;
-      /*for each element, create a new DIV that will act as the selected item:*/
-      a = document.createElement("DIV");
-      a.setAttribute("class", "select-selected");
-      a.innerHTML = selElmnt.options[selElmnt.selectedIndex].innerHTML;
-      x[i].appendChild(a);
-      /*for each element, create a new DIV that will contain the option list:*/
-      b = document.createElement("DIV");
-      b.setAttribute("class", "select-items select-hide");
-      for (j = 1; j < ll; j++) {
-        /*for each option in the original select element,
-        create a new DIV that will act as an option item:*/
-        c = document.createElement("DIV");
-        c.innerHTML = selElmnt.options[j].innerHTML;
-        c.addEventListener("click", function (e) {
-          /*when an item is clicked, update the original select box,
-          and the selected item:*/
-          var y, i, k, s, h, sl, yl;
-          s = this.parentNode.parentNode.getElementsByTagName("select")[0];
-          sl = s.length;
-          h = this.parentNode.previousSibling;
-          for (i = 0; i < sl; i++) {
-            if (s.options[i].innerHTML == this.innerHTML) {
-              s.selectedIndex = i;
-              h.innerHTML = this.innerHTML;
-              y = this.parentNode.getElementsByClassName("same-as-selected");
-              yl = y.length;
-              for (k = 0; k < yl; k++) {
-                y[k].removeAttribute("class");
-              }
-              this.setAttribute("class", "same-as-selected");
-              break;
+  //Function of selection box
+  var x, i, j, l, ll, selElmnt, a, b, c;
+  /*look for any elements with the class "custom-select":*/
+  x = document.getElementsByClassName("custom-select");
+  l = x.length;
+  for (i = 0; i < l; i++) {
+    selElmnt = x[i].getElementsByTagName("select")[0];
+    ll = selElmnt.length;
+    /*for each element, create a new DIV that will act as the selected item:*/
+    a = document.createElement("DIV");
+    a.setAttribute("class", "select-selected");
+    a.innerHTML = selElmnt.options[selElmnt.selectedIndex].innerHTML;
+    x[i].appendChild(a);
+    /*for each element, create a new DIV that will contain the option list:*/
+    b = document.createElement("DIV");
+    b.setAttribute("class", "select-items select-hide");
+    for (j = 1; j < ll; j++) {
+      /*for each option in the original select element,
+      create a new DIV that will act as an option item:*/
+      c = document.createElement("DIV");
+      c.innerHTML = selElmnt.options[j].innerHTML;
+      c.addEventListener("click", function (e) {
+        /*when an item is clicked, update the original select box,
+        and the selected item:*/
+        var y, i, k, s, h, sl, yl;
+        s = this.parentNode.parentNode.getElementsByTagName("select")[0];
+        sl = s.length;
+        h = this.parentNode.previousSibling;
+        for (i = 0; i < sl; i++) {
+          if (s.options[i].innerHTML == this.innerHTML) {
+            s.selectedIndex = i;
+            h.innerHTML = this.innerHTML;
+            y = this.parentNode.getElementsByClassName("same-as-selected");
+            yl = y.length;
+            for (k = 0; k < yl; k++) {
+              y[k].removeAttribute("class");
             }
+            this.setAttribute("class", "same-as-selected");
+            break;
           }
-          h.click();
-        });
-        b.appendChild(c);
-      }
-      x[i].appendChild(b);
-      a.addEventListener("click", function (e) {
-        /*when the select box is clicked, close any other select boxes,
-        and open/close the current select box:*/
-        e.stopPropagation();
-        closeAllSelect(this);
-        this.nextSibling.classList.toggle("select-hide");
-        this.classList.toggle("select-arrow-active");
+        }
+        h.click();
       });
+      b.appendChild(c);
     }
-    function closeAllSelect(elmnt) {
-      /*a function that will close all select boxes in the document,
-      except the current select box:*/
-      var x, y, i, xl, yl, arrNo = [];
-      x = document.getElementsByClassName("select-items");
-      y = document.getElementsByClassName("select-selected");
-      xl = x.length;
-      yl = y.length;
-      for (i = 0; i < yl; i++) {
-        if (elmnt == y[i]) {
-          arrNo.push(i)
-        } else {
-          y[i].classList.remove("select-arrow-active");
-        }
-      }
-      for (i = 0; i < xl; i++) {
-        if (arrNo.indexOf(i)) {
-          x[i].classList.add("select-hide");
-        }
-      }
-    }
-    /*if the user clicks anywhere outside the select box,
-    then close all select boxes:*/
-    document.addEventListener("click", closeAllSelect);
-
-
-    //Function of selection box year test
-    var x, i, j, l, ll, selElmnt, a, b, c;
-    /*look for any elements with the class "custom-select":*/
-    x = document.getElementsByClassName("custom-select-year");
-    l = x.length;
-    for (i = 0; i < l; i++) {
-      selElmnt = x[i].getElementsByTagName("select")[0];
-      ll = selElmnt.length;
-      /*for each element, create a new DIV that will act as the selected item:*/
-      a = document.createElement("DIV");
-      a.setAttribute("class", "select-selected");
-      // Set default selected option to current year
-      var currentYear = new Date().getFullYear();
-      for (var k = 0; k < ll; k++) {
-        if (selElmnt.options[k].value == currentYear) {
-          selElmnt.selectedIndex = k;
-          a.innerHTML = selElmnt.options[k].innerHTML;
-          break;
-        }
-      }
-      if (a.innerHTML === "") {
-        a.innerHTML = selElmnt.options[0].innerHTML;
-      }
-      x[i].appendChild(a);
-      /*for each element, create a new DIV that will contain the option list:*/
-      b = document.createElement("DIV");
-      b.setAttribute("class", "select-items select-hide");
-      for (j = 1; j < ll; j++) {
-        /*for each option in the original select element,
-        create a new DIV that will act as an option item:*/
-        c = document.createElement("DIV");
-        c.innerHTML = selElmnt.options[j].innerHTML;
-        c.addEventListener("click", function (e) {
-          /*when an item is clicked, update the original select box,
-          and the selected item:*/
-          var y, i, k, s, h, sl, yl;
-          s = this.parentNode.parentNode.getElementsByTagName("select")[0];
-          sl = s.length;
-          h = this.parentNode.previousSibling;
-          for (i = 0; i < sl; i++) {
-            if (s.options[i].innerHTML == this.innerHTML) {
-              s.selectedIndex = i;
-              h.innerHTML = this.innerHTML;
-              y = this.parentNode.getElementsByClassName("same-as-selected");
-              yl = y.length;
-              for (k = 0; k < yl; k++) {
-                y[k].removeAttribute("class");
-              }
-              this.setAttribute("class", "same-as-selected");
-              break;
-            }
-          }
-          h.click();
-        });
-        b.appendChild(c);
-      }
-      x[i].appendChild(b);
-      a.addEventListener("click", function (e) {
-        /*when the select box is clicked, close any other select boxes,
-        and open/close the current select box:*/
-        e.stopPropagation();
-        closeAllSelect(this);
-        this.nextSibling.classList.toggle("select-hide");
-        this.classList.toggle("select-arrow-active");
-      });
-    }
-    function closeAllSelect(elmnt) {
-      /*a function that will close all select boxes in the document,
-      except the current select box:*/
-      var x, y, i, xl, yl, arrNo = [];
-      x = document.getElementsByClassName("select-items");
-      y = document.getElementsByClassName("select-selected");
-      xl = x.length;
-      yl = y.length;
-      for (i = 0; i < yl; i++) {
-        if (elmnt == y[i]) {
-          arrNo.push(i)
-        } else {
-          y[i].classList.remove("select-arrow-active");
-        }
-      }
-      for (i = 0; i < xl; i++) {
-        if (arrNo.indexOf(i)) {
-          x[i].classList.add("select-hide");
-        }
-      }
-    }
-    /*if the user clicks anywhere outside the select box,
-    then close all select boxes:*/
-    document.addEventListener("click", closeAllSelect);
-  </script>
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="/helpers/custom.js"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag() {
-      dataLayer.push(arguments);
-    }
-    gtag('js', new Date());
-    gtag('config', 'UA-56159088-1');
-    // checkbox All
-    $("#checkAll").click(function (e) {
-      $(".check").prop('checked', $(this).prop('checked'));
+    x[i].appendChild(b);
+    a.addEventListener("click", function (e) {
+      /*when the select box is clicked, close any other select boxes,
+      and open/close the current select box:*/
+      e.stopPropagation();
+      closeAllSelect(this);
+      this.nextSibling.classList.toggle("select-hide");
+      this.classList.toggle("select-arrow-active");
     });
-  </script>
-  <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
-
-  {{!-- actions --}}
-  <script>
-    const btnTrash = document.querySelectorAll("#icon_moveToTrash");
-    //remove One
-    for (let btn of btnTrash) {
-      btn.addEventListener("click", (event) => {
-        const isRemove = window.confirm("Are u sure deleted ?")
-        if (isRemove) {
-          const id = event.target.dataset.id
-          fetch(`/product-manage/removeToTrash/${id}`, {
-            method: "DELETE"
-          })
-          alert("Xóa thành công")
-          window.location.reload()
-        }
-      })
+  }
+  function closeAllSelect(elmnt) {
+    /*a function that will close all select boxes in the document,
+    except the current select box:*/
+    var x, y, i, xl, yl, arrNo = [];
+    x = document.getElementsByClassName("select-items");
+    y = document.getElementsByClassName("select-selected");
+    xl = x.length;
+    yl = y.length;
+    for (i = 0; i < yl; i++) {
+      if (elmnt == y[i]) {
+        arrNo.push(i)
+      } else {
+        y[i].classList.remove("select-arrow-active");
+      }
     }
-    //removeAll
-    const btnsCheck = document.querySelectorAll(".check")
-    const btnDeleteAll = document.querySelector(".btnDeleteAll")
-    btnDeleteAll.addEventListener("click", async (e) => {
-      const isConfirmDeleteByCheckbox = window.confirm("Xác nhận xóa những đối tượng bạn đã chọn ?")
-      if (isConfirmDeleteByCheckbox) {
-        for (let btnCheck of btnsCheck) {
-          if (btnCheck.checked) {
-            const id = btnCheck.dataset.idcheckbox
-            fetch(`/product-manage/removeToTrash/${id}`, {
-              method: "DELETE"
-            })
+    for (i = 0; i < xl; i++) {
+      if (arrNo.indexOf(i)) {
+        x[i].classList.add("select-hide");
+      }
+    }
+  }
+  /*if the user clicks anywhere outside the select box,
+  then close all select boxes:*/
+  document.addEventListener("click", closeAllSelect);
+
+
+  //Function of selection box year test
+  var x, i, j, l, ll, selElmnt, a, b, c;
+  /*look for any elements with the class "custom-select":*/
+  x = document.getElementsByClassName("custom-select-year");
+  l = x.length;
+  for (i = 0; i < l; i++) {
+    selElmnt = x[i].getElementsByTagName("select")[0];
+    ll = selElmnt.length;
+    /*for each element, create a new DIV that will act as the selected item:*/
+    a = document.createElement("DIV");
+    a.setAttribute("class", "select-selected");
+    // Set default selected option to current year
+    var currentYear = new Date().getFullYear();
+    for (var k = 0; k < ll; k++) {
+      if (selElmnt.options[k].value == currentYear) {
+        selElmnt.selectedIndex = k;
+        a.innerHTML = selElmnt.options[k].innerHTML;
+        break;
+      }
+    }
+    if (a.innerHTML === "") {
+      a.innerHTML = selElmnt.options[0].innerHTML;
+    }
+    x[i].appendChild(a);
+    /*for each element, create a new DIV that will contain the option list:*/
+    b = document.createElement("DIV");
+    b.setAttribute("class", "select-items select-hide");
+    for (j = 1; j < ll; j++) {
+      /*for each option in the original select element,
+      create a new DIV that will act as an option item:*/
+      c = document.createElement("DIV");
+      c.innerHTML = selElmnt.options[j].innerHTML;
+      c.addEventListener("click", function (e) {
+        /*when an item is clicked, update the original select box,
+        and the selected item:*/
+        var y, i, k, s, h, sl, yl;
+        s = this.parentNode.parentNode.getElementsByTagName("select")[0];
+        sl = s.length;
+        h = this.parentNode.previousSibling;
+        for (i = 0; i < sl; i++) {
+          if (s.options[i].innerHTML == this.innerHTML) {
+            s.selectedIndex = i;
+            h.innerHTML = this.innerHTML;
+            y = this.parentNode.getElementsByClassName("same-as-selected");
+            yl = y.length;
+            for (k = 0; k < yl; k++) {
+              y[k].removeAttribute("class");
+            }
+            this.setAttribute("class", "same-as-selected");
+            break;
           }
         }
-        alert("Xóa thành công!")
+        h.click();
+      });
+      b.appendChild(c);
+    }
+    x[i].appendChild(b);
+    a.addEventListener("click", function (e) {
+      /*when the select box is clicked, close any other select boxes,
+      and open/close the current select box:*/
+      e.stopPropagation();
+      closeAllSelect(this);
+      this.nextSibling.classList.toggle("select-hide");
+      this.classList.toggle("select-arrow-active");
+    });
+  }
+  function closeAllSelect(elmnt) {
+    /*a function that will close all select boxes in the document,
+    except the current select box:*/
+    var x, y, i, xl, yl, arrNo = [];
+    x = document.getElementsByClassName("select-items");
+    y = document.getElementsByClassName("select-selected");
+    xl = x.length;
+    yl = y.length;
+    for (i = 0; i < yl; i++) {
+      if (elmnt == y[i]) {
+        arrNo.push(i)
+      } else {
+        y[i].classList.remove("select-arrow-active");
+      }
+    }
+    for (i = 0; i < xl; i++) {
+      if (arrNo.indexOf(i)) {
+        x[i].classList.add("select-hide");
+      }
+    }
+  }
+  /*if the user clicks anywhere outside the select box,
+  then close all select boxes:*/
+  document.addEventListener("click", closeAllSelect);
+</script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="/helpers/custom.js"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag('js', new Date());
+  gtag('config', 'UA-56159088-1');
+  // checkbox All
+  $("#checkAll").click(function (e) {
+    $(".check").prop('checked', $(this).prop('checked'));
+  });
+</script>
+<script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
+
+{{!-- actions --}}
+<script>
+  const btnTrash = document.querySelectorAll("#icon_moveToTrash");
+  //remove One
+  for (let btn of btnTrash) {
+    btn.addEventListener("click", (event) => {
+      const isRemove = window.confirm("Are u sure deleted ?")
+      if (isRemove) {
+        const id = event.target.dataset.id
+        fetch(`/product-manage/removeToTrash/${id}`, {
+          method: "DELETE"
+        })
+        alert("Xóa thành công")
         window.location.reload()
       }
     })
-  </script>
+  }
+  //removeAll
+  const btnsCheck = document.querySelectorAll(".check")
+  const btnDeleteAll = document.querySelector(".btnDeleteAll")
+  btnDeleteAll.addEventListener("click", async (e) => {
+    const isConfirmDeleteByCheckbox = window.confirm("Xác nhận xóa những đối tượng bạn đã chọn ?")
+    if (isConfirmDeleteByCheckbox) {
+      for (let btnCheck of btnsCheck) {
+        if (btnCheck.checked) {
+          const id = btnCheck.dataset.idcheckbox
+          fetch(`/product-manage/removeToTrash/${id}`, {
+            method: "DELETE"
+          })
+        }
+      }
+      alert("Xóa thành công!")
+      window.location.reload()
+    }
+  })
+</script>

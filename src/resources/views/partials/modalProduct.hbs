@@ -1,11 +1,30 @@
 {{!-- PUT --}}
 
+<style>
+    /* CSS cho hiệu ứng hover */
+    .hover-effect:hover {
+        background-color: #333333;
+        /* Màu nền khi hover */
+        color: white;
+        /* Màu chữ khi hover */
+    }
 
+    .active {
+        background-color: #333333;
+        /* Màu nền khi hover */
+        color: white;
+        /* Màu chữ khi hover */
+    }
+
+    .displayNone {
+        display: none;
+    }
+</style>
 {{!-- POST --}}
 <div class="modal fade" id="exampleModalAdd" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
     <div class="modal-dialog modal__size" role="document">
-        <div class="modal-content model__content">
+        <div class="modal-content model__content" style="width: 1200px;">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Thêm mới sản phẩm</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -14,63 +33,132 @@
             </div>
             <div class="modal-body" class="width: 100%">
                 <form method="POST" action="/product-manage/create">
-                    <div class="form-row">
-                        {{!-- code --}}
-                        <div class="col-md-4 mb-3">
-                            <label for="code">Mã</label>
-                            <input name="product_code" type="text" class="form-control" id="code" required>
+                    <div class="row" style="padding: 24px 0;height: 100%;overflow-y: auto;height: 70vh;">
+                        <div class="form-row col-sm-4"
+                            style="display: flex;flex-direction: column; text-align: center;">
+                            <h1 style="font-size: 16px; text-align: center;font-weight: 600;">Ảnh sản phẩm</h1>
+                            <div class="file-upload">
+                                <div class="image-upload-wrap">
+                                    {{!-- avatar --}}
+                                    <input class="file-upload-input" type='file' name="avatar" onchange="readURL(this);"
+                                        accept="image/*" />
+                                    <div class="drag-text">
+                                    </div>
+                                </div>
+                                <div class="file-upload-content">
+                                    <img class="file-upload-image" src="#" alt="your image" />
+                                    <div class="image-title-wrap">
+                                        <button type="button" onclick="removeUpload()"
+                                            class="remove-image mt-2">Remove</button>
+                                    </div>
+                                </div>
+                                <div onclick="handleShowFormProduct(this)"
+                                    class="d-flex align-items-center justify-content-center p-2 mt-3 hover-effect active boxFormProduct"
+                                    style="cursor: pointer; border-radius: 10px;">
+                                    <ion-icon name="menu-outline"></ion-icon>
+                                    <span class="ml-2">Thông tin chung</span>
+                                </div>
+                                <div onclick="handleShowListCitation(this)"
+                                    class="d-flex align-items-center justify-content-center mt-2 p-2 hover-effect boxListCitation"
+                                    style="cursor: pointer;border-radius: 10px;">
+                                    <ion-icon name="folder-open-outline"></ion-icon>
+                                    <span class="ml-2">Thông tin hồ sơ</span>
+                                </div>
+                            </div>
                         </div>
-                        {{!-- title --}}
-                        <div class="col-md-8 mb-3">
-                            <label for="product_name">Tên sản phẩm</label>
-                            <input name="product_name" type="text" class="form-control" id="product_name" required>
+                        {{!-- form Product --}}
+                        <div class="form-row col-sm-8 form_product">
+                            {{!-- code --}}
+                            <div class="col-md-4 mb-3">
+                                <label for="code">Mã</label>
+                                <input name="product_code" type="text" class="form-control" id="code" required>
+                            </div>
+                            {{!-- title --}}
+                            <div class="col-md-8 mb-3">
+                                <label for="product_name">Tên sản phẩm</label>
+                                <input name="product_name" type="text" class="form-control" id="product_name" required>
+                            </div>
+                            {{!-- mô tả sản phẩm --}}
+                            <div class="col-md-12 mb-3 mt-3">
+                                <label for="note">Mô tả</label>
+                                <textarea name="description" class="form-control"></textarea>
+                            </div>
+                            {{!-- Customer --}}
+                            <div class="col-md-6 mb-3 mt-3">
+                                <label for="note">Chủ thể</label>
+                                <select name="customer_id" class="form-control">
+                                    {{#each Customer}}
+                                    <option value="{{this._id}}">{{this.customer_name}}</option>
+                                    {{/each}}
+                                </select>
+                            </div>
+                            {{!-- Product- group --}}
+                            <div class="col-md-6 mb-3 mt-3">
+                                <label for="note">Nhóm sản phẩm</label>
+                                <select name="productGroup_id" class="form-control">
+                                    {{#each ProductGroup}}
+                                    {{#if this.status}}
+                                    <option value="{{this._id}}">{{this.productGroup_name}}</option>
+                                    {{/if}}
+                                    {{/each}}
+                                </select>
+                            </div>
+                            {{!-- Product- group --}}
+                            <div class="col-md-3 mb-3 mt-3">
+                                <label for="note">Năm đánh giá</label>
+                                <select name="productYearId" class="form-control">
+                                    {{#each Review}}
+                                    {{#if this.status}}
+                                    <option value="{{this._id}}">{{this.yearName}}</option>
+                                    {{/if}}
+                                    {{/each}}
+                                </select>
+                            </div>
+                            {{!-- note --}}
+                            <div class="col-md-9 mb-3 mt-3">
+                                <label for="note">Ghi
+                                    chú</label>
+                                <input name="product_note" type="text" class="form-control" id="note">
+                            </div>
                         </div>
-                        {{!-- mô tả sản phẩm --}}
-                        <div class="col-md-12 mb-3 mt-3">
-                            <label for="note">Mô tả</label>
-                            <textarea name="description" class="form-control"></textarea>
-                        </div>
-                        {{!-- Customer --}}
-                        <div class="col-md-6 mb-3 mt-3">
-                            <label for="note">Chủ thể</label>
-                            <select name="customer_id" class="form-control">
-                                {{#each Customer}}
-                                <option value="{{this._id}}">{{this.customer_name}}</option>
-                                {{/each}}
-                            </select>
-                        </div>
-                        {{!-- Product- group --}}
-                        <div class="col-md-6 mb-3 mt-3">
-                            <label for="note">Nhóm sản phẩm</label>
-                            <select name="productGroup_id" class="form-control">
-                                {{#each ProductGroup}}
-                                {{#if this.status}}
-                                <option value="{{this._id}}">{{this.productGroup_name}}</option>
-                                {{/if}}
-                                {{/each}}
-                            </select>
-                        </div>
-                        {{!-- Product- group --}}
-                        <div class="col-md-3 mb-3 mt-3">
-                            <label for="note">Năm đánh giá</label>
-                            <select name="productYearId" class="form-control">
-                                {{#each Review}}
-                                {{#if this.status}}
-                                <option value="{{this._id}}">{{this.yearName}}</option>
-                                {{/if}}
-                                {{/each}}
-                            </select>
-                        </div>
-                        {{!-- note --}}
-                        <div class="col-md-9 mb-3 mt-3">
-                            <label for="note">Ghi
-                                chú</label>
-                            <input name="product_note" type="text" class="form-control" id="note">
+                        {{!-- bảng viễn dẫn --}}
+                        <div class="col-sm-8 list_citation displayNone">
+                            <table border="1" class="table table-hover table-border table-striped">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>Name</th>
+                                        <th>Bắt buộc</th>
+                                        <th>Tệp đính kèm</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {{#each Citation}}
+                                    <tr>
+                                        <td>{{@index}}</td>
+                                        <td>{{this.title}}</td>
+                                        {{#ifCond this.status 1}}
+                                        <td>(*)</td>
+                                        {{else}}
+                                        <td></td>
+                                        {{/ifCond}}
+                                        <td></td>
+                                        <td>
+                                            <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
+                                                title="Link đính kèm">
+                                                <ion-icon name="link-outline"></ion-icon>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    {{/each}}
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                        <button class="btn btn-success">Thêm tiêu chí</button>
+                        <button class="btn btn-success">Thêm sản phẩm</button>
                     </div>
                 </form>
             </div>
@@ -79,3 +167,62 @@
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"></script>
+
+<script>
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('.image-upload-wrap').hide();
+
+                $('.file-upload-image').attr('src', e.target.result);
+                $('.file-upload-content').show();
+
+                $('.image-title').html(input.files[0].name);
+            };
+
+            reader.readAsDataURL(input.files[0]);
+
+        } else {
+            removeUpload();
+        }
+    }
+
+    function removeUpload() {
+        $('.file-upload-input').replaceWith($('.file-upload-input').clone());
+        $('.file-upload-content').hide();
+        $('.image-upload-wrap').show();
+    }
+    $('.image-upload-wrap').bind('dragover', function () {
+        $('.image-upload-wrap').addClass('image-dropping');
+    });
+    $('.image-upload-wrap').bind('dragleave', function () {
+        $('.image-upload-wrap').removeClass('image-dropping');
+    });
+
+</script>
+
+<script>
+    //element product
+    const form_product = document.querySelector(".form_product")
+    //element vien dan
+    const list_citation = document.querySelector(".list_citation")
+    //style active
+    const boxFormProduct = document.querySelector(".boxFormProduct")
+    const boxListCitation = document.querySelector(".boxListCitation")
+    const handleShowFormProduct = () => {
+        form_product.classList.remove("displayNone")
+        list_citation.classList.add("displayNone")
+        boxListCitation.classList.remove("active")
+        boxFormProduct.classList.add("active")
+    }
+
+    const handleShowListCitation = () => {
+        form_product.classList.add("displayNone")
+        list_citation.classList.remove("displayNone")
+        boxFormProduct.classList.remove("active")
+        boxListCitation.classList.add("active")
+    }
+</script>

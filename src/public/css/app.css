@@ -14,15 +14,15 @@
 
 /* Styles for modal content */
 .modal-content {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: black;
+  margin-left: 50%;
+  transform: translateX(-50%);
+  background-color: black !important;
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: auto;
 }
+
 
 /* Style for the button */
 #showFormButton {
@@ -208,4 +208,27 @@ body {
 .remove-image:active {
   border: 0;
   transition: all .2s ease;
+}
+
+ion-icon[name="trash-outline"] {
+  color: rgb(247, 66, 66);
+  font-size: 20px;
+  cursor: pointer;
+}
+
+ion-icon[name="create-outline"] {
+  color: rgb(229, 247, 66);
+  font-size: 20px;
+  cursor: pointer;
+}
+
+ion-icon[name="link-outline"] {
+  color: red;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+ion-icon[name="link-outline"]:hover {
+  background-color: #ccc;
+  border-radius: 10px;
 }

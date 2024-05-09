@@ -2,6 +2,7 @@ const ProductmanageModel = require('../models/ProductmanageModel');
 const CustomerModel = require("../models/CustomermanageModel")
 const ProductGroupModel = require("../models/ProductGroupModel")
 const ReviewModel = require("../models/YearReviewModel")
+const CitationModel = require("../models/CitationModel")
 class ProductmanageController {
     index(req, res) {
         const page = parseInt(req.query.page) || 1; // Trang hiện tại
@@ -50,7 +51,14 @@ class ProductmanageController {
                                         message: `${err}: ProductControllers => ReviewModel`
                                     })
                                 }
-                                res.render('product_manage', { viewData: viewData, Customer: Customer, ProductGroup: ProductGroup, Review: Review });
+                                CitationModel.getAllCitation((err, Citation) => {
+                                    if (err) {
+                                        return res.status(400).json({
+                                            message: `${err}: ProductControllers => Citation`
+                                        })
+                                    }
+                                    res.render('product_manage', { viewData: viewData, Customer: Customer, ProductGroup: ProductGroup, Review: Review, Citation: Citation });
+                                })
                             })
                         })
                     }
