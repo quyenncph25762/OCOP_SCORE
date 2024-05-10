@@ -5,101 +5,101 @@
             <ul class="search-customer"
                 style="list-style: none; display:flex; justify-content: space-between; align-items: center;">
                 <div class="">
-                    <button class="btn btn-danger btnDeleteAll" style="float: left;">Xóa mục đã chọn</button>
-                    <button class="btn btn-primary btnRevertAll ml-3">Khôi phục mục đã
+                    <button class="btn btn-danger btnDeleteAll btnDisabledDelete">Xóa mục đã chọn</button>
+                    <button class="btn btn-primary btnRevertAll ml-3 btnDisabledRevert">Khôi phục mục đã
                         chọn</button>
                 </div>
             </ul>
             </li>
             </ul>
         </div>
-
-        <div class="row" style="display: contents;">
-            <div class="col-lg-6" style="max-width: 100%;">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="d-flex align-items">
-                            <span style="cursor: pointer;" class="d-inline-block mr-3" tabindex="0"
-                                data-toggle="tooltip" title="Trở về">
-                                <a href="/product-manage">
-                                    <ion-icon name="arrow-undo-outline"></ion-icon>
-                                </a>
-                            </span>
-                            <h5 class="card-title">Khôi phục sản phẩm</h5>
-                        </div>
-                        <div class="table-responsive">
-                            <table id="myTable" class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>
+    </div>
+    <!-- End container-fluid-->
+    <div class="row" style="display: contents;">
+        <div class="col-lg-6" style="max-width: 100%;">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex align-items">
+                        <span style="cursor: pointer;" class="d-inline-block mr-3" tabindex="0" data-toggle="tooltip"
+                            title="Trở về">
+                            <a href="/product-manage">
+                                <ion-icon name="arrow-undo-outline"></ion-icon>
+                            </a>
+                        </span>
+                        <h5 class="card-title">Khôi phục sản phẩm</h5>
+                    </div>
+                    <div class="table-responsive">
+                        <table id="myTable" class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th {{#ifCond viewData.data.length 0}}hidden{{/ifCond}}>
+                                        <div class="checkbox">
+                                            <input type="checkbox" class="check" id="checkAll">
+                                        </div>
+                                    </th>
+                                    <th scope="col">Mã sản phẩm</th>
+                                    <th scope="col">Tên sản phẩm</th>
+                                    <th scope="col">Nhóm sản phẩm</th>
+                                    <th scope="col">Năm đánh giá</th>
+                                    <th scope="col">Chủ thể</th>
+                                    <th scope="col">Ghi chú</th>
+                                    <th scope="col">Hành động</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{#each viewData.data}}
+                                <tr>
+                                    <td>
+                                        <div class="">
                                             <div class="checkbox">
-                                                <input type="checkbox" class="check" id="checkAll">
+                                                <input type="checkbox" class="check" data-idCheckBox="{{this._id}}">
                                             </div>
-                                        </th>
-                                        <th scope="col">Mã sản phẩm</th>
-                                        <th scope="col">Tên sản phẩm</th>
-                                        <th scope="col">Nhóm sản phẩm</th>
-                                        <th scope="col">Năm đánh giá</th>
-                                        <th scope="col">Chủ thể</th>
-                                        <th scope="col">Ghi chú</th>
-                                        <th scope="col">Hành động</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {{#each viewData.data}}
-                                    <tr>
-                                        <td>
-                                            <div class="">
-                                                <div class="checkbox">
-                                                    <input type="checkbox" class="check" data-idCheckBox="{{this._id}}">
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>{{this.product_code}}</td>
-                                        <td>{{this.product_name}}</td>
-                                        <td>{{this.productGroup_name}}</td>
-                                        <td>{{this.product_year}}</td>
-                                        <td>{{this.customer_name}}</td>
-                                        <td>{{this.product_note}}</td>
-                                        <td style="display: flex;">
-                                            <div class="action_center">
-                                                <button data-toggle="modal" data-target="#exampleModal{{this._id}}"
-                                                    style="background-color: transparent;border: none;cursor: pointer;">
-                                                    <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
-                                                        title="Khôi phục: {{this.product_name}}">
-                                                        <ion-icon name="sync-outline"
-                                                            style="color: white; font-size: 18px;" id="icon_revert"
-                                                            data-id="{{this._id}}"></ion-icon>
-                                                    </span>
-                                                </button>
-                                            </div>
-                                            <div class="delete_action">
+                                        </div>
+                                    </td>
+                                    <td>{{this.product_code}}</td>
+                                    <td>{{this.product_name}}</td>
+                                    <td>{{this.productGroup_name}}</td>
+                                    <td>{{this.product_year}}</td>
+                                    <td>{{this.customer_name}}</td>
+                                    <td>{{this.product_note}}</td>
+                                    <td style="display: flex;">
+                                        <div class="action_center">
+                                            <button data-toggle="modal" data-target="#exampleModal{{this._id}}"
+                                                style="background-color: transparent;border: none;cursor: pointer;">
                                                 <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
-                                                    title="Xóa vĩnh viễn">
-                                                    <button class="delete-button"
-                                                        style="background-color: transparent;border: none;">
-                                                        <ion-icon id="icon_moveToTrash" name="trash-outline"
-                                                            data-id="{{this._id}}">
-                                                        </ion-icon>
-                                                    </button>
+                                                    title="Khôi phục: {{this.product_name}}">
+                                                    <ion-icon name="sync-outline" style="color: white; font-size: 18px;"
+                                                        id="icon_revert" data-id="{{this._id}}"></ion-icon>
                                                 </span>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    {{else}}
-                                    <tr>
-                                        <td colspan="9" class="text-center">Không tìm thấy từ khoá nào</td>
-                                    </tr>
-                                    {{/each }}
-                                </tbody>
-                            </table>
-                        </div>
+                                            </button>
+                                        </div>
+                                        <div class="delete_action">
+                                            <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
+                                                title="Xóa vĩnh viễn">
+                                                <button class="delete-button"
+                                                    style="background-color: transparent;border: none;">
+                                                    <ion-icon id="icon_moveToTrash" name="trash-outline"
+                                                        data-id="{{this._id}}">
+                                                    </ion-icon>
+                                                </button>
+                                            </span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {{else}}
+                                <tr>
+                                    <td colspan="9" class="text-center">Không tìm thấy từ khoá nào</td>
+                                </tr>
+                                {{/each }}
+                            </tbody>
+                        </table>
                     </div>
                 </div>
-            </div><!--End Row-->
-        </div>
-        <!-- End container-fluid-->
-    </div><!--End content-wrapper-->
+            </div>
+        </div><!--End Row-->
+    </div>
+
+    <!--End content-wrapper-->
     {{> footer}}
 
     <script>
@@ -325,9 +325,33 @@
                 }
             })
         }
-        //removeAll
         const btnsCheck = document.querySelectorAll(".check")
         const btnDeleteAll = document.querySelector(".btnDeleteAll")
+        const btnDisabledDelete = document.querySelector(".btnDisabledDelete")
+        const btnDisabledRevert = document.querySelector(".btnDisabledRevert")
+        //Chưa checked thì disbale nút xóa all
+        let count = 0
+        const checkBtnDisabled = () => {
+            if (count === 0) {
+                btnDisabledDelete.setAttribute("disabled", true)
+                btnDisabledRevert.setAttribute("disabled", true)
+            } else {
+                btnDisabledDelete.removeAttribute("disabled")
+                btnDisabledRevert.removeAttribute("disabled")
+            }
+        }
+        for (let checked of btnsCheck) {
+            checkBtnDisabled()
+            checked.addEventListener("click", (e) => {
+                if (checked.checked) {
+                    count++
+                } else {
+                    count--
+                }
+                checkBtnDisabled()
+            })
+        }
+        //removeAll
         btnDeleteAll.addEventListener("click", async (e) => {
             const isConfirmDeleteByCheckbox = window.confirm("Xác nhận xóa những đối tượng bạn đã chọn ?")
             if (isConfirmDeleteByCheckbox) {

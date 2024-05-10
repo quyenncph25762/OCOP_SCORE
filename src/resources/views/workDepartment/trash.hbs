@@ -10,8 +10,8 @@
                     <ul class="search-customer"
                         style="list-style: none; display:flex; justify-content: space-between; align-items: center;">
                         <div class="">
-                            <button class="btn btn-danger btnDeleteAll">Xóa mục đã chọn</button>
-                            <button class="btn btn-primary btnRevertAll ml-3">Khôi phục mục đã
+                            <button class="btn btn-danger btnDeleteAll btnDisabledDelete">Xóa mục đã chọn</button>
+                            <button class="btn btn-primary btnRevertAll ml-3 btnDisabledRevert">Khôi phục mục đã
                                 chọn</button>
                         </div>
                     </ul>
@@ -37,12 +37,12 @@
 
                                 <thead>
                                     <tr>
-                                        <th>
+                                        <th {{#ifCond workDepartment.length 0}}hidden{{/ifCond}}>
                                             <div class="checkbox">
                                                 <input type="checkbox" class="check" id="checkAll">
                                             </div>
                                         </th>
-                                        <th>#</th>
+                                        <th hidden>#</th>
                                         <th>Code</th>
                                         <th>Tên phòng ban</th>
                                         <th>Mô tả phòng ban</th>
@@ -59,7 +59,7 @@
                                                 </div>
                                             </div>
                                         </td>
-                                        <td>{{@index}}</td>
+                                        <td hidden>{{@index}}</td>
                                         <td>{{this.code}}</td>
                                         <td>{{this.title}}</td>
                                         <td>{{this.description}}</td>
@@ -154,6 +154,30 @@
         //removeAll
         const btnsCheck = document.querySelectorAll(".check")
         const btnDeleteAll = document.querySelector(".btnDeleteAll")
+        const btnDisabledDelete = document.querySelector(".btnDisabledDelete")
+        const btnDisabledRevert = document.querySelector(".btnDisabledRevert")
+        //Chưa checked thì disbale nút xóa all
+        let count = 0
+        const checkBtnDisabled = () => {
+            if (count === 0) {
+                btnDisabledDelete.setAttribute("disabled", true)
+                btnDisabledRevert.setAttribute("disabled", true)
+            } else {
+                btnDisabledDelete.removeAttribute("disabled")
+                btnDisabledRevert.removeAttribute("disabled")
+            }
+        }
+        for (let checked of btnsCheck) {
+            checkBtnDisabled()
+            checked.addEventListener("click", (e) => {
+                if (checked.checked) {
+                    count++
+                } else {
+                    count--
+                }
+                checkBtnDisabled()
+            })
+        }
         btnDeleteAll.addEventListener("click", async (e) => {
             const isConfirmDeleteByCheckbox = window.confirm("Xác nhận xóa những đối tượng bạn đã chọn ?")
             if (isConfirmDeleteByCheckbox) {

@@ -9,30 +9,26 @@
   <meta name="author" content="" />
   <title>Phần mềm chấm điểm OCOP</title>
   <!-- loader-->
-  <link href="/css/pace.min.css" rel="stylesheet" />
-  <script src="/helpers/pace.min.js"></script>
+  <link href="/assets/css/pace.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="/assets/css/app.css">
   <!--favicon-->
   <link rel="icon" href="/img/favicon.ico" type="image/x-icon">
-  <!-- Vector CSS -->
-  <!-- <link href="assets/plugins/vectormap/jquery-jvectormap-2.0.2.css" rel="stylesheet"/> -->
+  <link href="/assets/plugins/vectormap/jquery-jvectormap-2.0.2.css" rel="stylesheet" />
   <!-- simplebar CSS-->
-  <link href="/plugins/simplebar/css/simplebar.css" rel="stylesheet" />
+  <link href="/assets/plugins/simplebar/css/simplebar.css" rel="stylesheet" />
   <!-- Bootstrap core CSS-->
-  <link href="/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="/assets/css/bootstrap.min.css" rel="stylesheet" />
   <!-- animate CSS-->
-  <link href="/css/animate.css" rel="stylesheet" type="text/css" />
+  <link href="/assets/css/animate.css" rel="stylesheet" type="text/css" />
   <!-- Icons CSS-->
-  <link href="/css/icons.css" rel="stylesheet" type="text/css" />
+  <link href="/assets/css/icons.css" rel="stylesheet" type="text/css" />
   <!-- Sidebar CSS-->
-  <link href="/css/sidebar-menu.css" rel="stylesheet" />
+  <link href="/assets/css/sidebar-menu.css" rel="stylesheet" />
   <!-- Custom Style-->
-  <link href="/css/app-style.css" rel="stylesheet" />
-  <!-- SCSS Style-->
-  <link href="/css/app.css" rel="stylesheet" />
-  <!-- Then include DataTables -->
-  <link href="/css/datatables.min.css" rel="stylesheet">
-  {{!-- icon-css --}}
-  <link href="/css/font-awesome.min.css" rel="stylesheet">
+  <link href="/assets/css/app-style.css" rel="stylesheet" />
+  <link href="/assets/css/datatables.min.css" rel="stylesheet" />
+  <link href="/assets/css/datatables.css" rel="stylesheet" />
+  <link href="/assets/css/app-style.css" rel="stylesheet" />
   <!--Leaflet CSS-->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <!--leaflet draw css-->
@@ -46,8 +42,6 @@
       height: 100vh;
       width: 100%;
     }
-
-
 
     /* Style for the button */
     #showFormButton {
@@ -180,24 +174,34 @@
 </head>
 
 <body class="bg-theme bg-theme1">
+  <div id="wrapper">
+    {{{body}}}
+  </div>
 
-  {{{body}}}
 
   <!-- Bootstrap core JavaScript-->
-  <script src="/helpers/jquery.min.js"></script>
-  <script src="/helpers/popper.min.js"></script>
-  <script src="/helpers/bootstrap.min.js"></script>
+  <script src="/assets/js/jquery.min.js"></script>
 
+  <script src="/assets/js/pace.min.js"></script>
+  <script src="/assets/js/popper.min.js"></script>
+  <script src="/assets/js/bootstrap.min.js"></script>
   <!-- simplebar js -->
-  <script src="/plugins/simplebar/js/simplebar.js"></script>
+  <script src="/assets/plugins/simplebar/js/simplebar.js"></script>
   <!-- sidebar-menu js -->
-  <script src="/helpers/sidebar-menu.js"></script>
+  <script src="/assets/js/sidebar-menu.js"></script>
   <!-- loader scripts -->
-  <!--<script src="assets/js/jquery.loading-indicator.js"></script>-->
+
+  {{!--
+  <script src="/assets/js/jquery.loading-indicator.js"></script> --}}
   <!-- Custom scripts -->
-  <script src="/helpers/app-script.js"></script>
+  <script src="/assets/js/app-script.js"></script>
   <!-- Chart js -->
-  <script src="/plugins/Chart.js/Chart.min.js"></script>
+
+  <script src="/assets/plugins/Chart.js/Chart.min.js"></script>
+
+  <!-- Index js -->
+  {{!--
+  <script src="/assets/js/index.js"></script> --}}
 
 
   <script>
@@ -220,8 +224,9 @@
     }
 
   </script>
-  <script type="text/javascript" language="javascript" src="/helpers/datatables.js"></script>
-  <script src="/helpers/datatables.min.js"></script>
+
+  <script src="/assets/js/datatables.js"></script>
+  <script src="/assets/js/datatables.min.js"></script>
   <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
   <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 

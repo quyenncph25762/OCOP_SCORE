@@ -4,7 +4,7 @@
         <div class="row" style="max-width: 100%; display: contents;">
             <ul class="search-customer"
                 style="list-style: none; display:flex; justify-content: space-between; align-items: center;">
-                <button class="btn btn-danger btnDeleteAll" style="float: left;">Xóa mục đã chọn</button>
+                <button class="btn btn-danger btnDeleteAll btnDisabled" style="float: left;">Xóa mục đã chọn</button>
                 <div class="import_customer_button"
                     style="list-style: none; display:flex; justify-content: space-between; align-items: center;">
                     <button class="btn btn-success" data-toggle="modal" data-target="#exampleModal">Thêm mới</button>
@@ -33,7 +33,7 @@
                         <table id="myTable" class="table table-hover">
                             <thead>
                                 <tr>
-                                    <th>
+                                    <th {{#ifCond Role.length 0}}hidden{{/ifCond}}>
                                         <div class="checkbox">
                                             <input type="checkbox" class="check" id="checkAll">
                                         </div>
@@ -104,7 +104,7 @@
 {{> footer}}
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
+<script src="/assets/js/custom.js"></script>
 <script>
     window.dataLayer = window.dataLayer || [];
     function gtag() {
@@ -138,6 +138,28 @@
     //removeAll
     const btnsCheck = document.querySelectorAll(".check")
     const btnDeleteAll = document.querySelector(".btnDeleteAll")
+    const btnDisabled = document.querySelector(".btnDisabled")
+    //Chưa checked thì disbale nút xóa all
+    let count = 0
+    const checkBtnDisabled = () => {
+        if (count === 0) {
+            btnDisabled.setAttribute("disabled", true)
+        } else {
+            btnDisabled.removeAttribute("disabled")
+        }
+    }
+    for (let checked of btnsCheck) {
+        checkBtnDisabled()
+        checked.addEventListener("click", (e) => {
+            if (checked.checked) {
+                count++
+            } else {
+                count--
+            }
+            checkBtnDisabled()
+        })
+    }
+    //Xoa nhieu
     btnDeleteAll.addEventListener("click", async (e) => {
         const isConfirmDeleteByCheckbox = window.confirm("Xác nhận xóa những đối tượng bạn đã chọn ?")
         if (isConfirmDeleteByCheckbox) {

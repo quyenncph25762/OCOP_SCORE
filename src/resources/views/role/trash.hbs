@@ -10,8 +10,8 @@
                     <ul class="search-customer"
                         style="list-style: none; display:flex; justify-content: space-between; align-items: center;">
                         <div class="">
-                            <button class="btn btn-danger btnDeleteAll">Xóa mục đã chọn</button>
-                            <button class="btn btn-primary btnRevertAll ml-3">Khôi phục mục đã
+                            <button class="btn btn-danger btnDeleteAll btnDisabledDelete">Xóa mục đã chọn</button>
+                            <button class="btn btn-primary btnRevertAll ml-3 btnDisabledRevert">Khôi phục mục đã
                                 chọn</button>
                         </div>
                     </ul>
@@ -36,12 +36,12 @@
                             <table id="myTable" class="table table-hover">
 
                                 <thead>
-                                    <th>
+                                    <th {{#ifCond Role.length 0}}hidden{{/ifCond}}>
                                         <div class="checkbox">
                                             <input type="checkbox" class="check" id="checkAll">
                                         </div>
                                     </th>
-                                    <th>#</th>
+                                    <th hidden>#</th>
                                     <th>Active</th>
                                     <th>Tên vai trò</th>
                                     <th>Ghi chú</th>
@@ -57,7 +57,7 @@
                                                 </div>
                                             </div>
                                         </td>
-                                        <td>{{@index}}</td>
+                                        <td hidden>{{@index}}</td>
                                         <td>
                                             {{#if this.status}}
                                             <div class="active"></div>
@@ -155,9 +155,33 @@
                 }
             })
         }
-        //removeAll
         const btnsCheck = document.querySelectorAll(".check")
         const btnDeleteAll = document.querySelector(".btnDeleteAll")
+        const btnDisabledDelete = document.querySelector(".btnDisabledDelete")
+        const btnDisabledRevert = document.querySelector(".btnDisabledRevert")
+        //Chưa checked thì disbale nút xóa all
+        let count = 0
+        const checkBtnDisabled = () => {
+            if (count === 0) {
+                btnDisabledDelete.setAttribute("disabled", true)
+                btnDisabledRevert.setAttribute("disabled", true)
+            } else {
+                btnDisabledDelete.removeAttribute("disabled")
+                btnDisabledRevert.removeAttribute("disabled")
+            }
+        }
+        for (let checked of btnsCheck) {
+            checkBtnDisabled()
+            checked.addEventListener("click", (e) => {
+                if (checked.checked) {
+                    count++
+                } else {
+                    count--
+                }
+                checkBtnDisabled()
+            })
+        }
+        //removeAll
         btnDeleteAll.addEventListener("click", async (e) => {
             const isConfirmDeleteByCheckbox = window.confirm("Xác nhận xóa những đối tượng bạn đã chọn ?")
             if (isConfirmDeleteByCheckbox) {

@@ -10,7 +10,10 @@ const employeeRouter = require("./employee.routes");
 const filterProduct = require("./filterProduct.routes")
 const scoreTempRouter = require("./scoreTemp.routes")
 const citationRouter = require("./citation.routes")
+const authRouter = require("./auth.routes")
 function route(app) {
+    // user
+    app.use("/auth", authRouter)
     // Phiếu chấm
     app.use("/scoreTemp", scoreTempRouter)
     // Tra cứu OCOP

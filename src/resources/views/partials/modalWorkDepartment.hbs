@@ -16,8 +16,8 @@
                         {{!-- code --}}
                         <div class="col-md-4 mb-3">
                             <label for="code">Mã</label>
-                            <input value="{{this.code}}" name="code" type="text" class="form-control" id="code"
-                                required>
+                            <input value="{{this.code}}" id="code" name="code" type="text" class="form-control"
+                                id="code" required>
                         </div>
                         {{!-- title --}}
                         <div class="col-md-8 mb-3">
@@ -59,7 +59,7 @@
                         {{!-- code --}}
                         <div class="col-md-4 mb-3">
                             <label for="code">Mã</label>
-                            <input name="code" type="text" class="form-control" id="code" required>
+                            <input name="code" value="" type="text" class="form-control" id="code" required>
                         </div>
                         {{!-- title --}}
                         <div class="col-md-8 mb-3">
@@ -81,3 +81,18 @@
         </div>
     </div>
 </div>
+
+{{!-- random --}}
+<script>
+    function generateRandomCode(length) {
+        let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789';
+        let code = '';
+        for (let i = 0; i < length; i++) {
+            code += characters.charAt(Math.floor(Math.random() * characters.length));
+        }
+        return code;
+    }
+    const codeRandom = generateRandomCode(8)
+    const codeValue = document.querySelector("#code")
+    codeValue.value = codeRandom
+</script>

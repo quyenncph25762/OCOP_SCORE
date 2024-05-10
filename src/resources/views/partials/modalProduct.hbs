@@ -19,6 +19,10 @@
     .displayNone {
         display: none;
     }
+
+    .table-border td {
+        max-height: 80px;
+    }
 </style>
 {{!-- POST --}}
 <div class="modal fade" id="exampleModalAdd" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -33,7 +37,7 @@
             </div>
             <div class="modal-body" class="width: 100%">
                 <form method="POST" action="/product-manage/create">
-                    <div class="row" style="padding: 24px 0;height: 100%;overflow-y: auto;height: 70vh;">
+                    <div class="row" style="padding: 24px 0;height: 70vh;">
                         <div class="form-row col-sm-4"
                             style="display: flex;flex-direction: column; text-align: center;">
                             <h1 style="font-size: 16px; text-align: center;font-weight: 600;">Ảnh sản phẩm</h1>
@@ -97,9 +101,9 @@
                                 <label for="note">Nhóm sản phẩm</label>
                                 <select name="productGroup_id" class="form-control">
                                     {{#each ProductGroup}}
-                                    {{#if this.status}}
-                                    <option value="{{this._id}}">{{this.productGroup_name}}</option>
-                                    {{/if}}
+                                    <option value="{{this._id}}" {{#ifCond this.status 0}}disabled{{/ifCond}}>
+                                        {{this.productGroup_name}}</option>
+
                                     {{/each}}
                                 </select>
                             </div>
@@ -122,7 +126,7 @@
                             </div>
                         </div>
                         {{!-- bảng viễn dẫn --}}
-                        <div class="col-sm-8 list_citation displayNone">
+                        <div class="col-sm-8 list_citation displayNone" style="overflow-y: auto;height: 100%">
                             <table border="1" class="table table-hover table-border table-striped">
                                 <thead>
                                     <tr>
@@ -151,6 +155,7 @@
                                             </span>
                                         </td>
                                     </tr>
+
                                     {{/each}}
                                 </tbody>
                             </table>
@@ -225,4 +230,19 @@
         boxFormProduct.classList.remove("active")
         boxListCitation.classList.add("active")
     }
+</script>
+
+<script>
+    const codeValue = document.querySelector("#code")
+
+    function generateRandomCode(length) {
+        let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789';
+        let code = '';
+        for (let i = 0; i < length; i++) {
+            code += characters.charAt(Math.floor(Math.random() * characters.length));
+        }
+        return code;
+    }
+    const codeRandom = generateRandomCode(8)
+    codeValue.value = codeRandom
 </script>

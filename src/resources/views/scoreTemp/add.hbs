@@ -15,9 +15,182 @@
             </ul>
         </div>
         {{!-- endSubheader --}}
-        <div class="row">
+        <div class="row" style="display: contents;">
+            <div class="col-lg-12" style="max-width: 100%;">
+                <div class="card">
+                    <div class="card-body">
+                        <form method="POST" action="/admin/scoreTemp/addScoreTemp">
+                            <button type="submit" class="btn btn-success mb-4"
+                                style="flex: 1;text-align: right;margin-right: 0;"><i class="fe fe-save mr-2"></i>Lưu
+                                thông
+                                tin</button>
+                            <div class="form-row">
+                                <!-- code -->
+                                <div class="col-md-4 mb-3">
+                                    <label for="code">Mã</label>
+                                    <input type="text" name="code" class="form-control" id="code" value="" required>
+                                </div>
+                                <!-- name group product -->
+                                <div class="col-md-8 mb-3">
+                                    <label for="title">Tên phiếu chấm</label>
+                                    <input type="text" class="form-control" id="title" name="title" value="" required>
+                                </div>
+                                <!-- active -->
+                                <div class="custom-control custom-switch col-md-2"
+                                    style="display: flex; justify-content: center;align-items: center;">
+                                    <input name="status" type="checkbox" class="custom-control-input" id="status">
+                                    <label class="custom-control-label block" for="status">Áp
+                                        dụng</label>
+                                </div>
+                                <!-- group product -->
+                                <div class="custom-control custom-switch col-md-10">
+                                    <label for="customerId">Nhóm sản phẩm</label>
+                                    <select name="customerId" class="custom-select my-1 form-control" id="customerId">
+                                        <option selected>Choose...</option>
+                                        {{#each productGroup}}
+                                        <option value="{{this._id}}">{{this.productGroup_name}}</option>
+                                        {{/each}}
+                                    </select>
+                                </div>
+                                <!-- note -->
+                                <div class="col-md-12 mb-3 mt-3">
+                                    <label for="validationDefault02">Ghi chú</label>
+                                    <input name="note" type="text" class="form-control" id="validationDefault02"
+                                        required>
+                                </div>
+                                <!-- scoreTermDetail -->
+                                <div class="panel-heading" style="font-size: 18px;padding: 0 10px;margin-top: 20px;">II
+                                    - Chi
+                                    tiết
+                                    phiếu chấm
+                                </div>
+                                <div class=" col-md-12 mb-3 mt-3">
+                                    <div class="panel-body">
+                                        <table class="table table-bordered table__temptDetail">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">#</th>
+                                                    <th scope="col">Nội dung</th>
+                                                    <th scope="col">Chấm điểm</th>
+                                                    <th scope="col">Điểm tối đa</th>
+                                                    <th scope="col">Điều kiện xếp hạng</th>
+                                                    <th scope="col">Viện dẫn</th>
+                                                    <th scope="col">Ghi chú</th>
+                                                    <th scope="col"></th>
+                                                </tr>
+                                            </thead>
+                                            {{!-- body --}}
+                                            <tbody id="education_fields">
 
+                                            </tbody>
+                                            <tfoot>
+                                                <tr>
+                                                    <td colspan="8" style="text-align: center;color: white;">
+                                                        <button class="btn btn-success" type="button"
+                                                            onclick="education_fields();"> <span
+                                                                class="glyphicon glyphicon-plus"
+                                                                aria-hidden="true"></span>Thêm</button>
+                                                    </td>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                        <div class="clear"></div>
+                                    </div>
+                                </div>
+                        </form>
+                    </div>
+                </div>
+            </div><!--End content-wrapper-->
         </div>
-    </div><!--End content-wrapper-->
+    </div>
 </div>
 {{> footer}}
+
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+    gtag('js', new Date());
+    gtag('config', 'UA-56159088-1');
+
+    var room = 1;
+    function education_fields() {
+        room++;
+        var objTo = document.getElementById('education_fields')
+        var divtest = document.createElement("tr");
+        divtest.setAttribute("class", "form-group removeclass" + room);
+        var rdiv = 'removeclass' + room;
+        const tableBody = () => {
+            return `<tr>
+                        <th scope="row">1</th>
+                        <td><input type="text" class="form-control" name="titleDetail"></td>
+                        <td style="">
+                        <div class="custom-control custom-switch" style="display: flex; justify-content: center;align-items: center;transform: translateY(-50%);">
+                        <input type="checkbox" class="custom-control-input" name="isMark" id="customSwitch${room + 1}">
+                        <label class="custom-control-label block" for="customSwitch${room + 1}"></label>
+                        </div>
+                        </td>
+                        <td >
+                         <input min="0" style="max-width: 60px" name="maxPoint" type="number"/>
+                        </td>
+                        <td>
+                            <div class="form-group">
+                            <select name="validateRank" class="form-control"
+                                        style="transform: translateY(10px);max-width: 200px;max-height: 200px;overflow-y: hidden;"
+                                        data-target="#navbar-example2" data-offset="0">
+                                        <option selected>Không xác định</option>
+                                        <option value="1">1 sao</option>
+                                        <option value="2">2 sao</option>
+                                        <option value="3">3 sao</option>
+                                        <option value="4">4 sao</option>
+                                        <option value="5">5 sao</option>
+                                      </select>
+                                    </div>
+                                  </td>
+                        <td>
+                            <div class="form-group">
+                            <select name="criteriaId" class="form-control"
+                                        style="transform: translateY(10px);max-width: 200px;max-height: 200px;overflow-y: hidden;"
+                                        data-target="#navbar-example2" data-offset="0">
+                                        <option selected>Không xác định</option>
+                                        {{#each Criteria}}
+                                        <option value={{this._id}}>{{this.criteriaName}}</option>
+                                        {{/each}}
+                                      </select>
+                                    </div>
+                                  </td>
+                                  <td>
+                                   <textarea name="noteDetail" id="" cols="30" rows="3"></textarea>
+                                  </td>
+                                  <td>
+                                    <ion-icon onclick="remove_education_fields(${room});" class="icon__scoreTempDetail" name="trash-outline"></ion-icon>
+                                  </td>
+                                </tr>`
+        }
+        divtest.innerHTML = tableBody();
+        objTo.appendChild(divtest)
+    }
+    function remove_education_fields(rid) {
+        console.log(rid)
+        $('.removeclass' + rid).remove();
+    }
+</script>
+
+{{!-- random --}}
+
+<script>
+    const codeValue = document.querySelector("#code")
+
+    function generateRandomCode(length) {
+        let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789';
+        let code = '';
+        for (let i = 0; i < length; i++) {
+            code += characters.charAt(Math.floor(Math.random() * characters.length));
+        }
+        return code;
+    }
+    const codeRandom = generateRandomCode(8)
+    codeValue.value = codeRandom
+</script>

@@ -14,7 +14,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body" style="overflow-y: auto;height: 90vh;">
+            <div class="modal-body" style="overflow-y: auto;max-height: 80vh;">
                 <form method="POST" action="/employee/add" class="row" enctype="multipart/form-data">
                     <div class="col-md-4">
                         <h1 style="font-size: 16px; text-align: center;font-weight: 600;">Ảnh đại diện</h1>
@@ -158,4 +158,18 @@
         $('.image-upload-wrap').removeClass('image-dropping');
     });
 
+</script>
+<script>
+    const codeValue = document.querySelector("#code")
+
+    function generateRandomCode(length) {
+        let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789';
+        let code = '';
+        for (let i = 0; i < length; i++) {
+            code += characters.charAt(Math.floor(Math.random() * characters.length));
+        }
+        return code;
+    }
+    const codeRandom = generateRandomCode(8)
+    codeValue.value = codeRandom
 </script>

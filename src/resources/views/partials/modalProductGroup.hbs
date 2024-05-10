@@ -100,3 +100,18 @@
         </div>
     </div>
 </div>
+
+<script>
+    const codeValue = document.querySelector("#code")
+
+    function generateRandomCode(length) {
+        let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789';
+        let code = '';
+        for (let i = 0; i < length; i++) {
+            code += characters.charAt(Math.floor(Math.random() * characters.length));
+        }
+        return code;
+    }
+    const codeRandom = generateRandomCode(8)
+    codeValue.value = codeRandom
+</script>
