@@ -11,37 +11,43 @@
                 </button>
             </div>
             <div class="modal-body" class="width: 100%">
-                <form method="POST" action="/year-review/update/{{this._id}}">
+                <form>
                     <div class="form-row">
                         {{!-- title --}}
                         <div class="col-md-8 mb-3">
                             <label for="productGroup_name">Tên năm</label>
                             <input value="{{this.yearName}}" name="yearName" type="text" class="form-control"
-                                id="yearName" required>
+                                id="yearName{{this._id}}" required>
+                            <span
+                                style="color: #de2935;font-size: 14px;font-style: italic;margin-top: 5px;font-weight: 600;"
+                                id="messageErrorUpdate{{this._id}}"></span>
                         </div>
                         {{!-- status --}}
                         <div class="custom-control custom-switch col-md-3 ml-3"
                             style="display: flex; justify-content: center;align-items: center;">
-                            {{#if this.status}}
+                            {{#ifCond this.status 1}}
                             <input name="status" type="checkbox" class="custom-control-input" id="status{{this._id}}"
                                 checked>
+                            <label class="custom-control-label block" for="status{{this._id}}">Áp dụng</label>
                             {{else}}
                             <input name="status" type="checkbox" class="custom-control-input" id="status{{this._id}}">
-                            {{/if}}
                             <label class="custom-control-label block" for="status{{this._id}}">Áp dụng</label>
+                            {{/ifCond}}
                         </div>
                         {{!-- note --}}
                         <div class="col-md-12 mb-3 mt-3">
                             <label for="note">Ghi
                                 chú</label>
-                            <input value="{{this.note}}" name="note" type="text" class="form-control" id="note">
+                            <input value="{{this.note}}" name="note" type="text" class="form-control"
+                                id="note{{this._id}}">
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                        <button class="btn btn-warning">Câp nhật năm đánh giá</button>
-                    </div>
                 </form>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    <button onclick="handleUpdate('{{this._id}}')" class="btn btn-warning">Câp nhật năm đánh
+                        giá</button>
+                </div>
             </div>
         </div>
     </div>
@@ -59,17 +65,21 @@
                 </button>
             </div>
             <div class="modal-body" class="width: 100%">
-                <form method="POST" action="/year-review/add">
+                <form>
                     <div class="form-row">
+                        {{!-- creationUser --}}
+                        <input type="text" id="creatorUser_id" name="creatorUser_id" value="{{User._id}}" hidden>
                         {{!-- title --}}
                         <div class="col-md-8 mb-3">
                             <label for="yearName">Số năm</label>
                             <input name="yearName" type="text" class="form-control" id="yearName" required>
+                            <span style="color: #de2935;font-size: 14px;font-style: italic;margin-top: 5px;"
+                                id="messageError"></span>
                         </div>
                         {{!-- status --}}
                         <div class="custom-control custom-switch col-md-3 ml-3"
                             style="display: flex; justify-content: center;align-items: center;">
-                            <input name="status" type="checkbox" class="custom-control-input" id="status">
+                            <input name="status" type="checkbox" class="custom-control-input" id="status" checked>
                             <label class="custom-control-label block" for="status">Áp dụng</label>
                         </div>
                         {{!-- note --}}
@@ -79,12 +89,65 @@
                             <input name="note" type="text" class="form-control" id="note">
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                        <button class="btn btn-success">Thêm mới năm</button>
-                    </div>
                 </form>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    <button type="button" onclick="handleAdd()" class="btn btn-success">Thêm mới năm</button>
+                </div>
             </div>
         </div>
     </div>
 </div>
+
+
+<script>
+    async function handleAdd() {
+        const yearName = document.getElementById(`yearName`).value
+        const status = document.getElementById(`status`).checked
+        const note = document.getElementById(`note`).value
+        const creatorUser_id = document.getElementById(`creatorUser_id`).value
+        const formData = new FormData()
+        formData.append("yearName", yearName)
+        formData.append("status", status)
+        formData.append("note", note)
+        formData.append("creatorUser_id", creatorUser_id)
+        const res = await fetch(`/year-review/add`, {
+            method: "POST",
+            body: formData
+        })
+        if (res.ok) {
+            const data = await res.json()
+            alert(`${data.message}`)
+            window.location.replace("/year-review")
+        } else {
+            const data = await res.json()
+            const messageErrorUpdate = document.getElementById(`messageError`)
+            messageErrorUpdate.innerHTML = data.message
+            console.error("Response was not ok:", res.status);
+        }
+    }
+    //update
+    async function handleUpdate(id) {
+        const yearName = document.getElementById(`yearName${id}`).value
+        const status = document.getElementById(`status${id}`).checked
+        const note = document.getElementById(`note${id}`).value
+        const formData = new FormData()
+        formData.append("yearName", yearName)
+        formData.append("status", status)
+        formData.append("note", note)
+        const res = await fetch(`/year-review/update/${id}`, {
+            method: "POST",
+            body: formData
+        })
+        if (res.ok) {
+            const data = await res.json()
+            alert(`${data.message}`)
+            window.location.replace("/year-review")
+        } else {
+            const data = await res.json()
+            const messageErrorUpdate = document.getElementById(`messageErrorUpdate${id}`)
+            messageErrorUpdate.innerHTML = data.message
+            console.error("Response was not ok:", res.status);
+        }
+    }
+</script>

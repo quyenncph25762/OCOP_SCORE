@@ -1,0 +1,339 @@
+{{> header}}
+<div class="content-wrapper">
+    <div class="container-fluid">
+        {{!-- subHeader --}}
+        <div class="row" style="max-width: 100%; display: contents;">
+            <ul class="search-customer"
+                style="list-style: none; display:flex; justify-content: start; align-items: center;">
+                <a href="/scoreTemp" style="display: flex; align-items: center;cursor: pointer;">
+                    <div class="import_customer_button"
+                        style="list-style: none; display:flex; justify-content: space-between; align-items: center;">
+                        <ion-icon name="arrow-undo-outline" style="font-size: 24px;"></ion-icon>
+                    </div>
+                    <label for="" class="mb-0 mt-1 ml-2">Trở về</label>
+                </a>
+            </ul>
+        </div>
+        {{!-- endSubheader --}}
+        <div class="row" style="display: contents;">
+            <div class="col-lg-12" style="max-width: 100%;">
+                <div class="card">
+                    <div class="card-body">
+                        <button onclick="handleUpdate('{{ScoreTemp._id}}')" type="button" class="btn btn-warning mb-4"
+                            style="flex: 1;text-align: right;margin-right: 0;display: flex;align-items: center;gap: 10px;"><ion-icon
+                                name="file-tray-outline"></ion-icon>
+                            <p style="margin-bottom: 0;">Lưu
+                                thông
+                                tin</p>
+                        </button>
+                        <form>
+                            <div class="form-row">
+                                <!-- code -->
+                                <div class="col-md-4 mb-3">
+                                    <label for="Code">Mã</label>
+                                    <input type="text" name="Code" class="form-control" id="Code{{ScoreTemp._id}}"
+                                        value="{{ScoreTemp.Code}}" required>
+                                </div>
+                                <!-- name group product -->
+                                <div class="col-md-8 mb-3">
+                                    <label for="Name">Tên phiếu chấm</label>
+                                    <input type="text" class="form-control" id="Name{{ScoreTemp._id}}" name="Name"
+                                        value="{{ScoreTemp.Name}}" required>
+                                </div>
+                                <!-- active -->
+                                <div class="custom-control custom-switch col-md-2"
+                                    style="display: flex; justify-content: center;align-items: center;">
+                                    {{#ifCond ScoreTemp.IsActive 1}}
+                                    <input name="IsActive" type="checkbox" class="custom-control-input"
+                                        id="IsActive{{ScoreTemp._id}}" checked>
+                                    <label class="custom-control-label block" for="IsActive{{ScoreTemp._id}}">Áp
+                                        dụng</label>
+                                    {{else}}
+
+                                    <input name="IsActive" type="checkbox" class="custom-control-input"
+                                        id="IsActive{{ScoreTemp._id}}">
+                                    <label class="custom-control-label block" for="IsActive{{ScoreTemp._id}}">Áp
+                                        dụng</label>
+                                    {{/ifCond}}
+                                </div>
+                                <!-- group product -->
+                                <div class="custom-control custom-switch col-md-10">
+                                    <label for="ProductGroup_id">Nhóm sản phẩm</label>
+                                    <select name="ProductGroup_id" class="custom-select my-1 form-control"
+                                        id="ProductGroup_id{{ScoreTemp._id}}">
+                                        <option selected>Choose...</option>
+                                        {{#each productGroup}}
+                                        <option value="{{this._id}}" {{#ifCond this.IsActive 0}}disabled{{/ifCond}}
+                                            {{#ifCond this._id ../ScoreTemp.ProductGroup_id }}selected{{/ifCond}}>
+                                            {{this.Name}}</option>
+                                        {{/each}}
+                                    </select>
+                                </div>
+                                <!-- note -->
+                                <div class="col-md-12 mb-3 mt-3">
+                                    <label for="Note">Ghi chú</label>
+                                    <input value="{{ScoreTemp.Note}}" name="Note" type="text" class="form-control"
+                                        id="Note{{ScoreTemp._id}}" required>
+                                </div>
+                                <!-- scoreTermDetail -->
+                                <div class="d-flex align-items-center" style="margin-top: 20px;">
+                                    <div class="panel-heading" style="font-size: 18px;padding: 0 10px;">II
+                                        - Chi
+                                        tiết
+                                        phiếu chấm
+                                    </div>
+                                    <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
+                                        title="Xem những phiếu bạn đã xóa">
+                                        <ion-icon name="trash-outline" data-toggle="modal"
+                                            data-target="#exampleModalCenter">
+                                        </ion-icon>
+                                    </span>
+                                </div>
+                                {{> modalScoreDetailTrash}}
+                                <div class=" col-md-12 mb-3 mt-3">
+                                    <div class="panel-body">
+                                        <table class="table table-bordered table__temptDetail">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">#</th>
+                                                    <th scope="col">Nội dung</th>
+                                                    <th scope="col">Chấm điểm</th>
+                                                    <th scope="col">Điểm tối đa</th>
+                                                    <th scope="col">Điều kiện xếp hạng</th>
+                                                    <th scope="col">Viện dẫn</th>
+                                                    <th scope="col">Ghi chú</th>
+                                                    <th scope="col"></th>
+                                                </tr>
+                                            </thead>
+                                            {{!-- body --}}
+                                            <input type="text" hidden id="indexScoreTempDetail"
+                                                data-index="{{ScoreTempDetail.length}}">
+                                            <tbody id="education_fields">
+                                                {{#each ScoreTempDetail}}
+                                                <tr>
+                                                    <th scope="row">{{plus
+                                                        @index}}</th>
+                                                    <td><input data-id="{{this._id}}" value="{{this.Name}}" type="text"
+                                                            class="form-control" name="Name"
+                                                            id="NameDetail{{this.ScoreTemp_id}}" required>
+                                                    </td>
+                                                    <td style="">
+                                                        <div class="custom-control custom-switch"
+                                                            style="display: flex; justify-content: center;align-items: center;transform: translateY(-50%);">
+                                                            {{#ifCond this.IsScore 0}}
+                                                            <input type="checkbox"
+                                                                class="custom-control-input IsMark{{this.ScoreTemp_id}}"
+                                                                name="isMark" id="{{this._id}}">
+                                                            <label class="custom-control-label block"
+                                                                for="{{this._id}}"></label>
+                                                            {{else}}
+                                                            <input type="checkbox"
+                                                                class="custom-control-input IsMark{{this.ScoreTemp_id}}"
+                                                                name="isMark" id="{{this._id}}" checked>
+                                                            <label class="custom-control-label block"
+                                                                for="{{this._id}}"></label>
+                                                            {{/ifCond}}
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <input value="{{this.MaxScore}}" min="0" style="max-width: 60px"
+                                                            name="maxPoint" id="MaxScoreDetail{{this.ScoreTemp_id}}"
+                                                            type="number" />
+                                                    </td>
+                                                    <td>
+                                                        <div class="form-group">
+                                                            <select id="ValidatedRankDetail{{this.ScoreTemp_id}}"
+                                                                name="validateRank" class="form-control"
+                                                                style="transform: translateY(10px);max-width: 200px;max-height: 200px;overflow-y: hidden;"
+                                                                data-target="#navbar-example2" data-offset="0">
+                                                                <option selected>Không xác định</option>
+                                                                <option {{#ifCond this.ValidateRank
+                                                                    1}}selected{{/ifCond}} value="1">1 sao
+                                                                </option>
+                                                                <option value="2" {{#ifCond this.ValidateRank
+                                                                    2}}selected{{/ifCond}}>2 sao</option>
+                                                                <option value="3" {{#ifCond this.ValidateRank
+                                                                    3}}selected{{/ifCond}}>3 sao</option>
+                                                                <option value="4" {{#ifCond this.ValidateRank
+                                                                    4}}selected{{/ifCond}}>4 sao</option>
+                                                                <option value="5" {{#ifCond this.ValidateRank
+                                                                    5}}selected{{/ifCond}}>5 sao</option>
+                                                            </select>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="form-group">
+                                                            <select id="ProductDetailIdDetail{{this.ScoreTemp_id}}"
+                                                                name="ProductDetailId" class="form-control"
+                                                                style="transform: translateY(10px);max-width: 200px;max-height: 200px;overflow-y: hidden;"
+                                                                data-target="#navbar-example2" data-offset="0">
+                                                                <option selected></option>
+                                                                {{#each ../ProductDetail}}
+                                                                <option value="{{this._id}}" {{#ifCond this._id
+                                                                    ../this.ProductDetailId}}selected{{/ifCond}}>
+                                                                    {{this.ProductDetail_Name}}
+                                                                </option>
+                                                                {{/each}}
+                                                            </select>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <textarea name="Note" id="NoteDetail{{this.ScoreTemp_id}}"
+                                                            cols="10" rows="1">{{this.Note}}</textarea>
+                                                    </td>
+                                                    <td>
+                                                        <ion-icon data-id="{{this._id}}" id="icon_moveToTrash"
+                                                            class="icon__scoreTempDetail"
+                                                            name="trash-outline"></ion-icon>
+                                                    </td>
+                                                </tr>
+                                                {{/each}}
+                                            </tbody>
+
+                                            <tfoot>
+                                                <tr>
+                                                    <td colspan="8" style="text-align: center;color: white;">
+                                                        <button class="btn btn-success" type="button"
+                                                            onclick="education_fields();"> <span
+                                                                class="glyphicon glyphicon-plus"
+                                                                aria-hidden="true"></span>Thêm</button>
+                                                    </td>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                        <div class="clear"></div>
+                                    </div>
+                                </div>
+                        </form>
+                    </div>
+                </div>
+            </div><!--End content-wrapper-->
+        </div>
+    </div>
+</div>
+{{> footer}}
+
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+    gtag('js', new Date());
+    gtag('config', 'UA-56159088-1');
+
+    var room = 1;
+    const indexScoreTempDetail = document.getElementById("indexScoreTempDetail")
+    let lengthIndex = Number(indexScoreTempDetail.getAttribute('data-index'))
+    function education_fields() {
+        room++;
+        lengthIndex++
+        var objTo = document.getElementById('education_fields')
+        var divtest = document.createElement("tr");
+        divtest.setAttribute("class", "form-group removeclass" + room);
+        var rdiv = 'removeclass' + room;
+        const tableBody = () => {
+            return `<tr>
+                        <th scope="row">${lengthIndex}</th>
+                        <td><input type="text" class="form-control" name="Name" id="NameDetail" required></td>
+                        <td style="">
+                        <div class="custom-control custom-switch" style="display: flex; justify-content: center;align-items: center;transform: translateY(-50%);">
+                        <input type="checkbox" class="custom-control-input IsMark" name="isMark"  id="customSwitch${room + 1}">
+                        <label class="custom-control-label block" for="customSwitch${room + 1}"></label>
+                        </div>
+                        </td>
+                        <td >
+                         <input min="0" style="max-width: 60px" name="maxPoint" id="MaxScoreDetail" type="number"/>
+                        </td>
+                        <td>
+                            <div class="form-group">
+                            <select id="ValidatedRankDetail" name="validateRank" class="form-control"
+                                        style="transform: translateY(10px);max-width: 200px;max-height: 200px;overflow-y: hidden;"
+                                        data-target="#navbar-example2" data-offset="0">
+                                        <option selected>Không xác định</option>
+                                        <option value="1">1 sao</option>
+                                        <option value="2">2 sao</option>
+                                        <option value="3">3 sao</option>
+                                        <option value="4">4 sao</option>
+                                        <option value="5">5 sao</option>
+                                      </select>
+                                    </div>
+                                  </td>
+                        <td>
+                            <div class="form-group">
+                            <select id="ProductDetailIdDetail" name="ProductDetailId" class="form-control"
+                                        style="transform: translateY(10px);max-width: 200px;max-height: 200px;overflow-y: hidden;"
+                                        data-target="#navbar-example2" data-offset="0">
+                                        <option selected></option>
+                                        {{#each ProductDetail}}
+                                        <option value={{this._id}}>{{this.ProductDetail_Name}}</option>
+                                        {{/each}}
+                                      </select>
+                                    </div>
+                                  </td>
+                                  <td>
+                                   <textarea name="Note" id="NoteDetail" cols="10" rows="1"></textarea>
+                                  </td>
+                                  <td>
+                                    <ion-icon onclick="remove_education_fields(${room});" class="icon__scoreTempDetail" name="trash-outline"></ion-icon>
+                                  </td>
+                                </tr>`
+        }
+        divtest.innerHTML = tableBody();
+        objTo.appendChild(divtest)
+        console.log(objTo)
+    }
+    function remove_education_fields(rid) {
+        console.log(rid)
+        lengthIndex--
+        $('.removeclass' + rid).remove();
+    }
+</script>
+
+{{!-- random --}}
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const btnTrash = document.querySelectorAll("#icon_moveToTrash");
+        //remove One
+        for (let btn of btnTrash) {
+            btn.addEventListener("click", (event) => {
+                $.confirm({
+                    title: '<ion-icon name="trash-bin-outline"></ion-icon>',
+                    content: 'Bạn có chắc chắn muốn xóa ?',
+                    buttons: {
+                        confirm: {
+                            text: 'Confirm',
+                            btnClass: 'btn-red',
+                            action: function () {
+                                // Lấy ID của mục cần xóa từ thuộc tính data-id của nút
+                                const id = event.target.dataset.id;
+
+                                // Gọi API xóa mục
+                                fetch(`/scoreTempDetail/removeToTrash/${id}`, {
+                                    method: 'PATCH'
+                                }).then(response => {
+                                    if (response.ok) {
+                                        $.alert('Xóa thành công!');
+                                        setTimeout(() => {
+                                            window.location.reload()
+                                        }, 1000)
+                                    } else {
+                                        alert('Có lỗi xảy ra khi xóa mục');
+                                    }
+                                }).catch(error => {
+                                    $.alert('Đã hủy');
+                                });
+                            }
+                        },
+                        cancel: function () {
+                            $.alert('Đã hủy!');
+                        }
+                    }
+                });
+            })
+        }
+    })
+</script>
+
+<script src="/assets/js/ScoreTempUpdate.js"></script>

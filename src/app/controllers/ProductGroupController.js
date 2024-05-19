@@ -1,77 +1,142 @@
 const ProductGroupModel = require("../models/ProductGroupModel")
 const CustomerModel = require("../models/CustomermanageModel")
+const AccountModel = require("../models/Account")
+const jwt = require("jsonwebtoken")
+const dotenv = require("dotenv")
+dotenv.config();
+const { SECRET_CODE } = process.env
 class ProductGroupControllers {
     // fetchAll
     index(req, res, next) {
-        ProductGroupModel.fetchAllProductGroup((err, ProductGroup) => {
-            if (err) {
-                return res.status(400).json({
-                    message: err
-                })
-            }
-            if (!ProductGroup) {
-                return res.status(400).json({
-                    message: "Lỗi"
-                })
-            }
-            CustomerModel.getAllCustomer((err, Customer) => {
+        const cookie = req.cookies
+        if (cookie?.User) {
+            const UserDataCookie = jwt.verify(cookie.User, SECRET_CODE)
+            AccountModel.fetchOneUser(UserDataCookie?._id, (err, User) => {
                 if (err) {
                     return res.status(400).json({
                         message: err
                     })
                 }
-
-                res.render("productGroup/productGroup", { params: "Nhóm sản phẩm", subParams: "danh sách nhóm sản phẩm", ProductGroup: ProductGroup, Customer: Customer })
+                ProductGroupModel.fetchAllProductGroup((err, ProductGroup) => {
+                    if (err) {
+                        return res.status(400).json({
+                            message: err
+                        })
+                    }
+                    if (!ProductGroup) {
+                        return res.status(400).json({
+                            message: "Lỗi"
+                        })
+                    }
+                    CustomerModel.getAllCustomer((err, Customer) => {
+                        if (err) {
+                            return res.status(400).json({
+                                message: err
+                            })
+                        }
+                        if (User?.[0].role_title.toLowerCase() !== "admin") {
+                            res.redirect("/client")
+                        } else {
+                            res.render("productGroup/productGroup", { params: "Nhóm sản phẩm", subParams: "danh sách nhóm sản phẩm", ProductGroup: ProductGroup, Customer: Customer, User: User[0] })
+                        }
+                    })
+                })
             })
-        })
+        }
+
     }
     // hien thi trong thung rac
     getAllProductGroupFromTrash(req, res, next) {
-        ProductGroupModel.fetchAllProductFromTrash((err, ProductGroup) => {
-            if (err) {
-                return res.status(400).json({
-                    message: err
+        const cookie = req.cookies
+        if (cookie?.User) {
+            const UserDataCookie = jwt.verify(cookie.User, SECRET_CODE)
+            AccountModel.fetchOneUser(UserDataCookie?._id, (err, User) => {
+                if (err) {
+                    return res.status(400).json({
+                        message: err
+                    })
+                }
+                ProductGroupModel.fetchAllProductFromTrash((err, ProductGroup) => {
+                    if (err) {
+                        return res.status(400).json({
+                            message: err
+                        })
+                    }
+                    if (!ProductGroup) {
+                        return res.status(400).json({
+                            message: "Lỗi"
+                        })
+                    }
+                    if (User?.[0].role_title.toLowerCase() !== "admin") {
+                        res.redirect("/client")
+                    } else {
+                        res.render("productGroup/trash", { params: "Nhóm sản phẩm", subParams: "khôi phục nhóm sản phẩm", ProductGroup: ProductGroup, User: User[0] })
+                    }
                 })
-            }
-            if (!ProductGroup) {
-                return res.status(400).json({
-                    message: "Lỗi"
-                })
-            }
-            res.render("productGroup/trash", { params: "Nhóm sản phẩm", subParams: "khôi phục nhóm sản phẩm", ProductGroup: ProductGroup })
-        })
+            })
+        }
     }
     // them
     create(req, res, next) {
-        ProductGroupModel.AddProductGroup({
-            code: req.body.code,
-            productGroup_name: req.body.productGroup_name,
-            status: req.body.status ? 1 : 0,
-            note: req.body.note
-        }, (err, data) => {
+        ProductGroupModel.findProductGroupAdd(req.body, (err, data) => {
             if (err) {
-                console.error('Lỗi thêm sản phẩm:', err);
-                res.status(500).send('Internal Server Error');
+                return res.status(500).json({
+                    message: "Loi truy xuat"
+                })
+            }
+            if (data.length === 0) {
+                ProductGroupModel.AddProductGroup({
+                    Name: req.body.Name,
+                    IsActive: req.body.IsActive === "true" ? 1 : 0,
+                    Note: req.body.Note,
+                    Code: req.body.Code
+                }, (err, data) => {
+                    if (err) {
+                        console.error('Lỗi thêm sản phẩm:', err);
+                        return res.status(500).json({
+                            message: 'Internal Server Error'
+                        });
+                    } else {
+                        return res.status(201).json({
+                            message: 'Sản phẩm đã được thêm thành công'
+                        });
+                    }
+                })
             } else {
-                console.log('Sản phẩm đã được thêm thành công:');
-                res.redirect('back')
+                return res.status(400).json({
+                    message: "Gia tri da ton tai"
+                })
             }
         })
     }
     // xoa vao thung rac
     removeToTrash(req, res, next) {
         const id = req.params.id
-        ProductGroupModel.deleteProductGroupToTrash(id, (err, result) => {
-            if (err) {
-                return res.status(400).json({
-                    message: err
+        const cookie = req.cookies
+        if (cookie?.User) {
+            const UserDataCookie = jwt.verify(cookie.User, SECRET_CODE)
+            AccountModel.fetchOneUser(UserDataCookie?._id, (err, User) => {
+                if (err) {
+                    return res.status(400).json({
+                        message: err
+                    })
+                }
+                ProductGroupModel.deleteProductGroupToTrash(id, User[0]._id, (err, result) => {
+                    if (err) {
+                        console.log(err)
+                        return res.status(400).json({
+                            message: err
+                        })
+                    } else {
+
+                        return res.status(203).json({
+                            message: "Xoa thanh cong"
+                        })
+                    }
                 })
-            } else {
-                return res.status(203).json({
-                    message: "Xoa thanh cong"
-                })
-            }
-        })
+            })
+        }
+
     }
     // xoa
     remove(req, res, next) {
@@ -103,20 +168,34 @@ class ProductGroupControllers {
     update(req, res, next) {
         console.log(req.body)
         const id = req.params.id
-        ProductGroupModel.updateProductGroup(id, ({
-            code: req.body.code,
-            productGroup_name: req.body.productGroup_name,
-            note: req.body.note,
-            status: req.body.status === 'on' ? 1 : 0
-        }), (err, result) => {
+        ProductGroupModel.findProductGroupUpdate(id, req.body, (err, data) => {
             if (err) {
-                return res.status(400).json({
-                    message: `${err}: Loi updateProductGroup`
+                return res.status(500).json({
+                    message: "Loi truy xuat"
                 })
             }
-            return res.status(200).json(res.redirect("back"))
+            if (data.length === 0) {
+                ProductGroupModel.updateProductGroup(id, {
+                    Name: req.body.Name,
+                    IsActive: req.body.IsActive === "true" ? 1 : 0,
+                    Note: req.body.Note,
+                    Code: req.body.Code
+                }, (err, result) => {
+                    if (err) {
+                        return res.status(400).json({
+                            message: `${err}: Loi updateProductGroup`
+                        })
+                    }
+                    return res.status(202).json({
+                        message: 'Cập nhật sản phẩm thành công'
+                    });
+                })
+            } else {
+                return res.status(400).json({
+                    message: "Gia tri da ton tai"
+                })
+            }
         })
-
     }
 }
 

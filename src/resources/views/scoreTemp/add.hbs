@@ -19,44 +19,50 @@
             <div class="col-lg-12" style="max-width: 100%;">
                 <div class="card">
                     <div class="card-body">
-                        <form method="POST" action="/admin/scoreTemp/addScoreTemp">
-                            <button type="submit" class="btn btn-success mb-4"
-                                style="flex: 1;text-align: right;margin-right: 0;"><i class="fe fe-save mr-2"></i>Lưu
+                        <button onclick="handleAdd()" type="button" class="btn btn-success mb-4"
+                            style="flex: 1;text-align: right;margin-right: 0;display: flex;align-items: center;gap: 10px;"><ion-icon
+                                name="file-tray-outline"></ion-icon>
+                            <p style="margin-bottom: 0;">Lưu
                                 thông
-                                tin</button>
+                                tin</p>
+                        </button>
+                        <form>
                             <div class="form-row">
+                                <input type="text" id="CreatorUser_id" value="{{User._id}}" hidden>
                                 <!-- code -->
                                 <div class="col-md-4 mb-3">
-                                    <label for="code">Mã</label>
-                                    <input type="text" name="code" class="form-control" id="code" value="" required>
+                                    <label for="Code">Mã</label>
+                                    <input type="text" name="Code" class="form-control" id="Code" value="" required>
                                 </div>
                                 <!-- name group product -->
                                 <div class="col-md-8 mb-3">
-                                    <label for="title">Tên phiếu chấm</label>
-                                    <input type="text" class="form-control" id="title" name="title" value="" required>
+                                    <label for="Name">Tên phiếu chấm</label>
+                                    <input type="text" class="form-control" id="Name" name="Name" value="" required>
                                 </div>
                                 <!-- active -->
                                 <div class="custom-control custom-switch col-md-2"
                                     style="display: flex; justify-content: center;align-items: center;">
-                                    <input name="status" type="checkbox" class="custom-control-input" id="status">
-                                    <label class="custom-control-label block" for="status">Áp
+                                    <input name="IsActive" type="checkbox" class="custom-control-input" id="IsActive"
+                                        checked>
+                                    <label class="custom-control-label block" for="IsActive">Áp
                                         dụng</label>
                                 </div>
                                 <!-- group product -->
                                 <div class="custom-control custom-switch col-md-10">
-                                    <label for="customerId">Nhóm sản phẩm</label>
-                                    <select name="customerId" class="custom-select my-1 form-control" id="customerId">
+                                    <label for="ProductGroup_id">Nhóm sản phẩm</label>
+                                    <select name="ProductGroup_id" class="custom-select my-1 form-control"
+                                        id="ProductGroup_id">
                                         <option selected>Choose...</option>
                                         {{#each productGroup}}
-                                        <option value="{{this._id}}">{{this.productGroup_name}}</option>
+                                        <option value="{{this._id}}" {{#ifCond this.IsActive 0}}disabled{{/ifCond}}>
+                                            {{this.Name}}</option>
                                         {{/each}}
                                     </select>
                                 </div>
                                 <!-- note -->
                                 <div class="col-md-12 mb-3 mt-3">
-                                    <label for="validationDefault02">Ghi chú</label>
-                                    <input name="note" type="text" class="form-control" id="validationDefault02"
-                                        required>
+                                    <label for="Note">Ghi chú</label>
+                                    <input name="Note" type="text" class="form-control" id="Note" required>
                                 </div>
                                 <!-- scoreTermDetail -->
                                 <div class="panel-heading" style="font-size: 18px;padding: 0 10px;margin-top: 20px;">II
@@ -81,7 +87,6 @@
                                             </thead>
                                             {{!-- body --}}
                                             <tbody id="education_fields">
-
                                             </tbody>
                                             <tfoot>
                                                 <tr>
@@ -124,20 +129,20 @@
         var rdiv = 'removeclass' + room;
         const tableBody = () => {
             return `<tr>
-                        <th scope="row">1</th>
-                        <td><input type="text" class="form-control" name="titleDetail"></td>
+                        <th scope="row">${room - 1}</th>
+                        <td><input type="text" class="form-control" name="Name" id="NameDetail" required></td>
                         <td style="">
                         <div class="custom-control custom-switch" style="display: flex; justify-content: center;align-items: center;transform: translateY(-50%);">
-                        <input type="checkbox" class="custom-control-input" name="isMark" id="customSwitch${room + 1}">
+                        <input type="checkbox" class="custom-control-input IsMark" name="isMark"  id="customSwitch${room + 1}">
                         <label class="custom-control-label block" for="customSwitch${room + 1}"></label>
                         </div>
                         </td>
                         <td >
-                         <input min="0" style="max-width: 60px" name="maxPoint" type="number"/>
+                         <input min="0" style="max-width: 60px" name="maxPoint" id="MaxScoreDetail" type="number"/>
                         </td>
                         <td>
                             <div class="form-group">
-                            <select name="validateRank" class="form-control"
+                            <select id="ValidatedRankDetail" name="validateRank" class="form-control"
                                         style="transform: translateY(10px);max-width: 200px;max-height: 200px;overflow-y: hidden;"
                                         data-target="#navbar-example2" data-offset="0">
                                         <option selected>Không xác định</option>
@@ -151,18 +156,18 @@
                                   </td>
                         <td>
                             <div class="form-group">
-                            <select name="criteriaId" class="form-control"
+                            <select id="ProductDetailIdDetail" name="ProductDetailId" class="form-control"
                                         style="transform: translateY(10px);max-width: 200px;max-height: 200px;overflow-y: hidden;"
                                         data-target="#navbar-example2" data-offset="0">
-                                        <option selected>Không xác định</option>
-                                        {{#each Criteria}}
-                                        <option value={{this._id}}>{{this.criteriaName}}</option>
+                                        <option selected></option>
+                                        {{#each ProductDetail}}
+                                        <option value={{this._id}}>{{this.ProductDetail_Name}}</option>
                                         {{/each}}
                                       </select>
                                     </div>
                                   </td>
                                   <td>
-                                   <textarea name="noteDetail" id="" cols="30" rows="3"></textarea>
+                                   <textarea name="Note" id="NoteDetail" cols="10" rows="1"></textarea>
                                   </td>
                                   <td>
                                     <ion-icon onclick="remove_education_fields(${room});" class="icon__scoreTempDetail" name="trash-outline"></ion-icon>
@@ -174,6 +179,7 @@
     }
     function remove_education_fields(rid) {
         console.log(rid)
+        room--
         $('.removeclass' + rid).remove();
     }
 </script>
@@ -181,7 +187,7 @@
 {{!-- random --}}
 
 <script>
-    const codeValue = document.querySelector("#code")
+    const codeValue = document.querySelector("#Code")
 
     function generateRandomCode(length) {
         let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789';
@@ -194,3 +200,5 @@
     const codeRandom = generateRandomCode(8)
     codeValue.value = codeRandom
 </script>
+
+<script src="/assets/js/ScoreTempAdd.js"></script>

@@ -11,9 +11,26 @@ const filterProduct = require("./filterProduct.routes")
 const scoreTempRouter = require("./scoreTemp.routes")
 const citationRouter = require("./citation.routes")
 const authRouter = require("./auth.routes")
+const citiesRouter = require("./city.routes")
+const districtRouter = require("./districts")
+const productDetailRouter = require("./productDetail.routes")
+const galleryRouter = require("./gallery.routes")
+const clientRouter = require("./client/welcome.routes")
+const scoreTempDetailRouter = require("./scoreTempDetail.routes")
 function route(app) {
+    // client
+    app.use("/client", clientRouter)
+    // gallery
+    app.use("/gallery", galleryRouter)
+    // productDetail
+    app.use("/productDetail", productDetailRouter)
+    // Huyen
+    app.use("/districs", districtRouter)
+    app.use("/cities", citiesRouter)
     // user
     app.use("/auth", authRouter)
+    // Phiếu chấm chi tiết
+    app.use("/scoreTempDetail", scoreTempDetailRouter)
     // Phiếu chấm
     app.use("/scoreTemp", scoreTempRouter)
     // Tra cứu OCOP
@@ -36,6 +53,7 @@ function route(app) {
     app.use('/customer-manage', customerRouter);
     // năm đánh giá
     app.use('/year-review', reviewYearRouter);
+
     app.use('/', siteRouter);
 }
 

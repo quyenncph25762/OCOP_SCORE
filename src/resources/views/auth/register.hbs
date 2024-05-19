@@ -12,7 +12,6 @@
 
     <!-- Start wrapper-->
     <div id="wrapper">
-
         <div class="card card-authentication1 mx-auto my-4">
             <div class="card-body">
                 <div class="card-content p-2">
@@ -25,8 +24,8 @@
                         <div class="form-group">
                             <label for="exampleInputName" class="sr-only">Name</label>
                             <div class="position-relative has-icon-right">
-                                <input type="text" id="exampleInputName" class="form-control input-shadow"
-                                    placeholder="Tên tài khoản">
+                                <input name="FullName" type="text" id="exampleInputName"
+                                    class="form-control input-shadow" placeholder="Tên tài khoản">
                                 <div class="form-control-position">
                                     <i class="icon-user"></i>
                                 </div>
@@ -36,8 +35,8 @@
                         <div class="form-group">
                             <label for="exampleInputEmailId" class="sr-only">Email ID</label>
                             <div class="position-relative has-icon-right">
-                                <input type="text" id="exampleInputEmailId" class="form-control input-shadow"
-                                    placeholder="Email">
+                                <input name="Email" type="text" id="exampleInputEmailId"
+                                    class="form-control input-shadow" placeholder="Email">
                                 <div class="form-control-position">
                                     <i class="icon-envelope-open"></i>
                                 </div>
@@ -51,6 +50,21 @@
                                     <option value="" selected>Tỉnh</option>
                                     <option value="">Bắc Ninh</option>
                                     <option value="">Bắc Giang</option>
+                                </select>
+                                <div class="form-control-position">
+                                    <i class="icon-info"></i>
+                                </div>
+                            </div>
+                        </div>
+                        {{!-- Phòng ban --}}
+                        <div class="form-group">
+                            <label for="exampleInputName" class="sr-only">Province</label>
+                            <div class="position-relative has-icon-right">
+                                <select class="form-control input-shadow" name="" id="">
+                                    <option value="" selected>Phòng ban</option>
+                                    <option value="">Phòng nông nghiệp</option>
+                                    <option value="">Phòng IT</option>
+                                    <option value="">Phòng Kinh doanh</option>
                                 </select>
                                 <div class="form-control-position">
                                     <i class="icon-info"></i>
@@ -88,8 +102,8 @@
                                 <label for="user-checkbox">Tôi đồng ý với các điều khoản và điều kiện</label>
                             </div>
                         </div>
-                        <button type="button" class="btn btn-light btn-block waves-effect waves-light"><a
-                                href="/auth/login">Tạo tài khoản</a></button>
+                        <button type="submit" class="btn btn-light btn-block waves-effect waves-light">Tạo tài
+                            khoản</button>
                         <!-- <div class="text-center mt-3">Sign Up With</div>
 			  
 			 <div class="form-row mt-4">

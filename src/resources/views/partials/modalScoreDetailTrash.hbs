@@ -1,0 +1,327 @@
+<style>
+    .modal-content {
+        min-width: 1200px !important;
+    }
+
+    @media screen and (min-width: 350px) and (max-width: 765px) {
+        .modal-content {
+            min-width: 100% !important;
+        }
+    }
+</style>
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document" style="width: 800px;">
+        <div class="modal-content modal-score">
+            <div class="modal-header">
+                <div class="" style="display: flex;flex-direction: column;">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Khôi phục chi tiết phiếu</h5>
+                    <ul class="search-customer"
+                        style="list-style: none; display:flex; justify-content: space-between; align-items: center;padding: 0;margin-bottom: 0;margin-top: 20px;">
+                        <button type="button" class="btn btn-danger btnDeleteAll btnDisabledDelete">Xóa mục đã
+                            chọn</button>
+                        <button type="button" class="btn btn-primary btnRevertAll ml-3 btnDisabledRevert">Khôi phục mục
+                            đã
+                            chọn</button>
+                    </ul>
+                </div>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-bordered table__temptDetail">
+                    <thead>
+                        <tr>
+                            <th scope="col"></th>
+                            <th scope="col">#</th>
+                            <th scope="col">Nội dung</th>
+                            <th scope="col">Chấm điểm</th>
+                            <th scope="col">Điểm tối đa</th>
+                            <th scope="col">Điều kiện xếp hạng</th>
+                            <th scope="col">Viện dẫn</th>
+                            <th scope="col">Ghi chú</th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    {{!-- body --}}
+                    <tbody>
+                        {{#each ScoreTempTrash}}
+                        <tr>
+                            <td>
+                                <div class="">
+                                    <div class="checkbox">
+                                        <input type="checkbox" class="check" data-idCheckBox="{{this._id}}">
+                                    </div>
+                                </div>
+                            </td>
+                            <th scope="row">{{plus @index}}</th>
+                            <td><input data-id="{{this._id}}" value="{{this.Name}}" type="text" class="form-control"
+                                    name="Name" id="NameDetail{{this.ScoreTemp_id}}" required disabled>
+                            </td>
+                            <td style="">
+                                <div class="custom-control custom-switch"
+                                    style="display: flex; justify-content: center;align-items: center;transform: translateY(-50%);">
+                                    {{#ifCond this.IsScore 0}}
+                                    <input type="checkbox" class="custom-control-input IsMark{{this.ScoreTemp_id}}"
+                                        name="isMark" id="{{this._id}}" disabled>
+                                    <label class="custom-control-label block" for="{{this._id}}"></label>
+                                    {{else}}
+                                    <input type="checkbox" class="custom-control-input IsMark{{this.ScoreTemp_id}}"
+                                        name="isMark" id="{{this._id}}" checked disabled>
+                                    <label class="custom-control-label block" for="{{this._id}}"></label>
+                                    {{/ifCond}}
+                                </div>
+                            </td>
+                            <td>
+                                <input value="{{this.MaxScore}}" min="0" style="max-width: 60px" name="maxPoint"
+                                    id="MaxScoreDetail{{this.ScoreTemp_id}}" type="number" disabled />
+                            </td>
+                            <td>
+                                <div class="form-group">
+                                    <select id="ValidatedRankDetail{{this.ScoreTemp_id}}" name="validateRank"
+                                        class="form-control"
+                                        style="transform: translateY(10px);max-width: 200px;max-height: 200px;overflow-y: hidden;"
+                                        data-target="#navbar-example2" data-offset="0" disabled>
+                                        <option selected>Không xác định</option>
+                                        <option {{#ifCond this.ValidateRank 1}}selected{{/ifCond}} value="1">1 sao
+                                        </option>
+                                        <option value="2" {{#ifCond this.ValidateRank 2}}selected{{/ifCond}}>2 sao
+                                        </option>
+                                        <option value="3" {{#ifCond this.ValidateRank 3}}selected{{/ifCond}}>3 sao
+                                        </option>
+                                        <option value="4" {{#ifCond this.ValidateRank 4}}selected{{/ifCond}}>4 sao
+                                        </option>
+                                        <option value="5" {{#ifCond this.ValidateRank 5}}selected{{/ifCond}}>5 sao
+                                        </option>
+                                    </select>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="form-group">
+                                    <select id="ProductDetailIdDetail{{this.ScoreTemp_id}}" name="ProductDetailId"
+                                        class="form-control"
+                                        style="transform: translateY(10px);max-width: 200px;max-height: 200px;overflow-y: hidden;"
+                                        data-target="#navbar-example2" data-offset="0" disabled>
+                                        <option selected></option>
+                                        {{#each ../ProductDetail}}
+                                        <option value="{{this._id}}" {{#ifCond this._id
+                                            ../this.ProductDetailId}}selected{{/ifCond}}>
+                                            {{this.ProductDetail_Name}}
+                                        </option>
+                                        {{/each}}
+                                    </select>
+                                </div>
+                            </td>
+                            <td>
+                                <textarea name="Note" id="NoteDetail{{this.ScoreTemp_id}}" cols="10" rows="1"
+                                    disabled>{{this.Note}}</textarea>
+                            </td>
+                            <td style="display: flex;">
+                                <div class="action_center">
+                                    <button data-toggle="modal"
+                                        style="background-color: transparent;border: none;cursor: pointer;">
+                                        <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
+                                            title="Khôi phục">
+                                            <ion-icon name="sync-outline" style="color: white; font-size: 18px;"
+                                                id="icon_revertScore" data-id="{{this._id}}"></ion-icon>
+                                        </span>
+                                    </button>
+                                </div>
+                                <div class="delete_action">
+                                    <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Xóa">
+                                        <ion-icon id="icon_moveToTrashScore" name="trash-outline"
+                                            data-id="{{this._id}}">
+                                        </ion-icon>
+                                    </span>
+                                </div>
+                            </td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const btnReverts = document.querySelectorAll("#icon_revertScore")
+        const btnTrashs = document.querySelectorAll("#icon_moveToTrashScore");
+        //removeOne
+        for (let btn of btnTrashs) {
+            btn.addEventListener("click", (event) => {
+                event.preventDefault()
+                $.confirm({
+                    title: '<ion-icon name="trash-bin-outline"></ion-icon>',
+                    content: 'Bạn có chắc chắn muốn xóa ?',
+                    buttons: {
+                        confirm: {
+                            text: 'Confirm',
+                            btnClass: 'btn-red',
+                            action: function () {
+                                // Lấy ID của mục cần xóa từ thuộc tính data-id của nút
+                                const id = event.target.dataset.id;
+
+                                // Gọi API xóa mục
+                                fetch(`/scoreTempDetail/remove/${id}`, {
+                                    method: 'DELETE'
+                                }).then(response => {
+                                    if (response.ok) {
+                                        $.alert('Xóa thành công!');
+                                        setTimeout(() => {
+                                            window.location.reload()
+                                        }, 1000)
+                                    } else {
+                                        alert('Có lỗi xảy ra khi xóa mục');
+                                    }
+                                }).catch(error => {
+                                    $.alert('Đã hủy');
+                                });
+                            }
+                        },
+                        cancel: function () {
+                            $.alert('Đã hủy!');
+                        }
+                    }
+                });
+            })
+        }
+        //revertOne
+        for (let btnRevert of btnReverts) {
+            btnRevert.addEventListener("click", async (event) => {
+                event.preventDefault()
+                $.confirm({
+                    title: '<ion-icon name="help-circle-outline"></ion-icon>',
+                    content: 'Bạn muốn khôi phục ?',
+                    buttons: {
+                        confirm: {
+                            text: 'Confirm',
+                            btnClass: 'btn-red',
+                            action: function () {
+                                // Lấy ID của mục cần xóa từ thuộc tính data-id của nút
+                                const id = event.target.dataset.id;
+
+                                // Gọi API xóa mục
+                                fetch(`/scoreTempDetail/revert/${id}`, {
+                                    method: 'PATCH'
+                                }).then(response => {
+                                    if (response.ok) {
+                                        $.alert('Khôi phục thành công!');
+                                        setTimeout(() => {
+                                            window.location.reload()
+                                        }, 1000)
+                                    } else {
+                                        alert('Có lỗi xảy ra khi xóa mục');
+                                    }
+                                }).catch(error => {
+                                    $.alert('Đã hủy');
+                                });
+                            }
+                        },
+                        cancel: function () {
+                            $.alert('Đã hủy!');
+                        }
+                    }
+                });
+            })
+        }
+        const btnsCheck = document.querySelectorAll(".check")
+        const btnDeleteAll = document.querySelector(".btnDeleteAll")
+        const btnDisabledDelete = document.querySelector(".btnDisabledDelete")
+        const btnDisabledRevert = document.querySelector(".btnDisabledRevert")
+        //Chưa checked thì disbale nút xóa all
+        let count = 0
+        const checkBtnDisabled = () => {
+            if (count === 0) {
+                btnDisabledDelete.setAttribute("disabled", true)
+                btnDisabledRevert.setAttribute("disabled", true)
+            } else {
+                btnDisabledDelete.removeAttribute("disabled")
+                btnDisabledRevert.removeAttribute("disabled")
+            }
+        }
+        for (let checked of btnsCheck) {
+            checkBtnDisabled()
+            checked.addEventListener("click", (e) => {
+                if (checked.checked) {
+                    count++
+                } else {
+                    count--
+                }
+                checkBtnDisabled()
+            })
+        }
+        //removeAll
+        btnDeleteAll.addEventListener("click", async (e) => {
+            e.preventDefault();
+            $.confirm({
+                title: '<ion-icon name="help-circle-outline"></ion-icon>',
+                content: 'Bạn muốn xóa mục đã chọn ?',
+                buttons: {
+                    confirm: {
+                        text: 'Confirm',
+                        btnClass: 'btn-red',
+                        action: async function () {
+                            const id = event.target.dataset.id;
+                            for (let btnCheck of btnsCheck) {
+                                if (btnCheck.checked) {
+                                    const id = btnCheck.dataset.idcheckbox
+                                    const res = await fetch(`/scoreTempDetail/remove/${id}`, {
+                                        method: "DELETE"
+                                    })
+                                }
+                            }
+                            $.alert('Xóa thành công!');
+                            setTimeout(() => {
+                                window.location.reload()
+                            }, 1000)
+                        }
+                    }
+                },
+                cancel: function () {
+                    $.alert('Đã hủy!');
+                }
+            })
+        })
+        //RevertByCheckBox
+        const btnRevertAll = document.querySelector(".btnRevertAll")
+        btnRevertAll.addEventListener("click", async (e) => {
+            e.preventDefault();
+            $.confirm({
+                title: '<ion-icon name="help-circle-outline"></ion-icon>',
+                content: 'Bạn muốn khôi phục mục đã chọn ?',
+                buttons: {
+                    confirm: {
+                        text: 'Confirm',
+                        btnClass: 'btn-red',
+                        action: async function () {
+                            const id = event.target.dataset.id;
+                            for (let btnCheck of btnsCheck) {
+                                if (btnCheck.checked) {
+                                    const id = btnCheck.dataset.idcheckbox
+                                    const res = await fetch(`/scoreTempDetail/revert/${id}`, {
+                                        method: "PATCH"
+                                    })
+                                }
+                            }
+                            $.alert('Khôi phục thành công!')
+                            setTimeout(() => {
+                                window.location.reload()
+                            }, 1000)
+                        }
+                    },
+                    cancel: function () {
+                        $.alert('Đã hủy!');
+                    }
+                }
+            });
+        })
+    })
+</script>

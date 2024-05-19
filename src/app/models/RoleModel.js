@@ -12,13 +12,24 @@ const RoleModel = {
     },
     // them
     AddRole: (role, callback) => {
-        const query = `INSERT INTO role (title,status,note) VALUES (?,?,?)`
-        const values = [role.title, role.status, role.note]
+        const query = `INSERT INTO role (title,status,note,creatorUser_id) VALUES (?,?,?,?)`
+        const values = [role.title, role.status, role.note, role.creatorUser_id]
         connection.query(query, values, callback)
     },
+    // tim role 
+    findRoleUpdate: (id, title, callback) => {
+        const query = `SELECT * FROM role WHERE title = ? AND _id !=${id}`;
+        const values = [title];
+        connection.query(query, values, callback);
+    },
+    findRoleAdd: (title, callback) => {
+        const query = `SELECT * FROM role WHERE title = ?`;
+        const values = [title];
+        connection.query(query, values, callback);
+    },
     // xoa vao thung rac
-    deleteRoleToTrash: (id, callback) => {
-        const query = `UPDATE role SET isDeleted = 1 WHERE _id=${id}`
+    deleteRoleToTrash: (id, UserId, callback) => {
+        const query = `UPDATE role SET isDeleted = 1 , UserDeleted = ${UserId} , deletedTime = CURRENT_TIMESTAMP WHERE _id = ?`
         connection.query(query, id, callback)
     },
     // xoa
@@ -38,8 +49,8 @@ const RoleModel = {
     },
     //  cap nhat doi tuong
     updateRole: (id, role, callback) => {
-        const query = `UPDATE role SET title = ? , status = ? , note = ? WHERE _id=${id}`
-        const values = [role.title, role.status, role.note]
+        const query = `UPDATE role SET title = ? , status = ? , note = ? WHERE _id = ?`
+        const values = [role.title, role.status, role.note, id]
         connection.query(query, values, callback)
     },
 }

@@ -47,7 +47,7 @@ $(document).ready(function () {
 $(document).ready(function () {
     var table = $('#myTable').DataTable();
     $('#YearFilter').on('change', function (e) {
-        var productGroup = $(this).val();
-        table.column(2).search(productGroup).draw();
+        var year = $(this).val();
+        table.column(2).search(year).draw();
     });
 });

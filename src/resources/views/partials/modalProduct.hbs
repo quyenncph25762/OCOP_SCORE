@@ -1,7 +1,27 @@
-{{!-- PUT --}}
-
 <style>
+    td {
+        text-align: center;
+    }
+
     /* CSS cho hiệu ứng hover */
+    .file-item {
+        display: flex;
+        align-items: center;
+    }
+
+
+
+    .file-item a:hover {
+        color: #333333;
+    }
+
+    .remove-file-button {
+        padding: 0 !important;
+        margin-top: 2px;
+        padding: 1px 5px;
+        margin-left: 10px;
+    }
+
     .hover-effect:hover {
         background-color: #333333;
         /* Màu nền khi hover */
@@ -23,12 +43,87 @@
     .table-border td {
         max-height: 80px;
     }
+
+    .row-content {
+        height: 70vh;
+        padding: 24px 0;
+    }
+
+    .modal-product {
+        min-width: 1200px;
+    }
+
+    .file-drop-area {
+        position: relative;
+        display: flex;
+        align-items: center;
+        width: 250px;
+        max-width: 100%;
+        padding: 12px;
+        border: 1px dashed rgba(255, 255, 255, 0.4);
+        border-radius: 3px;
+        transition: 0.2s;
+
+    }
+
+    .choose-file-button {
+        flex-shrink: 0;
+        background-color: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 3px;
+        padding: 8px 15px;
+        margin-right: 10px;
+        font-size: 12px;
+        text-transform: uppercase;
+    }
+
+    .file-message {
+        font-size: small;
+        font-weight: 300;
+        line-height: 1.4;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .file-input {
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 100%;
+        width: 100%;
+        cursor: pointer;
+        opacity: 0;
+
+    }
+
+    .mt-100 {
+        margin-top: 100px;
+    }
+
+    @media screen and (min-width: 350px) and (max-width: 765px) {
+        .modal-product {
+            min-width: 100% !important;
+        }
+
+        .row-content {
+            height: auto !important;
+        }
+
+        .form-row {
+            margin-bottom: 80px;
+        }
+
+        .file-upload {
+            margin-bottom: 40px;
+        }
+    }
 </style>
 {{!-- POST --}}
 <div class="modal fade" id="exampleModalAdd" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
     <div class="modal-dialog modal__size" role="document">
-        <div class="modal-content model__content" style="width: 1200px;">
+        <div class="modal-content modal-product" style="100%">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Thêm mới sản phẩm</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -36,20 +131,20 @@
                 </button>
             </div>
             <div class="modal-body" class="width: 100%">
-                <form method="POST" action="/product-manage/create">
-                    <div class="row" style="padding: 24px 0;height: 70vh;">
-                        <div class="form-row col-sm-4"
+                <form enctype="multipart/form-data">
+                    <div class="row row-content">
+                        <div class="form-row col-sm-3"
                             style="display: flex;flex-direction: column; text-align: center;">
                             <h1 style="font-size: 16px; text-align: center;font-weight: 600;">Ảnh sản phẩm</h1>
                             <div class="file-upload">
                                 <div class="image-upload-wrap">
                                     {{!-- avatar --}}
-                                    <input class="file-upload-input" type='file' name="avatar" onchange="readURL(this);"
-                                        accept="image/*" />
+                                    <input class="file-upload-input" id="Avatar" type='file' name="Avatar"
+                                        onchange="readURL(this);" accept="image/*" />
                                     <div class="drag-text">
                                     </div>
                                 </div>
-                                <div class="file-upload-content">
+                                <div class="file-upload-content" style="display: none;">
                                     <img class="file-upload-image" src="#" alt="your image" />
                                     <div class="image-title-wrap">
                                         <button type="button" onclick="removeUpload()"
@@ -70,109 +165,128 @@
                                 </div>
                             </div>
                         </div>
+                        {{!-- creation_userId --}}
+                        <input type="text" id="CreatorUser_id" name="CreatorUser_id" value="{{User._id}}" hidden>
                         {{!-- form Product --}}
-                        <div class="form-row col-sm-8 form_product">
+                        <div class="form-row col-sm-9 form_product">
                             {{!-- code --}}
-                            <div class="col-md-4 mb-3">
-                                <label for="code">Mã</label>
-                                <input name="product_code" type="text" class="form-control" id="code" required>
+                            <div class="col-md-2 mb-3">
+                                <label for="Code">Mã</label>
+                                <input name="Code" type="text" class="form-control" id="Code" required>
                             </div>
                             {{!-- title --}}
                             <div class="col-md-8 mb-3">
-                                <label for="product_name">Tên sản phẩm</label>
-                                <input name="product_name" type="text" class="form-control" id="product_name" required>
+                                <label for="Name">Tên sản phẩm</label>
+                                <input name="Name" type="text" class="form-control" id="Name" required>
+                            </div>
+                            <div class="custom-control custom-switch col-md-2"
+                                style="display: flex; justify-content: center;align-items: center;">
+                                <input name="IsActive" type="checkbox" class="custom-control-input" id="IsActive"
+                                    checked>
+                                <label class="custom-control-label block" for="IsActive">Áp dụng</label>
                             </div>
                             {{!-- mô tả sản phẩm --}}
                             <div class="col-md-12 mb-3 mt-3">
-                                <label for="note">Mô tả</label>
-                                <textarea name="description" class="form-control"></textarea>
+                                <label for="Description">Mô tả sản phẩm</label>
+                                <textarea id="Description" name="Description" class="form-control"></textarea>
                             </div>
                             {{!-- Customer --}}
                             <div class="col-md-6 mb-3 mt-3">
-                                <label for="note">Chủ thể</label>
-                                <select name="customer_id" class="form-control">
+                                <label for="Customer_id">Chủ thể</label>
+                                <select id="Customer_id" name="Customer_id" class="form-control">
                                     {{#each Customer}}
-                                    <option value="{{this._id}}">{{this.customer_name}}</option>
+                                    <option value="{{this._id}}">{{this.Name}}</option>
                                     {{/each}}
                                 </select>
                             </div>
                             {{!-- Product- group --}}
                             <div class="col-md-6 mb-3 mt-3">
                                 <label for="note">Nhóm sản phẩm</label>
-                                <select name="productGroup_id" class="form-control">
+                                <select id="ProductGroup_id" name="ProductGroup_id" class="form-control">
                                     {{#each ProductGroup}}
-                                    <option value="{{this._id}}" {{#ifCond this.status 0}}disabled{{/ifCond}}>
-                                        {{this.productGroup_name}}</option>
-
+                                    <option value="{{this._id}}" {{#ifCond this.IsActive 0}}disabled{{/ifCond}}>
+                                        {{this.Name}}</option>
                                     {{/each}}
                                 </select>
                             </div>
-                            {{!-- Product- group --}}
+                            {{!-- Year Review --}}
                             <div class="col-md-3 mb-3 mt-3">
-                                <label for="note">Năm đánh giá</label>
-                                <select name="productYearId" class="form-control">
+                                <label for="ProductYearId">Năm đánh giá</label>
+                                <select id="ProductYearId" name="ProductYearId" class="form-control">
                                     {{#each Review}}
-                                    {{#if this.status}}
-                                    <option value="{{this._id}}">{{this.yearName}}</option>
-                                    {{/if}}
+                                    <option value="{{this._id}}" {{#ifCond this.status 0}}disabled{{/ifCond}}>
+                                        {{this.yearName}}
+                                    </option>
                                     {{/each}}
                                 </select>
                             </div>
                             {{!-- note --}}
                             <div class="col-md-9 mb-3 mt-3">
-                                <label for="note">Ghi
+                                <label for="Note">Ghi
                                     chú</label>
-                                <input name="product_note" type="text" class="form-control" id="note">
+                                <input name="Note" type="text" class="form-control" id="Note">
                             </div>
                         </div>
                         {{!-- bảng viễn dẫn --}}
-                        <div class="col-sm-8 list_citation displayNone" style="overflow-y: auto;height: 100%">
+                        <div class="col-sm-9 list_citation displayNone"
+                            style="overflow-y: auto;height: 100%;font-size: 12px">
                             <table border="1" class="table table-hover table-border table-striped">
                                 <thead>
                                     <tr>
-                                        <th></th>
+                                        <th>#</th>
                                         <th>Name</th>
                                         <th>Bắt buộc</th>
                                         <th>Tệp đính kèm</th>
-                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {{#each Citation}}
+                                    {{#each ProductDetail}}
                                     <tr>
-                                        <td>{{@index}}</td>
-                                        <td>{{this.title}}</td>
-                                        {{#ifCond this.status 1}}
-                                        <td>(*)</td>
-                                        {{else}}
-                                        <td></td>
-                                        {{/ifCond}}
-                                        <td></td>
+                                        <td>{{plus @index}}</td>
                                         <td>
-                                            <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
-                                                title="Link đính kèm">
-                                                <ion-icon name="link-outline"></ion-icon>
-                                            </span>
+                                            <input type="text" hidden id="ProductDetail_Name{{this._id}}"
+                                                name="ProductDetail_Name">
+                                            {{this.ProductDetail_Name}}
+                                        </td>
+                                        <td style="color: red;">
+                                            <p>(*)</p>
+                                        </td>
+                                        <td>
+                                            <div class="container d-flex justify-content-center">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="file-drop-area">
+                                                            <span class="choose-file-button">Choose files</span>
+                                                            <span class="file-message">or drag and drop files
+                                                                here</span>
+                                                            <input id="AttachFile{{this._id}}" class="file-input"
+                                                                name="AttachFile" type="file" multiple>
+                                                        </div>
+                                                        <div class="selected-files">
+                                                            <!-- Danh sách các tệp đã chọn sẽ được hiển thị ở đây -->
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </td>
                                     </tr>
-
                                     {{/each}}
                                 </tbody>
                             </table>
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                        <button class="btn btn-success">Thêm sản phẩm</button>
-                    </div>
                 </form>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    <button onclick="handleAdd()" class="btn btn-success">Thêm sản phẩm</button>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"></script>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script>
     function readURL(input) {
         if (input.files && input.files[0]) {
@@ -194,7 +308,6 @@
             removeUpload();
         }
     }
-
     function removeUpload() {
         $('.file-upload-input').replaceWith($('.file-upload-input').clone());
         $('.file-upload-content').hide();
@@ -209,31 +322,12 @@
 
 </script>
 
-<script>
-    //element product
-    const form_product = document.querySelector(".form_product")
-    //element vien dan
-    const list_citation = document.querySelector(".list_citation")
-    //style active
-    const boxFormProduct = document.querySelector(".boxFormProduct")
-    const boxListCitation = document.querySelector(".boxListCitation")
-    const handleShowFormProduct = () => {
-        form_product.classList.remove("displayNone")
-        list_citation.classList.add("displayNone")
-        boxListCitation.classList.remove("active")
-        boxFormProduct.classList.add("active")
-    }
-
-    const handleShowListCitation = () => {
-        form_product.classList.add("displayNone")
-        list_citation.classList.remove("displayNone")
-        boxFormProduct.classList.remove("active")
-        boxListCitation.classList.add("active")
-    }
+<script src="/assets/js/addGallery.js"></script>
+{{!-- fade tabs --}}
 </script>
-
+{{!-- Code random --}}
 <script>
-    const codeValue = document.querySelector("#code")
+    const codeValue = document.querySelector("#Code")
 
     function generateRandomCode(length) {
         let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789';
@@ -246,3 +340,5 @@
     const codeRandom = generateRandomCode(8)
     codeValue.value = codeRandom
 </script>
+{{!-- actions req --}}
+<script src="/assets/js/addProduct.js"></script>

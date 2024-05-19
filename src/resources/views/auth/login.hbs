@@ -27,9 +27,9 @@
                     <div class="card-title text-uppercase text-center py-3">Đăng nhập</div>
                     <form>
                         <div class="form-group">
-                            <label for="exampleInputUsername" class="sr-only">Username</label>
+                            <label for="Username" class="sr-only">FullName</label>
                             <div class="position-relative has-icon-right">
-                                <input type="text" id="exampleInputUsername" class="form-control input-shadow"
+                                <input name="FullName" type="text" id="FullName" class="form-control input-shadow"
                                     placeholder="Tài khoản">
                                 <div class="form-control-position">
                                     <i class="icon-user"></i>
@@ -37,15 +37,28 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="exampleInputPassword" class="sr-only">Password</label>
+                            <label for="Password" class="sr-only">Password</label>
                             <div class="position-relative has-icon-right">
-                                <input type="password" id="exampleInputPassword" class="form-control input-shadow"
+                                <input name="Password" type="password" id="Password" class="form-control input-shadow"
                                     placeholder="Mật khẩu">
                                 <div class="form-control-position">
                                     <i class="icon-lock"></i>
                                 </div>
                             </div>
                         </div>
+                        <div class="form-group">
+                            <div class="position-relative has-icon-right">
+                                <select name="Address" class="form-control input-shadow" name="" id="Address">
+                                    <option value="admin" selected>Hệ thống</option>
+                                    <option value="Bắc Ninh">Bắc Ninh</option>
+                                    <option value="Bắc Giang">Bắc Giang</option>
+                                </select>
+                                <div class="form-control-position">
+                                    <i class="icon-lock"></i>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="form-row">
                             <div class="form-group col-6">
                                 <div class="icheck-material-white">
@@ -57,14 +70,14 @@
                                 <a href="/auth/resetPassword">Đổi mật khẩu</a>
                             </div>
                         </div>
-                        <button type="button" class="btn btn-light btn-block"><a href="/">Đăng
-                                nhập</a></button>
                     </form>
+                    <button type="submit" class="btn btn-light btn-block" onclick="handleLogin()">Đăng
+                        nhập</button>
                 </div>
             </div>
-            <div class="card-footer text-center py-3">
+            {{!-- <div class="card-footer text-center py-3">
                 <p class="text-warning mb-0">Chưa có tài khoản? <a href="/auth/register"> Tạo tài khoản</a></p>
-            </div>
+            </div> --}}
         </div>
 
         <!--Start Back To Top Button-->
@@ -112,14 +125,51 @@
     </div><!--wrapper-->
 
     <!-- Bootstrap core JavaScript-->
-    <script src="assets/js/jquery.min.js"></script>
-    <script src="assets/js/popper.min.js"></script>
-    <script src="assets/js/bootstrap.min.js"></script>
 
-    <!-- sidebar-menu js -->
-    <script src="assets/js/sidebar-menu.js"></script>
-
-    <!-- Custom scripts -->
-    <script src="assets/js/app-script.js"></script>
 
 </body>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/popper.min.js"></script>
+<script src="assets/js/bootstrap.min.js"></script>
+<!-- sidebar-menu js -->
+<script src="assets/js/sidebar-menu.js"></script>
+<!-- Custom scripts -->
+<script src="assets/js/app-script.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<script>
+    const fullName = document.querySelector("#FullName")
+    const password = document.querySelector("#Password")
+    const address = document.querySelector("#Address")
+    function handleLogin() {
+        const data = { FullName: fullName.value, Password: password.value, Address: address.value }
+        $.ajax({
+            url: '/auth/login',
+            type: 'POST',
+            data: {
+                ...data,
+                //mã hóa mật khẩu trước khi gửi qua ajax
+                Password: CryptoJS.SHA256(Password).toString()
+            }
+        }).then(data => {
+            if (data.User.role_title.toLowerCase() === "admin") {
+                window.location.replace("/")
+            } else {
+                window.location.replace("/client")
+            }
+            setCookie('User', data.token, 1)
+            const dataUser = data.User._id
+            localStorage.setItem('User', JSON.stringify(dataUser))
+        }
+        ).catch(err => {
+            console.log(err)
+        })
+    }
+    function setCookie(cname, cvalue, hours) {
+        const d = new Date();
+        d.setTime(d.getTime() + (hours * 60 * 60 * 1000));
+        let expires = "expires=" + d.toUTCString();
+        document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+    }
+</script>

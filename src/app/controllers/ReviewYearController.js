@@ -1,67 +1,119 @@
 const YearReviewModel = require("../models/YearReviewModel")
+const AccountModel = require("../models/Account")
+const jwt = require("jsonwebtoken")
+const dotenv = require("dotenv")
+dotenv.config();
+const { SECRET_CODE } = process.env
 class ReviewYearController {
     // fetchAll
     index(req, res, next) {
-        YearReviewModel.fetchAllReviewYear((err, data) => {
-            if (err) {
-                return res.status(400).json({
-                    message: err
-                })
-            }
-            if (!data) {
-                return res.status(400).json({
-                    message: "Lỗi"
-                })
-            }
+        const cookie = req.cookies
+        if (cookie?.User) {
+            const UserDataCookie = jwt.verify(cookie.User, SECRET_CODE)
+            AccountModel.fetchOneUser(UserDataCookie?._id, (err, User) => {
+                if (err) {
+                    return res.status(400).json({
+                        message: err
+                    })
+                }
+                YearReviewModel.fetchAllReviewYear((err, data) => {
+                    if (err) {
+                        return res.status(400).json({
+                            message: err
+                        })
+                    }
+                    if (!data) {
+                        return res.status(400).json({
+                            message: "Lỗi"
+                        })
+                    }
 
-            res.render("yearreview/yearreview", { Review: data })
-        })
+                    res.render("yearreview/yearreview", { Review: data, User: User[0] })
+                })
+            })
+        } else {
+            res.redirect("/auth/loginPage")
+        }
+
     }
     getAllYearFromTrash(req, res, next) {
-        YearReviewModel.fetchAllYearFromTrash((err, Review) => {
-            if (err) {
-                return res.status(400).json({
-                    message: err
+        const cookie = req.cookies
+        if (cookie?.User) {
+            const UserDataCookie = jwt.verify(cookie.User, SECRET_CODE)
+            AccountModel.fetchOneUser(UserDataCookie?._id, (err, User) => {
+                if (err) {
+                    return res.status(400).json({
+                        message: err
+                    })
+                }
+                YearReviewModel.fetchAllYearFromTrash((err, Review) => {
+                    if (err) {
+                        return res.status(400).json({
+                            message: err
+                        })
+                    }
+                    if (!Review) {
+                        return res.status(400).json({
+                            message: "Lỗi"
+                        })
+                    }
+                    res.render("yearreview/trash", { Review: Review, User: User[0] })
                 })
-            }
-            if (!Review) {
-                return res.status(400).json({
-                    message: "Lỗi"
-                })
-            }
-            res.render("yearreview/trash", { Review: Review })
-        })
+            })
+        }
+
     }
     // them
     create(req, res, next) {
-        YearReviewModel.AddYear({
-            yearName: req.body.yearName,
-            status: req.body.status ? 1 : 0,
-            note: req.body.note
-        }, (err, data) => {
+        YearReviewModel.findYearAdd(req.body, (err, data) => {
             if (err) {
-                console.error('Lỗi thêm sản phẩm:', err);
-                res.status(500).send('Internal Server Error');
+                return res.status(500).json({
+                    message: "Loi truy van"
+                })
+            }
+            if (data.length === 0) {
+                YearReviewModel.AddYear({
+                    yearName: req.body.yearName,
+                    status: req.body.status === "true" ? 1 : 0,
+                    note: req.body.note,
+                    creatorUser_id: req.body.creatorUser_id
+                }, (err, data) => {
+                    if (err) {
+                        console.error('Lỗi thêm sản phẩm:', err);
+                        return res.status(500).json({
+                            message: 'Internal Server Error'
+                        });
+                    } else {
+                        return res.status(201).json({
+                            message: 'Thêm thành công'
+                        });
+                    }
+                })
             } else {
-                console.log('Sản phẩm đã được thêm thành công:');
-                res.redirect('back')
+                return res.status(400).json({
+                    message: 'Gía trị đã tồn tại'
+                });
             }
         })
     }
     // xoa vao thung rac
     removeToTrash(req, res, next) {
-        const id = req.params.id
-        YearReviewModel.deleteYearToTrash(id, (err, result) => {
-            if (err) {
-                return res.status(400).json({
-                    message: err
-                })
-            } else {
-                return res.status(203).json({
-                    message: "Xoa thanh cong"
-                })
-            }
-        })
+        const cookie = req.cookies
+        if (cookie?.User) {
+            const UserDataCookie = jwt.verify(cookie.User, SECRET_CODE)
+            const id = req.params.id
+            YearReviewModel.deleteYearToTrash(id, UserDataCookie?._id, (err, result) => {
+                if (err) {
+                    return res.status(400).json({
+                        message: err
+                    })
+                } else {
+                    return res.status(203).json({
+                        message: "Xoa thanh cong"
+                    })
+                }
+            })
+        }
     }
     // xoa
     remove(req, res, next) {
@@ -92,21 +144,34 @@ class ReviewYearController {
     }
     // update
     update(req, res, next) {
-        console.log(req.body)
         const id = req.params.id
-        YearReviewModel.updateYear(id, ({
-            yearName: req.body.yearName,
-            note: req.body.note,
-            status: req.body.status === 'on' ? 1 : 0
-        }), (err, result) => {
+        YearReviewModel.findYearUpdate(id, req.body, (err, data) => {
             if (err) {
-                return res.status(400).json({
-                    message: `${err}: Loi updateYear`
+                return res.status(500).json({
+                    message: "loi truy van"
                 })
             }
-            return res.status(200).json(res.redirect("back"))
+            if (data.length === 0) {
+                YearReviewModel.updateYear(id, ({
+                    yearName: req.body.yearName,
+                    note: req.body.note,
+                    status: req.body.status === 'true' ? 1 : 0
+                }), (err, result) => {
+                    if (err) {
+                        return res.status(400).json({
+                            message: `${err}: Loi updateYear`
+                        })
+                    }
+                    return res.status(203).json({
+                        message: 'Sửa thành công'
+                    });
+                })
+            } else {
+                return res.status(500).json({
+                    message: "Gía trị đã tồn tại"
+                })
+            }
         })
-
     }
 }
 

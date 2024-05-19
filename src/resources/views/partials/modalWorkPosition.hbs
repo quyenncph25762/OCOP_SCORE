@@ -11,53 +11,61 @@
                 </button>
             </div>
             <div class="modal-body" class="width: 100%">
-                <form method="POST" action="/workPosition/update/{{this._id}}">
+                <form>
                     <div class="form-row">
                         {{!-- code --}}
                         <div class="col-md-4 mb-3">
-                            <label for="code">Mã</label>
-                            <input value="{{this.code}}" name="code" type="text" class="form-control" id="code"
-                                required>
+                            <label for="Code">Mã</label>
+                            <input value="{{this.Code}}" name="Code" type="text" class="form-control"
+                                id="Code{{this._id}}" required>
                         </div>
-                        {{!-- title --}}
+                        {{!-- Name --}}
                         <div class="col-md-8 mb-3">
-                            <label for="title">Tên vị trí , chức danh</label>
-                            <input value="{{this.title}}" name="title" type="text" class="form-control" id="title"
-                                required>
+                            <label for="Name">Tên vị trí , chức danh</label>
+                            <input value="{{this.Name}}" name="Name" type="text" class="form-control"
+                                id="Name{{this._id}}" required>
+                            <span
+                                style="color: #de2935;font-size: 14px;font-style: italic;margin-top: 5px;font-weight: 600;"
+                                id="messageErrorUpdate{{this._id}}"></span>
                         </div>
                         {{!-- status --}}
                         <div class="custom-control custom-switch col-md-2"
                             style="display: flex; justify-content: center;align-items: center;">
-                            {{#if this.manager}}
-                            <input name="manager" type="checkbox" class="custom-control-input" id="manager{{this._id}}"
-                                checked>
+                            {{#if this.IsManager}}
+                            <input name="IsManager" type="checkbox" class="custom-control-input"
+                                id="IsManager{{this._id}}" checked>
+                            <label class="custom-control-label block" for="IsManager{{this._id}}">Quản lí</label>
                             {{else}}
-                            <input name="manager" type="checkbox" class="custom-control-input" id="manager{{this._id}}">
+                            <input name="IsManager" type="checkbox" class="custom-control-input"
+                                id="IsManager{{this._id}}">
+                            <label class="custom-control-label block" for="IsManager{{this._id}}">Quản lí</label>
                             {{/if}}
-                            <label class="custom-control-label block" for="manager{{this._id}}">Quản lí</label>
                         </div>
                         <div class="custom-control custom-switch col-md-2"
                             style="display: flex; justify-content: center;align-items: center;">
-                            {{#if this.active}}
-                            <input name="active" type="checkbox" class="custom-control-input" id="active{{this._id}}"
-                                checked>
+                            {{#if this.IsActive}}
+                            <input name="IsActive" type="checkbox" class="custom-control-input"
+                                id="IsActive{{this._id}}" checked>
+                            <label class="custom-control-label block" for="IsActive{{this._id}}">Áp dụng</label>
                             {{else}}
-                            <input name="active" type="checkbox" class="custom-control-input" id="active{{this._id}}">
+                            <input name="IsActive" type="checkbox" class="custom-control-input"
+                                id="IsActive{{this._id}}">
+                            <label class="custom-control-label block" for="IsActive{{this._id}}">Áp dụng</label>
                             {{/if}}
-                            <label class="custom-control-label block" for="active{{this._id}}">Áp dụng</label>
                         </div>
                         {{!-- note --}}
                         <div class="col-md-8 mb-3 mt-3">
-                            <label for="note">Ghi
+                            <label for="Note">Ghi
                                 chú</label>
-                            <input value="{{this.note}}" name="note" type="text" class="form-control" id="note">
+                            <input value="{{this.Note}}" name="Note" type="text" class="form-control"
+                                id="Note{{this._id}}">
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                        <button class="btn btn-warning">Câp nhật</button>
-                    </div>
                 </form>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    <button onclick="handleUpdate('{{this._id}}')" class="btn btn-warning">Câp nhật</button>
+                </div>
             </div>
         </div>
     </div>
@@ -75,43 +83,121 @@
                 </button>
             </div>
             <div class="modal-body" class="width: 100%">
-                <form method="POST" action="/workPosition/add">
+                <form>
                     <div class="form-row">
+                        {{!-- creatorUser --}}
+                        <input type="text" name="CreatorUser_id" id="CreatorUser_id" value="{{User._id}}" hidden>
                         {{!-- code --}}
                         <div class="col-md-4 mb-3">
-                            <label for="code">Mã</label>
-                            <input name="code" type="text" class="form-control" id="code" required>
+                            <label for="Code">Mã</label>
+                            <input name="Code" type="text" class="form-control" id="code" required>
                         </div>
-                        {{!-- title --}}
+                        {{!-- name --}}
                         <div class="col-md-8 mb-3">
-                            <label for="title">Tên vị trí , chức danh</label>
-                            <input name="title" type="text" class="form-control" id="title" required>
+                            <label for="Name">Tên vị trí , chức danh</label>
+                            <input name="Name" type="text" class="form-control" id="Name" required>
+                            <span
+                                style="color: #de2935;font-size: 14px;font-style: italic;margin-top: 5px;font-weight: 600;"
+                                id="messageError"></span>
                         </div>
                         {{!-- status --}}
                         <div class="custom-control custom-switch col-md-2"
                             style="display: flex; justify-content: center;align-items: center;">
-                            <input name="manager" type="checkbox" class="custom-control-input" id="manager">
-
-                            <label class="custom-control-label block" for="manager">Quản lí</label>
+                            <input name="IsManager" type="checkbox" class="custom-control-input" id="IsManager">
+                            <label class="custom-control-label block" for="IsManager">Quản lí</label>
                         </div>
                         <div class="custom-control custom-switch col-md-2"
                             style="display: flex; justify-content: center;align-items: center;">
-                            <input name="active" type="checkbox" class="custom-control-input" id="active">
-                            <label class="custom-control-label block" for="active">Áp dụng</label>
+                            <input name="IsActive" type="checkbox" class="custom-control-input" id="IsActive" checked>
+                            <label class="custom-control-label block" for="IsActive">Áp dụng</label>
                         </div>
                         {{!-- note --}}
                         <div class="col-md-8 mb-3 mt-3">
-                            <label for="note">Ghi
+                            <label for="Note">Ghi
                                 chú</label>
-                            <input name="note" type="text" class="form-control" id="note">
+                            <input name="Note" type="text" class="form-control" id="Note">
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                        <button class="btn btn-success">Thêm</button>
-                    </div>
                 </form>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    <button onclick="handleAdd()" class="btn btn-success">Thêm</button>
+                </div>
             </div>
         </div>
     </div>
 </div>
+
+{{!-- random code --}}
+<script>
+    function generateRandomCode(length) {
+        let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789';
+        let code = '';
+        for (let i = 0; i < length; i++) {
+            code += characters.charAt(Math.floor(Math.random() * characters.length));
+        }
+        return code;
+    }
+    const codeRandom = generateRandomCode(8)
+    const codeValue = document.querySelector("#code")
+    codeValue.value = codeRandom
+</script>
+
+{{!-- acction req --}}
+<script>
+    async function handleAdd() {
+        const code = document.getElementById("code").value
+        const Name = document.getElementById("Name").value
+        const IsManager = document.getElementById("IsManager").checked
+        const IsActive = document.getElementById("IsActive").checked
+        const Note = document.getElementById("Note").value
+        const creatorUser_id = document.getElementById("CreatorUser_id").value
+        const formData = new FormData()
+        formData.append("Code", code)
+        formData.append("Name", Name)
+        formData.append("CreatorUser_id", creatorUser_id)
+        formData.append("IsManager", IsManager)
+        formData.append("Note", Note)
+        formData.append("IsActive", IsActive)
+        const res = await fetch("/workPosition/add", {
+            method: "POST",
+            body: formData
+        })
+        if (res.ok) {
+            const data = await res.json()
+            alert(`${data.message}`)
+            window.location.replace("/workPosition")
+        } else {
+            const data = await res.json()
+            document.getElementById("messageError").innerHTML = data.message
+            console.error("Response was not ok:", res.status);
+        }
+    }
+    //update
+    async function handleUpdate(id) {
+        const code = document.getElementById(`Code${id}`).value
+        const Name = document.getElementById(`Name${id}`).value
+        const IsManager = document.getElementById(`IsManager${id}`).checked
+        const IsActive = document.getElementById(`IsActive${id}`).checked
+        const Note = document.getElementById(`Note${id}`).value
+        const formData = new FormData()
+        formData.append("Code", code)
+        formData.append("Name", Name)
+        formData.append("IsManager", IsManager)
+        formData.append("Note", Note)
+        formData.append("IsActive", IsActive)
+        const res = await fetch(`/workPosition/update/${id}`, {
+            method: "POST",
+            body: formData
+        })
+        if (res.ok) {
+            const data = await res.json()
+            alert(`${data.message}`)
+            window.location.replace("/workPosition")
+        } else {
+            const data = await res.json()
+            document.getElementById(`messageErrorUpdate${id}`).innerHTML = data.message
+            console.error("Response was not ok:", res.status);
+        }
+    }
+</script>

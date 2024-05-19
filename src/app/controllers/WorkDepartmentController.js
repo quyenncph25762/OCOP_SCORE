@@ -1,67 +1,123 @@
+const dotenv = require("dotenv")
+dotenv.config();
+const jwt = require("jsonwebtoken")
+const AccountModel = require("../models/Account")
+const { SECRET_CODE } = process.env
 const WorkDepartmentModel = require("../models/WorkDepartmentModel")
 class WorkDepartmentController {
     // fetchAll
     index(req, res, next) {
-        WorkDepartmentModel.fetchAllWorkDepartment((err, workDepartment) => {
-            if (err) {
-                return res.status(400).json({
-                    message: err
+        const cookie = req?.cookies
+        if (cookie?.User) {
+            const UserDataCookie = jwt.verify(cookie.User, SECRET_CODE)
+            WorkDepartmentModel.fetchAllWorkDepartment((err, workDepartment) => {
+                if (err) {
+                    return res.status(400).json({
+                        message: err
+                    })
+                }
+                if (!workDepartment) {
+                    return res.status(400).json({
+                        message: "Lỗi"
+                    })
+                }
+                AccountModel.fetchOneUser(UserDataCookie?._id, (err, User) => {
+                    if (User?.[0].role_title.toLowerCase() !== "admin") {
+
+                        res.redirect("/client")
+                    } else {
+                        res.render("workDepartment/workDepartment", { workDepartment: workDepartment, User: User[0] })
+                    }
                 })
-            }
-            if (!workDepartment) {
-                return res.status(400).json({
-                    message: "Lỗi"
-                })
-            }
-            res.render("workDepartment/workDepartment", { workDepartment: workDepartment })
-        })
+            })
+        } else {
+            res.redirect("/auth/loginPage")
+        }
     }
     // hien thi trong thung rac
     getAllWorkDepartmentFromTrash(req, res, next) {
-        WorkDepartmentModel.fetchAllWorkDepartmentFromTrash((err, workDepartment) => {
-            if (err) {
-                return res.status(400).json({
-                    message: err
+        const cookie = req?.cookies
+        if (cookie?.User) {
+            const UserDataCookie = jwt.verify(cookie.User, SECRET_CODE)
+            WorkDepartmentModel.fetchAllWorkDepartmentFromTrash((err, workDepartment) => {
+                if (err) {
+                    return res.status(400).json({
+                        message: err
+                    })
+                }
+                if (!workDepartment) {
+                    return res.status(400).json({
+                        message: "Lỗi"
+                    })
+                }
+                AccountModel.fetchOneUser(UserDataCookie?._id, (err, User) => {
+                    if (User?.[0].role_title.toLowerCase() !== "admin") {
+
+                        res.redirect("/client")
+                    } else {
+                        res.render("workDepartment/trash", { workDepartment: workDepartment, User: User[0] })
+                    }
                 })
-            }
-            if (!workDepartment) {
-                return res.status(400).json({
-                    message: "Lỗi"
-                })
-            }
-            res.render("workDepartment/trash", { workDepartment: workDepartment })
-        })
+            })
+        } else {
+            res.redirect("/auth/loginPage")
+        }
+
     }
     // them
     create(req, res, next) {
-        WorkDepartmentModel.AddWorkDepartment({
-            code: req.body.code,
-            title: req.body.title,
-            description: req.body.description
-        }, (err, data) => {
+        const creationTime = new Date()
+        WorkDepartmentModel.findWorkDepartmentAdd(req.body, (err, data) => {
             if (err) {
-                console.error('Lỗi thêm sản phẩm:', err);
-                res.status(500).send('Internal Server Error');
+                return res.status(500).json({
+                    message: "Lỗi truy xuất"
+                })
             } else {
-                console.log('Sản phẩm đã được thêm thành công:');
-                res.redirect('back')
+                if (data.length === 0) {
+                    WorkDepartmentModel.AddWorkDepartment({
+                        title: req.body.title,
+                        code: req.body.code,
+                        description: req.body.description,
+                        creationTime: creationTime,
+                        creatorUser_id: Number(req.body.creatorUser_id),
+                    }, (err, data) => {
+                        if (err) {
+                            return res.status(500).json({
+                                message: 'Internal Server Error'
+                            });
+                        } else {
+                            return res.status(201).json({
+                                message: 'Thêm thành công'
+                            });
+                        }
+                    })
+                } else {
+                    return res.status(400).json({
+                        message: "Ten da ton tai"
+                    })
+                }
             }
         })
+
     }
     // xoa vao thung rac
     removeToTrash(req, res, next) {
-        const id = req.params.id
-        WorkDepartmentModel.deleteWorkDepartmentToTrash(id, (err, result) => {
-            if (err) {
-                return res.status(400).json({
-                    message: err
-                })
-            } else {
-                return res.status(203).json({
-                    message: "Xoa thanh cong"
-                })
-            }
-        })
+        const cookie = req.cookies
+        if (cookie?.User) {
+            const UserDataCookie = jwt.verify(cookie.User, SECRET_CODE)
+            const id = req.params.id
+            WorkDepartmentModel.deleteWorkDepartmentToTrash(id, UserDataCookie?._id, (err, result) => {
+                if (err) {
+                    return res.status(400).json({
+                        message: err
+                    })
+                } else {
+                    return res.status(203).json({
+                        message: "Xoa thanh cong"
+                    })
+                }
+            })
+        }
     }
     // xoa
     remove(req, res, next) {
@@ -91,20 +147,36 @@ class WorkDepartmentController {
     }
     // update
     update(req, res, next) {
-        console.log(req.body)
         const id = req.params.id
-        WorkDepartmentModel.updateWorkDepartment(id, ({
-            code: req.body.code,
-            title: req.body.title,
-            description: req.body.description
-        }), (err, result) => {
+        WorkDepartmentModel.findWorkDepartmentUpdate(id, req.body, (err, data) => {
             if (err) {
-                return res.status(400).json({
-                    message: `${err}: Loi updateWorkDepartment`
+                return res.status(500).json({
+                    message: "Lỗi truy xuất"
                 })
+            } else {
+                if (data?.length === 0) {
+                    WorkDepartmentModel.updateWorkDepartment(id, ({
+                        title: req.body.title,
+                        code: req.body.code,
+                        description: req.body.description,
+                    }), (err, result) => {
+                        if (err) {
+                            return res.status(400).json({
+                                message: `${err}: Loi updateWorkDepartment`
+                            })
+                        }
+                        return res.status(200).json({
+                            message: "Cập nhật thành công"
+                        })
+                    })
+                } else {
+                    return res.status(400).json({
+                        message: "Name đã tồn tại"
+                    })
+                }
             }
-            return res.status(200).json(res.redirect("back"))
         })
+
 
     }
 }

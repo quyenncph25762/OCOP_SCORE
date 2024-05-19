@@ -1,3 +1,10 @@
+<style>
+    .icons {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+</style>
 {{> header}}
 <div class="content-wrapper">
     <div class="container-fluid">
@@ -5,8 +12,8 @@
         <div class="row" style="max-width: 100%; display: contents;">
             <ul class="search-customer"
                 style="list-style: none; display:flex; justify-content: space-between; align-items: center;">
-                <button class="btn btn-danger btnDeleteAll" style="float: left;">Xóa mục đã chọn</button>
-                <a href="/scoreTemp/add">
+                <button class="btn btn-danger btnDeleteAll btnDisabled" style="float: left;">Xóa mục đã chọn</button>
+                <a href="/scoreTemp/addPage">
                     <div class="import_customer_button"
                         style="list-style: none; display:flex; justify-content: space-between; align-items: center;">
                         <button class="btn btn-success">Thêm mới</button>
@@ -23,15 +30,27 @@
                     <div class="card-body">
                         <div class="d-flex align-items">
                             <h5 class="card-title">Danh sách sản phẩm</h5>
+                            <span class="d-inline-block ml-3" tabindex="0" data-toggle="tooltip"
+                                title="Thùng rác của bạn">
+                                <a href="/scoreTemp/trash">
+                                    <ion-icon name="trash-outline">
+                                    </ion-icon>
+                                </a>
+                            </span>
                         </div>
                         <div class="table-responsive">
                             <table id="myTable" class="table table-hover">
                                 <thead>
                                     <tr>
+                                        <th {{#ifCond ScoreTemp.length 0}}hidden{{/ifCond}}>
+                                            <div class="checkbox">
+                                                <input type="checkbox" class="check" id="checkAll">
+                                            </div>
+                                        </th>
                                         <th>Active</th>
                                         <th>Name</th>
-                                        <th>Đối tượng</th>
-                                        <th>note</th>
+                                        <th>Nhóm sản phẩm</th>
+                                        <th>Ghi chú</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
@@ -39,33 +58,45 @@
                                     {{#each ScoreTemp}}
                                     <tr>
                                         <td>
-                                            {{#if this.status}}
+                                            <div class="">
+                                                <div class="checkbox">
+                                                    <input type="checkbox" class="check" data-idCheckBox="{{this._id}}">
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            {{#ifCond this.IsActive 1}}
                                             <div class="active"></div>
                                             {{else}}
                                             <div class="inactive"></div>
-                                            {{/if}}
+                                            {{/ifCond}}
                                         </td>
-                                        <td>{{this.title}}</td>
-                                        <td>{{this.customerName}}</td>
-                                        <td>{{this.note}}</td>
-                                        <td>
+                                        <td>{{this.Name}}</td>
+                                        {{#ifCond productgroup_IsDeleted 0}}
+                                        <td>{{this.productgroup_name}}</td>
+                                        {{else}}
+                                        <td style="color: rgb(236, 236, 118);">Không xác định</td>
+                                        {{/ifCond}}
+                                        <td>{{this.Note}}</td>
+                                        <td class="icons">
                                             <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
-                                                title="Nhân bản">
-                                                <i class="fe fe-copy icon__table"></i>
+                                                title="Xem chi tiết" onclick="handleclickDetail('{{this._id}}')">
+                                                <ion-icon name="eye-outline" data-toggle="modal"
+                                                    data-target="#exampleModalScoreTemp{{this._id}}"></ion-icon>
                                             </span>
+                                            {{> modalScoreTemp}}
+
+                                            <a href="/scoreTemp/updatePage/{{this._id}}">
+                                                <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
+                                                    title="Chỉnh sửa">
+                                                    <ion-icon name="create-outline"></ion-icon>
+                                                </span>
+                                            </a>
                                             <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
-                                                title="Chỉnh sửa">
-                                                <i class="fe fe-edit-3 icon__table icon__table-edit"></i>
-                                            </span>
-                                            <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
-                                                title="Xem chi tiết">
-                                                <i data-toggle="modal" data-target="#exampleModalLong"
-                                                    class="fe fe-eye icon__table icon__table-eye"
-                                                    style="color: green;"></i>
-                                            </span>
-                                            <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
-                                                title="Chuyển vào thùng rác">
-                                                <i class="fe fe-trash-2 icon__table icon__table-trash"></i>
+                                                title="Xóa chủ thể">
+                                                <ion-icon id="icon_moveToTrash" name="trash-outline"
+                                                    data-id="{{this._id}}">
+                                                </ion-icon>
                                             </span>
                                         </td>
                                     </tr>
@@ -82,4 +113,114 @@
 {{> footer}}
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="/assets/js/ScoreTempModal.js"></script>
 <script src="/assets/js/custom.js"></script>
+{{!-- Checkbox --}}
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+    gtag('js', new Date());
+    gtag('config', 'UA-56159088-1');
+    // checkbox All
+    $("#checkAll").click(function (e) {
+        $(".check").prop('checked', $(this).prop('checked'));
+    });
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const btnTrash = document.querySelectorAll("#icon_moveToTrash");
+        //remove One
+        for (let btn of btnTrash) {
+            btn.addEventListener("click", (event) => {
+                $.confirm({
+                    title: '<ion-icon name="trash-bin-outline"></ion-icon>',
+                    content: 'Bạn có chắc chắn muốn xóa ?',
+                    buttons: {
+                        confirm: {
+                            text: 'Confirm',
+                            btnClass: 'btn-red',
+                            action: function () {
+                                // Lấy ID của mục cần xóa từ thuộc tính data-id của nút
+                                const id = event.target.dataset.id;
+
+                                // Gọi API xóa mục
+                                fetch(`/scoreTemp/removeToTrash/${id}`, {
+                                    method: 'PATCH'
+                                }).then(response => {
+                                    if (response.ok) {
+                                        $.alert('Xóa thành công!');
+                                        setTimeout(() => {
+                                            window.location.reload()
+                                        }, 1000)
+                                    } else {
+                                        alert('Có lỗi xảy ra khi xóa mục');
+                                    }
+                                }).catch(error => {
+                                    $.alert('Đã hủy');
+                                });
+                            }
+                        },
+                        cancel: function () {
+                            $.alert('Đã hủy!');
+                        }
+                    }
+                });
+            })
+        }
+        const btnsCheck = document.querySelectorAll(".check")
+        const btnDeleteAll = document.querySelector(".btnDeleteAll")
+        const btnDisabled = document.querySelector(".btnDisabled")
+        //Chưa checked thì disbale nút xóa all
+        let count = 0
+        const checkBtnDisabled = () => {
+            if (count === 0) {
+                btnDisabled.setAttribute("disabled", true)
+            } else {
+                btnDisabled.removeAttribute("disabled")
+            }
+        }
+        for (let checked of btnsCheck) {
+            checkBtnDisabled()
+            checked.addEventListener("click", (e) => {
+                if (checked.checked) {
+                    count++
+                } else {
+                    count--
+                }
+                checkBtnDisabled()
+            })
+        }
+        //Xoa nhieu
+        btnDeleteAll.addEventListener("click", async (e) => {
+            $.confirm({
+                title: '<ion-icon name="trash-bin-outline"></ion-icon>',
+                content: 'Xác nhận xóa những đối tượng bạn đã chọn ?',
+                buttons: {
+                    confirm: {
+                        text: 'Confirm',
+                        btnClass: 'btn-red',
+                        action: function () {
+                            for (let btnCheck of btnsCheck) {
+                                if (btnCheck.checked) {
+                                    const id = btnCheck.dataset.idcheckbox
+                                    fetch(`/scoreTemp/removeToTrash/${id}`, {
+                                        method: 'PATCH'
+                                    })
+                                }
+                            }
+                            $.alert('Xóa thành công!');
+                            setTimeout(() => {
+                                window.location.reload()
+                            }, 1000)
+                        }
+                    },
+                    cancel: function () {
+                        $.alert('Đã hủy');
+                    }
+                }
+            });
+        })
+    })
+</script>

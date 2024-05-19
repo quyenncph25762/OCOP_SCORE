@@ -62,29 +62,29 @@
                                             </div>
                                         </td>
                                         <td hidden>{{@index}}</td>
-                                        <td>{{this.code}}</td>
-                                        <td>{{this.title}}</td>
-                                        <td>{{this.note}}</td>
+                                        <td>{{this.Code}}</td>
+                                        <td>{{this.Name}}</td>
+                                        <td>{{this.Note}}</td>
                                         <td>
-                                            {{#if this.manager}}
+                                            {{#ifCond this.IsManager 1}}
                                             <div class="active"></div>
                                             {{else}}
                                             <div class="inactive"></div>
-                                            {{/if}}
+                                            {{/ifCond}}
                                         </td>
                                         <td>
-                                            {{#if this.active}}
+                                            {{#ifCond this.IsActive 1}}
                                             <div class="active"></div>
                                             {{else}}
                                             <div class="inactive"></div>
-                                            {{/if}}
+                                            {{/ifCond}}
                                         </td>
                                         <td style="display: flex;">
                                             <div class="action_center">
                                                 <button data-toggle="modal" data-target="#exampleModal{{this._id}}"
                                                     style="background-color: transparent;border: none;cursor: pointer;">
                                                     <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
-                                                        title="Khôi phục: {{this.title}}">
+                                                        title="Khôi phục">
                                                         <ion-icon name="sync-outline"
                                                             style="color: white; font-size: 18px;" id="icon_revert"
                                                             data-id="{{this._id}}"></ion-icon>
@@ -138,92 +138,174 @@
 
 
 <script>
-    const btnReverts = document.querySelectorAll("#icon_revert")
-    const btnTrash = document.querySelectorAll("#icon_moveToTrash");
-    //removeOne
-    for (let btn of btnTrash) {
-        btn.addEventListener("click", (event) => {
-            const isRemove = window.confirm("Are u sure deleted ?")
-            if (isRemove) {
-                const id = event.target.dataset.id
-                fetch(`/workPosition/remove/${id}`, {
-                    method: "DELETE"
-                })
-                alert("Xóa thành công")
-                window.location.reload()
-            }
-        })
-    }
-    //revertOne
-    for (let btnRevert of btnReverts) {
-        btnRevert.addEventListener("click", async (event) => {
-            const isRemove = window.confirm("Khôi phục đối tượng này ?")
-            if (isRemove) {
-                const id = event.target.dataset.id
-                await fetch(`/workPosition/revert/${id}`, {
-                    method: "PATCH"
-                })
-                window.location.reload()
-            }
-        })
-    }
-    const btnsCheck = document.querySelectorAll(".check")
-    const btnDeleteAll = document.querySelector(".btnDeleteAll")
-    const btnDisabledDelete = document.querySelector(".btnDisabledDelete")
-    const btnDisabledRevert = document.querySelector(".btnDisabledRevert")
-    //Chưa checked thì disbale nút xóa all
-    let count = 0
-    const checkBtnDisabled = () => {
-        if (count === 0) {
-            btnDisabledDelete.setAttribute("disabled", true)
-            btnDisabledRevert.setAttribute("disabled", true)
-        } else {
-            btnDisabledDelete.removeAttribute("disabled")
-            btnDisabledRevert.removeAttribute("disabled")
+    document.addEventListener("DOMContentLoaded", () => {
+
+        const btnReverts = document.querySelectorAll("#icon_revert")
+        const btnTrash = document.querySelectorAll("#icon_moveToTrash");
+        //removeOne
+        for (let btn of btnTrash) {
+            btn.addEventListener("click", (event) => {
+                $.confirm({
+                    title: '<ion-icon name="trash-bin-outline"></ion-icon>',
+                    content: 'Bạn có chắc chắn muốn xóa ?',
+                    buttons: {
+                        confirm: {
+                            text: 'Confirm',
+                            btnClass: 'btn-red',
+                            action: function () {
+                                // Lấy ID của mục cần xóa từ thuộc tính data-id của nút
+                                const id = event.target.dataset.id;
+
+                                // Gọi API xóa mục
+                                fetch(`/workPosition/remove/${id}`, {
+                                    method: 'DELETE'
+                                }).then(response => {
+                                    if (response.ok) {
+                                        $.alert('Xóa thành công!');
+                                        setTimeout(() => {
+                                            window.location.reload()
+                                        }, 1000)
+                                    } else {
+                                        alert('Có lỗi xảy ra khi xóa mục');
+                                    }
+                                }).catch(error => {
+                                    $.alert('Đã hủy');
+                                });
+                            }
+                        },
+                        cancel: function () {
+                            $.alert('Đã hủy!');
+                        }
+                    }
+                });
+            })
         }
-    }
-    for (let checked of btnsCheck) {
-        checkBtnDisabled()
-        checked.addEventListener("click", (e) => {
-            if (checked.checked) {
-                count++
+        //revertOne
+        for (let btnRevert of btnReverts) {
+            btnRevert.addEventListener("click", async (event) => {
+                $.confirm({
+                    title: '<ion-icon name="help-circle-outline"></ion-icon>',
+                    content: 'Bạn muốn khôi phục ?',
+                    buttons: {
+                        confirm: {
+                            text: 'Confirm',
+                            btnClass: 'btn-red',
+                            action: function () {
+                                // Lấy ID của mục cần xóa từ thuộc tính data-id của nút
+                                const id = event.target.dataset.id;
+
+                                // Gọi API xóa mục
+                                fetch(`/workPosition/revert/${id}`, {
+                                    method: 'PATCH'
+                                }).then(response => {
+                                    if (response.ok) {
+                                        $.alert('Khôi phục thành công!');
+                                        setTimeout(() => {
+                                            window.location.reload()
+                                        }, 1000)
+                                    } else {
+                                        alert('Có lỗi xảy ra khi xóa mục');
+                                    }
+                                }).catch(error => {
+                                    $.alert('Đã hủy');
+                                });
+                            }
+                        },
+                        cancel: function () {
+                            $.alert('Đã hủy!');
+                        }
+                    }
+                });
+            })
+        }
+        const btnsCheck = document.querySelectorAll(".check")
+        const btnDeleteAll = document.querySelector(".btnDeleteAll")
+        const btnDisabledDelete = document.querySelector(".btnDisabledDelete")
+        const btnDisabledRevert = document.querySelector(".btnDisabledRevert")
+        //Chưa checked thì disbale nút xóa all
+        let count = 0
+        const checkBtnDisabled = () => {
+            if (count === 0) {
+                btnDisabledDelete.setAttribute("disabled", true)
+                btnDisabledRevert.setAttribute("disabled", true)
             } else {
-                count--
+                btnDisabledDelete.removeAttribute("disabled")
+                btnDisabledRevert.removeAttribute("disabled")
             }
+        }
+        for (let checked of btnsCheck) {
             checkBtnDisabled()
+            checked.addEventListener("click", (e) => {
+                if (checked.checked) {
+                    count++
+                } else {
+                    count--
+                }
+                checkBtnDisabled()
+            })
+        }
+        //removeAll
+        btnDeleteAll.addEventListener("click", async (e) => {
+            $.confirm({
+                title: '<ion-icon name="help-circle-outline"></ion-icon>',
+                content: 'Bạn muốn xóa mục đã chọn ?',
+                buttons: {
+                    confirm: {
+                        text: 'Confirm',
+                        btnClass: 'btn-red',
+                        action: async function () {
+                            const id = event.target.dataset.id;
+                            for (let btnCheck of btnsCheck) {
+                                if (btnCheck.checked) {
+                                    const id = btnCheck.dataset.idcheckbox
+                                    const res = await fetch(`/workPosition/remove/${id}`, {
+                                        method: "DELETE"
+                                    })
+                                }
+                            }
+                            $.alert('Xóa thành công!');
+                            setTimeout(() => {
+                                window.location.reload()
+                            }, 1000)
+                        }
+                    }
+                },
+                cancel: function () {
+                    $.alert('Đã hủy!');
+                }
+            })
         })
-    }
-    //removeAll
-    btnDeleteAll.addEventListener("click", async (e) => {
-        const isConfirmDeleteByCheckbox = window.confirm("Xác nhận xóa những đối tượng bạn đã chọn ?")
-        if (isConfirmDeleteByCheckbox) {
-            for (let btnCheck of btnsCheck) {
-                if (btnCheck.checked) {
-                    const id = btnCheck.dataset.idcheckbox
-                    fetch(`/workPosition/remove/${id}`, {
-                        method: "DELETE"
-                    })
+        //RevertByCheckBox
+        const btnRevertAll = document.querySelector(".btnRevertAll")
+        btnRevertAll.addEventListener("click", async (e) => {
+            $.confirm({
+                title: '<ion-icon name="help-circle-outline"></ion-icon>',
+                content: 'Bạn muốn khôi phục mục đã chọn ?',
+                buttons: {
+                    confirm: {
+                        text: 'Confirm',
+                        btnClass: 'btn-red',
+                        action: async function () {
+                            const id = event.target.dataset.id;
+                            for (let btnCheck of btnsCheck) {
+                                if (btnCheck.checked) {
+                                    const id = btnCheck.dataset.idcheckbox
+                                    const res = await fetch(`/workPosition/revert/${id}`, {
+                                        method: "PATCH"
+                                    })
+                                }
+                            }
+                            $.alert('Khôi phục thành công!')
+                            setTimeout(() => {
+                                window.location.reload()
+                            }, 1000)
+                        }
+                    },
+                    cancel: function () {
+                        $.alert('Đã hủy!');
+                    }
                 }
-            }
-            alert("Xóa thành công!")
-            window.location.reload()
-        }
-    })
-    //RevertByCheckBox
-    const btnRevertAll = document.querySelector(".btnRevertAll")
-    btnRevertAll.addEventListener("click", async (e) => {
-        const isConfirmRevertByCheckbox = window.confirm("Xác nhận khôi phục những đối tượng bạn đã chọn ?")
-        if (isConfirmRevertByCheckbox) {
-            for (let btnCheck of btnsCheck) {
-                if (btnCheck.checked) {
-                    const id = btnCheck.dataset.idcheckbox
-                    fetch(`/workPosition/revert/${id}`, {
-                        method: "PATCH"
-                    })
-                }
-            }
-            alert("Khôi phục thành công!")
-            window.location.reload()
-        }
+            });
+        })
     })
 </script>

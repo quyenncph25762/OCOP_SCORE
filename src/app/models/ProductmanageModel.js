@@ -3,45 +3,54 @@ const ProductmanageController = {
     getAllProduct: (callback) => {
         const query = `SELECT 
         product.*,
-        customer.customer_name AS customer_name,
-        productgroup.productGroup_name AS productGroup_name,
-        yearreview.yearName AS yearName
+        customer.Name AS customer_name,
+        productgroup.Name AS productGroup_name,
+        yearreview.yearName AS yearName,
+        customer.IsDeleted AS customer_IsDeleted,
+        productgroup.IsDeleted AS productgroup_IsDeleted,
+        yearreview.isDeleted AS yearreview_IsDeleted
     FROM 
         product
     JOIN 
-        customer ON customer._id = product.customer_id
+        customer ON customer._id = product.Customer_id
     JOIN 
-        productgroup ON productgroup._id = product.productGroup_id
+        productgroup ON productgroup._id = product.ProductGroup_id
     JOIN
-        yearreview ON yearreview._id = product.productYearId
+        yearreview ON yearreview._id = product.ProductYearId
     WHERE 
-        product.is_deleted = 0;
+        product.IsDeleted = 0;
         `;
         connection.query(query, callback);
 
     },
-    getProductbyId: (callback) => {
-        const query = 'SELECT * FROM product WHERE product_id = ?';
-        connection.query(query, callback);
+
+    getProductbyId: (id, callback) => {
+        const query = 'SELECT * FROM product WHERE _id = ?';
+        connection.query(query, id, callback);
     },
     addProduct: (product, callback) => {
-        const query = 'INSERT INTO product (product_name,product_code,productGroup_id,customer_id, productYearId, product_note,description) VALUES (?,?,?,?,?,?,?)';
-        const values = [product.product_name, product.product_code, product.productGroup_id, product.customer_id, product.productYearId, product.product_note, product.description];
+        const query = 'INSERT INTO product (Name,Code,ProductGroup_id,Customer_id, ProductYearId, Note,Description,RankOcop,Avatar,TotalScore,IsActive) VALUES (?,?,?,?,?,?,?,?,?,?,?)';
+        const values = [product.Name, product.Code, product.ProductGroup_id, product.Customer_id, product.ProductYearId, product.Note, product.Description, product.RankOcop, product.Avatar, product.TotalScore, product.IsActive];
         connection.query(query, values, callback);
     },
-    findProduct: (product_name, product_code, product_group, productYearId, product_note, customer_id, description, callback) => {
-        const query = 'SELECT * FROM product WHERE product_name = ? AND product_code = ? AND productGroup_id = ? AND productYearId = ? AND product_note = ? AND customer_id = ? AND description = ?';
-        const values = [product_name, product_code, product_group, productYearId, product_note, , customer_id, description];
+    findProductAdd: (product, callback) => {
+        const query = 'SELECT * FROM product WHERE Name = ?';
+        const values = [product.Name];
+        connection.query(query, values, callback);
+    },
+    findProductUpdate: (id, product, callback) => {
+        const query = `SELECT * FROM product WHERE Name = ? AND _id != ${id}`;
+        const values = [product.Name];
         connection.query(query, values, callback);
     },
     updateProduct: (id, product, callback) => {
-        const query = 'UPDATE product SET product_name = ?,product_code = ?, productGroup_id = ?,customer_id = ?, productYearId = ?, product_note = ? , description = ? WHERE _id = ?';
-        const values = [product.product_name, product.product_code, product.productGroup_id, product.customer_id, product.productYearId, product.product_note, product.description, id];
+        const query = 'UPDATE product SET Name = ?,Code = ?, ProductGroup_id = ? , Customer_id = ?, ProductYearId = ?, Note = ? , Description = ? , RankOcop = ? , Avatar = ? , TotalScore = ? , Status = ? , IsActive = ?  WHERE _id = ?';
+        const values = [product.Name, product.Code, product.ProductGroup_id, product.Customer_id, product.ProductYearId, product.Note, product.Description, product.RankOcop, product.Avatar, product.TotalScore, product.Status, product.IsActive, id];
         connection.query(query, values, callback);
     },
     // delete to trash
-    deleteToTrashProduct: (product_id, callback) => {
-        const query = 'UPDATE product SET is_deleted = 1 WHERE _id = ?';
+    deleteToTrashProduct: (product_id, userId, callback) => {
+        const query = `UPDATE product SET is_deleted = 1 , DeleterUser_id = ${userId} , DeletionTime = CURRENT_TIMESTAMP  WHERE _id = ?`;
         connection.query(query, [product_id], callback);
     },
     // khoi phuc
@@ -58,16 +67,19 @@ const ProductmanageController = {
     getAllProductFromtTrash: (callback) => {
         const query = `SELECT 
         product.*,
-        customer.customer_name AS customer_name,
-        productgroup.productGroup_name AS productGroup_name
+        customer.Name AS Name,
+        productgroup.Name AS productGroup_name,
+        yearreview.yearName AS yearName
     FROM 
         product
     JOIN 
-        customer ON customer._id = product.customer_id
+        customer ON customer._id = product.Customer_id
     JOIN 
-        productgroup ON productgroup._id = product.productGroup_id
+        productgroup ON productgroup._id = product.ProductGroup_id
+    JOIN
+        yearreview ON yearreview._id = product.ProductYearId
     WHERE 
-        product.is_deleted = 1;
+        product.IsDeleted = 1;
         `
         connection.query(query, callback)
     },

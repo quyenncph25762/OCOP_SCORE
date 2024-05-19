@@ -1,56 +1,3 @@
-{{#if this._id}}
-<div class="modal fade" id="exampleModal{{this._id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content" style="width: 800px;">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Thêm chủ thể</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form method="POST" action="/customer-manage/{{this._id}}/update">
-                    <div class="form-row">
-                        {{!-- title --}}
-                        <div class="col-md-8 mb-3">
-                            <label for="customer_name">Tên chủ thể</label>
-                            <input value="{{this.customer_name}}" name="customer_name" type="text" class="form-control"
-                                id="customer_name" required>
-                        </div>
-                        {{!-- status --}}
-                        <div class="col-md-4 mb-3">
-                            <label for="customer_otherName">Người đại diện</label>
-                            <input value="{{this.customer_otherName}}" name="customer_otherName" type="text"
-                                class="form-control" id="customer_otherName" required>
-                        </div>
-                        {{!-- code --}}
-                        <div class="col-md-6 mb-3">
-                            <label for="customer_phone">Số điện thoại</label>
-                            <input value="{{this.customer_phone}}" name="customer_phone" type="text"
-                                class="form-control" id="customer_phone" required>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="customer_email">Email</label>
-                            <input value="{{this.customer_email}}" name="customer_email" type="email"
-                                class="form-control" id="customer_email" required>
-                        </div>
-                        <div class="col-md-12 mb-3">
-                            <label for="customer_address">Address</label>
-                            <input value="{{this.customer_address}}" name="customer_address" type="text"
-                                class="form-control" id="customer_address" required>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button class="btn btn-warning">Câp nhật chủ thể</button>
-                        </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-{{/if}}
-
 {{!-- post --}}
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
@@ -63,39 +10,134 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form method="POST" action="/customer-manage/create">
+                <form>
                     <div class="form-row">
-                        {{!-- title --}}
-                        <div class="col-md-8 mb-3">
-                            <label for="customer_name">Tên chủ thể</label>
-                            <input name="customer_name" type="text" class="form-control" id="customer_name" required>
-                        </div>
-                        {{!-- status --}}
-                        <div class="col-md-4 mb-3">
-                            <label for="customer_otherName">Người đại diện</label>
-                            <input name="customer_otherName" type="text" class="form-control" id="customer_otherName"
+                        {{!-- creatorUser --}}
+                        <input type="text" name="CreatorUser_id" id="CreatorUser_id" value="{{User._id}}" hidden>
+                        {{!-- Code --}}
+                        <div class="col-md-2 mb-3">
+                            <label for="Code">Code</label>
+                            <input value="{{this.Code}}" name="Code" type="text" class="form-control" id="Code"
                                 required>
+                        </div>
+                        {{!-- title --}}
+                        <div class="col-md-6 mb-3">
+                            <label for="Name">Tên chủ thể</label>
+                            <input name="Name" type="text" class="form-control" id="Name" required>
+                        </div>
+                        {{!-- SubName --}}
+                        <div class="col-md-4 mb-3">
+                            <label for="SubName">Người đại diện</label>
+                            <input name="SubName" type="text" class="form-control" id="SubName" required>
+                            <span
+                                style="color: #de2935;font-size: 14px;font-style: italic;margin-top: 5px;font-weight: 600;"
+                                id="messageError"></span>
                         </div>
                         {{!-- code --}}
                         <div class="col-md-6 mb-3">
-                            <label for="customer_phone">Số điện thoại</label>
-                            <input name="customer_phone" type="text" class="form-control" id="customer_phone" required>
+                            <label for="Phone">Số điện thoại</label>
+                            <input name="Phone" type="text" class="form-control" id="Phone" required>
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label for="customer_email">Email</label>
-                            <input name="customer_email" type="email" class="form-control" id="customer_email" required>
+                            <label for="Email">Email</label>
+                            <input name="Email" type="email" class="form-control" id="Email" required>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="customer_email">Tỉnh/Thành phố</label>
+                            <select name="City_id" id="City_id" class="form-control">
+                                <option value="" selected>--</option>
+                                {{#each Province}}
+                                <option value="{{this._id}}">{{this.Name}}
+                                </option>
+                                {{/each}}
+                            </select>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="customer_email">Quận / Huyện</label>
+                            <select name="District_id" id="District_id" class="form-control">
+                                <option value="" selected>--</option>
+                                {{#each District}}
+                                <option value="{{this._id}}">{{this.Name}}
+                                </option>
+                                {{/each}}
+                            </select>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="customer_email">Xã / Phường</label>
+                            <select name="Ward_id" id="Ward_id" class="form-control">
+                                <option value="" selected>--</option>
+                                {{#each Ward}}
+                                <option value="{{this._id}}">{{this.Name}}
+                                </option>
+                                {{/each}}
+                            </select>
                         </div>
                         <div class="col-md-12 mb-3">
-                            <label for="customer_address">Address</label>
-                            <input name="customer_address" type="text" class="form-control" id="customer_address"
-                                required>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button class="btn btn-primary">Thêm chủ thể</button>
+                            <label for="Address">Address</label>
+                            <input name="Address" type="text" class="form-control" id="Address">
                         </div>
                 </form>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+                    <button type="button" onclick="handleAdd()" class="btn btn-success">Thêm chủ thể</button>
+                </div>
             </div>
         </div>
     </div>
 </div>
+
+{{!-- random code --}}
+<script>
+    function generateRandomCode(length) {
+        let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789';
+        let code = '';
+        for (let i = 0; i < length; i++) {
+            code += characters.charAt(Math.floor(Math.random() * characters.length));
+        }
+        return code;
+    }
+    const codeRandom = generateRandomCode(8)
+    const codeValue = document.querySelector("#Code")
+    codeValue.value = codeRandom
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"></script>
+<script>
+    async function handleAdd() {
+        const Code = document.getElementById("Code").value
+        const Name = document.getElementById("Name").value
+        const Address = document.getElementById("Address").value
+        const SubName = document.getElementById("SubName").value
+        const Phone = document.getElementById("Phone").value
+        const Email = document.getElementById("Email").value
+        const City_id = document.getElementById("City_id").value
+        const District_id = document.getElementById("District_id").value
+        const Ward_id = document.getElementById("Ward_id").value
+        const CreatorUser_id = document.getElementById("CreatorUser_id").value
+        const formData = new FormData()
+        formData.append("Code", Code)
+        formData.append("Name", Name)
+        formData.append("Address", Address)
+        formData.append("SubName", SubName)
+        formData.append("Phone", Phone)
+        formData.append("Email", Email)
+        formData.append("City_id", City_id)
+        formData.append("District_id", District_id)
+        formData.append("Ward_id", Ward_id)
+        formData.append("CreatorUser_id", CreatorUser_id)
+        const res = await fetch("/customer-manage/create", {
+            method: "POST",
+            body: formData
+        })
+        if (res.ok) {
+            const data = await res.json()
+            alert(`Success:${data.message}`)
+            window.location.replace("/customer-manage")
+        } else {
+            const data = await res.json()
+            alert(`Error${data.message}`)
+            console.error("Response was not ok:", res.status);
+        }
+    }
+    //update
+
+</script>

@@ -11,32 +11,36 @@
                 </button>
             </div>
             <div class="modal-body" class="width: 100%">
-                <form method="POST" action="/workDepartment/update/{{this._id}}">
+                <form>
                     <div class="form-row">
                         {{!-- code --}}
                         <div class="col-md-4 mb-3">
                             <label for="code">Mã</label>
-                            <input value="{{this.code}}" id="code" name="code" type="text" class="form-control"
-                                id="code" required>
+                            <input value="{{this.code}}" id="code{{this._id}}" name="code" type="text"
+                                class="form-control" id="code" required>
                         </div>
                         {{!-- title --}}
                         <div class="col-md-8 mb-3">
                             <label for="title">Tên phòng ban</label>
-                            <input value="{{this.title}}" name="title" type="text" class="form-control" id="title"
-                                required>
+                            <input value="{{this.title}}" name="title" type="text" class="form-control"
+                                id="title{{this._id}}" required>
+                            <span
+                                style="color: #de2935;font-size: 14px;font-style: italic;margin-top: 5px;font-weight: 600;"
+                                id="messageErrorUpdate{{this._id}}"></span>
                         </div>
                         {{!-- note --}}
                         <div class="col-md-12 mb-3 mt-3">
                             <label for="note">Ghi
                                 chú</label>
-                            <textarea name="description" class="form-control" id="">{{this.description}}</textarea>
+                            <textarea name="description" class="form-control"
+                                id="description{{this._id}}">{{this.description}}</textarea>
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                        <button class="btn btn-warning">Câp nhật phòng ban</button>
-                    </div>
                 </form>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    <button onclick="handleUpdate('{{this._id}}')" class="btn btn-warning">Câp nhật phòng ban</button>
+                </div>
             </div>
         </div>
     </div>
@@ -54,8 +58,10 @@
                 </button>
             </div>
             <div class="modal-body" class="width: 100%">
-                <form method="POST" action="/workDepartment/add">
+                <form>
                     <div class="form-row">
+                        {{!-- idCreate --}}
+                        <input id="creatorUser_id" type="text" value="{{User._id}}" name="creatorUser_id" hidden>
                         {{!-- code --}}
                         <div class="col-md-4 mb-3">
                             <label for="code">Mã</label>
@@ -65,18 +71,21 @@
                         <div class="col-md-8 mb-3">
                             <label for="title">Tên phòng ban</label>
                             <input name="title" type="text" class="form-control" id="title" required>
+                            <span
+                                style="color: #de2935;font-size: 14px;font-style: italic;margin-top: 5px;font-weight: 600;"
+                                id="messageError"></span>
                         </div>
                         {{!-- note --}}
                         <div class="col-md-12 mb-3 mt-3">
-                            <label for="note">Mô tả</label>
-                            <textarea name="description" class="form-control" id=""></textarea>
+                            <label for="description">Mô tả</label>
+                            <textarea name="description" class="form-control" id="description"></textarea>
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                        <button class="btn btn-success">Thêm phòng ban</button>
-                    </div>
                 </form>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    <button onclick="handleAdd()" class="btn btn-success">Thêm phòng ban</button>
+                </div>
             </div>
         </div>
     </div>
@@ -95,4 +104,56 @@
     const codeRandom = generateRandomCode(8)
     const codeValue = document.querySelector("#code")
     codeValue.value = codeRandom
+</script>
+{{!-- actions req --}}
+<script>
+    async function handleAdd() {
+        const code = document.getElementById("code").value
+        const title = document.getElementById("title").value
+        const description = document.getElementById("description").value
+        const creatorUser_id = document.getElementById("creatorUser_id").value
+        const formData = new FormData()
+        formData.append("title", title)
+        formData.append("code", code)
+        formData.append("description", description)
+        formData.append("creatorUser_id", creatorUser_id)
+        const res = await fetch("/workDepartment/add", {
+            method: "POST",
+            body: formData
+        })
+        if (res.ok) {
+            const data = await res.json()
+            alert(`${data.message}`)
+            window.location.replace("/workDepartment")
+        } else {
+            const data = await res.json()
+            document.getElementById("messageError").innerHTML = data.message
+            console.error("Response was not ok:", res.status);
+        }
+    }
+
+    async function handleUpdate(id) {
+        const title = document.getElementById(`title${id}`).value
+        const description = document.getElementById(`description${id}`).value
+        const code = document.getElementById(`code${id}`).value
+        const formData = new FormData()
+        formData.append("title", title)
+        formData.append("description", description)
+        formData.append("code", code)
+
+        const res = await fetch(`/workDepartment/update/${id}`, {
+            method: "POST",
+            body: formData
+        })
+        if (res.ok) {
+            const data = await res.json()
+            alert(`${data.message}`)
+            window.location.replace("/workDepartment")
+        } else {
+            const data = await res.json()
+            const messageErrorUpdate = document.getElementById(`messageErrorUpdate${id}`)
+            messageErrorUpdate.innerHTML = data.message
+            console.error("Response was not ok:", res.status);
+        }
+    }
 </script>

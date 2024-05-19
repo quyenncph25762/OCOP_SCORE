@@ -17,12 +17,20 @@
     min-width: 650px;
     margin-left: 50%;
     transform: translateX(-50%);
-    background-color: black !important;
+    background-image: url(../images/bg-themes/2.png);
+    background-size: cover;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     max-width: auto;
 }
+
+.modal-scoreTemp {
+    min-width: 1200px;
+    font-size: 13px;
+}
+
+
 
 
 /* Style for the button */
@@ -126,9 +134,8 @@ body {
 }
 
 .file-upload-content {
-    display: none;
+    /* display: none; */
     text-align: center;
-
 }
 
 .file-upload-input {
@@ -232,4 +239,48 @@ ion-icon[name="link-outline"] {
 ion-icon[name="link-outline"]:hover {
     background-color: #ccc;
     border-radius: 10px;
+}
+
+ion-icon[name="eye-outline"] {
+    color: rgb(48, 190, 150);
+    font-size: 20px;
+    cursor: pointer;
+}
+
+ion-icon[name="attach-outline"] {
+    color: rgb(221, 62, 72);
+    font-size: 20px;
+    cursor: pointer;
+}
+
+ion-icon[name="attach-outline"]:hover {
+    background-color: #ccc;
+    border-radius: 5px;
+}
+
+ion-icon[name="file-tray-outline"] {
+    font-size: 20px;
+    cursor: pointer;
+    line-height: 100%;
+}
+
+.icons-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.jconfirm-title-c {
+    color: red;
+    text-align: center;
+    font-size: 30px;
+}
+
+.jconfirm-title-c .jconfirm-title {
+    font-size: 40px !important;
+}
+
+.jconfirm-content-pane {
+    color: #000 !important;
+    font-size: 20px;
 }
