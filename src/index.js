@@ -41,6 +41,7 @@ Handlebars.registerHelper('ifCond', function (v1, v2, options) {
     }
     return options.inverse(this);
 });
+
 // chuyển chữ viết thường
 Handlebars.registerHelper('toLowerCase', function (str) {
     return str?.toLowerCase();

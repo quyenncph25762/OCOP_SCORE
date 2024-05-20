@@ -1,0 +1,111 @@
+{{> header}}
+<div class="content-wrapper">
+    <div class="container-fluid">
+        <div class="row" style="max-width: 100%; display: contents;">
+            <ul class="search-customer"
+                style="list-style: none; display:flex; justify-content: space-between; align-items: center;padding: 0;">
+                <p style="font-size: 18px;font-weight: 600">Chấm điểm OCOP | Tên sản phẩm</p>
+                <div class="import_customer_button"
+                    style="list-style: none; display:flex; justify-content: space-between; align-items: center;">
+                    <button class="btn btn-warning" data-toggle="modal" data-target="#exampleModal">Cập nhật</button>
+                </div>
+                {{> modalRole}}
+            </ul>
+            </li>
+            </ul>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="row row-content">
+            <div class="col-sm-3">
+                <div class="card shadow">
+                    <div class="card-body">
+                        <div class="">
+                            <img style="width: 100%;height: 150px;"
+                                src="https://csdl.ocopthaibinh.vn/Common/Images/default-contact-image.jpg" alt="">
+                        </div>
+                        <p class="title-scoreTempDetail">DƯỠNG DA 123 PLUS +</p>
+                        <div class="my-4" style="border-top: 1px dashed #ccc;"></div>
+                        <div class="" style="font-size: 16px;">
+                            <div class="d-flex justify-content-between">
+                                <p style="font-size: 14px;min-width: 75px">Chủ thể:</p>
+                                <p class="" style="font-weight: 600;font-size: 12px;opacity: 0.7;">CÔNG TY TNHH DƯỢC
+                                    PHẨM QUỐC TẾ TTB
+                                    GROUP</p>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <p style="font-size: 14px;min-width: 75px">Nhóm sản phẩm:</p>
+                                <p class="" style="font-weight: 600;font-size: 12px;opacity: 0.7">Nhóm 19: Bộ sản phẩm:
+                                    Mỹ phẩm có
+                                    thành phần từ Thảo dược</p>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-9 list_citationUpdate" style="overflow-y: auto;height: 100%;font-size: 12px;">
+                <div class="col-12">
+                    <div class="card shadow">
+                        <div class="card-body">
+                            <table class="table table-bordered table-striped table-hover table-scoreTemp">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">
+                                        </th>
+                                        <th scope="col">
+                                            Số điểm
+                                        </th>
+                                        <th scope="col">
+                                            File đính kèm
+                                        </th>
+                                        <th scope="col">
+                                            Chọn
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbodyScoreTemp">
+                                    <tr>
+                                        <td
+                                            style="font-weight: 600; max-width: 500px;text-wrap: wrap; word-wrap: break-word; overflow-wrap: break-word;">
+                                            Name
+                                        </td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td
+                                            style="font-weight: 600; max-width: 500px;text-wrap: wrap; word-wrap: break-word; overflow-wrap: break-word;">
+                                            Name
+                                        </td>
+                                        <td></td>
+                                        <td><ion-icon name="attach-outline"></ion-icon></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 400;text-wrap: wrap;max-width: 500px; word-wrap: break-word; overflow-wrap: break-word;color:#bbaeae"
+                                            class="test">
+                                            Name
+                                        </td>
+                                        <td class="point"
+                                            style="font-style: italic; color: rgb(232, 67, 67);font-weight: 600;">
+                                            (3 điểm)
+                                        </td>
+                                        <td>
+                                        </td>
+                                        <td style="color: red;font-style: italic;text-align: center;">
+                                            <input type="checkbox" name="" id="" />
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div><!--End content-wrapper-->
+{{> footer}}

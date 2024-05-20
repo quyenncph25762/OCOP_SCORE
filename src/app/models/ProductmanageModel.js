@@ -50,12 +50,12 @@ const ProductmanageController = {
     },
     // delete to trash
     deleteToTrashProduct: (product_id, userId, callback) => {
-        const query = `UPDATE product SET is_deleted = 1 , DeleterUser_id = ${userId} , DeletionTime = CURRENT_TIMESTAMP  WHERE _id = ?`;
+        const query = `UPDATE product SET IsDeleted = 1 , DeleterUser_id = ${userId} , DeletionTime = CURRENT_TIMESTAMP  WHERE _id = ?`;
         connection.query(query, [product_id], callback);
     },
     // khoi phuc
     revertProduct: (product_id, callback) => {
-        const query = 'UPDATE product SET is_deleted = 0 WHERE _id = ?';
+        const query = 'UPDATE product SET IsDeleted = 0 WHERE _id = ?';
         connection.query(query, [product_id], callback);
     },
     // delete forever
@@ -67,9 +67,12 @@ const ProductmanageController = {
     getAllProductFromtTrash: (callback) => {
         const query = `SELECT 
         product.*,
-        customer.Name AS Name,
+        customer.Name AS customer_name,
         productgroup.Name AS productGroup_name,
-        yearreview.yearName AS yearName
+        yearreview.yearName AS yearName,
+        customer.IsDeleted AS customer_IsDeleted,
+        productgroup.IsDeleted AS productgroup_IsDeleted,
+        yearreview.isDeleted AS yearreview_IsDeleted
     FROM 
         product
     JOIN 

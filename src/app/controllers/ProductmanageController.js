@@ -71,9 +71,8 @@ class ProductmanageController {
                                                     message: `${err}: ProductControllers => productDetail`
                                                 })
                                             }
-                                            if (User?.[0].role_title.toLowerCase() !== "admin") {
-
-                                                res.redirect("/client")
+                                            if (!User?.[0]) {
+                                                res.redirect("/auth/loginPage")
                                             } else {
                                                 res.render('product_manage', { viewData: viewData, Customer: Customer, ProductGroup: ProductGroup, Review: Review, User: User[0], ProductDetail: ProductDetail });
                                             }
@@ -89,6 +88,86 @@ class ProductmanageController {
             res.redirect("/auth/loginPage")
         }
     }
+    // product_trash
+    productTrash(req, res, next) {
+        const page = parseInt(req.query.page) || 1; // Trang hiện tại
+        const pageSize = 8; // Kích thước trang
+        const startIndex = (page - 1) * pageSize;
+        const endIndex = page * pageSize;
+        const searchItem = req.query.search || '';
+        const cookie = req.cookies
+        if (cookie?.User) {
+            const UserDataCookie = jwt.verify(cookie.User, SECRET_CODE)
+            AccountModel.fetchOneUser(UserDataCookie?._id, (err, User) => {
+                if (err) {
+                    return res.status(400).json({
+                        message: err
+                    })
+                }
+                ProductmanageModel.getAllProductFromtTrash((err, data) => {
+                    if (err) {
+                        console.log('Lỗi truy vấn', err)
+                    } else {
+                        const totalPages = Math.ceil(data.length / pageSize);
+                        const pages = Array.from({ length: totalPages }, (_, index) => {
+                            return {
+                                number: index + 1,
+                                active: index + 1 === page,
+                                isDots: index + 1 > 5
+                            };
+                        });
+                        const paginatedData = data.slice(startIndex, endIndex);
+                        // Chuẩn bị dữ liệu để truyền vào template
+                        const viewData = {
+                            data: paginatedData,
+                            pagination: {
+                                prev: page > 1 ? page - 1 : null,
+                                next: endIndex < data.length ? page + 1 : null,
+                                pages: pages,
+                            },
+                        };
+                        // lay ten chu the
+                        CustomerModel.getAllCustomer((err, Customer) => {
+                            if (err) {
+                                return res.status(400).json({
+                                    message: `${err}: ProductControllers => CustomerModel`
+                                })
+                            } else {
+                                ProductGroupModel.fetchAllProductGroup((err, ProductGroup) => {
+                                    if (err) {
+                                        return res.status(400).json({
+                                            message: `${err}: ProductControllers => ProductGroupModel`
+                                        })
+                                    }
+                                    ReviewModel.fetchAllReviewYear((err, Review) => {
+                                        if (err) {
+                                            return res.status(400).json({
+                                                message: `${err}: ProductControllers => ReviewModel`
+                                            })
+                                        }
+                                        ProductDetail.getAllProductDetailLimit((err, ProductDetail) => {
+                                            if (err) {
+                                                return res.status(400).json({
+                                                    message: `${err}: ProductControllers => productDetail`
+                                                })
+                                            }
+                                            if (!User?.[0]) {
+                                                res.redirect("/auth/loginPage")
+                                            } else {
+                                                res.render('product_trash', { viewData: viewData, Customer: Customer, ProductGroup: ProductGroup, Review: Review, User: User[0], ProductDetail: ProductDetail });
+                                            }
+                                        })
+                                    })
+                                })
+                            }
+                        })
+                    }
+                })
+            })
+        }
+
+    }
+    // get by id
     getbyId() {
         const page = parseInt(req.query.page) || 1; // Trang hiện tại
         const pageSize = 8; // Kích thước trang
@@ -227,18 +306,28 @@ class ProductmanageController {
     // xoa vao thung rac
     deleteToTrash(req, res, next) {
         const product_id = req.params.id
-        ProductmanageModel.deleteToTrashProduct(product_id, (err, results) => {
-            if (err) {
-                console.error('Lỗi truy vấn:', err);
-                res.status(500).send('Internal Server Error');
-            } else {
-                if (results.affectedRows === 0) {
-                    res.status(404).send(' not found');
-                } else {
-                    res.redirect('back')
+        const cookie = req.cookies
+        if (cookie?.User) {
+            const UserDataCookie = jwt.verify(cookie.User, SECRET_CODE)
+            AccountModel.fetchOneUser(UserDataCookie?._id, (err, User) => {
+                if (err) {
+                    return res.status(400).json({
+                        message: err
+                    })
                 }
-            }
-        })
+                ProductmanageModel.deleteToTrashProduct(product_id, User[0]._id, (err, results) => {
+                    if (err) {
+                        console.log('Lỗi truy vấn:', err);
+                        return res.status(500).send('Internal Server Error');
+                    } else {
+                        return res.status(204).send('Xoa thanh cong!');
+                    }
+                })
+            })
+        } else {
+            res.redirect("/auth/loginPage")
+        }
+
     }
     // khoi phuc
     revert(req, res, next) {
@@ -272,72 +361,7 @@ class ProductmanageController {
             }
         })
     }
-    // product_trash
-    productTrash(req, res, next) {
-        const page = parseInt(req.query.page) || 1; // Trang hiện tại
-        const pageSize = 8; // Kích thước trang
-        const startIndex = (page - 1) * pageSize;
-        const endIndex = page * pageSize;
-        const searchItem = req.query.search || '';
-        const cookie = req.cookies
-        if (cookie?.User) {
-            const UserDataCookie = jwt.verify(cookie.User, SECRET_CODE)
-            AccountModel.fetchOneUser(UserDataCookie?._id, (err, User) => {
-                if (err) {
-                    return res.status(400).json({
-                        message: err
-                    })
-                }
-                ProductmanageModel.getAllProductFromtTrash((err, data) => {
-                    if (err) {
-                        console.log('Lỗi truy vấn', err)
-                    } else {
-                        const totalPages = Math.ceil(data.length / pageSize);
-                        const pages = Array.from({ length: totalPages }, (_, index) => {
-                            return {
-                                number: index + 1,
-                                active: index + 1 === page,
-                                isDots: index + 1 > 5
-                            };
-                        });
-                        const paginatedData = data.slice(startIndex, endIndex);
-                        // Chuẩn bị dữ liệu để truyền vào template
-                        const viewData = {
-                            data: paginatedData,
-                            pagination: {
-                                prev: page > 1 ? page - 1 : null,
-                                next: endIndex < data.length ? page + 1 : null,
-                                pages: pages,
-                            },
-                        };
-                        // lay ten chu the
-                        CustomerModel.getAllCustomer((err, Customer) => {
-                            if (err) {
-                                return res.status(400).json({
-                                    message: `${err}: ProductControllers => CustomerModel`
-                                })
-                            } else {
-                                ProductGroupModel.fetchAllProductGroup((err, ProductGroup) => {
-                                    if (err) {
-                                        return res.status(400).json({
-                                            message: `${err}: ProductControllers => ProductGroupModel`
-                                        })
-                                    }
-                                    if (User?.[0].role_title.toLowerCase() !== "admin") {
 
-                                        res.redirect("/client")
-                                    } else {
-                                        res.render('product_trash', { viewData: viewData, Customer: Customer, ProductGroup: ProductGroup, User: User[0] });
-                                    }
-                                })
-                            }
-                        })
-                    }
-                })
-            })
-        }
-
-    }
 
 }
 

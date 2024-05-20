@@ -230,6 +230,18 @@ ion-icon[name="create-outline"] {
     cursor: pointer;
 }
 
+ion-icon[name="checkbox-outline"] {
+    color: rgb(68, 201, 146);
+    font-size: 20px;
+    cursor: pointer;
+}
+
+ion-icon[name="receipt-outline"] {
+    color: rgb(199, 128, 48);
+    font-size: 20px;
+    cursor: pointer;
+}
+
 ion-icon[name="link-outline"] {
     color: red;
     font-size: 20px;
@@ -253,6 +265,7 @@ ion-icon[name="attach-outline"] {
     cursor: pointer;
 }
 
+
 ion-icon[name="attach-outline"]:hover {
     background-color: #ccc;
     border-radius: 5px;
@@ -262,6 +275,59 @@ ion-icon[name="file-tray-outline"] {
     font-size: 20px;
     cursor: pointer;
     line-height: 100%;
+}
+
+ion-icon[name="ribbon-outline"] {
+    font-size: 20px;
+    cursor: pointer;
+}
+
+ion-icon[name="star"] {
+    font-size: 16px;
+    cursor: pointer;
+    color: yellow;
+}
+
+.text-muted {
+    color: yellow !important;
+}
+
+/* icons */
+.icons {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.box__input-headerTable ion-icon[name="search-outline"] {
+    font-size: 20px;
+    cursor: pointer;
+    background: #4287f5;
+    padding: 9px;
+    position: absolute;
+    z-index: 1;
+}
+
+.box__input-headerTable {
+    display: flex;
+    align-items: center;
+}
+
+
+
+input.form-control.input-headerTable.w-100 {
+    padding-left: 50px;
+    overflow: hidden;
+}
+
+.statusLabel {
+    background: #e3a922;
+    padding: 2px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .icons-row {
@@ -283,4 +349,12 @@ ion-icon[name="file-tray-outline"] {
 .jconfirm-content-pane {
     color: #000 !important;
     font-size: 20px;
+}
+
+.title-scoreTempDetail {
+    text-align: center;
+    font-size: 18px;
+    padding-top: 18px;
+    width: 100%;
+    font-weight: 600;
 }

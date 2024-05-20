@@ -1,3 +1,4 @@
+const ArrId = []
 const handleUpdate = async (id) => {
     const Code = document.getElementById(`Code${id}`)
     const Name = document.getElementById(`Name${id}`)
@@ -9,6 +10,9 @@ const handleUpdate = async (id) => {
     const Note = document.getElementById(`Note${id}`)
     const Avatar = document.getElementById(`avatar${id}`)
     const imagePreview = document.getElementById(`avatarPreview${id}`)
+    const AttachFile = Array.from(document.querySelectorAll("#AttachFile")).map(e => e.files)
+    const ProductDetailId = Array.from(document.querySelectorAll("#AttachFile")).map(e => e.getAttribute("data-productDetailId"))
+
     const fileUrl = Avatar.files && Avatar.files[0] ? URL.createObjectURL(Avatar.files[0]) : imagePreview.src;
     const index = fileUrl.indexOf("Uploads/");
     let relativePath = "";
@@ -32,6 +36,45 @@ const handleUpdate = async (id) => {
     if (!response.ok) {
         alert("Lỗi cập nhật sản phẩm")
     }
-    const responseJson = await response.json()
-    console.log(responseJson)
+    const arrResponseDelete = []
+    for (const idGallery of ArrId) {
+        const res = await fetch(`/gallery/delete/${idGallery}`, {
+            method: "DELETE"
+        })
+        arrResponseDelete.push(res)
+    }
+    await Promise.all(arrResponseDelete)
+    // const responseJson = await response.json()
+    const reqGalleryNew = []
+    for (let i = 0; i < AttachFile.length; i++) {
+        if (AttachFile[i].length > 0) {
+            for (const gallery of AttachFile[i]) {
+                const formGalleryNew = new FormData()
+                formGalleryNew.append("imgUrl", gallery)
+                formGalleryNew.append("productDetail_id", ProductDetailId[i])
+                const res = await fetch("/gallery/add", {
+                    method: "POST",
+                    body: formGalleryNew
+                });
+                reqGalleryNew.push(res)
+            }
+        }
+    }
+    await Promise.all(reqGalleryNew)
+    $.alert("Cập nhật thành công!")
+    setTimeout(() => {
+        window.location.replace("/product-manage")
+    }, 1000)
 }
+
+const handleIdGallery = async (id) => {
+    if (id) {
+        ArrId.push(Number(id))
+    }
+}
+// const handleProductDetailid = async (id) => {
+//     const valueFile = document.getElementById(`AttachFile${id}`)
+//     console.log(valueFile.files)
+//     console.log(id)
+// }
+

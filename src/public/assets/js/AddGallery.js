@@ -39,7 +39,7 @@ $(document).on('change', '.file-input', function () {
 });
 // Xử lý sự kiện khi người dùng nhấp vào nút xóa
 $(document).on('click', '.remove-file-button', function () {
-    var fileIndexToRemove = $(this).data('index');
+    var fileIndexToRemove = $(this)?.data('index');
     var fileInput = $(this).closest('.col-md-12').find('.file-input')[0];
 
     // Xóa phần tử khỏi danh sách tệp đã chọn

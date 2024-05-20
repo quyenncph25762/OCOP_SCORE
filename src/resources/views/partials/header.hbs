@@ -7,12 +7,8 @@
   </div>
   <ul class="sidebar-menu do-nicescrol">
     <li class="sidebar-header">MAIN NAVIGATION</li>
-    <li>
-      <a href="/">
-        <i class="zmdi zmdi-view-dashboard"></i> <span>Trang chủ</span>
-      </a>
-    </li>
-    <li>
+
+    {{!-- <li>
       <a href="#" class="dropdown-toggle" data-toggle="dropdown">
         <ion-icon name="bar-chart-outline"></ion-icon> <span class="ml-2">Báo cáo thống kê</span>
         <b class="caret"></b>
@@ -27,6 +23,12 @@
         <li><a href="area_report.html"><span>Báo cáo số liệu theo khu
               vực</span></a></li>
       </ul>
+    </li> --}}
+    {{#ifCond (toLowerCase User.role_title) "admin"}}
+    <li>
+      <a href="/">
+        <i class="zmdi zmdi-view-dashboard"></i> <span>Trang chủ</span>
+      </a>
     </li>
     <li>
       <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -48,6 +50,7 @@
       <a href="/year-review"><ion-icon name="calendar-clear-outline"></ion-icon> <span class="ml-2">Quản lí năm đánh
           giá</span></a>
     </li>
+    {{/ifCond}}
 
     <li>
       <a href="/customer-manage">
@@ -67,7 +70,7 @@
           OCOP</span>
       </a>
     </li>
-    <li>
+    {{!-- <li>
       <a href="council_score.html">
         <ion-icon name="brush-outline"></ion-icon> <span class="ml-2">Hội đồng chấm</span>
       </a>
@@ -83,7 +86,8 @@
       <a href="ocop_score_province.html">
         <ion-icon name="ribbon-outline"></ion-icon> <span class="ml-2">Chấm điểm OCOP tỉnh</span>
       </a>
-    </li>
+    </li> --}}
+    {{#ifCond (toLowerCase User.role_title) "admin"}}
     <li>
       <a href="#" class="dropdown-toggle" data-toggle="dropdown">
         <ion-icon name="list-outline"></ion-icon> <span class="ml-2">Danh mục</span>
@@ -94,8 +98,15 @@
         <li><a href="/scoreTemp"> <span>Phiếu chấm</span></a></li>
       </ul>
     </li>
-
+    {{else}}
     <li>
+      <a href="/client/scoreFile">
+        <ion-icon name="ribbon-outline"></ion-icon> <span class="ml-2">Chấm điểm OCOP</span>
+      </a>
+    </li>
+    {{/ifCond}}
+
+    {{!-- <li>
       <a href="/auth/loginPage" target="_blank">
         <i class="zmdi zmdi-lock"></i> <span>Login</span>
       </a>
@@ -105,12 +116,11 @@
       <a href="register.html" target="_blank">
         <i class="zmdi zmdi-account-circle"></i> <span>Registration</span>
       </a>
-    </li>
-
-    <li class="sidebar-header">LABELS</li>
+    </li> --}}
+    {{!-- <li class="sidebar-header">LABELS</li>
     <li><a href="javaScript:void();"><i class="zmdi zmdi-coffee text-danger"></i> <span>Important</span></a></li>
     <li><a href="javaScript:void();"><i class="zmdi zmdi-chart-donut text-success"></i> <span>Warning</span></a></li>
-    <li><a href="javaScript:void();"><i class="zmdi zmdi-share text-info"></i> <span>Information</span></a></li>
+    <li><a href="javaScript:void();"><i class="zmdi zmdi-share text-info"></i> <span>Information</span></a></li> --}}
 
   </ul>
 

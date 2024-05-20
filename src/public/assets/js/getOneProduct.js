@@ -33,7 +33,7 @@ const handleShowListCitationUpdate = async (id) => {
                 const listImg = dataGallery.map((gallery) => {
                     return `<div class="file-item">
                     <a href="${gallery.imgUrl}" class="gallery-items" style="max-width:100px; overflow: hidden">${gallery.imgName}</a> 
-                    <button class="remove-file-button btn btn-danger">Remove</button>
+                    <button onClick="handleIdGallery('${gallery._id}')" class="remove-file-button btn btn-danger">Remove</button>
                     </div>`
                 }).join("")
                 tbody.innerHTML += `
@@ -52,7 +52,7 @@ const handleShowListCitationUpdate = async (id) => {
                                     <div class="file-drop-area">
                                         <span class="choose-file-button">Choose files</span>
                                         <span class="file-message">or drag and drop files here</span>
-                                        <input id="AttachFile{{this._id}}" class="file-input" name="AttachFile" type="file" multiple>
+                                        <input data-productDetailId=${ProductDetail._id} id="AttachFile" class="file-input" name="AttachFile" type="file" multiple>
                                     </div>
                                     <div class="selected-files listGallery">
                                     ${listImg}

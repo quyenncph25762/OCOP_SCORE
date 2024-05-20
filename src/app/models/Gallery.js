@@ -15,7 +15,7 @@ const GalleryModel = {
         connection.query(query, VALUES, callback)
     },
     deleteProductDetail: (productDetailId, callback) => {
-        const query = `SELECT * FROM gallerydetail WHERE _id = ?`
+        const query = `DELETE FROM gallerydetail WHERE _id = ?`
         connection.query(query, productDetailId, callback)
     },
 }

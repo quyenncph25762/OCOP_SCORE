@@ -5,14 +5,13 @@ dotenv.config();
 const { SECRET_CODE } = process.env
 class CheckController {
     checkout(req, res, next) {
-        const authorization = req?.headers?.cookie
-        if (!authorization) {
+        const token = req.cookies.User
+        if (!token) {
             res.redirect("/auth/loginPage")
             return res.status(400).json({
                 message: "Bạn chưa đăng nhập!"
             })
         }
-        const token = req.headers.cookie.split("=")[1]
         jwt.verify(token, SECRET_CODE, async (err, payload) => {
             if (err) {
                 if (err.name === "JsonTokenWebError") {
