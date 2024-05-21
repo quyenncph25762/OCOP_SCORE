@@ -1,0 +1,162 @@
+<!-- Modal -->
+<style>
+    .modal-content {
+        min-width: 1000px;
+        height: 90vh;
+    }
+
+    .table td,
+    .table th {
+        padding: 0.50rem;
+    }
+
+    @media screen and (min-width: 350px) and (max-width: 765px) {
+        .modal-content {
+            min-width: 100% !important;
+        }
+    }
+</style>
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Thêm mới</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <input id="creatorUser_id" type="text" name="creatorUser_id" value="{{User._id}}" hidden>
+                    <div class="form-row">
+                        <div class="col-md-9 mb-3">
+                            <label for="title">Tên vai trò</label>
+                            <input name="title" type="text" class="form-control" id="titleRole" required>
+                        </div>
+                        <div class="custom-control custom-switch col-md-3"
+                            style="display: flex; justify-content: center;align-items: center;">
+                            <input name="status" type="checkbox" class="custom-control-input" id="statusRole" checked>
+                            <label class="custom-control-label block" for="statusRole">Áp dụng</label>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="yearReviewId">Thời gian</label>
+                            <select name="" class="form-control" id="yearReviewId">
+                                {{#each YearReview}}
+                                <option value="{{this._id}}">{{this.yearName}}</option>
+                                {{/each}}
+                            </select>
+                        </div>
+                        <div class="col-md-8">
+                            <label for="Note">Ghi chú</label>
+                            <input name="Note" type="text" class="form-control" id="Note">
+                        </div>
+                        <div class="col-md-12" style="display: flex;flex-direction: column;padding: 24px 0;">
+                            <p style="color: #F64E60;font-size: 13px;">Lưu ý</p>
+                            <p style="font-style: italic;font-size: 12px;">- Mỗi thành viên hội đồng có tối đa 1 thư ký.
+                            </p>
+                            <p style="font-style: italic;font-size: 12px;">- Kết quả chấm của thành viên hội đồng có thể
+                                được tham khảo từ kết quả chấm của thư ký chỉ
+                                đinh.</p>
+                        </div>
+                        <hr>
+                        <div class="w-100 d-flex align-items-center justify-content-between">
+                            <p>Danh sách thành viên:</p>
+                            <button class="btn btn-info" type="button" data-toggle="modal"
+                                data-target="#exampleModalEmployee">Lựa chọn</button>
+                        </div>
+                        <div class=" col-md-12 mb-3 mt-3">
+                            <div class="panel-body">
+                                <table class="table table-bordered table__temptDetail">
+                                    <thead>
+                                        <tr style="font-size: 12px;">
+                                            <th scope="col">#</th>
+                                            <th scope="col">Tên</th>
+                                            <th scope="col">Tổ / Phòng ban</th>
+                                            <th scope="col">Vai trò</th>
+                                            <th scope="col">Tổ giúp việc</th>
+                                            <th scope="col" style="max-width: 58px;text-wrap: wrap;">Hành động</th>
+                                        </tr>
+                                    </thead>
+                                    {{!-- body --}}
+                                    <tbody id="education_fields" style="font-size: 12px;">
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td colspan="8" style="text-align: center;color: white;">
+                                                <button class="btn btn-success" type="button"
+                                                    onclick="education_fields();">
+                                                    <span class="glyphicon glyphicon-plus"
+                                                        aria-hidden="true"></span>Thêm</button>
+                                            </td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                                <div class="clear"></div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Hủy bỏ</button>
+                <button type="button" class="btn btn-info">Lưu thông tin</button>
+            </div>
+        </div>
+    </div>
+</div>
+{{> modalListEmployee}}
+
+<script>
+    var room = 1;
+    function education_fields() {
+        room++;
+        var objTo = document.getElementById('education_fields')
+        var divtest = document.createElement("tr");
+        divtest.setAttribute("class", "form-group removeclass" + room);
+        var rdiv = 'removeclass' + room;
+        const tableBody = () => {
+            return `
+            <tr>
+            <th scope="row">${room - 1}</th>
+            <td></td>
+            <td></td>
+            <td style="max-width: 130px;">
+                <div class="form-group">
+                    <select id="ValidatedRankDetail_${room}" name="validateRank" class="form-control"
+                            style="transform: translateY(10px); max-width: 200px; max-height: 200px; overflow-y: hidden;font-size:12px"
+                            data-target="#navbar-example2" data-offset="0">
+                        <option value="1" selected>Chủ tịch</option>    
+                        <option value="2">Thành viên</option>
+                        <option value="3">Tư vấn viên</option>
+                    </select>
+                </div>
+            </td>
+            <td style="max-width: 250px;font-size:12px">
+                <div class="form-group">
+                    <select id="Employee_id_${room}" name="validateRank" class="form-control"
+                            style="transform: translateY(10px); max-width: 200px; max-height: 200px; overflow-y: hidden;font-size:12px"
+                            data-target="#navbar-example2" data-offset="0">
+                        <option selected>Không xác định</option>
+                       {{#each Employee}}
+                       <option value="{{this._id}}">{{this.FullName}}</option>
+                       {{/each}}
+                    </select >
+                </div >
+            </td >
+            <td>
+               <div style="text-align:center">
+                 <ion-icon onclick="remove_education_fields(${room});" class="icon__scoreTempDetail" name="trash-outline"></ion-icon>
+               </div>
+            </td>
+        </tr >
+            `
+        }
+        divtest.innerHTML = tableBody();
+        objTo.appendChild(divtest)
+    }
+    function remove_education_fields(rid) {
+        room--
+        $('.removeclass' + rid).remove();
+    }
+</script>

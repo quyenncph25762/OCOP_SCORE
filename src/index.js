@@ -59,6 +59,10 @@ Handlebars.registerHelper('split', function (input, delimiter, index) {
     }
 });
 
+Handlebars.registerHelper('json', function (context) {
+    return JSON.stringify(context);
+});
+
 
 //route init
 route(app);

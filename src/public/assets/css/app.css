@@ -25,6 +25,14 @@
     max-width: auto;
 }
 
+.content-wrapper {
+    min-height: 100vh;
+}
+
+.search-customer {
+    padding: 0;
+}
+
 .modal-scoreTemp {
     min-width: 1200px;
     font-size: 13px;
@@ -224,6 +232,15 @@ ion-icon[name="trash-outline"] {
     cursor: pointer;
 }
 
+ion-icon[name="build-outline"] {
+    font-size: 20px;
+    cursor: pointer;
+}
+
+#myTable {
+    font-size: 13px;
+}
+
 ion-icon[name="create-outline"] {
     color: rgb(229, 247, 66);
     font-size: 20px;
@@ -323,6 +340,15 @@ input.form-control.input-headerTable.w-100 {
 
 .statusLabel {
     background: #e3a922;
+    padding: 2px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.statusLabelDanger {
+    background: #F64E60;
     padding: 2px;
     border-radius: 8px;
     display: flex;

@@ -64,10 +64,10 @@ class FilterProductController {
                                                     message: `${err}: ProductControllers => ReviewModel`
                                                 })
                                             }
-                                            if (User?.[0].role_title.toLowerCase() !== "admin") {
+                                            if (!User?.[0]) {
                                                 res.redirect("/client")
                                             } else {
-                                                res.render('filterProduct/filterProduct', { viewData: viewData, Customer: Customer, ProductGroup: ProductGroup, Review: Review });
+                                                res.render('filterProduct/filterProduct', { User: User[0], viewData: viewData, Customer: Customer, ProductGroup: ProductGroup, Review: Review });
                                             }
                                         })
                                     })

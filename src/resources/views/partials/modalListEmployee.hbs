@@ -1,0 +1,216 @@
+<style>
+    #myTableEmployee {
+        font-size: 13px;
+    }
+
+    .modal-content {
+        height: 100vh;
+        overflow-y: auto;
+    }
+</style>
+<div class="modal fade" id="exampleModalEmployee" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="trueEmployee">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Danh sách thành viên</h5>
+            </div>
+            <div class="modal-body">
+                <table id="myTableEmployee" class="table table-hover">
+                    <thead>
+                        <div class="row" style="margin: 20px 0;">
+                            <div class="col-sm-3" style="padding: 0;">
+                                <label for="">Tổ phòng ban</label>
+                                <select name="" id="WorkDepartmentFilter" class="form-control">
+                                    <option value="" style="color: white;" selected>Tất cả</option>
+                                    {{#each WorkDepartment}}
+                                    <option value="{{this._id}}" style="color: white;">{{this.title}}</option>
+                                    {{/each}}
+                                </select>
+                            </div>
+                            <div class="col-sm-3" style="padding: 0;margin-left: 10px;">
+                                <label for="">Vị trí chức danh</label>
+                                <select name="" id="WorkPositionFilter" class="form-control">
+                                    <option value="" style="color: white;" selected>Tất cả</option>
+                                    {{#each WorkPosition}}
+                                    <option value="{{this._id}}" style="color: white;" {{#ifCond this.IsActive
+                                        0}}disabled{{/ifCond}}>
+                                        {{this.Name}}</option>
+                                    {{/each}}
+                                </select>
+                            </div>
+                        </div>
+                        <tr>
+                            <th {{#ifCond Employee.length 0}}hidden{{/ifCond}}>
+                                <div class="checkbox">
+                                    <input type="checkbox" class="check" id="checkAll">
+                                </div>
+                            </th>
+                            <th scope="col" hidden>WorkDepartment_id</th>
+                            <th scope="col" hidden>WorkPosition_id </th>
+                            <th scope="col">Avatar</th>
+                            <th scope="col">Tên</th>
+                            <th scope="col">Giới tính</th>
+                            <th scope="col">Tổ / Phòng ban</th>
+                            <th scope="col">Vị trí chức danh</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each Employee}}
+                        <tr>
+                            <td>
+                                <div class="">
+                                    <div class="checkbox">
+                                        <input type="checkbox" class="check" data-employee="{{json this}}">
+                                    </div>
+                                </div>
+                            </td>
+                            <td hidden>{{this.WorkDepartment_id}}</td>
+                            <td hidden>{{this.WorkPosition_id }}</td>
+                            <td style="text-align: center;">
+                                {{#if this.Avatar}}
+                                <img src={{this.Avatar}}
+                                    style="width: 50px;height: 50px;border-radius: 50%;object-fit: cover;" alt="">
+                                {{else}}
+                                <img style="width: 50px;height: 50px;border-radius: 50%;object-fit: cover;"
+                                    src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/2048px-User-avatar.svg.png" />
+                                {{/if}}
+                            </td>
+                            <td>{{this.FullName}}</td>
+                            <td>{{this.Gender}}</td>
+                            {{#ifCond workdepartment_IsDeleted 0}}
+                            <td>{{this.workdepartment_name}}</td>
+                            {{else}}
+                            <td style="color: rgb(236, 236, 118);">Không xác định</td>
+                            {{/ifCond}}
+                            {{#ifCond workposition_IsDeleted 0}}
+                            <td>{{this.workposition_name}}</td>
+                            {{else}}
+                            <td style="color: rgb(236, 236, 118);">Không xác định</td>
+                            {{/ifCond}}
+                        </tr>
+                        {{else}}
+                        <tr>
+                            <td colspan="9" class="text-center">Không tìm thấy từ khoá nào</td>
+                        </tr>
+                        {{/each }}
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-info btnDisabled" onclick="handleChoose()">Lựa chọn</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+    gtag('js', new Date());
+    gtag('config', 'UA-56159088-1');
+    // checkbox All
+    $("#checkAll").click(function (e) {
+        console.log(e)
+        $(".check").prop('checked', $(this).prop('checked'));
+    });
+</script>
+<script>
+    //an nut lua chon khi chua checkbox
+    document.addEventListener("DOMContentLoaded", () => {
+        const btnsCheck = document.querySelectorAll(".check")
+        const btnDisabled = document.querySelector(".btnDisabled")
+        let count = 0
+        const checkBtnDisabled = () => {
+            if (count === 0) {
+                btnDisabled.setAttribute("disabled", true)
+            } else {
+                btnDisabled.removeAttribute("disabled")
+            }
+        }
+        for (let checked of btnsCheck) {
+            checkBtnDisabled()
+            checked.addEventListener("click", (e) => {
+                if (checked.checked) {
+                    count++
+                } else {
+                    count--
+                }
+                checkBtnDisabled()
+            })
+        }
+    })
+    //click lua chon
+    const btnsCheck = document.querySelectorAll(".check")
+    var room = 1;
+    async function handleChoose() {
+        const arrEmployee = [];
+        const btnsCheck = document.querySelectorAll('.check'); // Assuming '.check' is the class of the checkboxes
+
+        for (const btnCheck of btnsCheck) {
+            if (btnCheck.checked) {
+                const employeeData = btnCheck.dataset.employee;
+                if (employeeData) {
+                    const EmployeeToObject = JSON.parse(employeeData);
+                    arrEmployee.push(EmployeeToObject);
+                }
+            }
+        }
+
+        arrEmployee.forEach((item, index) => {
+            const objTo = document.getElementById('education_fields');
+            const divtest = document.createElement("tr");
+            divtest.setAttribute("class", `form-group removeclass${room + 1}`);
+            const rdiv = `removeclass${room + 1}`;
+            room++;
+            divtest.innerHTML = `
+            <th scope="row">${room - 1}</th>
+            <td>${item.FullName}</td>
+            <td>${item.workdepartment_name}</td>
+            <td style="max-width: 130px;">
+                <div class="form-group">
+                    <select id="ValidatedRankDetail_${room}" name="validateRank" class="form-control"
+                            style="transform: translateY(10px); max-width: 200px; max-height: 200px; overflow-y: hidden; font-size:12px"
+                            data-target="#navbar-example2" data-offset="0">
+                        <option value="1" selected>Chủ tịch</option>
+                        <option value="2">Thành viên</option>
+                        <option value="3">Tư vấn viên</option>
+                    </select>
+                </div>
+            </td>
+            <td style="max-width: 250px; font-size:12px">
+                <div class="form-group">
+                    <select id="Employee_id_${room}" name="validateRank" class="form-control"
+                            style="transform: translateY(10px); max-width: 200px; max-height: 200px; overflow-y: hidden; font-size:12px"
+                            data-target="#navbar-example2" data-offset="0">
+                        <option selected>Không xác định</option>
+                         {{#each Employee}}
+                       <option value="{{this._id}}">{{this.FullName}}</option>
+                       {{/each}}
+                    </select>
+                </div>
+            </td>
+            <td>
+                <div style="text-align:center">
+                    <ion-icon onclick="remove_education_fields(${room});" class="icon__scoreTempDetail" name="trash-outline"></ion-icon>
+                </div>
+            </td>
+        `;
+
+            objTo.appendChild(divtest);
+        });
+        $('#exampleModalEmployee').modal('hide');
+        for (const checked of btnsCheck) {
+            if (checked.checked) {
+                checked.checked = !checked
+            }
+        }
+    }
+    function remove_education_fields(rid) {
+        $('.removeclass' + rid).remove();
+        room--
+    }
+</script>

@@ -17,9 +17,13 @@ const productDetailRouter = require("./productDetail.routes")
 const galleryRouter = require("./gallery.routes")
 const clientRouter = require("./client/welcome.routes")
 const scoreTempDetailRouter = require("./scoreTempDetail.routes")
+const scoreCommitteeRouter = require("./scoreCommittee.routes")
 function route(app) {
     // client
     app.use("/client", clientRouter)
+
+    // scoreCommittee
+    app.use("/scoreCommittee", scoreCommitteeRouter)
     // gallery
     app.use("/gallery", galleryRouter)
     // productDetail

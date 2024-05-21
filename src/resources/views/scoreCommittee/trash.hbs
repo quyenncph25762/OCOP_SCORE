@@ -1,0 +1,211 @@
+<style>
+    th.dt-type-numeric.dt-orderable-asc.dt-orderable-desc {
+        text-align: center;
+    }
+</style>
+{{> header}}
+<div class="content-wrapper">
+    <div class="container-fluid">
+        <div class="row" style="max-width: 100%; display: contents;">
+            <ul class="search-customer"
+                style="list-style: none; display:flex; justify-content: space-between; align-items: center;padding: 0;">
+                {{!-- <button class="btn btn-danger btnDeleteAll btnDisabled" style="float: left;">Xóa mục đã
+                    chọn</button> --}}
+                <button class="btn btn-primary btnDisabledRevert btnRevertAll">Khôi
+                    phục mục đã
+                    chọn</button>
+            </ul>
+        </div>
+    </div>
+
+    <div class="row" style="display: contents;">
+        <div class="col-lg-6" style="max-width: 100%;">
+            <div class="card">
+                <div class="card-body">
+                    <div class="table_header">
+                        <span style="cursor: pointer;margin: 12px 0;" class="d-inline-block mr-3" tabindex="0"
+                            data-toggle="tooltip" title="Trở về">
+                            <a href="/scoreCommittee">
+                                <ion-icon name="arrow-undo-outline"></ion-icon>
+                            </a>
+                        </span>
+                        <div class="box__input-headerTable" style="width: 100%;margin-bottom: 20px;">
+                            <ion-icon name="search-outline"></ion-icon>
+                            <input type="text" class="form-control input-headerTable w-100" placeholder="Tìm kiếm ..">
+                        </div>
+                    </div>
+
+                    <table id="myTableCommittee" class="table table-hover" style="font-size: 13px;">
+                        <thead>
+                            <tr>
+                                <th {{#ifCond ScoreCommittee.length 0}}hidden{{/ifCond}}>
+                                    <div class="checkbox">
+                                        <input type="checkbox" class="check" id="checkAll">
+                                    </div>
+                                </th>
+                                <th>STT</th>
+                                <th>Tên</th>
+                                <th>Thời gian</th>
+                                <th>Mặc định</th>
+                                <th>Áp dụng</th>
+                                <th>Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each ScoreCommittee}}
+                            <tr>
+                                <td>
+                                    <div class="">
+                                        <div class="checkbox">
+                                            <input type="checkbox" class="check" data-idCheckBox="{{this._id}}">
+                                        </div>
+                                    </div>
+                                </td>
+                                <th>{{plus @index}}</th>
+                                <td>{{this.Name}}</td>
+                                <td>{{year_name}}</td>
+                                <td>
+                                    {{#ifCond this.IsDefault 1}}
+                                    <div class="active"></div>
+                                    {{else}}
+                                    <div class="inactive"></div>
+                                    {{/ifCond}}
+                                </td>
+                                <td style="max-width: 40px;">
+                                    {{#ifCond this.IsActive 1}}
+                                    <div class="active"></div>
+                                    {{else}}
+                                    <div class="inactive"></div>
+                                    {{/ifCond}}
+                                </td>
+                                <td>
+                                    <div class="icons">
+                                        <span style="cursor: pointer;" class="d-inline-block" tabindex="0"
+                                            data-toggle="tooltip" title="Khôi phục">
+                                            <ion-icon name="sync-outline" style="color: white; font-size: 18px;"
+                                                id="icon_revert" data-id="{{this._id}}"></ion-icon>
+                                        </span>
+                                    </div>
+                                </td>
+                            </tr>
+                            {{/each}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div><!--End Row-->
+    </div>
+</div><!--End content-wrapper-->
+{{> footer}}
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="/assets/js/custom.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+    gtag('js', new Date());
+    gtag('config', 'UA-56159088-1');
+    // checkbox All
+    $("#checkAll").click(function (e) {
+        $(".check").prop('checked', $(this).prop('checked'));
+    });
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const btnReverts = document.querySelectorAll("#icon_revert")
+        for (let btnRevert of btnReverts) {
+            btnRevert.addEventListener("click", async (event) => {
+                $.confirm({
+                    title: '<ion-icon name="help-circle-outline"></ion-icon>',
+                    content: 'Bạn muốn khôi phục ?',
+                    buttons: {
+                        confirm: {
+                            text: 'Confirm',
+                            btnClass: 'btn-red',
+                            action: function () {
+                                // Lấy ID của mục cần xóa từ thuộc tính data-id của nút
+                                const id = event.target.dataset.id;
+
+                                // Gọi API xóa mục
+                                fetch(`/scoreCommittee/revert/${id}`, {
+                                    method: 'PATCH'
+                                }).then(response => {
+                                    if (response.ok) {
+                                        $.alert('Khôi phục thành công!');
+                                        setTimeout(() => {
+                                            window.location.reload()
+                                        }, 1000)
+                                    } else {
+                                        alert('Có lỗi xảy ra khi xóa mục');
+                                    }
+                                }).catch(error => {
+                                    $.alert('Đã hủy');
+                                });
+                            }
+                        },
+                        cancel: function () {
+                            $.alert('Đã hủy!');
+                        }
+                    }
+                });
+            })
+        }
+        const btnDisabledRevert = document.querySelector(".btnDisabledRevert")
+        const btnsCheck = document.querySelectorAll(".check")
+        //Chưa checked thì disbale nút xóa all
+        let count = 0
+        const checkBtnDisabled = () => {
+            if (count === 0) {
+                btnDisabledRevert.setAttribute("disabled", true)
+            } else {
+                btnDisabledRevert.removeAttribute("disabled")
+            }
+        }
+        for (let checked of btnsCheck) {
+            checkBtnDisabled()
+            checked.addEventListener("click", (e) => {
+                if (checked.checked) {
+                    count++
+                } else {
+                    count--
+                }
+                checkBtnDisabled()
+            })
+        }
+        const btnRevertAll = document.querySelector(".btnRevertAll")
+        console.log(btnRevertAll)
+        btnRevertAll.addEventListener("click", async (e) => {
+            $.confirm({
+                title: '<ion-icon name="help-circle-outline"></ion-icon>',
+                content: 'Bạn muốn khôi phục mục đã chọn ?',
+                buttons: {
+                    confirm: {
+                        text: 'Confirm',
+                        btnClass: 'btn-red',
+                        action: async function () {
+                            const id = event.target.dataset.id;
+                            for (let btnCheck of btnsCheck) {
+                                if (btnCheck.checked) {
+                                    const id = btnCheck.dataset.idcheckbox
+                                    const res = await fetch(`/scoreCommittee/revert/${id}`, {
+                                        method: "PATCH"
+                                    })
+                                }
+                            }
+                            $.alert('Khôi phục thành công!')
+                            setTimeout(() => {
+                                window.location.reload()
+                            }, 1000)
+                        }
+                    },
+                    cancel: function () {
+                        $.alert('Đã hủy!');
+                    }
+                }
+            });
+        })
+    })
+</script>

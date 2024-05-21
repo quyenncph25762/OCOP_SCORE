@@ -70,15 +70,16 @@
           OCOP</span>
       </a>
     </li>
-    {{!-- <li>
-      <a href="council_score.html">
+    {{#ifCond (toLowerCase User.role_title) "admin"}}
+    <li>
+      <a href="/scoreCommittee">
         <ion-icon name="brush-outline"></ion-icon> <span class="ml-2">Hội đồng chấm</span>
       </a>
     </li>
 
     <li>
-      <a href="ocop_score_district.html">
-        <ion-icon name="ribbon-outline"></ion-icon> <span class="ml-2">Chấm điểm OCOP huyện</span>
+      <a href="/client/scoreFile">
+        <ion-icon name="ribbon-outline"></ion-icon> <span class="ml-2">Chấm điểm OCOP</span>
       </a>
     </li>
 
@@ -86,8 +87,7 @@
       <a href="ocop_score_province.html">
         <ion-icon name="ribbon-outline"></ion-icon> <span class="ml-2">Chấm điểm OCOP tỉnh</span>
       </a>
-    </li> --}}
-    {{#ifCond (toLowerCase User.role_title) "admin"}}
+    </li>
     <li>
       <a href="#" class="dropdown-toggle" data-toggle="dropdown">
         <ion-icon name="list-outline"></ion-icon> <span class="ml-2">Danh mục</span>
@@ -98,12 +98,7 @@
         <li><a href="/scoreTemp"> <span>Phiếu chấm</span></a></li>
       </ul>
     </li>
-    {{else}}
-    <li>
-      <a href="/client/scoreFile">
-        <ion-icon name="ribbon-outline"></ion-icon> <span class="ml-2">Chấm điểm OCOP</span>
-      </a>
-    </li>
+
     {{/ifCond}}
 
     {{!-- <li>

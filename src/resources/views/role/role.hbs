@@ -1,5 +1,5 @@
 {{> header}}
-<div class="content-wrapper">
+<div class="content-wrapper" id="toastRole">
     <div class="container-fluid">
         <div class="row" style="max-width: 100%; display: contents;">
             <ul class="search-customer"
@@ -67,6 +67,7 @@
                                     <td>{{this.note}}</td>
                                     <td scope="row" style="display: flex;">
                                         <div class="action_center">
+
                                             <button
                                                 style="background-color: transparent;border: none ;cursor: pointer;">
                                                 <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
@@ -118,11 +119,6 @@
     });
 </script>
 <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
-<script src="boot4alert.js"></script>
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-
 <script>
     document.addEventListener("DOMContentLoaded", () => {
         const btnTrash = document.querySelectorAll('#icon_moveToTrash');
@@ -189,7 +185,6 @@
             })
         }
         //Xoa nhieu
-        const btnTrash = document.querySelectorAll('#icon_moveToTrash');
         btnDeleteAll.addEventListener("click", async (e) => {
             e.preventDefault();
             $.confirm({
@@ -223,5 +218,9 @@
     });
 
 
+
+</script>
+
+<script>
 
 </script>

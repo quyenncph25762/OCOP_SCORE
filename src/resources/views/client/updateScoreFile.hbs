@@ -80,9 +80,11 @@
                                             Name
                                         </td>
                                         <td></td>
-                                        <td><ion-icon name="attach-outline"></ion-icon></td>
+                                        <td data-toggle="modal" data-target="#exampleModalProductDetail"><ion-icon
+                                                name="attach-outline"></ion-icon></td>
                                         <td></td>
                                     </tr>
+
                                     <tr>
                                         <td style="font-weight: 400;text-wrap: wrap;max-width: 500px; word-wrap: break-word; overflow-wrap: break-word;color:#bbaeae"
                                             class="test">
@@ -106,6 +108,6 @@
             </div>
         </div>
     </div>
-
+    {{> modalProductDetail}}
 </div><!--End content-wrapper-->
 {{> footer}}

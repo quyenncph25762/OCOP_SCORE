@@ -1,15 +1,9 @@
 {{> header}}
-<div class="content-wrapper">
+<div class="content-wrapper" style="height: 100vh;">
     <div class="container-fluid">
         <div class="row" style="max-width: 100%; display: contents;">
             <ul class="search-customer"
-                style="list-style: none; display:flex; justify-content: space-between; align-items: center;">
-                <button class="btn btn-danger btnDeleteAll btnDisabled" style="float: left;">Xóa mục đã chọn</button>
-                <div class="import_customer_button"
-                    style="list-style: none; display:flex; justify-content: space-between; align-items: center;">
-                    <button class="btn btn-success" data-toggle="modal" data-target="#exampleModal">Thêm mới</button>
-                </div>
-                {{> modalRole}}
+                style="list-style: none; display:flex; justify-content: space-between; align-items: center;padding: 0;">
             </ul>
             </li>
             </ul>
@@ -21,20 +15,13 @@
             <div class="card">
                 <div class="card-body">
                     <div class="table_header">
-                        <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Xem thùng rác">
-                            <a style="text-decoration: none;" href="/markPage/trash">
-                                <i class="fe fe-trash-2 icon__table-large icon__table-trash"></i>
-                            </a>
-                        </span>
-                        <div class="box__input-headerTable" style="width: 100%;margin-bottom: 20px;">
-                            <ion-icon name="search-outline"></ion-icon>
-                            <input type="text" class="form-control input-headerTable w-100" placeholder="Tìm kiếm ..">
-                        </div>
+
                     </div>
-                    <table class="table datatables table-bordered table-hover table-striped" style="font-size: 13px;">
+                    <table id="myTable" class="table datatables table-bordered table-hover table-striped"
+                        style="font-size: 13px;">
                         <thead>
                             <tr>
-                                <th></th>
+                                <th>Ảnh</th>
                                 <th style="min-width: 300px;">
                                     Sản phẩm</th>
                                 <th>Nhóm sản phẩm</th>
@@ -47,11 +34,14 @@
 
                         </thead>
                         <tbody>
+                            {{!-- Sau khi cham --}}
                             <tr>
                                 <td>
-                                    <div class="approved">1</div>
+                                    <div class="approved">
+                                        <img src="https://csdl.ocopthaibinh.vn/Common/Images/default-image.png" alt=""
+                                            style="width: 50px;height: 50px;border-radius: 50%;object-fit: cover;">
+                                    </div>
                                 </td>
-
                                 <td>
                                     <ul style="list-style-type: none;font-weight: 600;padding: 0;">
                                         <!-- name product -->
@@ -104,6 +94,52 @@
                                     </span>
                                 </td>
                             </tr>
+                            {{!-- Chua cham --}}
+                            <tr>
+                                <td>
+                                    <div class="approved">
+                                        <img src="https://csdl.ocopthaibinh.vn/Common/Images/default-image.png" alt=""
+                                            style="width: 50px;height: 50px;border-radius: 50%;object-fit: cover;">
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <ul style="list-style-type: none;font-weight: 600;padding: 0;">
+                                        <!-- name product -->
+                                        <li style="font-size: 14px;" data-toggle="modal" data-target="#exampleModal">
+                                            DƯỠNG DA 123 PLUS +
+                                        </li>
+                                        <p style="color: #B5B5C3;font-size: 13px;text-wrap: wrap;" class="nameProduct"
+                                            data-toggle="modal" data-target="#exampleModal2">
+                                            Chủ thể: CÔNG TY TNHH DƯỢC PHẨM QUỐC TẾ TTB GROUP
+                                        </p>
+                                    </ul>
+                                </td>
+                                <!-- product group -->
+                                <td style="text-wrap: wrap;">Nhóm 19: Bộ sản phẩm: Mỹ phẩm có thành phần từ Thảo dược
+                                </td>
+                                {{!-- tong diem --}}
+                                <td></td>
+                                <!-- so sao -->
+                                <td>
+                                </td>
+                                {{!-- Ngay cham --}}
+                                <td>12/28/2023</td>
+                                {{!-- Trang thai --}}
+                                <td>
+                                    <p class="statusLabelDanger">Chưa chấm</p>
+                                </td>
+                                {{!-- icons --}}
+                                <td>
+                                    {{!-- icon xem ket qua hoi dong --}}
+                                    <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
+                                        title="Xem kết quả hội đồng">
+                                        <ion-icon name="receipt-outline" data-toggle="modal"
+                                            data-target="#exampleModal2"></ion-icon>
+                                    </span>
+                                    {{> modalResultScoreFile}}
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                     <!-- table -->
@@ -116,4 +152,6 @@
 
 
 </div><!--End content-wrapper-->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="/assets/js/custom.js"></script>
 {{> footer}}
