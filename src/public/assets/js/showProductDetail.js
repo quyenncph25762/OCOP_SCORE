@@ -16,7 +16,7 @@ async function handleProductDetail(id) {
             if (resGallery.ok) {
                 const gallery = await resGallery.json();
                 const attachFile = gallery.map(item => {
-                    return `<a href="${item.imgUrl}" class="gallery-items">${item.imgName}</a>`;
+                    return `<a href="${item.imgUrl}" class="gallery-items" style="width:100px;overflow:hidden">${item.imgName}</a>`;
                 }).join("");
                 body.innerHTML += `
                     <tr>
@@ -24,7 +24,7 @@ async function handleProductDetail(id) {
                         <td>${ProductDetail.ProductDetail_Name}</td>
                         <td style="color: red;"><p>(*)</p></td>
                         <td></td>
-                        <td>
+                        <td style="width: 100px;overflow:hidden">
                             <div class="container">
                                 <div class="row">
                                     <div class="selected-files listGallery">

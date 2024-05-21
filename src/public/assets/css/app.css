@@ -232,6 +232,12 @@ ion-icon[name="trash-outline"] {
     cursor: pointer;
 }
 
+ion-icon[name="checkbox-outline"] {
+    color: rgb(24, 93, 170);
+    font-size: 20px;
+    cursor: pointer;
+}
+
 ion-icon[name="build-outline"] {
     font-size: 20px;
     cursor: pointer;
@@ -243,12 +249,6 @@ ion-icon[name="build-outline"] {
 
 ion-icon[name="create-outline"] {
     color: rgb(229, 247, 66);
-    font-size: 20px;
-    cursor: pointer;
-}
-
-ion-icon[name="checkbox-outline"] {
-    color: rgb(68, 201, 146);
     font-size: 20px;
     cursor: pointer;
 }

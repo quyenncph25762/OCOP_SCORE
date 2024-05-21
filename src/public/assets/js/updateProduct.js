@@ -2,7 +2,7 @@ const ArrId = []
 const handleUpdate = async (id) => {
     const Code = document.getElementById(`Code${id}`)
     const Name = document.getElementById(`Name${id}`)
-    const IsActive = document.getElementById(`IsActive${id}`)
+    const IsActive = document.getElementById(`IsActive${id}`).checked
     const Description = document.getElementById(`Description${id}`)
     const Customer_id = document.getElementById(`Customer_id${id}`)
     const ProductGroup_id = document.getElementById(`ProductGroup_id${id}`)
@@ -23,7 +23,7 @@ const handleUpdate = async (id) => {
     form.append("Code", Code.value)
     form.append("Avatar", Avatar?.files[0] ? Avatar.files[0] : relativePath)
     form.append("Name", Name.value)
-    form.append("IsActive", IsActive.value)
+    form.append("IsActive", IsActive === true ? 1 : 0)
     form.append("Description", Description.value)
     form.append("Customer_id", Customer_id.value)
     form.append("ProductGroup_id", ProductGroup_id.value)

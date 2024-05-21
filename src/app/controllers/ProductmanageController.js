@@ -203,7 +203,7 @@ class ProductmanageController {
     }
     create(req, res) {
         const product = {
-            IsActive: req.body.IsActive === "on" ? 1 : 0,
+            IsActive: req.body.IsActive === "true" ? 1 : 0,
             Avatar: req?.file?.path,
             CreatorUser_id: req.body.CreatorUser_id,
             Code: req.body.Code,
@@ -280,11 +280,13 @@ class ProductmanageController {
                 })
             }
             if (data.length === 0) {
-                ProductmanageModel.updateProduct(product_id, {
-                    IsActive: req.body.IsActive === true ? 1 : 0,
+                const updatedData = {
+                    IsActive: Number(req.body.IsActive),
                     Avatar: req.file ? req.file.path : req.body.Avatar,
                     ...req.body
-                }, (err, result) => {
+                };
+                console.log(updatedData)
+                ProductmanageModel.updateProduct(product_id, updatedData, (err, result) => {
                     if (err) {
                         console.log(err)
                         return res.status(500).json({
