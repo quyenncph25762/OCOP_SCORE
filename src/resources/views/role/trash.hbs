@@ -126,6 +126,12 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", () => {
+            const toastData = localStorage.getItem('toast');
+            if (toastData) {
+                const toast = JSON.parse(toastData);
+                $.toast(toast);
+                localStorage.removeItem('toast');
+            }
             const btnReverts = document.querySelectorAll("#icon_revert")
             const btnTrash = document.querySelectorAll("#icon_moveToTrash");
             //removeOne
@@ -147,12 +153,26 @@
                                         method: 'DELETE'
                                     }).then(response => {
                                         if (response.ok) {
-                                            $.alert('Xóa thành công!');
-                                            setTimeout(() => {
-                                                window.location.reload()
-                                            }, 1000)
+                                            localStorage.setItem('toast', JSON.stringify({
+                                                position: "top-right",
+                                                heading: 'Xóa thành công',
+                                                text: 'Đã xóa thành công thành công',
+                                                icon: 'success',
+                                                loader: true,
+                                                loaderBg: '#9EC600',
+                                                showHideTransition: 'slide'
+                                            }));
+                                            window.location.reload()
                                         } else {
-                                            alert('Có lỗi xảy ra khi xóa mục');
+                                            localStorage.setItem('toast', JSON.stringify({
+                                                position: "top-right",
+                                                heading: 'Xóa không thành công',
+                                                text: 'Đã xảy ra lỗi khi xóa mục',
+                                                icon: 'error',
+                                                loader: true,
+                                                loaderBg: '#9EC600',
+                                                showHideTransition: 'slide'
+                                            }));
                                         }
                                     }).catch(error => {
                                         $.alert('Đã hủy');
@@ -185,10 +205,16 @@
                                         method: 'PATCH'
                                     }).then(response => {
                                         if (response.ok) {
-                                            $.alert('Khôi phục thành công!');
-                                            setTimeout(() => {
-                                                window.location.reload()
-                                            }, 1000)
+                                            localStorage.setItem('toast', JSON.stringify({
+                                                position: "top-right",
+                                                heading: 'Khôi phục thành công',
+                                                text: 'Đã khôi phục thành công thành công',
+                                                icon: 'info',
+                                                loader: true,
+                                                loaderBg: '#9EC600',
+                                                showHideTransition: 'slide'
+                                            }));
+                                            window.location.reload()
                                         } else {
                                             alert('Có lỗi xảy ra khi xóa mục');
                                         }
@@ -249,10 +275,18 @@
                                         })
                                     }
                                 }
-                                $.alert('Xóa thành công!');
-                                setTimeout(() => {
-                                    window.location.reload()
-                                }, 1000)
+                                localStorage.setItem('toast', JSON.stringify({
+                                    position: "top-right",
+                                    heading: 'Xóa thành công',
+                                    text: 'Đã xóa thành công thành công',
+                                    icon: 'success',
+                                    loader: true,
+                                    loaderBg: '#9EC600',
+                                    showHideTransition: 'slide'
+                                }));
+
+                                window.location.reload()
+
                             }
                         }
                     },
@@ -281,10 +315,16 @@
                                         })
                                     }
                                 }
-                                $.alert('Khôi phục thành công!')
-                                setTimeout(() => {
-                                    window.location.reload()
-                                }, 1000)
+                                localStorage.setItem('toast', JSON.stringify({
+                                    position: "top-right",
+                                    heading: 'Khôi phục thành công',
+                                    text: 'Đã khôi phục thành công thành công',
+                                    icon: 'info',
+                                    loader: true,
+                                    loaderBg: '#9EC600',
+                                    showHideTransition: 'slide'
+                                }));
+                                window.location.reload()
                             }
                         },
                         cancel: function () {

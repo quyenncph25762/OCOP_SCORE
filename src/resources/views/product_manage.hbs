@@ -389,6 +389,12 @@
   {{!-- actions --}}
   <script>
     document.addEventListener("DOMContentLoaded", () => {
+      const toastData = localStorage.getItem('toast');
+      if (toastData) {
+        const toast = JSON.parse(toastData);
+        $.toast(toast);
+        localStorage.removeItem('toast');
+      }
       const btnTrash = document.querySelectorAll("#icon_moveToTrash");
       //remove One
       for (let btn of btnTrash) {
@@ -409,10 +415,17 @@
                     method: 'DELETE'
                   }).then(response => {
                     if (response.ok) {
-                      $.alert('Xóa thành công!');
-                      setTimeout(() => {
-                        window.location.reload()
-                      }, 1000)
+                      localStorage.setItem('toast', JSON.stringify({
+                        position: "top-right",
+                        heading: 'Xóa thành công',
+                        text: 'Đã xóa thành công thành công',
+                        icon: 'success',
+                        loader: true,
+                        loaderBg: '#9EC600',
+                        showHideTransition: 'slide',
+                        stack: 4
+                      }));
+                      window.location.reload()
                     } else {
                       alert('Có lỗi xảy ra khi xóa mục');
                     }
@@ -469,10 +482,17 @@
                     })
                   }
                 }
-                $.alert('Xóa thành công!');
-                setTimeout(() => {
-                  window.location.reload()
-                }, 1000)
+                localStorage.setItem('toast', JSON.stringify({
+                  position: "top-right",
+                  heading: 'Xóa thành công',
+                  text: 'Đã xóa thành công thành công',
+                  icon: 'success',
+                  loader: true,
+                  loaderBg: '#9EC600',
+                  showHideTransition: 'slide',
+                  stack: 4
+                }));
+                window.location.reload()
               }
             },
             cancel: function () {

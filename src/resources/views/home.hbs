@@ -250,8 +250,15 @@
 
 {{> footer}}
 <!-- Index js -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-<script>
 
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const toastData = localStorage.getItem('toast');
+    if (toastData) {
+      const toast = JSON.parse(toastData);
+      console.log(toast)
+      $.toast(toast);
+      localStorage.removeItem('toast');
+    }
+  })
 </script>

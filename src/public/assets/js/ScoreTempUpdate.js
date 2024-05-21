@@ -84,6 +84,14 @@ async function handleUpdate(id) {
         }
     }
     await Promise.all(arrRes)
-    alert("Cập nhật thành công")
+    localStorage.setItem('toast', JSON.stringify({
+        position: "top-right",
+        heading: 'Cập nhật thành công',
+        text: 'Đã cập nhật thành công',
+        icon: 'success',
+        loader: true,
+        loaderBg: '#9EC600',
+        stack: 4
+    }));
     window.location.replace("/scoreTemp")
 }

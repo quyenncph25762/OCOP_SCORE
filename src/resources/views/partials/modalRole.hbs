@@ -101,7 +101,9 @@
 </div>
 
 <script>
+
     async function handleAdd() {
+
         const titleRole = document.getElementById("titleRole").value
         const statusRole = document.getElementById("statusRole").checked
         const noteRole = document.getElementById("noteRole").value
@@ -117,12 +119,29 @@
         })
         if (res.ok) {
             const data = await res.json()
-
+            localStorage.setItem('toast', JSON.stringify({
+                position: "top-right",
+                heading: 'Thêm thành công',
+                text: 'Đã thêm thành công',
+                icon: 'success',
+                loader: true,
+                loaderBg: '#9EC600',
+                showHideTransition: 'slide',
+                stack: 4
+            }));
             window.location.replace("/role")
         } else {
-            const data = await res.json()
-            document.getElementById("messageError").innerHTML = data.message
-            console.error("Response was not ok:", res.status);
+            const errorData = await res.json();
+            $.toast({
+                position: "top-right",
+                heading: 'Thêm thất bại',
+                text: errorData.message || 'Đã có lỗi xảy ra',
+                icon: 'error',
+                loader: true,
+                loaderBg: '#f2a654',
+                showHideTransition: 'slide',
+                stack: 4
+            });
         }
     }
 
@@ -141,7 +160,16 @@
         })
         if (res.ok) {
             const data = await res.json()
-            alert(`${data.message}`)
+            localStorage.setItem('toast', JSON.stringify({
+                position: "top-right",
+                heading: 'Cập nhật thành công',
+                text: 'Đã cập nhật thành công',
+                icon: 'success',
+                loader: true,
+                loaderBg: '#9EC600',
+                showHideTransition: 'slide',
+                stack: 4
+            }));
             window.location.replace("/role")
         } else {
             const data = await res.json()

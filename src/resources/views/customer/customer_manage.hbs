@@ -204,6 +204,12 @@
   {{!-- action delete --}}
   <script>
     document.addEventListener("DOMContentLoaded", () => {
+      const toastData = localStorage.getItem('toast');
+      if (toastData) {
+        const toast = JSON.parse(toastData);
+        $.toast(toast);
+        localStorage.removeItem('toast');
+      }
       const btnTrash = document.querySelectorAll("#icon_moveToTrash");
       //remove One
       for (let btn of btnTrash) {
@@ -224,10 +230,17 @@
                     method: 'DELETE'
                   }).then(response => {
                     if (response.ok) {
-                      $.alert('Xóa thành công!');
-                      setTimeout(() => {
-                        window.location.reload()
-                      }, 1000)
+                      localStorage.setItem('toast', JSON.stringify({
+                        position: "top-right",
+                        heading: 'Xóa thành công',
+                        text: 'Đã xóa thành công thành công',
+                        icon: 'success',
+                        loader: true,
+                        showHideTransition: 'slide',
+                        loaderBg: '#9EC600',
+                        stack: 4
+                      }));
+                      window.location.reload()
                     } else {
                       alert('Có lỗi xảy ra khi xóa mục');
                     }
@@ -284,10 +297,17 @@
                     })
                   }
                 }
-                $.alert('Xóa thành công!');
-                setTimeout(() => {
-                  window.location.reload()
-                }, 1000)
+                localStorage.setItem('toast', JSON.stringify({
+                  position: "top-right",
+                  heading: 'Xóa thành công',
+                  text: 'Đã xóa thành công thành công',
+                  icon: 'success',
+                  loader: true,
+                  showHideTransition: 'slide',
+                  loaderBg: '#9EC600',
+                  stack: 4
+                }));
+                window.location.reload()
               }
             },
             cancel: function () {
@@ -327,11 +347,29 @@
       })
       if (res.ok) {
         const data = await res.json()
-        alert(`Success: ${data.message}`)
+        localStorage.setItem('toast', JSON.stringify({
+          position: "top-right",
+          heading: 'Cập nhật thành công',
+          text: 'Đã cập nhật thành công',
+          icon: 'success',
+          loader: true,
+          loaderBg: '#9EC600',
+          stack: 4,
+          showHideTransition: 'slide'
+        }));
         window.location.replace("/customer-manage")
       } else {
         const data = await res.json()
-        alert(`Error: ${data.message}`)
+        $.toast({
+          position: "top-right",
+          heading: 'Cập nhật thất bại thất bại',
+          text: data.message || 'Đã có lỗi xảy ra',
+          icon: 'error',
+          loader: true,
+          loaderBg: '#f2a654',
+          showHideTransition: 'slide',
+          stack: 4
+        });
         console.error("Response was not ok:", res.status);
       }
     }

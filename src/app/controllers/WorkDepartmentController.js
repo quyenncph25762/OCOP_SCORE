@@ -126,7 +126,9 @@ class WorkDepartmentController {
             if (err) {
                 return res.status(404).send(err);
             } else {
-                res.redirect('back')
+                return res.status(203).json({
+                    message: "Xoa thanh cong"
+                })
             }
         })
     }

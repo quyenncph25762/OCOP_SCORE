@@ -51,9 +51,25 @@ async function handleAdd() {
             }
         }
         await Promise.all(arrRes)
-        alert("Thêm thành công")
+        localStorage.setItem('toast', JSON.stringify({
+            position: "top-right",
+            heading: 'Thêm thành công',
+            text: 'Đã thêm thành công',
+            icon: 'success',
+            loader: true,
+            loaderBg: '#9EC600',
+            stack: 4
+        }));
         window.location.replace("/scoreTemp")
     } else {
-        alert(`Thêm thất bại`)
+        localStorage.setItem('toast', JSON.stringify({
+            position: "top-right",
+            heading: 'Thêm thất bại',
+            text: 'Đã thêm thất bại',
+            icon: 'error',
+            loader: true,
+            loaderBg: '#9EC600',
+            stack: 4
+        }));
     }
 }

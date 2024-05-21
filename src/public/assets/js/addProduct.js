@@ -23,7 +23,15 @@ async function handleAdd() {
         body: formData
     })
     if (!res.ok) {
-        alert("Hãy nhập giá trị của sản phẩm")
+        localStorage.setItem('toast', JSON.stringify({
+            position: "top-right",
+            heading: 'Hãy nhập giá trị của sản phẩm',
+            text: 'Sản phẩm thiếu giá trị',
+            icon: 'warning',
+            loader: true,
+            loaderBg: '#9EC600',
+            stack: 4
+        }));
         return
     }
     const responseProduct = await res.json()
@@ -57,7 +65,15 @@ async function handleAdd() {
             }
         }
         await Promise.all(reqGallery)
-        alert("Thêm thành công!")
+        localStorage.setItem('toast', JSON.stringify({
+            position: "top-right",
+            heading: 'Thêm thành công',
+            text: 'Đã thêm thành công',
+            icon: 'success',
+            loader: true,
+            loaderBg: '#9EC600',
+            stack: 4
+        }));
         window.location.replace("/product-manage")
     }
 }

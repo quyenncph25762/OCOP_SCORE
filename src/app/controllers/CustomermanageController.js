@@ -228,8 +228,8 @@ class CustomerManageController {
                         return res.status(500).send('Internal Server Error');
                     } else {
                         return res.status(203).json({
-                            message: "Xoa thanh cong"
-                        }, res.redirect('back'))
+                            message: "Xóa thành công"
+                        })
 
                     }
                 })

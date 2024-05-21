@@ -154,8 +154,28 @@
             }
         }).then(data => {
             if (data.User.role_title.toLowerCase() === "admin") {
+                localStorage.setItem('toast', JSON.stringify({
+                    position: "top-right",
+                    heading: 'Đăng nhập thành công',
+                    text: `Xin chào ${data.User.FullName}!`,
+                    icon: 'success',
+                    loader: true,
+                    loaderBg: '#9EC600',
+                    showHideTransition: 'slide',
+                    stack: 4
+                }));
                 window.location.replace("/")
             } else {
+                localStorage.setItem('toast', JSON.stringify({
+                    position: "top-right",
+                    heading: 'Đăng nhập thành công',
+                    text: `Xin chào ${data.User.FullName}!`,
+                    icon: 'success',
+                    loader: true,
+                    loaderBg: '#9EC600',
+                    showHideTransition: 'slide',
+                    stack: 4
+                }));
                 window.location.replace("/client")
             }
             setCookie('User', data.token, 1)
@@ -163,7 +183,14 @@
             localStorage.setItem('User', JSON.stringify(dataUser))
         }
         ).catch(err => {
-            console.log(err)
+            $.toast({
+                position: "top-right",
+                heading: 'Tài khoản hoặc mật khẩu không chính xác',
+                icon: "error",
+                loader: true,
+                text: 'Hãy kiểm tra lại tài khoản và mật khẩu',
+                allowToastClose: true
+            })
         })
     }
     function setCookie(cname, cvalue, hours) {
@@ -172,4 +199,16 @@
         let expires = "expires=" + d.toUTCString();
         document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
     }
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const toastData = localStorage.getItem('toast');
+        if (toastData) {
+            const toast = JSON.parse(toastData);
+            console.log(toast)
+            $.toast(toast);
+            localStorage.removeItem('toast');
+        }
+    })
 </script>

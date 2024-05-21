@@ -225,8 +225,17 @@
 <!--end color switcher-->
 
 <script>
-
   function handleClearToken() {
+    localStorage.setItem('toast', JSON.stringify({
+      position: "top-right",
+      heading: 'Bạn đã đăng xuất',
+      text: `Mong bạn quay trở lại với chúng tôi!`,
+      icon: 'success',
+      loader: true,
+      loaderBg: '#9EC600',
+      showHideTransition: 'slide',
+      stack: 4
+    }));
     localStorage.removeItem("User")
     clearCookie("User")
     window.location.replace("/auth/loginPage")

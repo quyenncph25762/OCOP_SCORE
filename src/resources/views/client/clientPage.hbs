@@ -12,3 +12,14 @@
     </div>
 </div>
 {{> footer}}
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const toastData = localStorage.getItem('toast');
+        if (toastData) {
+            const toast = JSON.parse(toastData);
+            $.toast(toast);
+            localStorage.removeItem('toast');
+        }
+    })
+</script>

@@ -34,7 +34,15 @@ const handleUpdate = async (id) => {
         body: form,
     })
     if (!response.ok) {
-        alert("Lỗi cập nhật sản phẩm")
+        localStorage.setItem('toast', JSON.stringify({
+            position: "top-right",
+            heading: 'Lỗi cập nhật sản phẩm',
+            text: 'Đã xảy ra lỗi cập nhật sản phẩm',
+            icon: 'error',
+            loader: true,
+            loaderBg: '#9EC600',
+            stack: 4
+        }));
     }
     const arrResponseDelete = []
     for (const idGallery of ArrId) {
@@ -61,10 +69,18 @@ const handleUpdate = async (id) => {
         }
     }
     await Promise.all(reqGalleryNew)
-    $.alert("Cập nhật thành công!")
-    setTimeout(() => {
-        window.location.replace("/product-manage")
-    }, 1000)
+    localStorage.setItem('toast', JSON.stringify({
+        position: "top-right",
+        heading: 'Cập nhật thành công',
+        text: 'Đã cập nhật thành công',
+        icon: 'success',
+        loader: true,
+        loaderBg: '#9EC600',
+        stack: 4
+    }));
+
+    window.location.replace("/product-manage")
+
 }
 
 const handleIdGallery = async (id) => {

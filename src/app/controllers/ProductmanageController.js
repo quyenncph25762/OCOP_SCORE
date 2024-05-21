@@ -353,12 +353,14 @@ class ProductmanageController {
         ProductmanageModel.destroyProduct(product_id, (err, results) => {
             if (err) {
                 console.error('Lỗi truy vấn:', err);
-                res.status(500).send('Internal Server Error');
+                return res.status(500).send('Internal Server Error');
             } else {
                 if (results.affectedRows === 0) {
-                    res.status(404).send(' not found');
+                    return res.status(404).send(' not found');
                 } else {
-                    res.redirect('back')
+                    return res.status(203).json({
+                        message: "Xóa thành công"
+                    })
                 }
             }
         })

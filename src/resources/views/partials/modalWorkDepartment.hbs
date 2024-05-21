@@ -123,7 +123,16 @@
         })
         if (res.ok) {
             const data = await res.json()
-            alert(`${data.message}`)
+            localStorage.setItem('toast', JSON.stringify({
+                position: "top-right",
+                heading: 'Thêm thành công',
+                text: 'Đã thêm thành công',
+                icon: 'success',
+                loader: true,
+                loaderBg: '#9EC600',
+                showHideTransition: 'slide',
+                stack: 4
+            }));
             window.location.replace("/workDepartment")
         } else {
             const data = await res.json()
@@ -147,7 +156,16 @@
         })
         if (res.ok) {
             const data = await res.json()
-            alert(`${data.message}`)
+            localStorage.setItem('toast', JSON.stringify({
+                position: "top-right",
+                heading: 'Cập nhật thành công',
+                text: 'Đã cập nhật thành công',
+                icon: 'success',
+                loader: true,
+                loaderBg: '#9EC600',
+                showHideTransition: 'slide',
+                stack: 4
+            }));
             window.location.replace("/workDepartment")
         } else {
             const data = await res.json()
