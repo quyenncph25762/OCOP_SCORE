@@ -2,7 +2,7 @@ const connection = require("../../config/db")
 const WorkDepartmentModel = {
     // fetch tat ca
     fetchAllWorkDepartment: (callback) => {
-        const query = `SELECT * FROM workdepartment WHERE workdepartment.isDeleted = 0`
+        const query = `SELECT * FROM workdepartment WHERE workdepartment.isDeleted = 0 ORDER BY workdepartment._id DESC`
         connection.query(query, callback)
     },
     // lay tat ca trong thung rac

@@ -36,7 +36,7 @@
         <b class="caret"></b>
       </a>
       <ul class="dropdown-menu p-2">
-        <li><a href="/role"><span>Quản lí vai trò</span></a></li>
+
         <li><a href="/workDepartment"><span>Phòng ban, bộ phận</span></a></li>
         <li><a href="/workPosition"><span>Vị trí, chức danh</span></a></li>
       </ul>
@@ -96,6 +96,16 @@
       <ul class="dropdown-menu p-2">
         <li><a href="/product-group"> <span>Nhóm sản phẩm</span></a></li>
         <li><a href="/scoreTemp"> <span>Phiếu chấm</span></a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+        <ion-icon name="options-outline"></ion-icon> <span class="ml-2">Quản trị</span>
+        <b class="caret"></b>
+      </a>
+      <ul class="dropdown-menu p-2">
+        <li><a href="/role"><span>Quản lí vai trò</span></a></li>
+        <li><a href="/users"> <span>Quản lí người dùng</span></a></li>
       </ul>
     </li>
 
@@ -162,11 +172,10 @@
             </a>
           </li>
           <li class="dropdown-divider"></li>
-          <li class="dropdown-item">
-            <a href="profile.html">
-              <i class="icon-settings mr-2"></i> Cài đặt
-            </a>
+          <li class="dropdown-item" data-toggle="modal" data-target="#exampleModalChangePassword">
+            <i class="icon-settings mr-2"></i> Cài đặt
           </li>
+
           <li class="dropdown-divider"></li>
           {{!-- logout --}}
           <li class="dropdown-item" style="cursor: pointer;" onclick="handleClearToken()">
@@ -176,7 +185,7 @@
       </li>
     </ul>
   </nav>
-
+  {{> modalChangePassword}}
 
 </header>
 <!--End topbar header-->

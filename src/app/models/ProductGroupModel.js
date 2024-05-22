@@ -2,7 +2,7 @@ const connection = require("../../config/db")
 const ProductGroupModel = {
     // fetch tat ca
     fetchAllProductGroup: (callback) => {
-        const query = `SELECT * FROM productgroup WHERE productgroup.IsDeleted = 0`
+        const query = `SELECT * FROM productgroup WHERE productgroup.IsDeleted = 0 ORDER BY productgroup._id DESC`
         connection.query(query, callback)
     },
     // lay tat ca trong thung rac

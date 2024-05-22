@@ -15,11 +15,9 @@ class SiteController {
                         message: err
                     })
                 }
-                if (User?.[0].role_title.toLowerCase() !== "admin") {
-
+                if (User?.[0]?.role_title.toLowerCase() !== "admin") {
                     res.redirect("/client/welcome")
                 } else {
-                    console.log(User[0])
                     res.render('home', { User: User[0] });
                 }
             })

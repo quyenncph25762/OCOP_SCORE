@@ -1,0 +1,97 @@
+<style>
+    .modal-content {
+        min-width: 800px;
+    }
+
+    @media screen and (min-width: 350px) and (max-width: 765px) {
+        .modal-content {
+            min-width: 100% !important;
+        }
+    }
+</style>
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCreateUser" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Tạo mới tài khoản</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-row">
+                        <div class="col-sm-12">
+                            <p style="font-size: 16px;margin-bottom: 18px;">Thông tin người dùng</p>
+                            <div class="row">
+                                <div class="col-sm-3 mb-3">
+                                    <img class="" style="width: 100%;height: 100%;object-fit: cover;"
+                                        src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="">
+                                </div>
+                                <div class="col-sm-9">
+                                    <div class="row">
+                                        <div class="col-sm-9 mb-3">
+                                            <label for="Code">Tên truy cập</label>
+                                            <input type="text" class="form-control" id="UserName">
+                                        </div>
+                                        <div class="custom-control custom-switch col-md-3"
+                                            style="display: flex; justify-content: center;align-items: center;">
+                                            <input name="status" type="checkbox" class="custom-control-input"
+                                                id="IsActive" checked>
+                                            <label class="custom-control-label block" for="IsActive">Kích hoạt</label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6 mb-3">
+                                            <label for="Code">Họ và tên</label>
+                                            <input type="text" class="form-control" id="FullName">
+                                        </div>
+                                        <div class="col-sm-6 mb-3">
+                                            <label for="Code">Vai trò</label>
+                                            <select name="" id="RoleId" class="form-control">
+                                                {{#each Role}}
+                                                <option value="{{this._id}}">{{this.title}}</option>
+                                                {{/each}}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 mb-3">
+                                    <label for="Code">Địa chỉ email</label>
+                                    <input type="text" class="form-control" id="Email">
+                                </div>
+                                <div class="col-sm-6 mb-3">
+                                    <label for="Code">Số điện thoại</label>
+                                    <input type="text" class="form-control" id="Phone">
+                                </div>
+                                <div class="col-sm-6 mb-3">
+                                    <label for="Code">Mật khẩu</label>
+                                    <input type="text" class="form-control" id="Email">
+                                </div>
+                                <div class="col-sm-6 mb-3">
+                                    <label for="Code">Xác nhận mật khẩu</label>
+                                    <input type="text" class="form-control" id="Phone">
+                                </div>
+                                <p class="col-sm-6" style="font-style: italic;color: #F64E60;font-size: 13px;">* Kiểm
+                                    tra kĩ thông tin
+                                    trước
+                                    khi thêm người dùng mới</p>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-dismiss="modal">Hủy bỏ</button>
+                <button type="button" class="btn btn-info">
+                    <div class="" style="display: flex;align-items: center;gap: 10px;">
+                        <ion-icon name="save-outline"></ion-icon>
+                        <p class="m-0">Lưu thông tin</p>
+                    </div>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

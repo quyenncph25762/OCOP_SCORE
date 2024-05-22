@@ -9,7 +9,7 @@ const ScoreCommitteeModel = {
         FROM scorecommittee
         JOIN 
         yearreview ON yearreview._id = scorecommittee.yearReviewId
-        WHERE scorecommittee.IsDeleted = 0`
+        WHERE scorecommittee.IsDeleted = 0 ORDER BY scorecommittee._id DESC`
         // const query = `SELECT * FROM scorecommittee WHERE IsDeleted = 0`
         connection.query(query, callback)
     },
@@ -20,7 +20,7 @@ const ScoreCommitteeModel = {
         FROM scorecommittee
         JOIN 
         yearreview ON yearreview._id = scorecommittee.yearReviewId
-        WHERE scorecommittee.IsDeleted = 1`
+        WHERE scorecommittee.IsDeleted = 1 ORDER BY scorecommittee._id DESC`
         // const query = `SELECT * FROM scorecommittee WHERE IsDeleted = 0`
         connection.query(query, callback)
     },

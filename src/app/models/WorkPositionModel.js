@@ -3,7 +3,7 @@ const connection = require("../../config/db")
 const WorkPositionModel = {
     // fetch tat ca
     fetchAllWorkPosition: (callback) => {
-        const query = `SELECT * FROM workposition WHERE workposition.IsDeleted = 0`
+        const query = `SELECT * FROM workposition WHERE workposition.IsDeleted = 0 ORDER BY workposition._id DESC`
         connection.query(query, callback)
     },
     // lay tat ca trong thung rac

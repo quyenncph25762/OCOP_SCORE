@@ -20,12 +20,16 @@
                                 {{!-- creatorUser --}}
                                 <input type="text" id="CreatorUser_id" name="CreatorUser_id" value="{{User._id}}"
                                     hidden>
+                                {{!-- userName --}}
+                                <input type="text" id="UserName" name="UserName" hidden>
                                 {{!-- avatar --}}
                                 <div class="drag-text">
                                 </div>
                             </div>
-                            <div class="file-upload-content">
-                                <img style="width: 100%;height: 100%;object-fit: cover;" class="file-upload-image"
+                            <div class="file-upload-content" style="display: none;position: relative;">
+                                <input style="" id="Avatar" class="file-upload-input" type='file' name="Avatar"
+                                    onchange="readURL(this);" accept="image/*" />
+                                <img style="width: 200px;height: 200px;object-fit: cover;" class="file-upload-image"
                                     alt="your image" />
                                 <div class="image-title-wrap">
                                     <button type="button" onclick="removeUpload()"
@@ -122,14 +126,29 @@
         </div>
     </div>
 </div>
-
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"></script>
+<script>
+    const UserNameValue = document.querySelector("#UserName")
+    function generateRandomUser(length) {
+        let characters = '0123456789';
+        let code = '';
+        for (let i = 0; i < length; i++) {
+            code += characters.charAt(Math.floor(Math.random() * characters.length));
+        }
+        return code;
+    }
+    const UserNameRandom = generateRandomUser(6)
+    UserNameValue.value = `USER${UserNameRandom}`
+</script>
 <script>
     async function handleAdd() {
         const Avatar = document.getElementById("Avatar")
         const nu = document.getElementById("nu").check
         const nam = document.getElementById("nam").check
         const Code = document.getElementById("Code").value
+        const UserName = document.getElementById("UserName").value
         const Email = document.getElementById("Email").value
         const FullName = document.getElementById("FullName").value
         const DoB = document.getElementById("DoB").value
@@ -139,11 +158,11 @@
         const WorkPosition_id = document.getElementById("WorkPosition_id").value
         const roleId = document.getElementById("roleId").value
         const CreatorUser_id = document.getElementById("CreatorUser_id").value
-        console.log(DoB)
         const formData = new FormData()
         formData.append("Avatar", Avatar?.files[0] ? Avatar?.files[0] : null)
         formData.append("Gender", nu ? "nu" : "nam")
         formData.append("Code", Code)
+        formData.append("UserName", UserName)
         formData.append("Email", Email)
         formData.append("DoB", DoB)
         formData.append("FullName", FullName)
@@ -153,6 +172,7 @@
         formData.append("WorkPosition_id", WorkPosition_id)
         formData.append("roleId", roleId)
         formData.append("CreatorUser_id", CreatorUser_id)
+        formData.append("Password", CryptoJS.SHA256("123456").toString())
         const res = await fetch(`/employee/add`, {
             method: "POST",
             body: formData
@@ -161,8 +181,8 @@
             const data = await res.json()
             localStorage.setItem('toast', JSON.stringify({
                 position: "top-right",
-                heading: 'Thêm thành công',
-                text: 'Đã thêm thành công',
+                heading: 'Đã thêm thành viên',
+                text: 'Thêm thành viên thành công',
                 icon: 'success',
                 loader: true,
                 loaderBg: '#9EC600',
@@ -194,7 +214,6 @@
 
             reader.onload = function (e) {
                 $('.image-upload-wrap').hide();
-
                 $('.file-upload-image').attr('src', e.target.result);
                 $('.file-upload-content').show();
 
@@ -223,7 +242,6 @@
 {{!-- random code --}}
 <script>
     const codeValue = document.querySelector("#Code")
-
     function generateRandomCode(length) {
         let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789';
         let code = '';

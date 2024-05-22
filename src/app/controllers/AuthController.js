@@ -4,16 +4,15 @@ const dotenv = require("dotenv")
 dotenv.config();
 const { SECRET_CODE } = process.env
 class AuthController {
+    // trang dang nhap
     loginPage = (req, res) => {
         res.render("auth/login")
     }
+    // dang nhap
     login = (req, res) => {
-        console.log(req.body)
-        const FullName = req.body.FullName
-        const Email = req.body.Email
+        const UserName = req.body.UserName
         const Password = req.body.Password
-        const Address = req.body.Address
-        AccountModel.loginAccount(FullName, Email, Password, Address, (err, data) => {
+        AccountModel.loginAccount(UserName, Password, (err, data) => {
             if (err) {
                 res.status(500).json({ error: 'Internal Server Error' });
                 return;
@@ -32,6 +31,7 @@ class AuthController {
             })
         })
     }
+    // dang ki
     register = (req, res) => {
         WorkPositionModel.fetchAllWorkPosition((err, WorkPosition) => {
             if (err) {
@@ -42,17 +42,49 @@ class AuthController {
             res.render("auth/register", { WorkPosition: WorkPosition })
         })
     }
+
     resetPassword = (req, res) => {
         res.render("auth/resetPassword")
     }
+    // lay 1 tai khoan
     getOneUser = (req, res) => {
         const id = req.params.id
         AccountModel.fetchOneUser(id, (err, User) => {
             if (err) {
-                return res.status(400).json({
+                return res.status(500).json({
                     message: err
                 })
             }
+            return res.status(200).json(User[0])
+        })
+    }
+    // tim 1 tai khoan
+    findUser(req, res) {
+        const id = req.params.id
+        const { Password } = req.body
+        AccountModel.findUserById(id, Password, (err, User) => {
+            if (err) {
+                return res.status(500).json({
+                    message: err
+                })
+            }
+            return res.status(200).json(User)
+        })
+    }
+    // changePassowrd
+    changePassword(req, res) {
+        const id = req.params.id
+        const { Password } = req.body
+        console.log(Password)
+        AccountModel.changePasswordByUserId(id, Password, (err, User) => {
+            if (err) {
+                return res.status(500).json({
+                    message: err
+                })
+            }
+            return res.status(200).json({
+                message: "Đổi mật khẩu thành công"
+            })
         })
     }
 }

@@ -112,45 +112,57 @@ class ScoreTempController {
     }
     getOne(req, res) {
         const id = req.params.id
-        ScoreTempModel.getOneScoreTemp(id, (err, data) => {
-            if (err) {
-                return res.status(500).json({
-                    message: "Lỗi truy vấn"
-                })
-            }
-            ProductGroupModel.fetchAllProductGroup((err, productGroup) => {
+        const cookie = req.cookies
+        if (cookie?.User) {
+            const UserDataCookie = jwt.verify(cookie.User, SECRET_CODE)
+            AccountModel.fetchOneUser(UserDataCookie?._id, (err, User) => {
                 if (err) {
-                    return res.status(400).json({
-                        message: err
+                    return res.status(500).json({
+                        message: "Lỗi truy vấn"
                     })
                 }
-                ProductDetailModel.getAllProductDetailLimit((err, ProductDetail) => {
+                ScoreTempModel.getOneScoreTemp(id, (err, data) => {
                     if (err) {
                         return res.status(500).json({
                             message: "Lỗi truy vấn"
                         })
                     }
-                    ScoreTempDetailModel.getScoreTempDetailByScoreTemp(data[0]?._id, (err, ScoreTempDetail) => {
+                    ProductGroupModel.fetchAllProductGroup((err, productGroup) => {
                         if (err) {
-                            return res.status(500).json({
-                                message: "Lỗi truy vấn"
+                            return res.status(400).json({
+                                message: err
                             })
                         }
-                        ScoreTempDetailModel.getScoreTempDetailByTrash(data[0]?._id, (err, ScoreTempTrash) => {
+                        ProductDetailModel.getAllProductDetailLimit((err, ProductDetail) => {
                             if (err) {
                                 return res.status(500).json({
                                     message: "Lỗi truy vấn"
                                 })
                             }
-                            res.render("scoreTemp/update", { ScoreTemp: data[0], productGroup: productGroup, ProductDetail: ProductDetail, ScoreTempDetail: ScoreTempDetail, ScoreTempTrash: ScoreTempTrash })
+                            ScoreTempDetailModel.getScoreTempDetailByScoreTemp(data[0]?._id, (err, ScoreTempDetail) => {
+                                if (err) {
+                                    return res.status(500).json({
+                                        message: "Lỗi truy vấn"
+                                    })
+                                }
+                                ScoreTempDetailModel.getScoreTempDetailByTrash(data[0]?._id, (err, ScoreTempTrash) => {
+                                    if (err) {
+                                        return res.status(500).json({
+                                            message: "Lỗi truy vấn"
+                                        })
+                                    }
+                                    res.render("scoreTemp/update", { ScoreTemp: data[0], productGroup: productGroup, ProductDetail: ProductDetail, ScoreTempDetail: ScoreTempDetail, ScoreTempTrash: ScoreTempTrash, User: User[0] })
+                                })
+                            })
                         })
                     })
                 })
             })
-        })
+        }
     }
     update(req, res) {
         const id = req.params.id
+
         ScoreTempModel.findScoreTemUpdate(id, req.body, (err, data) => {
             if (err) {
                 return res.status(500).json({

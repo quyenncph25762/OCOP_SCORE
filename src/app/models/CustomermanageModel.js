@@ -9,7 +9,7 @@ const CustomerManageController = {
  JOIN city ON city._id = customer.City_id 
  JOIN district ON district._id = customer.District_id 
  JOIN ward ON ward._id = customer.Ward_id 
- WHERE Isdeleted = 0;
+ WHERE customer.Isdeleted = 0 ORDER BY customer._id DESC;
         `;
         // const query = 'SELECT * FROM customer WHERE Isdeleted = 0';
         connection.query(query, callback)
@@ -56,7 +56,7 @@ const CustomerManageController = {
  JOIN city ON city._id = customer.City_id 
  JOIN district ON district._id = customer.District_id 
  JOIN ward ON ward._id = customer.Ward_id 
- WHERE Isdeleted = 1;
+ WHERE customer.Isdeleted = 1;
         `;
         connection.query(query, callback);
     },

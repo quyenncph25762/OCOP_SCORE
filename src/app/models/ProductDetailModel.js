@@ -13,9 +13,15 @@ const ProductDetailModel = {
         const query = `SELECT * FROM product_detail ORDER BY _id LIMIT 22`
         connection.query(query, callback)
     },
+    // hien productDetail theo product Id
     getProductDetailByProductId: (id, callback) => {
         const query = `SELECT * FROM product_detail WHERE Product_id = ?`
-        connection.query(query, id, callback)
+        connection.query(query, [id], callback)
+    },
+    // xoa productDetail theo product Id
+    deleteProductDetailByProductId: (id, callback) => {
+        const query = `DELETE FROM product_detail WHERE Product_id = ?`
+        connection.query(query, [id], callback)
     },
     createProductDetail: (productDetail, callback) => {
         const query = `INSERT INTO product_detail (ProductDetail_Name,Product_id) VALUES (?,?)`

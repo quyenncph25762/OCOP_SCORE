@@ -16,7 +16,7 @@ const EmployeeModel = {
             workposition ON workposition._id = employee.WorkPosition_id
         JOIN
             role ON role._id = employee.RoleId
-        WHERE employee.IsDeleted = 0;
+        WHERE employee.IsDeleted = 0 ORDER BY employee._id DESC;
         `
         connection.query(query, callback)
     },
@@ -42,8 +42,8 @@ const EmployeeModel = {
     },
     // them
     AddEmployee: (employee, callback) => {
-        const query = `INSERT INTO employee (Code,FullName,Email,Avatar,Gender,DoB,Phone,Address,WorkDepartment_id,WorkPosition_id,roleId,CreatorUser_id) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)`
-        const values = [employee.Code, employee.FullName, employee.Email, employee.Avatar, employee.Gender, employee.DoB, employee.Phone, employee.Address, employee.WorkDepartment_id, employee.WorkPosition_id, employee.roleId, employee.CreatorUser_id]
+        const query = `INSERT INTO employee (Code,FullName,UserName,Email,Avatar,Gender,DoB,Phone,Address,WorkDepartment_id,WorkPosition_id,roleId,CreatorUser_id,Password) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)`
+        const values = [employee.Code, employee.FullName, employee.UserName, employee.Email, employee.Avatar, employee.Gender, employee.DoB, employee.Phone, employee.Address, employee.WorkDepartment_id, employee.WorkPosition_id, employee.roleId, employee.CreatorUser_id, employee.Password]
         connection.query(query, values, callback)
     },
     // tim can bo

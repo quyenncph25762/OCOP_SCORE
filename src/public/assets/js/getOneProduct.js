@@ -26,6 +26,7 @@ const handleShowListCitationUpdate = async (id) => {
     const response = await fetch(`/productDetail/productDetailByProduct/${id}`);
     if (response.ok) {
         const dataProductDetail = await response.json();
+        let i = 0
         for (const ProductDetail of dataProductDetail) {
             const resGallery = await fetch(`/gallery/productDetail/${ProductDetail._id}`)
             if (resGallery.ok) {
@@ -38,11 +39,11 @@ const handleShowListCitationUpdate = async (id) => {
                 }).join("")
                 tbody.innerHTML += `
                 <tr>
-                    <td style="padding-right: 0px;padding-left: 0px">${ProductDetail._id}</td>
-                    <td style="padding-right: 0px ; padding-left: 0px">
+                    <td style="">${i += 1}</td>
+                    <td style="padding: 12px">
                         ${ProductDetail.ProductDetail_Name}
                     </td>
-                    <td style="color: red;padding-right: 0px;padding-left: 0px">
+                    <td style="color: red;">
                         <p>(*)</p>
                     </td>
                     <td style="padding-right: 0px;padding-left: 0px">

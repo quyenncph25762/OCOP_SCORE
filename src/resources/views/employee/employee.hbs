@@ -293,8 +293,10 @@
     <!-- End container-fluid-->
 </div><!--End content-wrapper-->
 {{> footer}}
-
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="/assets/js/custom.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"></script>
 <script class="jsbin" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
 {{!-- upload anh --}}
 <script>
@@ -329,9 +331,7 @@
         $(".check").prop('checked', $(this).prop('checked'));
     });
 </script>
-<script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"></script>
-<script src="/assets/custom.js"></script>
+
 <script>
     document.addEventListener("DOMContentLoaded", () => {
         const toastData = localStorage.getItem('toast');

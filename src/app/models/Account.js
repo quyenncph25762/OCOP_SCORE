@@ -11,7 +11,7 @@ const AccountModel = {
         connection.query(query, callBack)
     },
     // login
-    loginAccount: (FullName, Email, Address, Password, callback) => {
+    loginAccount: (UserName, Password, callback) => {
         const query = `SELECT 
         employee.*,
         role.title AS role_title
@@ -19,9 +19,9 @@ const AccountModel = {
             employee
         JOIN 
         role ON role._id = employee.RoleId
-        WHERE FullName = ? OR Email = ? AND Password = ? AND Address = ?
+        WHERE UserName = ? AND Password = ?
         `
-        connection.query(query, [FullName, Email, Password, Address], callback)
+        connection.query(query, [UserName, Password], callback)
     },
     //getOneUser
     fetchOneUser: (id, callback) => {
@@ -36,6 +36,16 @@ const AccountModel = {
     WHERE 
         employee._id = ?`
         connection.query(query, id, callback)
+    },
+    // tim user theo id va password
+    findUserById: (id, password, callback) => {
+        const query = `SELECT * FROM employee WHERE Password = '${password}' AND _id = ${id}`
+        connection.query(query, callback)
+    },
+    // changePassword
+    changePasswordByUserId: (id, password, callback) => {
+        const query = `UPDATE employee SET Password = ? WHERE _id = ?`
+        connection.query(query, [password, id], callback)
     }
 }
 

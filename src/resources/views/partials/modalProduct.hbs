@@ -9,8 +9,6 @@
         align-items: center;
     }
 
-
-
     .file-item a:hover {
         color: #333333;
     }
@@ -29,7 +27,7 @@
         /* Màu chữ khi hover */
     }
 
-    .active {
+    .activeTabs {
         background-color: #333333;
         /* Màu nền khi hover */
         color: white;
@@ -145,14 +143,17 @@
                                     </div>
                                 </div>
                                 <div class="file-upload-content" style="display: none;">
-                                    <img class="file-upload-image" src="#" alt="your image" />
+                                    <input id="Avatar" class="file-upload-input" type='file' name="Avatar"
+                                        onchange="readURL(this);" accept="image/*" />
+                                    <img style="width: 200px;height: 200px;object-fit: cover;" class="file-upload-image"
+                                        src="#" alt="your image" />
                                     <div class="image-title-wrap">
                                         <button type="button" onclick="removeUpload()"
                                             class="remove-image mt-2">Remove</button>
                                     </div>
                                 </div>
                                 <div onclick="handleShowFormProduct(this)"
-                                    class="d-flex align-items-center justify-content-center p-2 mt-3 hover-effect active boxFormProduct"
+                                    class="d-flex align-items-center justify-content-center p-2 mt-3 hover-effect activeTabs boxFormProduct"
                                     style="cursor: pointer; border-radius: 10px;">
                                     <ion-icon name="menu-outline"></ion-icon>
                                     <span class="ml-2">Thông tin chung</span>

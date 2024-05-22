@@ -30,7 +30,7 @@ $(document).ready(function () {
         "paging": true, // Bật tính năng phân trang
         "lengthChange": true, // Bật tính năng thay đổi số lượng dòng trên mỗi trang
         "searching": true, // Bật tính năng tìm kiếm
-        "ordering": true, // Bật tính năng sắp xếp
+        "ordering": false, // Bật tính năng sắp xếp
         "info": true, // Hiển thị thông tin số trang, số dòng trên trang
         "autoWidth": false, // Tắt tính năng tự động thay đổi kích thước cột
 
@@ -46,10 +46,7 @@ $(document).ready(function () {
             "processing": "Đang xử lý...",
             "search": "Tìm kiếm:",
             "zeroRecords": "Không tìm thấy bản ghi nào phù hợp",
-            "aria": {
-                "sortAscending": ": kích hoạt để sắp xếp cột tăng dần",
-                "sortDescending": ": kích hoạt để sắp xếp cột giảm dần"
-            }
+
         }
         // Các tùy chọn khác nếu cần
     });

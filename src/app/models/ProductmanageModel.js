@@ -18,7 +18,7 @@ const ProductmanageController = {
     JOIN
         yearreview ON yearreview._id = product.ProductYearId
     WHERE 
-        product.IsDeleted = 0;
+        product.IsDeleted = 0 ORDER BY product._id DESC;
         `;
         connection.query(query, callback);
 
@@ -44,13 +44,19 @@ const ProductmanageController = {
         connection.query(query, values, callback);
     },
     updateProduct: (id, product, callback) => {
-        const query = 'UPDATE product SET Name = ?,Code = ?, ProductGroup_id = ? , Customer_id = ?, ProductYearId = ?, Note = ? , Description = ? , RankOcop = ? , Avatar = ? , TotalScore = ? , Status = ? , IsActive = ?  WHERE _id = ?';
-        const values = [product.Name, product.Code, product.ProductGroup_id, product.Customer_id, product.ProductYearId, product.Note, product.Description, product.RankOcop, product.Avatar, product.TotalScore, product.Status, product.IsActive, id];
+        const query = 'UPDATE product SET Name = ?,Code = ?, ProductGroup_id = ? , Customer_id = ?, ProductYearId = ?, Note = ? , Description = ? , RankOcop = ? , Avatar = ? , TotalScore = ? , IsActive = ?  WHERE _id = ?';
+        const values = [product.Name, product.Code, product.ProductGroup_id, product.Customer_id, product.ProductYearId, product.Note, product.Description, product.RankOcop, product.Avatar, product.TotalScore, product.IsActive, id];
+        connection.query(query, values, callback);
+    },
+
+    updateStatusProduct: (id, product, callback) => {
+        const query = 'UPDATE product SET Status = ?  WHERE _id = ?';
+        const values = [product.Status, id];
         connection.query(query, values, callback);
     },
     // delete to trash
     deleteToTrashProduct: (product_id, userId, callback) => {
-        const query = `UPDATE product SET IsDeleted = 1 , DeleterUser_id = ${userId} , DeletionTime = CURRENT_TIMESTAMP  WHERE _id = ?`;
+        const query = `UPDATE product SET IsDeleted = 1 , DeleterUser_id = ${userId} , DeletionTime = CURRENT_TIMESTAMP  WHERE _id = ? `;
         connection.query(query, [product_id], callback);
     },
     // khoi phuc

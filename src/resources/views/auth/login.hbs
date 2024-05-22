@@ -137,61 +137,59 @@
 <!-- Custom scripts -->
 <script src="assets/js/app-script.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 <script>
-    const fullName = document.querySelector("#FullName")
-    const password = document.querySelector("#Password")
-    const address = document.querySelector("#Address")
     function handleLogin() {
-        const data = { FullName: fullName.value, Password: password.value, Address: address.value }
+        const UserName = document.querySelector("#FullName").value
+        const password = document.querySelector("#Password").value
         $.ajax({
             url: '/auth/login',
             type: 'POST',
             data: {
-                ...data,
-                //mã hóa mật khẩu trước khi gửi qua ajax
-                Password: CryptoJS.SHA256(Password).toString()
-            }
-        }).then(data => {
-            if (data.User.role_title.toLowerCase() === "admin") {
-                localStorage.setItem('toast', JSON.stringify({
+                UserName: UserName,
+                // Mã hóa mật khẩu trước khi gửi qua ajax
+                Password: CryptoJS.SHA256(password).toString()
+            },
+            success: function (data) {
+                if (data.User.role_title.toLowerCase() === "admin") {
+                    localStorage.setItem('toast', JSON.stringify({
+                        position: "top-right",
+                        heading: 'Đăng nhập thành công',
+                        text: `Xin chào ${data.User.FullName}!`,
+                        icon: 'success',
+                        loader: true,
+                        loaderBg: '#9EC600',
+                        showHideTransition: 'slide',
+                        stack: 4
+                    }));
+                    window.location.replace("/");
+                } else {
+                    localStorage.setItem('toast', JSON.stringify({
+                        position: "top-right",
+                        heading: 'Đăng nhập thành công',
+                        text: `Xin chào ${data.User.FullName}!`,
+                        icon: 'success',
+                        loader: true,
+                        loaderBg: '#9EC600',
+                        showHideTransition: 'slide',
+                        stack: 4
+                    }));
+                    window.location.replace("/client");
+                }
+                setCookie('User', data.token, 1);
+                const dataUser = data.User._id;
+                localStorage.setItem('User', JSON.stringify(dataUser));
+            },
+            error: function (err) {
+                $.toast({
                     position: "top-right",
-                    heading: 'Đăng nhập thành công',
-                    text: `Xin chào ${data.User.FullName}!`,
-                    icon: 'success',
+                    heading: 'Tài khoản hoặc mật khẩu không chính xác',
+                    icon: "error",
                     loader: true,
-                    loaderBg: '#9EC600',
-                    showHideTransition: 'slide',
-                    stack: 4
-                }));
-                window.location.replace("/")
-            } else {
-                localStorage.setItem('toast', JSON.stringify({
-                    position: "top-right",
-                    heading: 'Đăng nhập thành công',
-                    text: `Xin chào ${data.User.FullName}!`,
-                    icon: 'success',
-                    loader: true,
-                    loaderBg: '#9EC600',
-                    showHideTransition: 'slide',
-                    stack: 4
-                }));
-                window.location.replace("/client")
+                    text: 'Hãy kiểm tra lại tài khoản và mật khẩu',
+                    allowToastClose: true
+                });
             }
-            setCookie('User', data.token, 1)
-            const dataUser = data.User._id
-            localStorage.setItem('User', JSON.stringify(dataUser))
-        }
-        ).catch(err => {
-            $.toast({
-                position: "top-right",
-                heading: 'Tài khoản hoặc mật khẩu không chính xác',
-                icon: "error",
-                loader: true,
-                text: 'Hãy kiểm tra lại tài khoản và mật khẩu',
-                allowToastClose: true
-            })
-        })
+        });
     }
     function setCookie(cname, cvalue, hours) {
         const d = new Date();

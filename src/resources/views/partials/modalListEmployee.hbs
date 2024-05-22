@@ -99,12 +99,15 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Đóng</button>
-                <button type="button" class="btn btn-info btnDisabled" onclick="handleChoose()">Lựa chọn</button>
+                <button type="button" class="btn btn-info btnDisabled" data-dismiss="modal" onclick="handleChoose()"
+                    disabled>Lựa
+                    chọn</button>
             </div>
         </div>
     </div>
 </div>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script>
     window.dataLayer = window.dataLayer || [];
     function gtag() {
@@ -199,15 +202,42 @@
                 </div>
             </td>
         `;
-
             objTo.appendChild(divtest);
         });
-        $('#exampleModalEmployee').modal('hide');
+
+        let countEmployee = 0
+        for (const checked of btnsCheck) {
+            if (checked.checked) {
+                countEmployee++
+            }
+        }
+        console.log(countEmployee)
+        if (countEmployee > 0) {
+            console.log(1)
+            $.toast({
+                text: 'Bạn đã thêm thành viên thành công',
+                heading: 'Thêm thành viên thành công!',
+                icon: "success",
+                position: "top-right",
+                stack: 4,
+                showHideTransition: 'slide'
+            })
+        } else {
+            $.toast({
+                text: 'Hãy chọn ít nhất 1 thành viên',
+                heading: 'Thêm thất bại!',
+                icon: "warning",
+                position: "top-right",
+                stack: 4,
+                showHideTransition: 'slide'
+            })
+        }
         for (const checked of btnsCheck) {
             if (checked.checked) {
                 checked.checked = !checked
             }
         }
+
     }
     function remove_education_fields(rid) {
         $('.removeclass' + rid).remove();

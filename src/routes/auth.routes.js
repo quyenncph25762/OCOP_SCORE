@@ -11,4 +11,9 @@ router.get("/register", AuthController.register)
 router.get("/resetPassword", AuthController.resetPassword)
 // lay 1 tai khoan
 router.get("/get/:id", AuthController.getOneUser)
+// tim 1 tai khoan
+router.post("/findUserById/:id", AuthController.findUser)
+// doi mat khau
+router.patch("/changePassword/:id", AuthController.changePassword)
+
 module.exports = router

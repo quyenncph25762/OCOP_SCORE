@@ -285,7 +285,6 @@ class ProductmanageController {
                     Avatar: req.file ? req.file.path : req.body.Avatar,
                     ...req.body
                 };
-                console.log(updatedData)
                 ProductmanageModel.updateProduct(product_id, updatedData, (err, result) => {
                     if (err) {
                         console.log(err)
@@ -303,6 +302,21 @@ class ProductmanageController {
                     message: "Sản phẩm đã tồn tại"
                 })
             }
+        })
+    }
+    // duyet san pham
+    updateStatus(req, res) {
+        const productId = req.params.id
+        ProductmanageModel.updateStatusProduct(productId, req.body, (err, result) => {
+            if (err) {
+                console.log(err)
+                return res.status(500).json({
+                    message: "Lỗi try vấn"
+                })
+            }
+            return res.status(203).json({
+                message: "Cập nhật trạng thái thành công"
+            })
         })
     }
     // xoa vao thung rac
@@ -365,8 +379,6 @@ class ProductmanageController {
             }
         })
     }
-
-
 }
 
 module.exports = new ProductmanageController();

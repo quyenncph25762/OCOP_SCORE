@@ -5,9 +5,15 @@ const GalleryModel = {
         const query = `SELECT * FROM gallerydetail`
         connection.query(query, callback)
     },
+    // hien thi anh theo productDetail
     getGalleryByProductDetail: (productDetailId, callback) => {
-        const query = `SELECT * FROM gallerydetail WHERE productDetail_id = ? ORDER BY _id ASC`
+        const query = `SELECT * FROM gallerydetail WHERE productDetail_id = ?`
         connection.query(query, productDetailId, callback)
+    },
+    // xoa anh theo productDetail
+    deleteGalleryByProductDetail: (productDetailId, callback) => {
+        const query = `DELETE gallerydetail WHERE productDetail_id = ?`
+        connection.query(query, [productDetailId], callback)
     },
     createGallery: (gallery, callback) => {
         const query = `INSERT INTO gallerydetail (productDetail_id,imgUrl,imgName) VALUES (?,?,?)`
@@ -18,6 +24,7 @@ const GalleryModel = {
         const query = `DELETE FROM gallerydetail WHERE _id = ?`
         connection.query(query, productDetailId, callback)
     },
+
 }
 
 module.exports = GalleryModel

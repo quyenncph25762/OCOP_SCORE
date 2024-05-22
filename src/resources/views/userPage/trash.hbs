@@ -1,0 +1,332 @@
+{{> header}}
+<div class="content-wrapper" id="toastRole">
+    <div class="container-fluid">
+        <div class="row" style="max-width: 100%; display: contents;">
+            <ul class="search-customer"
+                style="list-style: none; display:flex; justify-content: space-between; align-items: center;">
+                <div class="">
+                    <button class="btn btn-danger btnDeleteAll btnDisabledDelete">Xóa mục đã chọn</button>
+                    <button class="btn btn-primary btnRevertAll ml-3 btnDisabledRevert">Khôi phục mục đã
+                        chọn</button>
+                </div>
+            </ul>
+            </li>
+            </ul>
+        </div>
+    </div>
+    <div class="row" style="display: contents;">
+        <div class="col-lg-6" style="max-width: 100%;">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex align-items">
+                        <span style="cursor: pointer;" class="d-inline-block mr-3" tabindex="0" data-toggle="tooltip"
+                            title="Trở về">
+                            <a href="/users">
+                                <ion-icon name="arrow-undo-outline"></ion-icon>
+                            </a>
+                        </span>
+                        <h5 class="card-title">Khôi phục cán bộ</h5>
+                    </div>
+                    <div class="table-responsive">
+                        <table id="myTable" class="table table-hover" style="font-size: 13px;">
+                            <thead>
+                                <tr>
+                                    <th {{#ifCond Employee.length 0}}hidden{{/ifCond}}>
+                                        <div class="checkbox">
+                                            <input type="checkbox" class="check" id="checkAll">
+                                        </div>
+                                    </th>
+                                    <th>Tên truy cập</th>
+                                    <th>Họ và tên</th>
+                                    <th>Vai trò</th>
+                                    <th>Địa chỉ Email</th>
+                                    <th>Email xác nhận</th>
+                                    <th>Kích hoạt</th>
+                                    <th>Thời gian tạo mới</th>
+                                    <th>Hành động</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{#each Employee}}
+                                <tr>
+                                    <td>
+                                        <div class="">
+                                            <div class="checkbox">
+                                                <input type="checkbox" class="check" data-idCheckBox="{{this._id}}">
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <img src="{{this.Avatar}}" style="width: 40px;height: 40px;object-fit: cover;"
+                                            alt="">
+                                        <span>{{this.UserName}}</span>
+                                    </td>
+                                    <td>
+                                        {{this.FullName}}
+                                    </td>
+                                    <td>
+                                        {{this.role_name}}
+                                    </td>
+                                    <td>
+                                        {{this.Email}}
+                                    </td>
+                                    <td>
+                                        Chưa xử lí
+                                    </td>
+                                    {{#ifCond IsActive 1}}
+                                    <td>
+                                        <div class="active"></div>
+                                    </td>
+                                    {{else}}
+                                    <td>
+                                        <div class="inactive"></div>
+                                    </td>
+                                    {{/ifCond}}
+                                    <td>{{split this.CreationTime ' ' 0}}</td>
+                                    <td style="display: flex;">
+                                        <div class="action_center">
+                                            <button data-toggle="modal" data-target="#exampleModal{{this._id}}"
+                                                style="background-color: transparent;border: none;cursor: pointer;">
+                                                <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
+                                                    title="Khôi phục: {{this.product_name}}">
+                                                    <ion-icon name="sync-outline" style="color: white; font-size: 18px;"
+                                                        id="icon_revert" data-id="{{this._id}}"></ion-icon>
+                                                </span>
+                                            </button>
+                                        </div>
+                                        <div class="delete_action">
+                                            <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
+                                                title="Xóa vĩnh viễn">
+                                                <ion-icon id="icon_moveToTrash" name="trash-outline">
+                                                </ion-icon>
+                                            </span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {{/each}}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div><!--End Row-->
+    </div>
+</div><!--End content-wrapper-->
+{{> footer}}
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+    gtag('js', new Date());
+    gtag('config', 'UA-56159088-1');
+    // checkbox All
+    $("#checkAll").click(function (e) {
+        $(".check").prop('checked', $(this).prop('checked'));
+    });
+</script>
+<script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const toastData = localStorage.getItem('toast');
+        if (toastData) {
+            const toast = JSON.parse(toastData);
+            $.toast(toast);
+            localStorage.removeItem('toast');
+        }
+        const btnReverts = document.querySelectorAll("#icon_revert")
+        const btnTrash = document.querySelectorAll("#icon_moveToTrash");
+        //removeOne
+        for (let btn of btnTrash) {
+            btn.addEventListener("click", (event) => {
+                $.confirm({
+                    title: '<ion-icon name="trash-bin-outline"></ion-icon>',
+                    content: 'Bạn có chắc chắn muốn xóa ?',
+                    buttons: {
+                        confirm: {
+                            text: 'Confirm',
+                            btnClass: 'btn-red',
+                            action: function () {
+                                // Lấy ID của mục cần xóa từ thuộc tính data-id của nút
+                                const id = event.target.dataset.id;
+
+                                // Gọi API xóa mục
+                                fetch(`/employee/remove/${id}`, {
+                                    method: 'DELETE'
+                                }).then(response => {
+                                    if (response.ok) {
+                                        localStorage.setItem('toast', JSON.stringify({
+                                            position: "top-right",
+                                            heading: 'Xóa thành công',
+                                            text: 'Đã xóa thành công thành công',
+                                            icon: 'success',
+                                            loader: true,
+                                            loaderBg: '#9EC600',
+                                            showHideTransition: 'slide'
+                                        }));
+                                        window.location.reload()
+                                    } else {
+                                        alert('Có lỗi xảy ra khi xóa mục');
+                                    }
+                                }).catch(error => {
+                                    $.alert('Đã hủy');
+                                });
+                            }
+                        },
+                        cancel: function () {
+                            $.alert('Đã hủy!');
+                        }
+                    }
+                });
+            })
+        }
+        //revertOne
+        for (let btnRevert of btnReverts) {
+            btnRevert.addEventListener("click", async (event) => {
+                $.confirm({
+                    title: '<ion-icon name="help-circle-outline"></ion-icon>',
+                    content: 'Bạn muốn khôi phục ?',
+                    buttons: {
+                        confirm: {
+                            text: 'Confirm',
+                            btnClass: 'btn-red',
+                            action: function () {
+                                // Lấy ID của mục cần xóa từ thuộc tính data-id của nút
+                                const id = event.target.dataset.id;
+
+                                // Gọi API xóa mục
+                                fetch(`/employee/revert/${id}`, {
+                                    method: 'PATCH'
+                                }).then(response => {
+                                    if (response.ok) {
+                                        localStorage.setItem('toast', JSON.stringify({
+                                            position: "top-right",
+                                            heading: 'Khôi phục thành công',
+                                            text: 'Đã khôi phục thành công thành công',
+                                            icon: 'info',
+                                            loader: true,
+                                            loaderBg: '#9EC600',
+                                            showHideTransition: 'slide'
+                                        }));
+                                        window.location.reload()
+                                    } else {
+                                        alert('Có lỗi xảy ra khi xóa mục');
+                                    }
+                                }).catch(error => {
+                                    $.alert('Đã hủy');
+                                });
+                            }
+                        },
+                        cancel: function () {
+                            $.alert('Đã hủy!');
+                        }
+                    }
+                });
+            })
+        }
+        const btnsCheck = document.querySelectorAll(".check")
+        const btnDeleteAll = document.querySelector(".btnDeleteAll")
+        const btnDisabledDelete = document.querySelector(".btnDisabledDelete")
+        const btnDisabledRevert = document.querySelector(".btnDisabledRevert")
+        //Chưa checked thì disbale nút xóa all
+        let count = 0
+        const checkBtnDisabled = () => {
+            if (count === 0) {
+                btnDisabledDelete.setAttribute("disabled", true)
+                btnDisabledRevert.setAttribute("disabled", true)
+            } else {
+                btnDisabledDelete.removeAttribute("disabled")
+                btnDisabledRevert.removeAttribute("disabled")
+            }
+        }
+        for (let checked of btnsCheck) {
+            checkBtnDisabled()
+            checked.addEventListener("click", (e) => {
+                if (checked.checked) {
+                    count++
+                } else {
+                    count--
+                }
+                checkBtnDisabled()
+            })
+        }
+        //removeAll
+        btnDeleteAll.addEventListener("click", async (e) => {
+            $.confirm({
+                title: '<ion-icon name="help-circle-outline"></ion-icon>',
+                content: 'Bạn muốn xóa mục đã chọn ?',
+                buttons: {
+                    confirm: {
+                        text: 'Confirm',
+                        btnClass: 'btn-red',
+                        action: async function () {
+                            const id = event.target.dataset.id;
+                            for (let btnCheck of btnsCheck) {
+                                if (btnCheck.checked) {
+                                    const id = btnCheck.dataset.idcheckbox
+                                    const res = await fetch(`/employee/remove/${id}`, {
+                                        method: "DELETE"
+                                    })
+                                }
+                            }
+                            localStorage.setItem('toast', JSON.stringify({
+                                position: "top-right",
+                                heading: 'Xóa thành công',
+                                text: 'Đã xóa thành công thành công',
+                                icon: 'success',
+                                loader: true,
+                                loaderBg: '#9EC600',
+                                showHideTransition: 'slide'
+                            }));
+                            window.location.reload()
+                        }
+                    }
+                },
+                cancel: function () {
+                    $.alert('Đã hủy!');
+                }
+            })
+        })
+        //RevertByCheckBox
+        const btnRevertAll = document.querySelector(".btnRevertAll")
+        btnRevertAll.addEventListener("click", async (e) => {
+            $.confirm({
+                title: '<ion-icon name="help-circle-outline"></ion-icon>',
+                content: 'Bạn muốn khôi phục mục đã chọn ?',
+                buttons: {
+                    confirm: {
+                        text: 'Confirm',
+                        btnClass: 'btn-red',
+                        action: async function () {
+                            const id = event.target.dataset.id;
+                            for (let btnCheck of btnsCheck) {
+                                if (btnCheck.checked) {
+                                    const id = btnCheck.dataset.idcheckbox
+                                    const res = await fetch(`/employee/revert/${id}`, {
+                                        method: "PATCH"
+                                    })
+                                }
+                            }
+                            localStorage.setItem('toast', JSON.stringify({
+                                position: "top-right",
+                                heading: 'Khôi phục thành công',
+                                text: 'Đã khôi phục thành công thành công',
+                                icon: 'info',
+                                loader: true,
+                                loaderBg: '#9EC600',
+                                showHideTransition: 'slide'
+                            }));
+                            window.location.reload()
+                        }
+                    },
+                    cancel: function () {
+                        $.alert('Đã hủy!');
+                    }
+                }
+            });
+        })
+    })
+</script>

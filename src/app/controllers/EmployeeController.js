@@ -99,7 +99,9 @@ class EmployeeControllers {
                 if (data.length === 0) {
                     EmployeeModel.AddEmployee({
                         Code: req.body.Code,
+                        Password: req.body.Password,
                         FullName: req.body.FullName,
+                        UserName: req.body.UserName,
                         Email: req.body.Email,
                         Avatar: req.file ? req.file.path : req.body.Avatar,
                         Gender: req.body.Gender,
@@ -112,8 +114,9 @@ class EmployeeControllers {
                         CreatorUser_id: req.body.CreatorUser_id,
                     }, (err, data) => {
                         if (err) {
+                            console.log(err)
                             return res.status(500).json({
-                                message: 'Internal Server Error'
+                                message: err
                             });
                         } else {
                             return res.status(201).json({
@@ -128,7 +131,6 @@ class EmployeeControllers {
                 }
             }
         })
-
     }
     // xoa vao thung rac
     removeToTrash(req, res, next) {

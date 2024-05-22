@@ -1,3 +1,11 @@
+tbody td {
+    text-align: left !important;
+}
+
+th {
+    text-align: left !important;
+}
+
 /* Styles for modal overlay */
 .modal-overlay {
     display: none;
@@ -299,10 +307,31 @@ ion-icon[name="ribbon-outline"] {
     cursor: pointer;
 }
 
+ion-icon[name="save-outline"] {
+    font-size: 16px;
+    cursor: pointer;
+}
+
+ion-icon[name="lock-closed-outline"] {
+    font-size: 20px;
+    cursor: pointer;
+}
+
+ion-icon[name="list-outline"] {
+    font-size: 20px;
+    cursor: pointer;
+}
+
 ion-icon[name="star"] {
     font-size: 16px;
     cursor: pointer;
     color: yellow;
+}
+
+ion-icon[name="checkmark-circle-outline"] {
+    font-size: 36px;
+    cursor: pointer;
+    color: rgb(0, 162, 255);
 }
 
 .text-muted {
@@ -347,6 +376,15 @@ input.form-control.input-headerTable.w-100 {
     justify-content: center;
 }
 
+.statusLabelSuccess {
+    background: #04b962;
+    padding: 2px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .statusLabelDanger {
     background: #F64E60;
     padding: 2px;
@@ -355,6 +393,7 @@ input.form-control.input-headerTable.w-100 {
     align-items: center;
     justify-content: center;
 }
+
 
 .icons-row {
     display: flex;

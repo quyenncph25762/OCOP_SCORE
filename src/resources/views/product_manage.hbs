@@ -65,8 +65,7 @@
                   <th scope="col">Tên sản phẩm</th>
                   <th scope="col">Nhóm sản phẩm</th>
                   <th scope="col">Năm đánh giá</th>
-                  <th scope="col">Chủ thể</th>
-                  <th scope="col">Ghi chú</th>
+                  <th scope="col">Trạng thái</th>
                   <th scope="col">Hành động</th>
                 </tr>
               </thead>
@@ -81,7 +80,17 @@
                     </div>
                   </td>
                   <td>{{this.Code}}</td>
-                  <td>{{this.Name}}</td>
+                  <td>
+
+                    <div style="display: flex;flex-direction: column;">
+                      <p style="color: rgb(236, 236, 118); font-size: 14px;font-weight: 600;">{{this.Name}}</p>
+                      {{#ifCond customer_IsDeleted 0}}
+                      <p style="color: #ccc; font-weight: 550;">{{this.customer_name}}</p>
+                      {{else}}
+                      <p style="color: rgb(236, 236, 118);">Không xác định</p>
+                      {{/ifCond}}
+                    </div>
+                  </td>
                   {{#ifCond productgroup_IsDeleted 0}}
                   <td>{{this.productGroup_name}}</td>
                   {{else}}
@@ -93,14 +102,15 @@
                   {{else}}
                   <td style="color: rgb(236, 236, 118);">Không xác định</td>
                   {{/ifCond}}
-
-                  {{#ifCond customer_IsDeleted 0}}
-                  <td>{{this.customer_name}}</td>
+                  {{#ifCond this.Status 0}}
+                  <td>
+                    <p class="statusLabelDanger" for="" style="">Chờ duyệt</p>
+                  </td>
                   {{else}}
-                  <td style="color: rgb(236, 236, 118);">Không xác định</td>
+                  <td>
+                    <p class="statusLabelSuccess" for="" style="">Đã duyệt</p>
+                  </td>
                   {{/ifCond}}
-                  <td>{{this.Note}}</td>
-
                   {{!-- icons --}}
                   <td scope="row" style="display: flex;" class="icons">
                     <div class="action_center">
@@ -237,7 +247,7 @@
                                         <tr>
                                           <th>#</th>
                                           <th>Name</th>
-                                          <th>Bắt buộc</th>
+                                          <th style="max-width: 85px;padding:8px">Bắt buộc</th>
                                           <th>Tệp đính kèm</th>
                                         </tr>
                                       </thead>
@@ -265,10 +275,12 @@
                         data-target="#exampleModalDetail{{this._id}}"></ion-icon>
                     </span>
                     {{!-- icon duyet --}}
-                    <span onclick="handleProductDetail('{{this._id}}')" class="d-inline-block" tabindex="0"
+                    {{#ifCond this.Status 0}}
+                    <span onclick="handleProductStatus('{{this._id}}')" class="d-inline-block" tabindex="0"
                       data-toggle="tooltip" title="Duyệt">
                       <ion-icon name="checkbox-outline"></ion-icon>
                     </span>
+                    {{/ifCond}}
                     {{!-- icon xoa --}}
                     <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Xóa">
                       <ion-icon id="icon_moveToTrash" name="trash-outline" data-id="{{this._id}}">
@@ -522,7 +534,64 @@
         }
       });
     }
+  </script>
+  {{!-- Actions duyet san pham --}}
+  <script>
+    function handleProductStatus(productId) {
+      $.confirm({
+        title: '<ion-icon name="checkmark-circle-outline"></ion-icon>',
+        content: 'Duyệt sản phẩm ?',
+        buttons: {
+          confirm: {
+            text: 'Duyệt',
+            btnClass: 'btn-blue',
+            action: function () {
 
+              const product = {
+                Status: 1
+              }
+              // Lấy ID của mục cần xóa từ thuộc tính data-id của nút
+              fetch(`/product-manage/updateStatus/${productId}`, {
+                method: 'PATCH',
+                body: JSON.stringify(product),
+                headers: {
+                  "Content-Type": "application/json"
+                }
+              }).then(response => {
+                if (response.ok) {
+                  localStorage.setItem('toast', JSON.stringify({
+                    position: "top-right",
+                    heading: 'Success!',
+                    text: 'Đã duyệt thành công thành công <a href="/client/scoreFile">Kiểm tra</a>',
+                    icon: 'success',
+                    loader: true,
+                    loaderBg: '#9EC600',
+                    showHideTransition: 'slide',
+                    stack: 4
+                  }));
+                  window.location.reload()
+                } else {
+                  $.toast({
+                    position: "top-right",
+                    heading: 'Error!',
+                    text: 'Có lỗi khi xóa mục',
+                    showHideTransition: 'fade',
+                    showHideTransition: 'slide',
+                    stack: 4,
+                    icon: 'error'
+                  })
+                }
+              }).catch(error => {
+                $.alert('Đã hủy');
+              });
+            }
+          },
+          cancel: function () {
+            $.alert('Đã hủy!');
+          }
+        }
+      });
+    }
   </script>
   {{!-- getOneProduct and productDetail --}}
   <script src="/assets/js/getOneProduct.js"></script>
