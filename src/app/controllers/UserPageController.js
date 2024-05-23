@@ -18,10 +18,10 @@ class UserPageController {
                         message: `Looi truy xuat ${err}`
                     })
                 }
-                EmployeeModal.fetchAllEmployee((err, Employee) => {
+                EmployeeModal.fetchAllUser((err, Employee) => {
                     if (err) {
                         return res.status(500).json({
-                            message: `Looi truy xuat ${err}`
+                            message: `Loi truy xuat ${err}`
                         })
                     }
                     RoleModal.fetchAllRole((err, Role) => {
@@ -30,6 +30,7 @@ class UserPageController {
                                 message: `Looi truy xuat ${err}`
                             })
                         }
+                        console.log(Employee)
                         res.render("userPage/userPage", { User: User[0], Employee: Employee, Role: Role })
                     })
                 })

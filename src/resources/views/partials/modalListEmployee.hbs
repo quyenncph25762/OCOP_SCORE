@@ -117,7 +117,6 @@
     gtag('config', 'UA-56159088-1');
     // checkbox All
     $("#checkAll").click(function (e) {
-        console.log(e)
         $(".check").prop('checked', $(this).prop('checked'));
     });
 </script>
@@ -149,28 +148,73 @@
     //click lua chon
     const btnsCheck = document.querySelectorAll(".check")
     var room = 1;
-    async function handleChoose() {
-        const arrEmployee = [];
-        const btnsCheck = document.querySelectorAll('.check'); // Assuming '.check' is the class of the checkboxes
 
+    var ListEmployee = []
+    var arrEmployeeAll = []
+    async function handleChoose() {
+
+        const arrEmployee = []
+        const btnsCheck = document.querySelectorAll('.check');
+        const employeeById = Array.from(document.querySelectorAll(".memberCount")).map(e => e.getAttribute("data-id"))
+        const employeeByIdNumber = employeeById.map(Number)
         for (const btnCheck of btnsCheck) {
             if (btnCheck.checked) {
                 const employeeData = btnCheck.dataset.employee;
                 if (employeeData) {
                     const EmployeeToObject = JSON.parse(employeeData);
-                    arrEmployee.push(EmployeeToObject);
+                    const checkEmployee = employeeByIdNumber.includes(EmployeeToObject._id)
+                    if (!checkEmployee) {
+                        arrEmployee.push(EmployeeToObject);
+                        arrEmployeeAll.push(EmployeeToObject)
+                    } else {
+                        $.toast({
+                            text: `Thành viên <strong>${EmployeeToObject.FullName}</strong> đã có trong hội đồng chấm`,
+                            heading: 'Warning',
+                            icon: "warning",
+                            position: "top-right",
+                            stack: 4,
+                            showHideTransition: 'slide'
+                        })
+                        return
+                    }
                 }
+            }
+        }
+
+        // xu li to giup viec
+
+        //callApi goi employee
+        const response = await fetch("/employee/getAll", {
+            method: "GET"
+        })
+        if (!response.ok) {
+            alert("Có lỗi xảy ra!")
+        }
+        const employee = await response.json()
+
+        if (employee.length > 0) {
+            //tao ra 1 mang employee id
+            const arrEmployeeId = []
+            arrEmployeeAll.map((employ) => arrEmployeeId.push(employ._id))
+            // loc nhung employee nao khac voi id trong scoreCommitt
+            const filterEmployee = employee.filter((item) => !arrEmployeeId.includes(item._id));
+            ListEmployee = []
+            //loc xong push
+            for (const item of filterEmployee) {
+                ListEmployee.push(item)
             }
         }
 
         arrEmployee.forEach((item, index) => {
             const objTo = document.getElementById('education_fields');
             const divtest = document.createElement("tr");
-            divtest.setAttribute("class", `form-group removeclass${room + 1}`);
+            divtest.setAttribute("class", `form-group removeclass${room + 1} memberCount`);
+            divtest.setAttribute("data-id", `${Number(item._id)}`);
             const rdiv = `removeclass${room + 1}`;
             room++;
             divtest.innerHTML = `
             <th scope="row">${room - 1}</th>
+            <input class="Employee_id" value="${item._id}" hidden>
             <td>${item.FullName}</td>
             <td>${item.workdepartment_name}</td>
             <td style="max-width: 130px;">
@@ -186,13 +230,10 @@
             </td>
             <td style="max-width: 250px; font-size:12px">
                 <div class="form-group">
-                    <select id="Employee_id_${room}" name="validateRank" class="form-control"
+                    <select id="Employee_id_${room}" name="validateRank" class="form-control listEmployee"
                             style="transform: translateY(10px); max-width: 200px; max-height: 200px; overflow-y: hidden; font-size:12px"
                             data-target="#navbar-example2" data-offset="0">
-                        <option selected>Không xác định</option>
-                         {{#each Employee}}
-                       <option value="{{this._id}}">{{this.FullName}}</option>
-                       {{/each}}
+                        
                     </select>
                 </div>
             </td>
@@ -204,16 +245,31 @@
         `;
             objTo.appendChild(divtest);
         });
-
+        const listEmployee = document.querySelectorAll(".listEmployee")
+        if (ListEmployee.length > 0) {
+            for (const elementListEmployee of listEmployee) {
+                elementListEmployee.innerHTML = `
+                ${ListEmployee.map((item) => {
+                    return `
+                            <option value="${item._id}">${item.FullName}</option>
+                            `
+                })}
+                `
+            }
+        } else {
+            for (const elementListEmployee of listEmployee) {
+                elementListEmployee.innerHTML = `
+               <option selected>Không xác định</option> 
+                `
+            }
+        }
         let countEmployee = 0
         for (const checked of btnsCheck) {
             if (checked.checked) {
                 countEmployee++
             }
         }
-        console.log(countEmployee)
         if (countEmployee > 0) {
-            console.log(1)
             $.toast({
                 text: 'Bạn đã thêm thành viên thành công',
                 heading: 'Thêm thành viên thành công!',

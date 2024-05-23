@@ -4,6 +4,8 @@ const EmployeeController = require('../app/controllers/EmployeeController');
 const uploadCloud = require("../config/cloudinary/cloudinary")
 const upload = require("../app/Middleware/uploadMiddle")
 router.get("/", EmployeeController.index)
+router.get("/getAll", EmployeeController.getAll)
+// getAll
 router.post("/add", upload.single("Avatar"), EmployeeController.create)
 // fetchAll trash
 router.get("/trash", EmployeeController.getAllEmployeeFromTrash)

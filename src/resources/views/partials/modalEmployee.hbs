@@ -11,30 +11,21 @@
             </div>
             <div class="modal-body" style="overflow-y: auto;max-height: 80vh;">
                 <form class="row" enctype="multipart/form-data">
+                    <input type="text" hidden value="{{User._id}}" id="CreatorUser_id">
+                    <input type="text" hidden id="UserName">
                     <div class="col-md-4">
                         <h1 style="font-size: 16px; text-align: center;font-weight: 600;">Ảnh đại diện</h1>
-                        <div class="file-upload">
-                            <div class="image-upload-wrap">
-                                <input id="Avatar" class="file-upload-input" type='file' name="Avatar"
-                                    onchange="readURL(this);" accept="image/*" />
-                                {{!-- creatorUser --}}
-                                <input type="text" id="CreatorUser_id" name="CreatorUser_id" value="{{User._id}}"
-                                    hidden>
-                                {{!-- userName --}}
-                                <input type="text" id="UserName" name="UserName" hidden>
-                                {{!-- avatar --}}
-                                <div class="drag-text">
+                        <div>
+                            <div class="col-sm-12 mb-3" style="position: relative;">
+                                <div data-toggle="tooltip" data-html="true" title="Xóa ảnh" onclick="removeUpload()"
+                                    style="position: absolute;top: 0;right: 0;">
+                                    <ion-icon name="close-outline"></ion-icon>
                                 </div>
-                            </div>
-                            <div class="file-upload-content" style="display: none;position: relative;">
-                                <input style="" id="Avatar" class="file-upload-input" type='file' name="Avatar"
-                                    onchange="readURL(this);" accept="image/*" />
-                                <img style="width: 200px;height: 200px;object-fit: cover;" class="file-upload-image"
-                                    alt="your image" />
-                                <div class="image-title-wrap">
-                                    <button type="button" onclick="removeUpload()"
-                                        class="remove-image mt-2">Remove</button>
-                                </div>
+                                <input type="file" id="Avatar" accept="image/*" hidden>
+                                <img id="AvatarPreview" onclick="document.getElementById('Avatar').click()"
+                                    style="width: 100%;height: 100%;object-fit: cover;border-radius:50%"
+                                    src="/Uploads//user_boy.jpg" alt="">
+
                             </div>
                             {{!-- gender --}}
                             <div class="d-flex justify-content-center mt-3">
@@ -130,6 +121,35 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"></script>
 <script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const avatarImage = document.getElementById("AvatarPreview");
+        const defaultImageUrl = avatarImage.src;
+        const radioNu = document.getElementById("nu")
+        const radioNam = document.getElementById("nam")
+        radioNu.addEventListener("click", (e) => {
+            avatarImage.src = "/Uploads/user_girl.png"
+        })
+        radioNam.addEventListener("click", (e) => {
+            avatarImage.src = "/Uploads/user_boy.jpg"
+        })
+        document.getElementById("Avatar").addEventListener("change", (event) => {
+            const file = event.target.files[0]
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    avatarImage.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        })
+        window.removeUpload = () => {
+            const fileInput = document.getElementById('Avatar');
+            fileInput.value = ''; // Xóa nội dung của input file
+            avatarImage.src = defaultImageUrl; // Đặt lại hình ảnh mặc định
+        };
+    })
+</script>
+<script>
     const UserNameValue = document.querySelector("#UserName")
     function generateRandomUser(length) {
         let characters = '0123456789';
@@ -140,13 +160,14 @@
         return code;
     }
     const UserNameRandom = generateRandomUser(6)
+
     UserNameValue.value = `USER${UserNameRandom}`
 </script>
 <script>
     async function handleAdd() {
         const Avatar = document.getElementById("Avatar")
-        const nu = document.getElementById("nu").check
-        const nam = document.getElementById("nam").check
+        const nu = document.getElementById("nu").checked
+        const nam = document.getElementById("nam").checked
         const Code = document.getElementById("Code").value
         const UserName = document.getElementById("UserName").value
         const Email = document.getElementById("Email").value
@@ -160,7 +181,7 @@
         const CreatorUser_id = document.getElementById("CreatorUser_id").value
         const formData = new FormData()
         formData.append("Avatar", Avatar?.files[0] ? Avatar?.files[0] : null)
-        formData.append("Gender", nu ? "nu" : "nam")
+        formData.append("Gender", nu === true ? "nu" : "nam")
         formData.append("Code", Code)
         formData.append("UserName", UserName)
         formData.append("Email", Email)
@@ -204,39 +225,6 @@
             });
         }
     }
-
-</script>
-<script>
-    function readURL(input) {
-        if (input.files && input.files[0]) {
-
-            var reader = new FileReader();
-
-            reader.onload = function (e) {
-                $('.image-upload-wrap').hide();
-                $('.file-upload-image').attr('src', e.target.result);
-                $('.file-upload-content').show();
-
-                $('.image-title').html(input.files[0].name);
-            };
-
-            reader.readAsDataURL(input.files[0]);
-
-        } else {
-            removeUpload();
-        }
-    }
-    function removeUpload() {
-        $('.file-upload-input').replaceWith($('.file-upload-input').clone());
-        $('.file-upload-content').hide();
-        $('.image-upload-wrap').show();
-    }
-    $('.image-upload-wrap').bind('dragover', function () {
-        $('.image-upload-wrap').addClass('image-dropping');
-    });
-    $('.image-upload-wrap').bind('dragleave', function () {
-        $('.image-upload-wrap').removeClass('image-dropping');
-    });
 
 </script>
 {{!-- random code --}}

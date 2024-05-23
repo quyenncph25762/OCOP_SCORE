@@ -59,6 +59,18 @@ class EmployeeControllers {
             res.redirect("/auth/loginPage")
         }
     }
+
+    // getAll 
+    getAll(req, res) {
+        EmployeeModel.fetchAllEmployee((err, data) => {
+            if (err) {
+                return res.status(500).json({
+                    message: err
+                })
+            }
+            return res.status(200).json(data)
+        })
+    }
     // hien thi trong thung rac
     getAllEmployeeFromTrash(req, res, next) {
         const cookie = req.cookies
@@ -90,6 +102,7 @@ class EmployeeControllers {
     }
     // them
     create = async (req, res, next) => {
+        console.log(req.body.Gender)
         EmployeeModel.findEmployeeAdd(req.body, (err, data) => {
             if (err) {
                 return res.status(500).json({
@@ -103,7 +116,7 @@ class EmployeeControllers {
                         FullName: req.body.FullName,
                         UserName: req.body.UserName,
                         Email: req.body.Email,
-                        Avatar: req.file ? req.file.path : req.body.Avatar,
+                        Avatar: req.file ? req.file.path : req.body.Gender === "nam" ? "/Uploads/user_boy.jpg" : "/Uploads/user_girl.png",
                         Gender: req.body.Gender,
                         DoB: req.body.DoB,
                         Phone: req.body.Phone,

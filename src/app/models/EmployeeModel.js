@@ -7,13 +7,25 @@ const EmployeeModel = {
         workposition.Name AS workposition_name,
         role.title AS role_name,
         workdepartment.isDeleted AS workdepartment_IsDeleted,
-        workposition.IsDeleted AS workposition_IsDeleted
+        workposition.IsDeleted AS workposition_IsDeleted,
+        DATE_FORMAT(employee.DoB, '%Y-%m-%d') AS formattedDoB
             FROM
         employee
         JOIN
             workdepartment ON workdepartment._id = employee.WorkDepartment_id
         JOIN
             workposition ON workposition._id = employee.WorkPosition_id
+        JOIN
+            role ON role._id = employee.RoleId
+        WHERE employee.IsDeleted = 0 ORDER BY employee._id DESC;
+        `
+        connection.query(query, callback)
+    },
+    fetchAllUser: (callback) => {
+        const query = `SELECT employee.*,
+        role.title AS role_name
+        FROM
+            employee
         JOIN
             role ON role._id = employee.RoleId
         WHERE employee.IsDeleted = 0 ORDER BY employee._id DESC;

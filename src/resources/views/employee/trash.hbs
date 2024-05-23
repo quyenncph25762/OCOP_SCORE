@@ -91,7 +91,8 @@
                                         <div class="delete_action">
                                             <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
                                                 title="Xóa vĩnh viễn">
-                                                <ion-icon id="icon_moveToTrash" name="trash-outline">
+                                                <ion-icon data-id="{{this._id}}" id="icon_moveToTrash"
+                                                    name="trash-outline">
                                                 </ion-icon>
                                             </span>
                                         </div>
@@ -153,7 +154,6 @@
                                 action: function () {
                                     // Lấy ID của mục cần xóa từ thuộc tính data-id của nút
                                     const id = event.target.dataset.id;
-
                                     // Gọi API xóa mục
                                     fetch(`/employee/remove/${id}`, {
                                         method: 'DELETE'

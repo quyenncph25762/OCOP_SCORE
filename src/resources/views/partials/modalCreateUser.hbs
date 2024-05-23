@@ -3,6 +3,10 @@
         min-width: 800px;
     }
 
+    #AvatarPreview {
+        border-radius: 50%;
+    }
+
     @media screen and (min-width: 350px) and (max-width: 765px) {
         .modal-content {
             min-width: 100% !important;
@@ -26,9 +30,17 @@
                         <div class="col-sm-12">
                             <p style="font-size: 16px;margin-bottom: 18px;">Thông tin người dùng</p>
                             <div class="row">
-                                <div class="col-sm-3 mb-3">
-                                    <img class="" style="width: 100%;height: 100%;object-fit: cover;"
-                                        src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="">
+                                <input type="text" hidden id="CreatorUser_id" value="{{User._id}}">
+                                <div class="col-sm-3 mb-3" style="position: relative;">
+                                    <div data-toggle="tooltip" data-html="true" title="Xóa ảnh" onclick="removeUpload()"
+                                        style="position: absolute;top: 0;right: 0;">
+                                        <ion-icon name="close-outline"></ion-icon>
+                                    </div>
+                                    <input type="file" id="Avatar" accept="image/*" hidden>
+                                    <img id="AvatarPreview" onclick="document.getElementById('Avatar').click()"
+                                        style="width: 100%;height: 100%;object-fit: cover;" src="/Uploads/user.png"
+                                        alt="">
+
                                 </div>
                                 <div class="col-sm-9">
                                     <div class="row">
@@ -63,16 +75,16 @@
                                     <input type="text" class="form-control" id="Email">
                                 </div>
                                 <div class="col-sm-6 mb-3">
-                                    <label for="Code">Số điện thoại</label>
+                                    <label for="Phone">Số điện thoại</label>
                                     <input type="text" class="form-control" id="Phone">
                                 </div>
                                 <div class="col-sm-6 mb-3">
-                                    <label for="Code">Mật khẩu</label>
-                                    <input type="text" class="form-control" id="Email">
+                                    <label for="Password">Mật khẩu</label>
+                                    <input type="password" class="form-control" id="PasswordNew">
                                 </div>
                                 <div class="col-sm-6 mb-3">
-                                    <label for="Code">Xác nhận mật khẩu</label>
-                                    <input type="text" class="form-control" id="Phone">
+                                    <label for="ConfirmPassword">Xác nhận mật khẩu</label>
+                                    <input type="password" class="form-control" id="ConfirmPassword">
                                 </div>
                                 <p class="col-sm-6" style="font-style: italic;color: #F64E60;font-size: 13px;">* Kiểm
                                     tra kĩ thông tin
@@ -85,7 +97,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-light" data-dismiss="modal">Hủy bỏ</button>
-                <button type="button" class="btn btn-info">
+                <button type="submit" class="btn btn-info" onclick="handleCreateUser()">
                     <div class="" style="display: flex;align-items: center;gap: 10px;">
                         <ion-icon name="save-outline"></ion-icon>
                         <p class="m-0">Lưu thông tin</p>
@@ -95,3 +107,120 @@
         </div>
     </div>
 </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"></script>
+<script>
+    const UserNameValue = document.querySelector("#UserName")
+    function generateRandomUser(length) {
+        let characters = '0123456789';
+        let code = '';
+        for (let i = 0; i < length; i++) {
+            code += characters.charAt(Math.floor(Math.random() * characters.length));
+        }
+        return code;
+    }
+    const UserNameRandom = generateRandomUser(6)
+    UserNameValue.value = `USER${UserNameRandom}`
+</script>
+{{!-- avatar file reader --}}
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const avatarImage = document.getElementById("AvatarPreview");
+        const defaultImageUrl = avatarImage.src;
+        document.getElementById("Avatar").addEventListener("change", (event) => {
+            const file = event.target.files[0]
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    avatarImage.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        })
+        window.removeUpload = () => {
+            const fileInput = document.getElementById('Avatar');
+            fileInput.value = ''; // Xóa nội dung của input file
+            avatarImage.src = defaultImageUrl; // Đặt lại hình ảnh mặc định
+        };
+    })
+</script>
+<script>
+    async function handleCreateUser() {
+        const UserName = document.getElementById("UserName").value
+        const FullName = document.getElementById("FullName").value
+        const RoleId = document.getElementById("RoleId").value
+        const Email = document.getElementById("Email").value
+        const Phone = document.getElementById("Phone").value
+        const Password = document.getElementById("PasswordNew").value
+        const ConfirmPassword = document.getElementById("ConfirmPassword").value
+        const CreatorUser_id = document.getElementById("CreatorUser_id").value
+        const Avatar = document.getElementById("Avatar")
+        if (PasswordNew.length < 6 || ConfirmPassword.length < 6) {
+            $.toast({
+                position: "top-right",
+                heading: 'Warning',
+                text: 'Mật khẩu phải từ 6 kí tự',
+                icon: 'warning',
+                loader: true,
+                loaderBg: '#f2a654',
+                showHideTransition: 'slide',
+                stack: 4
+            });
+            return
+        }
+        if (Password !== ConfirmPassword) {
+            $.toast({
+                position: "top-right",
+                heading: 'Warning',
+                text: 'Mật khẩu và mật khẩu xác nhận không khớp!',
+                icon: 'warning',
+                loader: true,
+                loaderBg: '#f2a654',
+                showHideTransition: 'slide',
+                stack: 4
+            });
+            return
+        }
+
+        const formData = new FormData()
+        formData.append("UserName", UserName)
+        formData.append("FullName", FullName)
+        formData.append("roleId", Number(RoleId))
+        formData.append("CreatorUser_id", CreatorUser_id)
+        formData.append("Email", Email)
+        formData.append("Phone", Phone)
+        formData.append("Password", CryptoJS.SHA256(Password).toString())
+        formData.append("Avatar", Avatar.files[0])
+
+        const response = await fetch(`/users`, {
+            method: "POST",
+            body: formData
+        })
+        if (response.ok) {
+            localStorage.setItem('toast', JSON.stringify({
+                position: "top-right",
+                heading: 'Đã thêm thành viên',
+                text: 'Thêm thành viên thành công',
+                icon: 'success',
+                loader: true,
+                loaderBg: '#9EC600',
+                showHideTransition: 'slide',
+                stack: 4
+            }));
+            window.location.replace("/employee")
+        } else {
+            const data = await response.json()
+            console.log(data)
+            $.toast({
+                position: "top-right",
+                heading: 'Thêm thất bại',
+                text: data.message || 'Đã có lỗi xảy ra',
+                icon: 'error',
+                loader: true,
+                loaderBg: '#f2a654',
+                showHideTransition: 'slide',
+                stack: 4
+            });
+        }
+    }
+</script>

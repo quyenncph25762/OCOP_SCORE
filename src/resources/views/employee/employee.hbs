@@ -183,7 +183,7 @@
                                                                         {{!-- birthDay --}}
                                                                         <div class="col-md-6 mb-3 mt-3">
                                                                             <label for="DoB">Ngày sinh</label>
-                                                                            <input value="{{split this.DoB ' ' 0}}"
+                                                                            <input value="{{this.formattedDoB}}"
                                                                                 name="DoB" type="date"
                                                                                 class="form-control"
                                                                                 id="DoB{{this._id}}" required>
@@ -420,7 +420,7 @@
                         btnClass: 'btn-red',
                         action: function () {
                             for (let btnCheck of btnsCheck) {
-                                if (btnCheck) {
+                                if (btnCheck.checked) {
                                     const id = btnCheck.dataset.idcheckbox
                                     fetch(`/employee/removeToTrash/${id}`, {
                                         method: 'DELETE'

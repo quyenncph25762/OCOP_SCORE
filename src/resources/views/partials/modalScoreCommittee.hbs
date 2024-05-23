@@ -100,20 +100,19 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Hủy bỏ</button>
-                <button type="button" class="btn btn-info">Lưu thông tin</button>
+                <button type="button" class="btn btn-info" onclick="handleAdd()">Lưu thông tin</button>
             </div>
         </div>
     </div>
 </div>
 {{> modalListEmployee}}
-
 <script>
     var room = 1;
     function education_fields() {
         room++;
         var objTo = document.getElementById('education_fields')
         var divtest = document.createElement("tr");
-        divtest.setAttribute("class", "form-group removeclass" + room);
+        divtest.setAttribute("class", `form-group removeclass${room}`);
         var rdiv = 'removeclass' + room;
         const tableBody = () => {
             return `
@@ -160,3 +159,5 @@
         $('.removeclass' + rid).remove();
     }
 </script>
+
+<script src="/assets/js/scoreCommitteeAdd.js"></script>

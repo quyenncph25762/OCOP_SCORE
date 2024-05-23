@@ -49,9 +49,14 @@ Handlebars.registerHelper('toLowerCase', function (str) {
 Handlebars.registerHelper('plus', function (number) {
     return number + 1
 });
+
+Handlebars.registerHelper('filter', function (arr, id) {
+    const arrNew = arr.filter((item) => item._id != id)
+    return arrNew
+});
 // cắt
 Handlebars.registerHelper('split', function (input, delimiter, index) {
-    const dobFormatted = input.toISOString().split('T')[0];
+    const dobFormatted = input?.toISOString()?.split('T')?.[0];
     if (typeof dobFormatted === 'string') {
         return dobFormatted;
     } else {
