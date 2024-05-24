@@ -95,6 +95,7 @@ const EmployeeModel = {
         const values = [employee.Code, employee.FullName, employee.Email, employee.Avatar, employee.Gender, employee.DoB, employee.Phone, employee.Address, employee.WorkDepartment_id, employee.WorkPosition_id, employee.roleId, id]
         connection.query(query, values, callback)
     },
+
 }
 
 module.exports = EmployeeModel

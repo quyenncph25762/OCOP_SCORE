@@ -24,15 +24,30 @@ const ScoreCommitteeModel = {
         // const query = `SELECT * FROM scorecommittee WHERE IsDeleted = 0`
         connection.query(query, callback)
     },
+    getOne: (id, callback) => {
+        const query = `SELECT * FROM scorecommittee WHERE _id = ${id}`
+        connection.query(query, callback)
+    },
     // tao moi
     create: (scoreCommittee, callback) => {
-        const query = `INSERT INTO scorecommittee (CreatorUser_id,Code,Note,Name,IsActive) VALUES (?,?,?,?,?)`
-        connection.query(query, scoreCommittee, callback)
+        const query = `INSERT INTO scorecommittee (CreatorUser_id,Note,Name,IsActive,yearReviewId) VALUES (?,?,?,?,?)`
+        const VALUES = [scoreCommittee.CreatorUser_id, scoreCommittee.Note, scoreCommittee.Name, scoreCommittee.IsActive, scoreCommittee.yearReviewId]
+        connection.query(query, VALUES, callback)
     },
     // cap nhat
     update: (id, scoreCommittee, callback) => {
-        const query = `UPDATE scorecommittee SET CreatorUser_id = ? , Code = ? , Note = ? , Name = ? , IsActive = ? WHERE _id = ?`
-        const VALUES = [scoreCommittee.CreatorUser_id, scoreCommittee.Code, scoreCommittee.Note, scoreCommittee.Name, scoreCommittee.IsActive, id]
+        const query = `UPDATE scorecommittee SET CreatorUser_id = ?  , Note = ? , Name = ? , IsActive = ?, yearReviewId = ? WHERE _id = ?`
+        const VALUES = [scoreCommittee.CreatorUser_id, scoreCommittee.Note, scoreCommittee.Name, scoreCommittee.IsActive, scoreCommittee.yearReviewId, id]
+        connection.query(query, VALUES, callback)
+    },
+    findScoreCommitteeUpdate(id, scoreCommittee, callback) {
+        const query = `SELECT * FROM scorecommittee WHERE Name = ? AND _id !=${id}`
+        const VALUES = [scoreCommittee.Name]
+        connection.query(query, VALUES, callback)
+    },
+    findScoreCommitteeAdd(scoreCommittee, callback) {
+        const query = `SELECT * FROM scorecommittee WHERE Name = ?`
+        const VALUES = [scoreCommittee.Name]
         connection.query(query, VALUES, callback)
     },
     // Xoa vao thung rac

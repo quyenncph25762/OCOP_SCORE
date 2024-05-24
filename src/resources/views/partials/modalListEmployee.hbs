@@ -149,12 +149,13 @@
     const btnsCheck = document.querySelectorAll(".check")
     var room = 1;
 
+
     var ListEmployee = []
     var arrEmployeeAll = []
     async function handleChoose() {
-
         const arrEmployee = []
         const btnsCheck = document.querySelectorAll('.check');
+        // lay ra id cua scoreCommitteeDetail 
         const employeeById = Array.from(document.querySelectorAll(".memberCount")).map(e => e.getAttribute("data-id"))
         const employeeByIdNumber = employeeById.map(Number)
         for (const btnCheck of btnsCheck) {
@@ -165,6 +166,7 @@
                     const checkEmployee = employeeByIdNumber.includes(EmployeeToObject._id)
                     if (!checkEmployee) {
                         arrEmployee.push(EmployeeToObject);
+                        // day vao arr ben ngoai de luu tru nhung employee da lua chon
                         arrEmployeeAll.push(EmployeeToObject)
                     } else {
                         $.toast({
@@ -214,16 +216,16 @@
             room++;
             divtest.innerHTML = `
             <th scope="row">${room - 1}</th>
-            <input class="Employee_id" value="${item._id}" hidden>
+            <input hidden data-id="${item._id} id="listEmployee"></input>
             <td>${item.FullName}</td>
             <td>${item.workdepartment_name}</td>
             <td style="max-width: 130px;">
                 <div class="form-group">
-                    <select id="ValidatedRankDetail_${room}" name="validateRank" class="form-control"
+                    <select id="ValidatedRankDetail_${room}" name="validateRank" class="form-control CommitteeRole"
                             style="transform: translateY(10px); max-width: 200px; max-height: 200px; overflow-y: hidden; font-size:12px"
                             data-target="#navbar-example2" data-offset="0">
-                        <option value="1" selected>Chủ tịch</option>
-                        <option value="2">Thành viên</option>
+                        <option value="1">Chủ tịch</option>
+                        <option value="2" selected>Thành viên</option>
                         <option value="3">Tư vấn viên</option>
                     </select>
                 </div>
@@ -245,10 +247,13 @@
         `;
             objTo.appendChild(divtest);
         });
+        //tim toi select
         const listEmployee = document.querySelectorAll(".listEmployee")
         if (ListEmployee.length > 0) {
+            // in ra listEmployee k co trong scoreCommittDetail
             for (const elementListEmployee of listEmployee) {
                 elementListEmployee.innerHTML = `
+                <option selected>Không xác định</option> 
                 ${ListEmployee.map((item) => {
                     return `
                             <option value="${item._id}">${item.FullName}</option>
@@ -295,7 +300,48 @@
         }
 
     }
-    function remove_education_fields(rid) {
+    async function remove_education_fields(rid) {
+        const idEmployee = document.querySelector(`.removeclass${rid}`).getAttribute("data-id")
+        if (idEmployee) {
+            // loc qua mang scoreCommittDetail nhung cai nao co id khac voi id vua xoa
+            arrEmployeeAll = arrEmployeeAll.filter((item) => item._id != idEmployee)
+            //lay ra nhung id trong mang scoreCommittDetail
+            const arrEmployeeId = []
+            arrEmployeeAll.map((employ) => arrEmployeeId.push(employ._id))
+            const response = await fetch("/employee/getAll", {
+                method: "GET"
+            })
+            if (!response.ok) {
+                alert("Có lỗi xảy ra!")
+            }
+            const employee = await response.json()
+            console.log("before" + ListEmployee)
+            //loc listEmployee , employee nao k co trong mang scoreCommittDetail
+            const filterEmployee = employee.filter((item) => !arrEmployeeId.includes(item._id));
+            ListEmployee = filterEmployee
+
+            const listEmployee = document.querySelectorAll(".listEmployee")
+            listEmployee.innerHTML = ""
+            if (ListEmployee.length > 0) {
+                for (const elementListEmployee of listEmployee) {
+                    elementListEmployee.innerHTML = `
+                    ${ListEmployee.map((item) => {
+                        return `
+                            <option value="${item._id}">${item.FullName}</option>
+                            `
+                    })}
+                    `
+                }
+            } else {
+                for (const elementListEmployee of listEmployee) {
+                    elementListEmployee.innerHTML = `
+               <option selected>Không xác định</option> 
+                `
+                }
+            }
+            //loc xong push
+
+        }
         $('.removeclass' + rid).remove();
         room--
     }

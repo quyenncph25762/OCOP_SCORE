@@ -17,5 +17,6 @@ router.delete("/remove/:id", EmployeeController.remove)
 router.patch("/revert/:id", EmployeeController.revert)
 // update
 router.post("/update/:id", upload.single("Avatar"), EmployeeController.update)
+// filter employee
 
 module.exports = router;

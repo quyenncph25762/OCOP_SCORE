@@ -28,16 +28,19 @@
             </div>
             <div class="modal-body">
                 <form>
-                    <input id="creatorUser_id" type="text" name="creatorUser_id" value="{{User._id}}" hidden>
+                    <input id="CreatorUser_id" type="text" name="CreatorUser_id" value="{{User._id}}" hidden>
                     <div class="form-row">
                         <div class="col-md-9 mb-3">
-                            <label for="title">Tên vai trò</label>
-                            <input name="title" type="text" class="form-control" id="titleRole" required>
+                            <label for="Name">Tên hội đồng chấm</label>
+                            <input name="Name" type="text" class="form-control" id="Name">
+                            <span
+                                style="color: #de2935;font-size: 14px;font-style: italic;margin-top: 5px;font-weight: 600;"
+                                id="ErrorName"></span>
                         </div>
                         <div class="custom-control custom-switch col-md-3"
                             style="display: flex; justify-content: center;align-items: center;">
-                            <input name="status" type="checkbox" class="custom-control-input" id="statusRole" checked>
-                            <label class="custom-control-label block" for="statusRole">Áp dụng</label>
+                            <input name="status" type="checkbox" class="custom-control-input" id="IsActive" checked>
+                            <label class="custom-control-label block" for="IsActive">Áp dụng</label>
                         </div>
                         <div class="col-md-4">
                             <label for="yearReviewId">Thời gian</label>
@@ -85,7 +88,7 @@
                                         <tr>
                                             <td colspan="8" style="text-align: center;color: white;">
                                                 <button class="btn btn-success" type="button"
-                                                    onclick="education_fields();">
+                                                    onclick="education_fields()">
                                                     <span class="glyphicon glyphicon-plus"
                                                         aria-hidden="true"></span>Thêm</button>
                                             </td>
@@ -105,14 +108,42 @@
         </div>
     </div>
 </div>
-{{> modalListEmployee}}
+
+<script src="/assets/js/scoreCommitteeAdd.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const toastData = localStorage.getItem('toast');
+        if (toastData) {
+            const toast = JSON.parse(toastData);
+            $.toast(toast);
+            localStorage.removeItem('toast');
+        }
+    })
+</script>
 <script>
     var room = 1;
-    function education_fields() {
+    var ListEmployee = []
+    async function education_fields() {
+        // lay ra id cua scoreCommitteeDetail 
+        const employeeById = Array.from(document.querySelectorAll(".memberCount")).map(e => e.getAttribute("data-id"))
+        const employeeByIdNumber = employeeById.map(Number)
+        const response = await fetch("/employee/getAll", {
+            method: "GET"
+        })
+        if (!response.ok) {
+            alert("Có lỗi xảy ra!")
+        }
+        const employee = await response.json()
+        if (employee.length > 0) {
+            // loc nhung employee nao khac voi id trong scoreCommittDetail
+            ListEmployee = employee.filter((item) => !employeeByIdNumber.includes(item._id));
+
+        }
         room++;
         var objTo = document.getElementById('education_fields')
         var divtest = document.createElement("tr");
-        divtest.setAttribute("class", `form-group removeclass${room}`);
+        divtest.setAttribute("class", `form-group removeclass${room} memberCount`);
+        divtest.setAttribute("data-id", null);
         var rdiv = 'removeclass' + room;
         const tableBody = () => {
             return `
@@ -122,24 +153,20 @@
             <td></td>
             <td style="max-width: 130px;">
                 <div class="form-group">
-                    <select id="ValidatedRankDetail_${room}" name="validateRank" class="form-control"
+                    <select id="ValidatedRankDetail_${room}" name="validateRank" class="form-control CommitteeRole"
                             style="transform: translateY(10px); max-width: 200px; max-height: 200px; overflow-y: hidden;font-size:12px"
                             data-target="#navbar-example2" data-offset="0">
-                        <option value="1" selected>Chủ tịch</option>    
-                        <option value="2">Thành viên</option>
+                        <option value="1">Chủ tịch</option>    
+                        <option value="2" selected>Thành viên</option>
                         <option value="3">Tư vấn viên</option>
                     </select>
                 </div>
             </td>
             <td style="max-width: 250px;font-size:12px">
                 <div class="form-group">
-                    <select id="Employee_id_${room}" name="validateRank" class="form-control"
+                    <select id="Employee_id_${room}" name="validateRank" class="form-control listEmployee"
                             style="transform: translateY(10px); max-width: 200px; max-height: 200px; overflow-y: hidden;font-size:12px"
                             data-target="#navbar-example2" data-offset="0">
-                        <option selected>Không xác định</option>
-                       {{#each Employee}}
-                       <option value="{{this._id}}">{{this.FullName}}</option>
-                       {{/each}}
                     </select >
                 </div >
             </td >
@@ -151,13 +178,29 @@
         </tr >
             `
         }
+
         divtest.innerHTML = tableBody();
         objTo.appendChild(divtest)
-    }
-    function remove_education_fields(rid) {
-        room--
-        $('.removeclass' + rid).remove();
+        //tim toi select
+        const listEmployee = document.querySelectorAll(".listEmployee")
+        if (ListEmployee.length > 0) {
+            // in ra listEmployee k co trong scoreCommittDetail
+            for (const elementListEmployee of listEmployee) {
+                elementListEmployee.innerHTML = `
+                <option selected>Không xác định</option> 
+                ${ListEmployee.map((item) => {
+                    return `
+                            <option value="${item._id}">${item.FullName}</option>
+                            `
+                })}
+                `
+            }
+        } else {
+            for (const elementListEmployee of listEmployee) {
+                elementListEmployee.innerHTML = `
+               <option selected>Không xác định</option> 
+                `
+            }
+        }
     }
 </script>
-
-<script src="/assets/js/scoreCommitteeAdd.js"></script>

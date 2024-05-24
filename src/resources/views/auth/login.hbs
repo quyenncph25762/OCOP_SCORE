@@ -204,7 +204,6 @@
         const toastData = localStorage.getItem('toast');
         if (toastData) {
             const toast = JSON.parse(toastData);
-            console.log(toast)
             $.toast(toast);
             localStorage.removeItem('toast');
         }

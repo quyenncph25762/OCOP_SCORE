@@ -2,8 +2,9 @@ const express = require('express');
 const ScoreCommitteeController = require("../app/controllers/ScoreCommitteeController")
 const router = express.Router();
 
-
 router.get("/", ScoreCommitteeController.index)
+// add
+router.post("/add", ScoreCommitteeController.create)
 // trang thung rac
 router.get("/trashPage", ScoreCommitteeController.trashPage)
 // remove vao thung rac

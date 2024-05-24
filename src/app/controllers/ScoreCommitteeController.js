@@ -119,6 +119,62 @@ class ScoreCommitteController {
             )
         })
     }
+    create(req, res) {
+        ScoreCommitteeModel.create(req.body, (err, results) => {
+            if (err) {
+                return res.status(500).json({
+                    message: err
+                })
+            }
+            ScoreCommitteeModel.getOne(results.insertId, (err, data) => {
+                if (err) {
+                    return res.status(500).json({
+                        message: err
+                    })
+                }
+                if (data.length > 0) {
+                    return res.status(201).json(
+                        {
+                            message: "Thêm thành công",
+                            ScoreCommittee: data[0]
+                        }
+                    )
+                }
+            })
+
+        })
+    }
+    update(req, res) {
+        const id = req.params.id
+        ScoreCommitteeModel.findScoreCommitteeUpdate(id, (err, data) => {
+            if (err) {
+                return res.status(500).json({
+                    message: err
+                })
+            }
+            if (data.length === 0) {
+                ScoreCommitteeModel.update(id, req.body, (err, results) => {
+                    if (err) {
+                        return res.status(500).json({
+                            message: err
+                        })
+                    }
+                    return res.status(201).json(
+                        {
+                            message: "cập nhật thành công"
+                        }
+                    )
+                })
+            } else {
+                return res.status(201).json(
+                    {
+                        message: "Đã tồn tại tên"
+                    }
+                )
+            }
+        })
+
+    }
 }
 
 module.exports = new ScoreCommitteController
