@@ -5,6 +5,8 @@ const router = express.Router();
 router.get("/", ScoreCommitteeController.index)
 // add
 router.post("/add", ScoreCommitteeController.create)
+// update
+router.patch("/update/:id", ScoreCommitteeController.update)
 // trang thung rac
 router.get("/trashPage", ScoreCommitteeController.trashPage)
 // remove vao thung rac

@@ -4,6 +4,7 @@ const YearReivewModel = require("../models/YearReviewModel")
 const EmployeeModel = require("../models/EmployeeModel")
 const WorkDepartmentModal = require("../models/WorkDepartmentModel")
 const workPositionModal = require("../models/WorkPositionModel")
+const ScoreCommitteeDetailModel = require("../models/ScoreCommitteeDetailModel")
 const jwt = require("jsonwebtoken")
 const dotenv = require("dotenv")
 dotenv.config();
@@ -146,34 +147,19 @@ class ScoreCommitteController {
     }
     update(req, res) {
         const id = req.params.id
-        ScoreCommitteeModel.findScoreCommitteeUpdate(id, (err, data) => {
+        ScoreCommitteeModel.update(id, req.body, (err, results) => {
             if (err) {
+                console.log(err)
                 return res.status(500).json({
                     message: err
                 })
             }
-            if (data.length === 0) {
-                ScoreCommitteeModel.update(id, req.body, (err, results) => {
-                    if (err) {
-                        return res.status(500).json({
-                            message: err
-                        })
-                    }
-                    return res.status(201).json(
-                        {
-                            message: "cập nhật thành công"
-                        }
-                    )
-                })
-            } else {
-                return res.status(201).json(
-                    {
-                        message: "Đã tồn tại tên"
-                    }
-                )
-            }
+            return res.status(201).json(
+                {
+                    message: "cập nhật thành công"
+                }
+            )
         })
-
     }
 }
 

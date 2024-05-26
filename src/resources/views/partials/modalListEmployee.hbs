@@ -8,15 +8,17 @@
         overflow-y: auto;
     }
 </style>
-<div class="modal fade" id="exampleModalEmployee" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="trueEmployee">
+{{!-- update --}}
+{{#if this._id}}
+<div class="modal fade" id="exampleModalEmployee{{this._id}}" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLabel" aria-hidden="trueEmployee">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Danh sách thành viên</h5>
             </div>
             <div class="modal-body">
-                <table id="myTableEmployee" class="table table-hover">
+                <table id="myTableEmployeeUpdate" class="table table-hover">
                     <thead>
                         <div class="row" style="margin: 20px 0;">
                             <div class="col-sm-3" style="padding: 0;">
@@ -31,6 +33,108 @@
                             <div class="col-sm-3" style="padding: 0;margin-left: 10px;">
                                 <label for="">Vị trí chức danh</label>
                                 <select name="" id="WorkPositionFilter" class="form-control">
+                                    <option value="" style="color: white;" selected>Tất cả</option>
+                                    {{#each WorkPosition}}
+                                    <option value="{{this._id}}" style="color: white;" {{#ifCond this.IsActive
+                                        0}}disabled{{/ifCond}}>
+                                        {{this.Name}}</option>
+                                    {{/each}}
+                                </select>
+                            </div>
+                        </div>
+                        <tr>
+                            <th {{#ifCond Employee.length 0}}hidden{{/ifCond}}>
+                                <div class="checkbox">
+                                    <input type="checkbox" class="checkUpdate" id="checkAllUpdate"
+                                        data-id="{{this._id}}">
+                                </div>
+                            </th>
+                            <th scope="col" hidden>WorkDepartment_id</th>
+                            <th scope="col" hidden>WorkPosition_id </th>
+                            <th scope="col">Avatar</th>
+                            <th scope="col">Tên</th>
+                            <th scope="col">Giới tính</th>
+                            <th scope="col">Tổ / Phòng ban</th>
+                            <th scope="col">Vị trí chức danh</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each Employee}}
+                        <tr>
+                            <td>
+                                <div class="">
+                                    <div class="checkbox">
+                                        <input type="checkbox" class="checkUpdate" data-id="{{this._id}}"
+                                            data-employee="{{json this}}">
+                                    </div>
+                                </div>
+                            </td>
+                            <td hidden>{{this.WorkDepartment_id}}</td>
+                            <td hidden>{{this.WorkPosition_id }}</td>
+                            <td style="text-align: center;">
+                                {{#if this.Avatar}}
+                                <img src={{this.Avatar}}
+                                    style="width: 50px;height: 50px;border-radius: 50%;object-fit: cover;" alt="">
+                                {{else}}
+                                <img style="width: 50px;height: 50px;border-radius: 50%;object-fit: cover;"
+                                    src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/2048px-User-avatar.svg.png" />
+                                {{/if}}
+                            </td>
+                            <td>{{this.FullName}}</td>
+                            <td>{{this.Gender}}</td>
+                            {{#ifCond workdepartment_IsDeleted 0}}
+                            <td>{{this.workdepartment_name}}</td>
+                            {{else}}
+                            <td style="color: rgb(236, 236, 118);">Không xác định</td>
+                            {{/ifCond}}
+                            {{#ifCond workposition_IsDeleted 0}}
+                            <td>{{this.workposition_name}}</td>
+                            {{else}}
+                            <td style="color: rgb(236, 236, 118);">Không xác định</td>
+                            {{/ifCond}}
+                        </tr>
+                        {{else}}
+                        <tr>
+                            <td colspan="9" class="text-center">Không tìm thấy từ khoá nào</td>
+                        </tr>
+                        {{/each }}
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Đóng</button>
+                <button type="button" data-id="{{this._id}}" class="btn btn-info btnDisabledUpdate" data-dismiss="modal"
+                    onclick="handleChooseUpdate('{{this._id}}')" disabled>Lựa
+                    chọn</button>
+            </div>
+        </div>
+    </div>
+</div>
+{{else}}
+{{!-- post --}}
+<div class="modal fade" id="exampleModalEmployee" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="trueEmployee">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Danh sách thành viên</h5>
+            </div>
+            <div class="modal-body">
+                <table id="myTableEmployee" class="table table-hover">
+                    <thead>
+                        <div class="row" style="margin: 20px 0;">
+                            <div class="col-sm-3" style="padding: 0;">
+                                <label for="">Tổ phòng ban</label>
+                                <select name="" id="WorkDepartmentFilterUpdate" class="form-control">
+                                    <option value="" style="color: white;" selected>Tất cả</option>
+                                    {{#each WorkDepartment}}
+                                    <option value="{{this._id}}" style="color: white;">{{this.title}}</option>
+                                    {{/each}}
+                                </select>
+                            </div>
+                            <div class="col-sm-3" style="padding: 0;margin-left: 10px;">
+                                <label for="">Vị trí chức danh</label>
+                                <select name="" id="WorkPositionFilterUpdate" class="form-control">
                                     <option value="" style="color: white;" selected>Tất cả</option>
                                     {{#each WorkPosition}}
                                     <option value="{{this._id}}" style="color: white;" {{#ifCond this.IsActive
@@ -106,8 +210,13 @@
         </div>
     </div>
 </div>
+{{/if}}
+
+
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+{{!-- checkbox post--}}
 <script>
     window.dataLayer = window.dataLayer || [];
     function gtag() {
@@ -121,7 +230,6 @@
     });
 </script>
 <script>
-    //an nut lua chon khi chua checkbox
     document.addEventListener("DOMContentLoaded", () => {
         const btnsCheck = document.querySelectorAll(".check")
         const btnDisabled = document.querySelector(".btnDisabled")
@@ -145,11 +253,49 @@
             })
         }
     })
+</script>
+{{!-- checkbox update --}}
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+    gtag('js', new Date());
+    gtag('config', 'UA-56159088-1');
+    // checkbox All
+    $("#checkAllUpdate").click(function (e) {
+        $(".checkUpdate").prop('checked', $(this).prop('checked'));
+    });
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const btnsCheck = document.querySelectorAll(".checkUpdate")
+        const btnDisabled = document.querySelector(".btnDisabledUpdate")
+        let count = 0
+        const checkBtnDisabled = () => {
+            if (count === 0) {
+                btnDisabled.setAttribute("disabled", true)
+            } else {
+                btnDisabled.removeAttribute("disabled")
+            }
+        }
+        for (let checked of btnsCheck) {
+            checkBtnDisabled()
+            checked.addEventListener("click", (e) => {
+                if (checked.checked) {
+                    count++
+                } else {
+                    count--
+                }
+                checkBtnDisabled()
+            })
+        }
+    })
+</script>
+{{!-- post --}}
+<script>
     //click lua chon
-    const btnsCheck = document.querySelectorAll(".check")
     var room = 1;
-
-
     var ListEmployee = []
     var arrEmployeeAll = []
     async function handleChoose() {
@@ -321,6 +467,7 @@
             ListEmployee = filterEmployee
 
             const listEmployee = document.querySelectorAll(".listEmployee")
+            console.log(listEmployee)
             listEmployee.innerHTML = ""
             if (ListEmployee.length > 0) {
                 for (const elementListEmployee of listEmployee) {
@@ -331,6 +478,219 @@
                             `
                     })}
                     `
+                }
+            } else {
+                for (const elementListEmployee of listEmployee) {
+                    elementListEmployee.innerHTML = `
+               <option selected>Không xác định</option> 
+                `
+                }
+            }
+            //loc xong push
+
+        }
+        $('.removeclass' + rid).remove();
+        room--
+    }
+</script>
+{{!-- update --}}
+<script>
+    //click lua chon
+    var room = 1;
+    var ListEmployee = []
+    var arrEmployeeAll = []
+    async function handleChooseUpdate(id) {
+        const arrEmployee = []
+        const btnsCheck = document.querySelectorAll('.checkUpdate');
+        // lay ra id cua scoreCommitteeDetail 
+        const employeeById = Array.from(document.querySelectorAll(".memberCount")).map(e => e.getAttribute("data-id"))
+        const employeeByIdNumber = employeeById.map(Number)
+        for (const btnCheck of btnsCheck) {
+            if (btnCheck.checked) {
+                const employeeData = btnCheck.dataset.employee;
+                if (employeeData) {
+                    const EmployeeToObject = JSON.parse(employeeData);
+                    const checkEmployee = employeeByIdNumber.includes(EmployeeToObject._id)
+                    if (!checkEmployee) {
+                        arrEmployee.push(EmployeeToObject);
+                        // day vao arr ben ngoai de luu tru nhung employee da lua chon
+                        arrEmployeeAll.push(EmployeeToObject)
+                    } else {
+                        $.toast({
+                            text: `Thành viên <strong>${EmployeeToObject.FullName}</strong> đã có trong hội đồng chấm`,
+                            heading: 'Warning',
+                            icon: "warning",
+                            position: "top-right",
+                            stack: 4,
+                            showHideTransition: 'slide'
+                        })
+                        return
+                    }
+                }
+            }
+        }
+
+        // xu li to giup viec
+
+        //callApi goi employee
+        const response = await fetch("/employee/getAll", {
+            method: "GET"
+        })
+        if (!response.ok) {
+            alert("Có lỗi xảy ra!")
+        }
+        const employee = await response.json()
+
+        if (employee.length > 0) {
+            //tao ra 1 mang employee rong
+            const arrEmployeeId = []
+
+            // tim data-id hien co trong scoretemp detail
+            const employeeById = Array.from(document.querySelectorAll(".memberCount")).map(e => e.getAttribute("data-id"))
+            const employeeByIdNumber = employeeById.map(Number)
+            if (employeeByIdNumber.length > 0) {
+                //push vao mmang employee rong
+                employeeByIdNumber.map((item) => arrEmployeeId.push(item))
+            }
+            arrEmployeeAll.map((employ) => arrEmployeeId.push(employ._id))
+
+            // loc nhung employee nao khac voi id trong scoreCommitt
+            const filterEmployee = employee.filter((item) => !arrEmployeeId.includes(item._id));
+            ListEmployee = []
+            //loc xong push
+            for (const item of filterEmployee) {
+                ListEmployee.push(item)
+            }
+        }
+
+        arrEmployee.forEach((item, index) => {
+            const objTo = document.getElementById(`tbodyScoreCommitteeDetail${id}`);
+            const divtest = document.createElement("tr");
+            divtest.setAttribute("class", `form-group removeclass${room + 1} memberCount newMember`);
+            divtest.setAttribute("data-id", `${Number(item._id)}`);
+            const rdiv = `removeclass${room + 1}`;
+            room++;
+            divtest.innerHTML = `
+            <th scope="row">${room - 1}</th>
+            <input hidden data-id="${item._id} id="listEmployee"></input>
+            <td>${item.FullName}</td>
+            <td>${item.workdepartment_name}</td>
+            <td style="max-width: 130px;">
+                <div class="form-group">
+                    <select id="ValidatedRankDetail_${room}" name="validateRank" class="form-control CommitteeRole"
+                            style="transform: translateY(10px); max-width: 200px; max-height: 200px; overflow-y: hidden; font-size:12px"
+                            data-target="#navbar-example2" data-offset="0">
+                        <option value="1">Chủ tịch</option>
+                        <option value="2" selected>Thành viên</option>
+                        <option value="3">Tư vấn viên</option>
+                    </select>
+                </div>
+            </td>
+            <td style="max-width: 250px; font-size:12px">
+                <div class="form-group">
+                    <select id="Employee_id_${room}" name="validateRank" class="form-control listEmployee"
+                            style="transform: translateY(10px); max-width: 200px; max-height: 200px; overflow-y: hidden; font-size:12px"
+                            data-target="#navbar-example2" data-offset="0">
+                        
+                    </select>
+                </div>
+            </td>
+            <td>
+                <div style="text-align:center">
+                    <ion-icon onclick="remove_education_fields_update(${room});" class="icon__scoreTempDetail" name="trash-outline"></ion-icon>
+                </div>
+            </td>
+        `;
+            objTo.appendChild(divtest);
+        });
+        //tim toi select
+        const listEmployee = document.querySelectorAll(".listEmployee")
+
+        if (ListEmployee.length > 0) {
+            // in ra listEmployee k co trong scoreCommittDetail
+            for (const elementListEmployee of listEmployee) {
+                elementListEmployee.innerHTML = `
+                <option selected>Không xác định</option> 
+                ${ListEmployee.map((item) => {
+                    const listEmployee = document.querySelector(`.secEmployeeValue${item._id}`)
+                    console.log(listEmployee)
+
+                })}
+                `
+            }
+        } else {
+            for (const elementListEmployee of listEmployee) {
+                elementListEmployee.innerHTML = `
+               <option selected>Không xác định</option> 
+                `
+            }
+        }
+        let countEmployee = 0
+        for (const checked of btnsCheck) {
+            if (checked.checked) {
+                countEmployee++
+            }
+        }
+        if (countEmployee > 0) {
+            $.toast({
+                text: 'Bạn đã thêm thành viên thành công',
+                heading: 'Thêm thành viên thành công!',
+                icon: "success",
+                position: "top-right",
+                stack: 4,
+                showHideTransition: 'slide'
+            })
+        } else {
+            $.toast({
+                text: 'Hãy chọn ít nhất 1 thành viên',
+                heading: 'Thêm thất bại!',
+                icon: "warning",
+                position: "top-right",
+                stack: 4,
+                showHideTransition: 'slide'
+            })
+        }
+        for (const checked of btnsCheck) {
+            if (checked.checked) {
+                checked.checked = !checked
+            }
+        }
+
+    }
+    async function remove_education_fields_update(rid) {
+        const idEmployee = document.querySelector(`.removeclass${rid}`).getAttribute("data-id")
+        if (idEmployee) {
+            // loc qua mang scoreCommittDetail nhung cai nao co id khac voi id vua xoa
+            arrEmployeeAll = arrEmployeeAll.filter((item) => item._id != idEmployee)
+            console.log(arrEmployeeAll)
+            //lay ra nhung id trong mang scoreCommittDetail
+            const arrEmployeeId = []
+            if (arrEmployeeId.length > 0) {
+
+                arrEmployeeAll.map((employ) => arrEmployeeId.push(employ._id))
+                const response = await fetch("/employee/getAll", {
+                    method: "GET"
+                })
+                if (!response.ok) {
+                    alert("Có lỗi xảy ra!")
+                }
+                const employee = await response.json()
+                //loc listEmployee , employee nao k co trong mang scoreCommittDetail
+                const filterEmployee = employee.filter((item) => !arrEmployeeId.includes(item._id));
+                ListEmployee = filterEmployee
+
+                const listEmployee = document.querySelectorAll(".listEmployee")
+                listEmployee.innerHTML = ""
+                if (ListEmployee.length > 0) {
+                    for (const elementListEmployee of listEmployee) {
+                        elementListEmployee.innerHTML = `
+                    ${ListEmployee.map((item) => {
+                            return `
+                            <option value="${item._id}">${item.FullName}</option>
+                            `
+                        })}
+                    `
+                    }
                 }
             } else {
                 for (const elementListEmployee of listEmployee) {

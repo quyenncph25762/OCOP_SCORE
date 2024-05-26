@@ -1,5 +1,4 @@
 const handleAdd = async () => {
-
     // scoreCommittee
     const Name = document.getElementById("Name").value
     const IsActive = document.getElementById("IsActive").checked
@@ -19,7 +18,6 @@ const handleAdd = async () => {
         Note: Note,
         CreatorUser_id: CreatorUser_id,
     }
-    console.log(ScoreCommittee)
     const res = await fetch(`/scoreCommittee/add`, {
         method: "POST",
         body: JSON.stringify(ScoreCommittee),

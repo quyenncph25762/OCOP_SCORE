@@ -36,8 +36,8 @@ const ScoreCommitteeModel = {
     },
     // cap nhat
     update: (id, scoreCommittee, callback) => {
-        const query = `UPDATE scorecommittee SET CreatorUser_id = ?  , Note = ? , Name = ? , IsActive = ?, yearReviewId = ? WHERE _id = ?`
-        const VALUES = [scoreCommittee.CreatorUser_id, scoreCommittee.Note, scoreCommittee.Name, scoreCommittee.IsActive, scoreCommittee.yearReviewId, id]
+        const query = `UPDATE scorecommittee SET Note = ? , Name = ? , IsActive = ?, yearReviewId = ? WHERE _id = ?`
+        const VALUES = [scoreCommittee.Note, scoreCommittee.Name, scoreCommittee.IsActive, scoreCommittee.yearReviewId, id]
         connection.query(query, VALUES, callback)
     },
     findScoreCommitteeUpdate(id, scoreCommittee, callback) {
