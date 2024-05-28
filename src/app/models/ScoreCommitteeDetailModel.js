@@ -36,6 +36,10 @@ const ScoreCommitteeDetailModel = {
         const VALUES = [data.ScoreCommittee_id, data.Employee_id, data.SecEmployee_id, data.UserId, data.SecUserId, data.CommitteeRole, id]
         connection.query(query, VALUES, callback)
     },
+    delete: (id, callback) => {
+        const query = `DELETE FROM scorecommittee_detail WHERE _id = ${id} `
+        connection.query(query, callback)
+    },
 
 }
 

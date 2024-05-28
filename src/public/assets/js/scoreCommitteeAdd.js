@@ -5,7 +5,7 @@ const handleAdd = async () => {
     const yearReviewId = document.getElementById("yearReviewId").value
     const Note = document.getElementById("Note").value
     const CreatorUser_id = document.getElementById("CreatorUser_id").value
-    if (Name === "") {
+    if (Name.trim() === "") {
         document.querySelector("#ErrorName").innerHTML = "Tên không được để trống"
         return
     } else {
@@ -35,7 +35,6 @@ const handleAdd = async () => {
         // vai tro cua hoi dong
         let CommitteeRole = Array.from(document.querySelectorAll(".CommitteeRole")).map(e => e.value)
         CommitteeRole = CommitteeRole.map(Number)
-        console.log(CommitteeRole)
         // Lay id employeeId
         let listEmployee = Array.from(document.querySelectorAll(".memberCount")).map(e => e.getAttribute("data-id"))
         listEmployee = listEmployee.map(Number)
@@ -48,9 +47,9 @@ const handleAdd = async () => {
                 ScoreCommittee_id: IdScoreCommittee,
                 CommitteeRole: CommitteeRole[i],
                 Employee_id: listEmployee[i],
-                SecEmployee_id: listSecEmployee[i],
+                SecEmployee_id: listSecEmployee[i] === 0 ? null : listSecEmployee[i],
                 UserId: listEmployee[i],
-                SecUserId: listSecEmployee[i]
+                SecUserId: listSecEmployee[i] === 0 ? null : listSecEmployee[i]
             }
             const response = await fetch(`/scoreCommitteeDetail/add`, {
                 method: "POST",
@@ -74,5 +73,4 @@ const handleAdd = async () => {
         }));
         window.location.reload()
     }
-
 }

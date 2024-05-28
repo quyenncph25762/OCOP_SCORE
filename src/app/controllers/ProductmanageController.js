@@ -202,9 +202,10 @@ class ProductmanageController {
         })
     }
     create(req, res) {
+        console.log(req.body.Avatar)
         const product = {
             IsActive: req.body.IsActive === "true" ? 1 : 0,
-            Avatar: req?.file?.path,
+            Avatar: req?.file ? req.file.path : "/Uploads/productDefault.jpg",
             CreatorUser_id: req.body.CreatorUser_id,
             Code: req.body.Code,
             Name: req.body.Name,

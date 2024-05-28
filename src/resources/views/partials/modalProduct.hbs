@@ -134,23 +134,17 @@
                         <div class="form-row col-sm-3"
                             style="display: flex;flex-direction: column; text-align: center;">
                             <h1 style="font-size: 16px; text-align: center;font-weight: 600;">Ảnh sản phẩm</h1>
-                            <div class="file-upload">
-                                <div class="image-upload-wrap">
-                                    {{!-- avatar --}}
-                                    <input class="file-upload-input" id="Avatar" type='file' name="Avatar"
-                                        onchange="readURL(this);" accept="image/*" />
-                                    <div class="drag-text">
+                            <div>
+                                <div class="col-sm-12" style="position: relative;">
+                                    <div data-toggle="tooltip" data-html="true" title="Xóa ảnh" onclick="removeUpload()"
+                                        style="position: absolute;top: 0;right: 0;">
+                                        <ion-icon name="close-outline"></ion-icon>
                                     </div>
-                                </div>
-                                <div class="file-upload-content" style="display: none;">
-                                    <input id="Avatar" class="file-upload-input" type='file' name="Avatar"
-                                        onchange="readURL(this);" accept="image/*" />
-                                    <img style="width: 200px;height: 200px;object-fit: cover;" class="file-upload-image"
-                                        src="#" alt="your image" />
-                                    <div class="image-title-wrap">
-                                        <button type="button" onclick="removeUpload()"
-                                            class="remove-image mt-2">Remove</button>
-                                    </div>
+                                    <input type="file" id="Avatar" accept="image/*" hidden>
+                                    <img id="AvatarPreview" onclick="document.getElementById('Avatar').click()"
+                                        style="width: 200px;height: 200px;object-fit: cover;border-radius:50%"
+                                        src="/Uploads/productDefault.jpg" alt="">
+
                                 </div>
                                 <div onclick="handleShowFormProduct(this)"
                                     class="d-flex align-items-center justify-content-center p-2 mt-3 hover-effect activeTabs boxFormProduct"
@@ -179,6 +173,9 @@
                             <div class="col-md-8 mb-3">
                                 <label for="Name">Tên sản phẩm</label>
                                 <input name="Name" type="text" class="form-control" id="Name" required>
+                                <span
+                                    style="color: #de2935;font-size: 14px;font-style: italic;margin-top: 5px;font-weight: 600;"
+                                    id="ErrorName"></span>
                             </div>
                             <div class="custom-control custom-switch col-md-2"
                                 style="display: flex; justify-content: center;align-items: center;">
@@ -289,38 +286,26 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script>
-    function readURL(input) {
-        if (input.files && input.files[0]) {
+    document.addEventListener("DOMContentLoaded", () => {
+        const avatarImage = document.getElementById("AvatarPreview");
+        const defaultImageUrl = avatarImage.src;
+        document.getElementById("Avatar").addEventListener("change", (event) => {
+            const file = event.target.files[0]
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    avatarImage.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
 
-            var reader = new FileReader();
-
-            reader.onload = function (e) {
-                $('.image-upload-wrap').hide();
-
-                $('.file-upload-image').attr('src', e.target.result);
-                $('.file-upload-content').show();
-
-                $('.image-title').html(input.files[0].name);
-            };
-
-            reader.readAsDataURL(input.files[0]);
-
-        } else {
-            removeUpload();
-        }
-    }
-    function removeUpload() {
-        $('.file-upload-input').replaceWith($('.file-upload-input').clone());
-        $('.file-upload-content').hide();
-        $('.image-upload-wrap').show();
-    }
-    $('.image-upload-wrap').bind('dragover', function () {
-        $('.image-upload-wrap').addClass('image-dropping');
-    });
-    $('.image-upload-wrap').bind('dragleave', function () {
-        $('.image-upload-wrap').removeClass('image-dropping');
-    });
-
+        })
+        window.removeUpload = () => {
+            const fileInput = document.getElementById('Avatar');
+            fileInput.value = ''; // Xóa nội dung của input file
+            avatarImage.src = defaultImageUrl; // Đặt lại hình ảnh mặc định
+        };
+    })
 </script>
 {{!-- Code random --}}
 <script>

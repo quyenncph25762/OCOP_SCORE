@@ -25,7 +25,7 @@ function route(app) {
     app.use("/users", userPageRouter)
     // client
     app.use("/client", clientRouter)
-    // ScoreCommitteeDetailz`
+    // ScoreCommitteeDetail`
     app.use("/scoreCommitteeDetail", scoreCommitteeDetailRouter)
     // scoreCommittee
     app.use("/scoreCommittee", scoreCommitteeRouter)

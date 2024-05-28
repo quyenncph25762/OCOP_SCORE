@@ -9,7 +9,7 @@ $(document).on('change', '.file-input', function () {
         // Tạo phần tử chứa cả nút xóa và đường dẫn đến file
         var fileListItem = $('<div class="file-item"></div>');
         // Tạo đường dẫn đến file
-        var fileLink = $('<a href="' + fileName + '">' + fileName + '</a>');
+        var fileLink = $('<a style="max-width:100px; overflow: hidden" href="' + fileName + '">' + fileName + '</a>');
         // Tạo nút xóa
         var removeButton = $('<button class="remove-file-button btn btn-danger">Remove</button>');
         removeButton.data('index', i); // Lưu chỉ mục của tệp

@@ -75,7 +75,8 @@
                                                 data-target="#ModalUpdateScoreCommittee{{this._id}}"></ion-icon>
                                         </button>
                                         {{!-- modal update scoreCommittee --}}
-                                        {{> modalScoreCommittee YearReview=../YearReview Employee=../Employee
+                                        {{> modalScoreCommittee id=this._id YearReview=../YearReview
+                                        Employee=../Employee
                                         WorkDepartment=../WorkDepartment WorkPosition=../WorkPosition}}
 
                                         {{!-- end modal update scoreCommittee --}}
@@ -93,7 +94,6 @@
                 </div>
             </div>
         </div><!--End Row-->
-
     </div>
 </div><!--End content-wrapper-->
 {{> footer}}
@@ -105,6 +105,12 @@
 <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", () => {
+        const toastData = localStorage.getItem('toast');
+        if (toastData) {
+            const toast = JSON.parse(toastData);
+            $.toast(toast);
+            localStorage.removeItem('toast');
+        }
         const btnTrash = document.querySelectorAll('#icon_moveToTrash');
         for (let btn of btnTrash) {
             btn.addEventListener("click", (event) => {
@@ -125,10 +131,17 @@
                                     method: 'PATCH'
                                 }).then(response => {
                                     if (response.ok) {
-                                        $.alert('Xóa thành công!');
-                                        setTimeout(() => {
-                                            window.location.reload()
-                                        }, 1000)
+                                        localStorage.setItem('toast', JSON.stringify({
+                                            position: "top-right",
+                                            heading: 'SUCCESS',
+                                            text: 'Đã xóa thành công thành công',
+                                            icon: 'success',
+                                            loader: true,
+                                            loaderBg: '#9EC600',
+                                            showHideTransition: 'slide',
+                                            stack: 4
+                                        }));
+                                        window.location.reload()
                                     } else {
                                         alert('Có lỗi xảy ra khi xóa mục');
                                     }

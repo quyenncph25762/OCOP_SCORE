@@ -9,7 +9,9 @@ async function handleProductDetail(id) {
 
         // Xóa nội dung cũ trước khi thêm nội dung mới
         body.innerHTML = '';
+        let i = 0
         for (const ProductDetail of data) {
+            i++
             const resGallery = await fetch(`/gallery/productDetail/${ProductDetail._id}`, {
                 method: "GET"
             });
@@ -20,10 +22,9 @@ async function handleProductDetail(id) {
                 }).join("");
                 body.innerHTML += `
                     <tr>
-                        <td>${ProductDetail._id}</td>
+                        <td>${i}</td>
                         <td>${ProductDetail.ProductDetail_Name}</td>
                         <td style="color: red;"><p>(*)</p></td>
-                        <td></td>
                         <td style="width: 100px;overflow:hidden">
                             <div class="container">
                                 <div class="row">

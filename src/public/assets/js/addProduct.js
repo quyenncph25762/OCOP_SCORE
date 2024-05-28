@@ -1,4 +1,5 @@
 async function handleAdd() {
+
     const Name = document.getElementById("Name").value
     const Description = document.getElementById("Description").value
     const Customer_id = document.getElementById("Customer_id").value
@@ -8,6 +9,13 @@ async function handleAdd() {
     const Note = document.getElementById("Note").value
     const IsActive = document.getElementById("IsActive").value
     const Avatar = document.getElementById("Avatar")
+    if (Name.trim() === "") {
+        console.log(1)
+        document.querySelector("#ErrorName").innerHTML = "Tên không được để trống"
+        return
+    } else {
+        document.querySelector("#ErrorName").innerHTML = ""
+    }
     const formData = new FormData()
     formData.append('Name', Name);
     formData.append('Description', Description);

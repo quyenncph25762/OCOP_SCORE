@@ -42,6 +42,19 @@ class ScoreCommittDetailController {
             })
         })
     }
+    delete(req, res) {
+        const id = req.params.id
+        ScoreCommitteeDetailModel.delete(id, (err, results) => {
+            if (err) {
+                return res.status(500).json({
+                    message: err
+                })
+            }
+            return res.status(203).json({
+                message: "Xóa thành công"
+            })
+        })
+    }
 }
 
 module.exports = new ScoreCommittDetailController
