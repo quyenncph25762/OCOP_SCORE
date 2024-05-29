@@ -677,34 +677,42 @@
     }
 
     async function remove_education_fields_update(rid) {
+        //element listSecEmployee
+        const listSecEmployeeSelects = document.querySelectorAll(".listSecEmployee");
+        //element member data
+        let memberData = Array.from(document.querySelectorAll(".memberData")).map(e => Number(e.getAttribute("data-id")))
         const idEmployee = document.querySelector(`.removeclass${rid}`).getAttribute("data-id");
         const arrIdScoreCommitteeDetail = document.querySelector(`.removeclass${rid}`).getAttribute("data-idScoreCommitteeDetail");
         if (arrIdScoreCommitteeDetail) {
             FuncArrIdScoreCommittDetaill(arrIdScoreCommitteeDetail)
         }
         if (idEmployee) {
-            arrEmployeeAll = arrEmployeeAll.filter(item => item._id != idEmployee);
-            const arrEmployeeId = arrEmployeeAll.map(employ => employ._id);
+            arrEmployeeAll = arrEmployeeAll?.filter(item => item._id != idEmployee);
+            const arrEmployeeId = arrEmployeeAll?.map(employ => employ._id);
+            //memberData = memberData?.filter(item => item._id != idEmployee);
+            // console.log(`memberData: ${memberData}`)
+            //const arrEmployeeId = memberData?.map(employ => employ._id);
             const response = await fetch("/employee/getAll", { method: "GET" });
             if (!response.ok) {
                 alert("Có lỗi xảy ra!");
                 return;
             }
             const employee = await response.json();
-            let filterEmployee = employee.filter(item => !arrEmployeeId.includes(item._id));
 
+            let filterEmployee = employee.filter(item => !arrEmployeeId.includes(item._id));
+            document.querySelector(`.removeclass${rid}`).remove();
+            room--;
             const idData = Array.from(document.querySelectorAll(".memberData"))?.map(e => Number(e.getAttribute("data-id")));
             // thuc hien loc lan thu 2 theo memberData
             if (idData) {
                 filterEmployee = filterEmployee.filter((item) => !idData.includes(item._id));
                 ListEmployee = filterEmployee;
             }
-            const listSecEmployeeSelects = document.querySelectorAll(".listSecEmployee");
+
             listSecEmployeeSelects.forEach(select => {
                 updateSelectOptionsUpdate(select, ListEmployee, select.value);
             });
         }
-        document.querySelector(`.removeclass${rid}`).remove();
-        room--;
+
     }
 </script>

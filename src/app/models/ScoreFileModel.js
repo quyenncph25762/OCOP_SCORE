@@ -2,7 +2,7 @@ const connection = require("../../config/db")
 
 const ScoreFileModel = {
     getAll: (callback) => {
-        const query = `SELECT * FROM scorefile WHERE IsDeleted = 0`
+        const query = `SELECT * FROM scorefile WHERE IsDeleted = 0 AND IsActive = 1`
         connection.query(query, callback)
     },
     getOne: (id, callback) => {
