@@ -1,5 +1,5 @@
 const express = require('express');
-const ScoreCommitteeDetailController = require('../app/controllers/ScoreCommitteeDetailController');
+const ScoreCommitteeDetailController = require('../app/controllers/scorecommittee/ScoreCommitteeDetailController');
 const router = express.Router();
 
 router.get("/getByScoreCommittee/:id", ScoreCommitteeDetailController.getByScoreCommitteeId)

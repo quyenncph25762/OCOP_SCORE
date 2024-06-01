@@ -1,0 +1,141 @@
+{{> header}}
+<div class="content-wrapper" style="height: 100vh;">
+    <div class="container-fluid">
+        <div class="row" style="max-width: 100%; display: contents;">
+            <ul class="search-customer"
+                style="list-style: none; display:flex; justify-content: space-between; align-items: center;padding: 0;">
+            </ul>
+            </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="row" style="display: contents;">
+        <div class="col-lg-6" style="max-width: 100%;">
+            <div class="card">
+                <div class="card-body">
+                    <div class="table_header">
+
+                    </div>
+                    <table id="myTable" class="table datatables table-bordered table-hover table-striped"
+                        style="font-size: 13px;">
+                        <thead>
+                            <tr>
+                                <th>Ảnh</th>
+                                <th style="min-width: 300px;">
+                                    Sản phẩm</th>
+                                <th>Nhóm sản phẩm</th>
+                                <th>Tổng điểm</th>
+                                <th>Xếp hạng</th>
+                                <th>Ngày chấm</th>
+                                <th>Trạng thái</th>
+                                <th>Actions</th>
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+                            {{#each ScoreFile}}
+                            {{!-- Chua cham --}}
+                            <tr>
+                                <td>
+                                    <div class="approved">
+                                        <img src="{{this.product_avatar}}" alt=""
+                                            style="width: 50px;height: 50px;border-radius: 50%;object-fit: cover;">
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <ul style="list-style-type: none;font-weight: 600;padding: 0;">
+                                        <!-- name product -->
+                                        <li style="font-size: 14px;" data-toggle="modal" data-target="#exampleModal">
+                                            {{this.product_name}}
+                                        </li>
+                                        <p style="color: #B5B5C3;font-size: 13px;text-wrap: wrap;" class="nameProduct"
+                                            data-toggle="modal" data-target="#exampleModal2">
+                                            Chủ thể: {{toUpperCase this.customer_name}}
+                                        </p>
+                                    </ul>
+                                </td>
+                                <!-- product group -->
+                                <td style="text-wrap: wrap;">Nhóm 19: {{this.productgroup_name}}
+                                </td>
+                                {{!-- tong diem --}}
+                                <td>
+                                    {{#ifCond this.ScoreTotal 0}}
+                                    {{else}}
+                                    {{this.ScoreTotal}}
+                                    {{/ifCond}}
+
+                                </td>
+                                <!-- so sao -->
+                                <td>
+                                    {{#repeat this.RankOcop}}
+                                    <ion-icon name="star"></ion-icon>
+                                    {{/repeat}}
+                                </td>
+                                {{!-- Ngay cham --}}
+                                <td></td>
+                                {{!-- Trang thai --}}
+                                <td>
+                                    {{#ifCond this.Status 0}}
+                                    <p class="statusLabelDanger">Chưa chấm</p>
+                                    {{/ifCond}}
+                                    {{#ifCond this.Status 1}}
+                                    <p class="statusLabelSuccess">Đã chấm</p>
+                                    {{/ifCond}}
+
+                                <td class="icons">
+                                    {{!-- icon xem ket qua hoi dong --}}
+                                    <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
+                                        title="Xem kết quả hội đồng">
+                                        <ion-icon name="receipt-outline" data-toggle="modal"
+                                            data-target="#exampleModal2"></ion-icon>
+                                    </span>
+                                    {{> modalResultScoreFile}}
+                                    {{!-- icon xac nhan--}}
+                                    <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Xác nhận">
+                                        <ion-icon name="checkbox-outline"></ion-icon>
+                                    </span>
+                                    {{!-- icon chinh sua --}}
+                                    {{#ifCond this.Status 1}}
+                                    <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Chỉnh sửa">
+                                        <a style="text-decoration: none;"
+                                            href="/scoreFile/scoreFileUpdatePage?productId={{this.Product_id}}&productgroupId={{this.productgroup_id}}&_id={{this._id}}">
+                                            <ion-icon name="create-outline"></ion-icon>
+                                        </a>
+                                    </span>
+                                    {{else}}
+                                    {{!-- icon cham diem --}}
+                                    <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Chấm điểm">
+                                        <a style="text-decoration: none;"
+                                            href="/scoreFile/createScoreFile?productId={{this.Product_id}}&code={{this.productgroup_code}}&_id={{this._id}}">
+                                            <ion-icon name="pencil-outline"></ion-icon>
+                                        </a>
+                                    </span>
+                                    {{/ifCond}}
+                                    {{!-- icon xoa--}}
+                                    <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
+                                        title="Chuyển vào thùng rác">
+                                        <ion-icon name="trash-outline"></ion-icon>
+                                    </span>
+
+
+                                </td>
+                            </tr>
+                            {{/each}}
+                        </tbody>
+                    </table>
+                    <!-- table -->
+                    {{!-- {{> modalMarkPage}} --}}
+                    <!-- table -->
+                </div>
+            </div>
+        </div><!--End Row-->
+    </div>
+
+
+</div><!--End content-wrapper-->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="/assets/js/custom.js"></script>
+{{> footer}}

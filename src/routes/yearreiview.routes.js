@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const ReviewYearController = require('../app/controllers/ReviewYearController');
+const ReviewYearController = require('../app/controllers/yearreview/ReviewYearController');
 const upload = require("../app/Middleware/uploadMiddle")
 const checkToken = require("../app/Middleware/checkoutToken.js")
 router.get("/", ReviewYearController.index)

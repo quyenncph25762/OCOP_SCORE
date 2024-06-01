@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const workPositionController = require('../app/controllers/WorkPositionController');
+const workPositionController = require('../app/controllers/workposition/WorkPositionController');
 const upload = require("../app/Middleware/uploadMiddle")
 router.get("/", workPositionController.index)
 router.post("/add", upload.single(), workPositionController.create)

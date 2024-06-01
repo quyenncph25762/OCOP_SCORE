@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const EmployeeController = require('../app/controllers/EmployeeController');
+const EmployeeController = require('../app/controllers/employee/EmployeeController');
 const uploadCloud = require("../config/cloudinary/cloudinary")
 const upload = require("../app/Middleware/uploadMiddle")
 router.get("/", EmployeeController.index)

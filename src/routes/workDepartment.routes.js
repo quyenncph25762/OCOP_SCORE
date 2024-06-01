@@ -1,5 +1,5 @@
 const express = require('express');
-const WorkDepartmentController = require('../app/controllers/WorkDepartmentController');
+const WorkDepartmentController = require('../app/controllers/workdepartment/WorkDepartmentController');
 const router = express.Router();
 const upload = require("../app/Middleware/uploadMiddle")
 router.get("/", WorkDepartmentController.index)

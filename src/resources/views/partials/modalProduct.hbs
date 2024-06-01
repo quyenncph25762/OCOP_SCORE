@@ -240,6 +240,7 @@
                                 <tbody>
                                     {{#each ProductDetail}}
                                     <tr>
+                                        <input type="text" id="Code{{this._id}}" value="{{this._id}}" hidden>
                                         <td>{{plus @index}}</td>
                                         <td>
                                             <input type="text" hidden id="ProductDetail_Name{{this._id}}"

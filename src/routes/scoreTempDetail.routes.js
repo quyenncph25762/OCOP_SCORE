@@ -1,5 +1,5 @@
 const express = require('express');
-const ScoreTempDetailController = require('../app/controllers/ScoreTempDetailController');
+const ScoreTempDetailController = require('../app/controllers/scoretemp/ScoreTempDetailController');
 const router = express.Router();
 // delete forever
 router.delete("/remove/:id", ScoreTempDetailController.remove)

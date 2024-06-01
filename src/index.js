@@ -46,6 +46,11 @@ Handlebars.registerHelper('ifCond', function (v1, v2, options) {
 Handlebars.registerHelper('toLowerCase', function (str) {
     return str?.toLowerCase();
 });
+
+Handlebars.registerHelper('toUpperCase', function (str) {
+    return str?.toUpperCase();
+});
+
 Handlebars.registerHelper('plus', function (number) {
     return number + 1
 });
@@ -66,6 +71,15 @@ Handlebars.registerHelper('split', function (input, delimiter, index) {
 
 Handlebars.registerHelper('json', function (context) {
     return JSON.stringify(context);
+});
+
+// helpers for lọc phần tử theo số
+
+Handlebars.registerHelper('repeat', function (n, block) {
+    var accum = '';
+    for (var i = 0; i < n; ++i)
+        accum += block.fn(i);
+    return accum;
 });
 
 

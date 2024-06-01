@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const uploadCloud = require("../config/cloudinary/cloudinary")
-const productmanageController = require('../app/controllers/ProductmanageController');
+const productmanageController = require('../app/controllers/product/ProductmanageController');
 const upload = require("../app/Middleware/uploadMiddle")
 //route phải khớp từ trên xuống nên route gốc phải để dưới cùng
 // update status product

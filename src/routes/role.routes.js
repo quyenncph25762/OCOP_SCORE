@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const RoleController = require('../app/controllers/RoleController');
+const RoleController = require('../app/controllers/role/RoleController');
 const upload = require("../app/Middleware/uploadMiddle")
 router.get("/", RoleController.index)
 router.post("/add", upload.single(), RoleController.create)

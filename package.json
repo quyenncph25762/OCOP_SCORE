@@ -27,6 +27,7 @@
     }
   },
   "dependencies": {
+    "bcrypt": "^5.1.1",
     "cloudinary": "^1.41.3",
     "cookie-parser": "^1.4.6",
     "csv-mysql": "^1.0.3",
@@ -42,6 +43,7 @@
     "multer-storage": "^0.4.1",
     "multer-storage-cloudinary": "^4.0.0",
     "mysql2": "^3.9.7",
+    "nodemailer": "^6.9.13",
     "nodemon": "^3.1.0",
     "npm": "^10.7.0",
     "xlsx": "^0.18.5"

@@ -53,9 +53,11 @@ async function handleAdd() {
         for (const productDetail of data) {
             const ProductDetail_Name = document.querySelector(`#ProductDetail_Name${productDetail._id}`).value;
             const AttachFile = document.querySelector(`#AttachFile${productDetail._id}`);
+            const Code = document.querySelector(`#Code${productDetail._id}`).value;
             const form = new FormData();
             form.append('ProductDetail_Name', productDetail.ProductDetail_Name);
             form.append('Product_id', productId);
+            form.append('Code', Code);
             const resProductDetail = await fetch("/productDetail/create", {
                 method: "POST",
                 body: form

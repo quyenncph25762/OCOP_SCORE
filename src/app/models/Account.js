@@ -46,7 +46,13 @@ const AccountModel = {
     changePasswordByUserId: (id, password, callback) => {
         const query = `UPDATE employee SET Password = ? WHERE _id = ?`
         connection.query(query, [password, id], callback)
-    }
+    },
+    // changePassword by email
+    changePasswordByEmail: (Email, password, callback) => {
+        const query = `UPDATE employee SET Password = ? WHERE Email = ?`
+        connection.query(query, [password, Email], callback)
+    },
+
 }
 
 module.exports = AccountModel

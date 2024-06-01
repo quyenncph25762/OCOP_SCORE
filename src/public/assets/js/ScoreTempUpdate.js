@@ -22,12 +22,12 @@ async function handleUpdate(id) {
         alert("Sửa sản phẩm thất bại!")
     }
     // Thêm phiếu chi tiết chưa có
-    const NewNameDetail = Array.from(document.querySelectorAll("#NameDetail"))?.map(e => e.value)
+    const NewNameDetail = Array.from(document.querySelectorAll(".NameDetail"))?.map(e => e.value)
     const NewIsMark = Array.from(document.querySelectorAll(".IsMark"))?.map(e => e.checked)
-    const NewMaxScoreDetail = Array.from(document.querySelectorAll("#MaxScoreDetail"))?.map(e => e.value)
-    const NewValidatedRankDetail = Array.from(document.querySelectorAll("#ValidatedRankDetail"))?.map(e => e.value)
-    const NewProductDetailIdDetail = Array.from(document.querySelectorAll("#ProductDetailIdDetail"))?.map(e => e.value)
-    const NewNoteDetail = Array.from(document.querySelectorAll("#NoteDetail"))?.map(e => e.value)
+    const NewMaxScoreDetail = Array.from(document.querySelectorAll(".MaxScoreDetail"))?.map(e => e.value)
+    const NewValidatedRankDetail = Array.from(document.querySelectorAll(".ValidatedRankDetail"))?.map(e => e.value)
+    const NewProductDetailIdDetail = Array.from(document.querySelectorAll(".ProductDetailIdDetail"))?.map(e => e.value)
+    const NewNoteDetail = Array.from(document.querySelectorAll(".NoteDetail"))?.map(e => e.value)
     if (NewNameDetail.length > 0) {
         const arrAdd = []
         for (let i = 0; i < NewNameDetail.length; i++) {
@@ -54,12 +54,12 @@ async function handleUpdate(id) {
         await Promise.all(arrAdd)
     }
     // Sửa phiếu chi tiết
-    const NameDetail = Array.from(document.querySelectorAll(`#NameDetail${id}`))?.map(e => e.value)
-    const NameDataId = Array.from(document.querySelectorAll(`#NameDetail${id}`))?.map(e => e.getAttribute('data-id'))
+    const NameDetail = Array.from(document.querySelectorAll(`.NameDetail${id}`))?.map(e => e.value)
+    const NameDataId = Array.from(document.querySelectorAll(`.NameDetail${id}`))?.map(e => e.getAttribute('data-id'))
     const IsMark = Array.from(document.querySelectorAll(`.IsMark${id}`))?.map(e => e.checked)
-    const MaxScoreDetail = Array.from(document.querySelectorAll(`#MaxScoreDetail${id}`))?.map(e => e.value)
-    const ValidatedRankDetail = Array.from(document.querySelectorAll(`#ValidatedRankDetail${id}`))?.map(e => e.value)
-    const ProductDetailIdDetail = Array.from(document.querySelectorAll(`#ProductDetailIdDetail${id}`))?.map(e => e.value)
+    const MaxScoreDetail = Array.from(document.querySelectorAll(`.MaxScoreDetail${id}`))?.map(e => e.value)
+    const ValidatedRankDetail = Array.from(document.querySelectorAll(`.ValidatedRankDetail${id}`)).map(e => e.value)
+    const ProductDetailIdDetail = Array.from(document.querySelectorAll(`.ProductDetailIdDetail${id}`))?.map(e => e.value)
     const NoteDetail = Array.from(document.querySelectorAll(`#NoteDetail${id}`))?.map(e => e.value)
     const arrRes = []
     for (let i = 0; i < NameDetail.length; i++) {

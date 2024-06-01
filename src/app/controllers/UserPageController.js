@@ -1,6 +1,6 @@
 const AccountModel = require("../models/Account")
-const EmployeeModal = require("../models/EmployeeModel")
-const RoleModal = require("../models/RoleModel")
+const EmployeeModal = require("../models/employee/EmployeeModel")
+const RoleModal = require("../models/role/RoleModel")
 const jwt = require("jsonwebtoken")
 const dotenv = require("dotenv")
 dotenv.config();

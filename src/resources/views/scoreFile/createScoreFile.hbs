@@ -1,0 +1,68 @@
+{{> header}}
+<div class="content-wrapper">
+    <div class="container-fluid">
+        <div class="row" style="max-width: 100%; display: contents;">
+            <ul class="search-customer"
+                style="list-style: none; display:flex; justify-content: space-between; align-items: center;padding: 0;">
+                <p style="font-size: 18px;font-weight: 600">Chấm điểm OCOP | Tên sản phẩm</p>
+                <div class="import_customer_button"
+                    style="list-style: none; display:flex; justify-content: space-between; align-items: center;">
+                    <button class="btn btn-success" onclick="handleAddScoreFile()">Thêm mới</button>
+                </div>
+            </ul>
+            </li>
+            </ul>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="row row-content">
+            <div class="col-sm-3">
+                <div class="card shadow">
+                    {{!-- product --}}
+                    <div class="card-body" id="product-container">
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-9 list_citationUpdate" style="overflow-y: auto;height: 100%;font-size: 12px;">
+                <div class="col-12">
+                    <div class="card shadow">
+                        <div class="card-body">
+                            <table class="table table-bordered table-striped table-hover table-scoreTemp">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">
+                                        </th>
+                                        <th scope="col">
+                                            Số điểm
+                                        </th>
+                                        <th scope="col">
+                                            File đính kèm
+                                        </th>
+                                        <th scope="col">
+                                            Chọn
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbodyScoreFile">
+
+                                </tbody>
+                            </table>
+                            <input type="hidden" id="CreatorUser_id" value="{{User._id}}">
+                            <p style="margin-top: 10px;border-bottom: 1px solid #ccc;padding-bottom: 5px;width: 250px;">
+                                Ý kiến của người đánh giá</p>
+                            <textarea name="" id="Note"
+                                style="width: 100%;background-color: #ccc;padding: 12px;color: #000;"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{> modalProductDetail}}
+    </div>
+
+</div><!--End content-wrapper-->
+{{> footer}}
+
+{{!-- product container --}}
+<script src=" /assets/js/scorefile/getOneScoreFile.js"></script>
+<script src="/assets/js/scorefile/addScoreFile.js"></script>

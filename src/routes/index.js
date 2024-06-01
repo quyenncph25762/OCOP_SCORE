@@ -19,12 +19,13 @@ const clientRouter = require("./client/welcome.routes")
 const scoreTempDetailRouter = require("./scoreTempDetail.routes")
 const scoreCommitteeRouter = require("./scoreCommittee.routes")
 const scoreCommitteeDetailRouter = require("./scoreCommitteeDetail.routes")
+const scoreFileRouter = require("./scoreFile.routes")
 const userPageRouter = require("./userPage.routes")
 function route(app) {
     // userPage
     app.use("/users", userPageRouter)
     // client
-    app.use("/client", clientRouter)
+    app.use("/scoreFile", scoreFileRouter)
     // ScoreCommitteeDetail`
     app.use("/scoreCommitteeDetail", scoreCommitteeDetailRouter)
     // scoreCommittee

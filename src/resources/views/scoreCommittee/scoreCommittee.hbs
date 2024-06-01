@@ -45,7 +45,13 @@
                             {{#each ScoreCommittee}}
                             <tr>
                                 <th>{{plus @index}}</th>
-                                <td>{{this.Name}}</td>
+                                <td>
+                                    <div class="" style="display: flex;flex-direction: column;">
+                                        <p style="color: rgb(236, 236, 118); font-size: 14px;font-weight: 600;">
+                                            {{this.Name}}</p>
+                                        <p style="color: #ccc; font-weight: 550;">Chủ tịch HĐ: </p>
+                                    </div>
+                                </td>
                                 <td>{{year_name}}</td>
                                 <td>
                                     {{#ifCond this.IsDefault 1}}
@@ -159,7 +165,6 @@
         }
     })
 </script>
-
 {{!-- kiem tra trang thai mmodal ModalUpdateScoreCommittee --}}
 <script>
     const handleAddCheck = () => {

@@ -1,5 +1,6 @@
-const ScoreFileModel = require("../../models/ScoreFileModel")
+const ScoreFileModel = require("../../models/scorefile/ScoreFileModel")
 const AccountModel = require("../../models/Account")
+const ProductModel = require("../../models/product/ProductmanageModel")
 const jwt = require("jsonwebtoken")
 const dotenv = require("dotenv")
 dotenv.config();
@@ -16,45 +17,89 @@ class ScoreFileController {
                         message: err
                     })
                 }
-                ScoreFileModel.getAll((err, ScoreTemp) => {
+                ScoreFileModel.getAll((err, ScoreFile) => {
                     if (err) {
                         return res.status(500).json({
                             message: "Lỗi truy vấn"
                         })
                     }
-                    res.render("client/scoreFile", { User: User[0], ScoreTemp: ScoreTemp })
+                    res.render("scoreFile/scoreFile", { User: User[0], ScoreFile: ScoreFile })
                 })
             })
         }
 
     }
-    createScoreFile(req, res) {
-        ScoreFileModel.create({
-            IsActive: req.body.IsActive === true ? 1 : 0,
-            ...req.body
-        }, (err, results) => {
+    // tim scoreFile theo status = 0
+    getScoreByStatus(req, res) {
+        ScoreFileModel.getScoreFileByStatus((err, data) => {
             if (err) {
+                console.log(err)
                 return res.status(500).json({
                     message: "Lỗi truy vấn"
                 })
             }
+            return res.status(200).json(data)
         })
     }
+    // tao scoreFile
+    createScoreFile(req, res) {
+        ScoreFileModel.create(req.body, (err, results) => {
+            if (err) {
+                console.log(err)
+                return res.status(500).json({
+                    message: "Lỗi truy vấn"
+                })
+            }
+            return res.status(201).json({
+                message: "Tạo thành công"
+            })
+        })
+    }
+    // page cap nhat
+    updatePage(req, res) {
 
-    update(req, res) {
         const cookie = req.cookies
         if (cookie?.User) {
             const UserDataCookie = jwt.verify(cookie.User, SECRET_CODE)
             AccountModel.fetchOneUser(UserDataCookie?._id, (err, User) => {
                 if (err) {
-                    return res.status(400).json({
+                    return res.status(500).json({
                         message: err
                     })
                 }
-                res.render("client/updateScoreFile", { User: User[0] })
+                res.render("scoreFile/createScoreFile", { User: User[0] })
             })
         }
 
+    }
+    // action cap nhat
+    update(req, res) {
+        const id = req.params.id
+        ScoreFileModel.update(id, req.body, (err, results) => {
+            if (err) {
+                console.log(`err updateScore: ${err}`)
+                return res.status(500).json({
+                    message: err
+                })
+            }
+            return res.status(203).json({
+                message: "Cập nhật thành công"
+            })
+        })
+    }
+    updateScoreCommittee(req, res) {
+        const id = req.params.id
+        ScoreFileModel.updateScoreCommitteOnScoreFile(id, req.body, (err, results) => {
+            if (err) {
+                console.log(`err updateScore: ${err}`)
+                return res.status(500).json({
+                    message: err
+                })
+            }
+            return res.status(203).json({
+                message: "Cập nhật thành công"
+            })
+        })
     }
 }
 

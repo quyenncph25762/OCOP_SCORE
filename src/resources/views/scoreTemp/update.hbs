@@ -114,8 +114,8 @@
                                                     <th scope="row">{{plus
                                                         @index}}</th>
                                                     <td><input data-id="{{this._id}}" value="{{this.Name}}" type="text"
-                                                            class="form-control" name="Name"
-                                                            id="NameDetail{{this.ScoreTemp_id}}" required>
+                                                            class="form-control NameDetail{{this.ScoreTemp_id}}"
+                                                            name="Name" required>
                                                     </td>
                                                     <td style="">
                                                         <div class="custom-control custom-switch"
@@ -137,34 +137,34 @@
                                                     </td>
                                                     <td>
                                                         <input value="{{this.MaxScore}}" min="0" style="max-width: 60px"
-                                                            name="maxPoint" id="MaxScoreDetail{{this.ScoreTemp_id}}"
+                                                            name="maxPoint" class="MaxScoreDetail{{this.ScoreTemp_id}}"
                                                             type="number" />
                                                     </td>
                                                     <td>
                                                         <div class="form-group">
-                                                            <select id="ValidatedRankDetail{{this.ScoreTemp_id}}"
-                                                                name="validateRank" class="form-control"
+                                                            <select name="validateRank"
+                                                                class="form-control ValidatedRankDetail{{this.ScoreTemp_id}}"
                                                                 style="transform: translateY(10px);max-width: 200px;max-height: 200px;overflow-y: hidden;"
                                                                 data-target="#navbar-example2" data-offset="0">
-                                                                <option selected>Không xác định</option>
-                                                                <option {{#ifCond this.ValidateRank
+                                                                <option value="" selected>Không xác định</option>
+                                                                <option {{#ifCond this.ValidatedRank
                                                                     1}}selected{{/ifCond}} value="1">1 sao
                                                                 </option>
-                                                                <option value="2" {{#ifCond this.ValidateRank
+                                                                <option value="2" {{#ifCond this.ValidatedRank
                                                                     2}}selected{{/ifCond}}>2 sao</option>
-                                                                <option value="3" {{#ifCond this.ValidateRank
+                                                                <option value="3" {{#ifCond this.ValidatedRank
                                                                     3}}selected{{/ifCond}}>3 sao</option>
-                                                                <option value="4" {{#ifCond this.ValidateRank
+                                                                <option value="4" {{#ifCond this.ValidatedRank
                                                                     4}}selected{{/ifCond}}>4 sao</option>
-                                                                <option value="5" {{#ifCond this.ValidateRank
+                                                                <option value="5" {{#ifCond this.ValidatedRank
                                                                     5}}selected{{/ifCond}}>5 sao</option>
                                                             </select>
                                                         </div>
                                                     </td>
                                                     <td>
                                                         <div class="form-group">
-                                                            <select id="ProductDetailIdDetail{{this.ScoreTemp_id}}"
-                                                                name="ProductDetailId" class="form-control"
+                                                            <select name="ProductDetailId"
+                                                                class="form-control ProductDetailIdDetail{{this.ScoreTemp_id}}"
                                                                 style="transform: translateY(10px);max-width: 200px;max-height: 200px;overflow-y: hidden;"
                                                                 data-target="#navbar-example2" data-offset="0">
                                                                 <option selected></option>
@@ -178,7 +178,7 @@
                                                         </div>
                                                     </td>
                                                     <td>
-                                                        <textarea name="Note" id="NoteDetail{{this.ScoreTemp_id}}"
+                                                        <textarea name="Note" class="NoteDetail{{this.ScoreTemp_id}}"
                                                             cols="10" rows="1">{{this.Note}}</textarea>
                                                     </td>
                                                     <td>
@@ -235,7 +235,7 @@
         const tableBody = () => {
             return `<tr>
                         <th scope="row">${lengthIndex}</th>
-                        <td><input type="text" class="form-control" name="Name" id="NameDetail" required></td>
+                        <td><input type="text" class="form-control NameDetail" name="Name" required></td>
                         <td style="">
                         <div class="custom-control custom-switch" style="display: flex; justify-content: center;align-items: center;transform: translateY(-50%);">
                         <input type="checkbox" class="custom-control-input IsMark" name="isMark"  id="customSwitch${room + 1}">
@@ -243,14 +243,14 @@
                         </div>
                         </td>
                         <td >
-                         <input min="0" style="max-width: 60px" name="maxPoint" id="MaxScoreDetail" type="number"/>
+                         <input min="0" style="max-width: 60px" name="maxPoint" class="MaxScoreDetail" id="" type="number"/>
                         </td>
                         <td>
                             <div class="form-group">
-                            <select id="ValidatedRankDetail" name="validateRank" class="form-control"
+                            <select name="validateRank" class="form-control ValidatedRankDetail"
                                         style="transform: translateY(10px);max-width: 200px;max-height: 200px;overflow-y: hidden;"
                                         data-target="#navbar-example2" data-offset="0">
-                                        <option selected>Không xác định</option>
+                                        <option value='' selected>Không xác định</option>
                                         <option value="1">1 sao</option>
                                         <option value="2">2 sao</option>
                                         <option value="3">3 sao</option>
@@ -261,7 +261,7 @@
                                   </td>
                         <td>
                             <div class="form-group">
-                            <select id="ProductDetailIdDetail" name="ProductDetailId" class="form-control"
+                            <select name="ProductDetailId" class="form-control ProductDetailIdDetail"
                                         style="transform: translateY(10px);max-width: 200px;max-height: 200px;overflow-y: hidden;"
                                         data-target="#navbar-example2" data-offset="0">
                                         <option selected></option>
@@ -272,7 +272,7 @@
                                     </div>
                                   </td>
                                   <td>
-                                   <textarea name="Note" id="NoteDetail" cols="10" rows="1"></textarea>
+                                   <textarea name="Note" class="NoteDetail" cols="10" rows="1"></textarea>
                                   </td>
                                   <td>
                                     <ion-icon onclick="remove_education_fields(${room});" class="icon__scoreTempDetail" name="trash-outline"></ion-icon>
@@ -281,10 +281,8 @@
         }
         divtest.innerHTML = tableBody();
         objTo.appendChild(divtest)
-        console.log(objTo)
     }
     function remove_education_fields(rid) {
-        console.log(rid)
         lengthIndex--
         $('.removeclass' + rid).remove();
     }

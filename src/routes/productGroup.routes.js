@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const ProductGroupController = require('../app/controllers/ProductGroupController');
+const ProductGroupController = require('../app/controllers/productgroup/ProductGroupController');
 const upload = require("../app/Middleware/uploadMiddle")
 router.get("/", ProductGroupController.index)
 router.post("/add", upload.single(), ProductGroupController.create)

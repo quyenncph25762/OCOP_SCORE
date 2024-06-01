@@ -1,5 +1,5 @@
 const express = require('express');
-const ScoreCommitteeController = require("../app/controllers/ScoreCommitteeController")
+const ScoreCommitteeController = require("../app/controllers/scorecommittee/ScoreCommitteeController")
 const router = express.Router();
 
 router.get("/", ScoreCommitteeController.index)

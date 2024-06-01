@@ -12,9 +12,12 @@
             <div class="modal-body">
                 <table class="table table-bordered table-striped table-hover" border="1">
                     <thead>
+
                         <tr>
                             <th style="width: 20%;">
-                                STT</th>
+                                <p>{{this._id}}</p>
+                                STT
+                            </th>
                             <th style="width: 60%;">
                                 Tên tài liệu
                             </th>
@@ -23,48 +26,7 @@
                             </th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td>
-                                1
-                            </td>
-                            <td>
-                                <a href="" class="element__hoverRed">
-                                    <i class="fe fe-file-text"></i>
-                                    <span>
-                                        Chứng
-                                        nhận
-                                        đủ
-                                        điều
-                                        kiện
-                                        sản
-                                        xuất
-                                        mỹ
-                                        phẩm.pdf
-                                    </span>
-                                </a>
-                            </td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                2
-                            </td>
-                            <td>
-                                <a href="" class="element__hoverRed">
-                                    <i class="fe fe-file-text"></i>
-                                    <span>
-                                        Chứng
-                                        nhận
-                                        đủ
-                                        điều
-                                        kiện
-                                        ATTP.pdf
-                                    </span>
-                                </a>
-                            </td>
-                            <td></td>
-                        </tr>
+                    <tbody id="tbodyAttachFile">
                     </tbody>
                 </table>
             </div>
@@ -74,3 +36,45 @@
         </div>
     </div>
 </div>
+
+<script>
+    const handleShowAttachFile = async (productId, productDetailId) => {
+        // tim vien dan theo code va product id
+        const res = await fetch(`/productDetail/byCode/${productDetailId}/${productId}`, {
+            method: "GET"
+        })
+        const ProductDetail = await res.json()
+        if (ProductDetail) {
+            const response = await fetch(`/gallery/productDetail/${ProductDetail._id}`, {
+                method: "GET"
+            })
+            if (!response.ok) {
+                alert("Có lỗi xảy ra vui lòng thử lại!")
+            }
+            const listGallery = await response.json()
+            let tbodyAttachFile = document.getElementById("tbodyAttachFile")
+            tbodyAttachFile.innerHTML = ""
+            let i = 1
+            for (const gallery of listGallery) {
+                i++;
+                tbodyAttachFile.innerHTML += `
+        <tr>
+            <td>
+                ${i}
+            </td>
+            <td>
+                <a href="/${gallery.imgUrl}" class="element__hoverRed">
+                    <i class="fe fe-file-text"></i>
+                    <span>
+                        ${gallery.imgName}
+                    </span>
+                </a>
+            </td>
+            <td></td>
+        </tr>
+    `;
+            }
+        }
+
+    }
+</script>

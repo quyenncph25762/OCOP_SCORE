@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const ScoreTempController = require('../app/controllers/ScoreTempController');
+const ScoreTempController = require('../app/controllers/scoretemp/ScoreTempController');
 
 // delete
 // revert
@@ -17,5 +17,7 @@ router.post("/add", ScoreTempController.add)
 // update
 router.get("/updatePage/:id", ScoreTempController.getOne)
 router.put("/update/:id", ScoreTempController.update)
+// getByProductGroup
+router.get("/byProductGroup/:code", ScoreTempController.getScoreTempByProductGroup)
 
 module.exports = router;

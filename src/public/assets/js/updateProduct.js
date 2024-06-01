@@ -14,7 +14,7 @@ const handleUpdate = async (id) => {
     const ProductDetailId = Array.from(document.querySelectorAll("#AttachFile")).map(e => e.getAttribute("data-productDetailId"))
 
     const fileUrl = Avatar.files && Avatar.files[0] ? URL.createObjectURL(Avatar.files[0]) : imagePreview.src;
-    const index = fileUrl.indexOf("Uploads/");
+    const index = fileUrl.indexOf("/Uploads/");
     let relativePath = "";
     if (index !== -1) {
         relativePath = fileUrl.substring(index);
