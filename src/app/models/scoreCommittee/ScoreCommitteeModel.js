@@ -5,10 +5,13 @@ const ScoreCommitteeModel = {
     getAll: (callback) => {
         const query = `SELECT
         scorecommittee.*,
-        yearreview.yearName AS year_name
+        yearreview.yearName AS year_name,
+        employee.FullName AS employee_name
         FROM scorecommittee
-        JOIN 
+        LEFT JOIN 
         yearreview ON yearreview._id = scorecommittee.yearReviewId
+        LEFT JOIN
+        employee ON employee._id = scorecommittee.Employee_id
         WHERE scorecommittee.IsDeleted = 0 ORDER BY scorecommittee._id DESC`
         // const query = `SELECT * FROM scorecommittee WHERE IsDeleted = 0`
         connection.query(query, callback)
@@ -38,6 +41,12 @@ const ScoreCommitteeModel = {
     update: (id, scoreCommittee, callback) => {
         const query = `UPDATE scorecommittee SET Note = ? , Name = ? , IsActive = ?, yearReviewId = ? WHERE _id = ?`
         const VALUES = [scoreCommittee.Note, scoreCommittee.Name, scoreCommittee.IsActive, scoreCommittee.yearReviewId, id]
+        connection.query(query, VALUES, callback)
+    },
+    // cap nhat chu tich hoi dong
+    updateCharmanScoreCommittee: (id, scoreCommittee, callback) => {
+        const query = `UPDATE scorecommittee SET Employee_id = ? WHERE _id = ${id}`
+        const VALUES = [scoreCommittee.Employee_id]
         connection.query(query, VALUES, callback)
     },
     findScoreCommitteeUpdate(id, scoreCommittee, callback) {

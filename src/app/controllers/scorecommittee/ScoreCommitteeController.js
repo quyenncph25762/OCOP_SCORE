@@ -161,6 +161,23 @@ class ScoreCommitteController {
             )
         })
     }
+    // update chu tich hoi dong
+    updateCharman(req, res) {
+        const id = req.params.id
+        console.log(1)
+        console.log(`req body: ` + req.body)
+        ScoreCommitteeModel.updateCharmanScoreCommittee(id, req.body, (err, results) => {
+            if (err) {
+                console.log(err)
+                return res.status(500).json({
+                    message: err
+                })
+            }
+            return res.status(203).json({
+                message: "Cập nhật thành công"
+            })
+        })
+    }
 }
 
 module.exports = new ScoreCommitteController

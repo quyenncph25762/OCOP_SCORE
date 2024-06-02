@@ -480,17 +480,66 @@
             arrScoreCommitteeDetailAdd.push(response)
         }
 
+        //Chức năng lấy ra charMan
 
-        localStorage.setItem('toast', JSON.stringify({
-            position: "top-right",
-            heading: 'SUCCESS',
-            text: 'Cập nhật thành công!',
-            icon: 'success',
-            loader: true,
-            loaderBg: '#9EC600',
-            showHideTransition: 'slide',
-            stack: 4
-        }));
+        // lay ra nhng scoreCommitteeDetail vua them
+        const responseScoreDetail = await fetch(`/scoreCommitteeDetail/getByScoreCommittee/${id}`, {
+            method: "GET"
+        })
+        if (!responseScoreDetail.ok) {
+            alert("Đã xảy ra lỗi không mong muốn")
+            return
+        }
+        const listScoreCommittDetail = await responseScoreDetail.json()
+        const charMan = listScoreCommittDetail.find((item) => item.CommitteeRole === 1)
+        if (charMan) {
+            const formUpdate = {
+                Employee_id: charMan.UserId ? charMan.UserId : charMan.SecUserId
+            }
+            const updateCharMan = await fetch(`/scoreCommittee/updateCharMan/${id}`, {
+                method: "PATCH",
+                body: JSON.stringify(formUpdate),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            })
+            if (!updateCharMan.ok) {
+                alert("Lỗi update charMan")
+            }
+            localStorage.setItem('toast', JSON.stringify({
+                position: "top-right",
+                heading: 'SUCCESS',
+                text: 'Đã thêm thành công!',
+                icon: 'success',
+                loader: true,
+                loaderBg: '#9EC600',
+                showHideTransition: 'slide',
+                stack: 4
+            }));
+        } else {
+            const updateCharMan = await fetch(`/scoreCommittee/updateCharMan/${id}`, {
+                method: "PATCH",
+                body: JSON.stringify({
+                    Employee_id: null
+                }),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            })
+            if (!updateCharMan.ok) {
+                alert("Lỗi update charMan")
+            }
+            localStorage.setItem('toast', JSON.stringify({
+                position: "top-right",
+                heading: 'WARNING',
+                text: 'Hiện hội đồng chấm không có chủ tịch!',
+                icon: 'warning',
+                loader: true,
+                loaderBg: '#9EC600',
+                showHideTransition: 'slide',
+                stack: 4
+            }));
+        }
         // xoa xong set lai mang arrId rong
         arrIdScoreCommitteeDetail = []
         window.location.reload()

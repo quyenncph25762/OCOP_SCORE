@@ -1,5 +1,5 @@
 const handleAdd = async () => {
-    // scoreCommittee
+    // add scoreCommittee
     const Name = document.getElementById("Name").value
     const IsActive = document.getElementById("IsActive").checked
     const yearReviewId = document.getElementById("yearReviewId").value
@@ -30,8 +30,10 @@ const handleAdd = async () => {
         return
     }
     const response = await res.json()
+
+
     if (response) {
-        // id scoreCommittee
+        // lay id scoreCommittee vua them 
         const IdScoreCommittee = response.ScoreCommittee._id
         // thuc hien cap nhat scoreFile them scoreCommitee
         const res = await fetch(`/scoreFile/getScoreByStatus`, {
@@ -56,6 +58,9 @@ const handleAdd = async () => {
                 })
             }
         }
+
+        // Them scoreCommittee detail
+
         // vai tro cua hoi dong
         let CommitteeRole = Array.from(document.querySelectorAll(".CommitteeRole")).map(e => e.value)
         CommitteeRole = CommitteeRole.map(Number)
@@ -68,6 +73,7 @@ const handleAdd = async () => {
         const arrResponse = []
         for (let i = 0; i < listEmployee.length; i++) {
             const form = {
+                // id scoreCommitee vua them
                 ScoreCommittee_id: IdScoreCommittee,
                 CommitteeRole: CommitteeRole[i],
                 Employee_id: listEmployee[i],
@@ -85,16 +91,55 @@ const handleAdd = async () => {
             arrResponse.push(response)
         }
         await Promise.all(arrResponse)
-        localStorage.setItem('toast', JSON.stringify({
-            position: "top-right",
-            heading: 'SUCCESS',
-            text: 'Đã thêm thành công!',
-            icon: 'success',
-            loader: true,
-            loaderBg: '#9EC600',
-            showHideTransition: 'slide',
-            stack: 4
-        }));
+
+        // thuc hien them charName cho scorecommittee 
+
+        // lay ra nhng scoreCommitteeDetail vua them
+        const responseScoreDetail = await fetch(`/scoreCommitteeDetail/getByScoreCommittee/${IdScoreCommittee}`, {
+            method: "GET"
+        })
+        if (!responseScoreDetail.ok) {
+            alert("Đã xảy ra lỗi không mong muốn")
+            return
+        }
+        const listScoreCommittDetail = await responseScoreDetail.json()
+        const charMan = listScoreCommittDetail.find((item) => item.CommitteeRole === 1)
+        if (charMan) {
+            const formUpdate = {
+                Employee_id: charMan.UserId ? charMan.UserId : charMan.SecUserId
+            }
+            const updateCharMan = await fetch(`/scoreCommittee/updateCharMan/${IdScoreCommittee}`, {
+                method: "PATCH",
+                body: JSON.stringify(formUpdate),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            })
+            if (!updateCharMan.ok) {
+                alert("Lỗi update charMan")
+            }
+            localStorage.setItem('toast', JSON.stringify({
+                position: "top-right",
+                heading: 'SUCCESS',
+                text: 'Đã thêm thành công!',
+                icon: 'success',
+                loader: true,
+                loaderBg: '#9EC600',
+                showHideTransition: 'slide',
+                stack: 4
+            }));
+        } else {
+            localStorage.setItem('toast', JSON.stringify({
+                position: "top-right",
+                heading: 'WARNING',
+                text: 'Hiện hội đồng chấm không có chủ tịch!',
+                icon: 'warning',
+                loader: true,
+                loaderBg: '#9EC600',
+                showHideTransition: 'slide',
+                stack: 4
+            }));
+        }
         window.location.reload()
     }
 }
