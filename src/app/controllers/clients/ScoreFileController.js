@@ -33,7 +33,6 @@ class ScoreFileController {
     getScoreByStatus(req, res) {
         ScoreFileModel.getScoreFileByStatus((err, data) => {
             if (err) {
-                console.log(err)
                 return res.status(500).json({
                     message: "Lỗi truy vấn"
                 })
@@ -45,19 +44,18 @@ class ScoreFileController {
     createScoreFile(req, res) {
         ScoreFileModel.create(req.body, (err, results) => {
             if (err) {
-                console.log(err)
                 return res.status(500).json({
                     message: "Lỗi truy vấn"
                 })
             }
-            return res.status(201).json({
-                message: "Tạo thành công"
+            return res.status(200).json({
+                message: "Them thanh cong"
             })
+
         })
     }
     // page cap nhat
-    updatePage(req, res) {
-
+    createPage(req, res) {
         const cookie = req.cookies
         if (cookie?.User) {
             const UserDataCookie = jwt.verify(cookie.User, SECRET_CODE)
@@ -72,18 +70,45 @@ class ScoreFileController {
         }
 
     }
+    updatePage(req, res) {
+        const cookie = req.cookies
+        if (cookie?.User) {
+            const UserDataCookie = jwt.verify(cookie.User, SECRET_CODE)
+            AccountModel.fetchOneUser(UserDataCookie?._id, (err, User) => {
+                if (err) {
+                    return res.status(500).json({
+                        message: err
+                    })
+                }
+                const idScoreFile = Number(req.query.ScoreFile_id)
+                ScoreFileModel.getOne(idScoreFile, (err, ScoreFile) => {
+                    if (err) {
+                        return res.status(500).json({
+                            message: err
+                        })
+                    }
+                    res.render("scoreFile/scoreFileUpdate", { User: User[0], ScoreFile: ScoreFile[0] })
+                })
+            })
+        }
+
+    }
     // action cap nhat
     update(req, res) {
         const id = req.params.id
-        ScoreFileModel.update(id, req.body, (err, results) => {
-            if (err) {
-                console.log(`err updateScore: ${err}`)
-                return res.status(500).json({
-                    message: err
+        const { RankOcop, ScoreTotal, Product_id } = req.body
+        const product = { RankOcop, ScoreTotal, Product_id }
+        // update RankOcop Product
+        ProductModel.updateRankOcopProduct(product.Product_id, product, (err, result) => {
+            ScoreFileModel.update(id, req.body, (err, results) => {
+                if (err) {
+                    return res.status(500).json({
+                        message: err
+                    })
+                }
+                return res.status(203).json({
+                    message: "Cập nhật thành công"
                 })
-            }
-            return res.status(203).json({
-                message: "Cập nhật thành công"
             })
         })
     }
@@ -91,13 +116,12 @@ class ScoreFileController {
         const id = req.params.id
         ScoreFileModel.updateScoreCommitteOnScoreFile(id, req.body, (err, results) => {
             if (err) {
-                console.log(`err updateScore: ${err}`)
                 return res.status(500).json({
                     message: err
                 })
             }
             return res.status(203).json({
-                message: "Cập nhật thành công"
+                message: "Cập nhật thành công!"
             })
         })
     }

@@ -551,7 +551,7 @@
               const product = {
                 Status: 1
               }
-              // Lấy ID của mục cần xóa từ thuộc tính data-id của nút
+              // Lấy ID của mục cần duyệt từ thuộc tính data-id của nút
               const res = await fetch(`/product-manage/updateStatus/${productId}`, {
                 method: 'PATCH',
                 body: JSON.stringify(product),
@@ -566,7 +566,8 @@
                 Status: 1,
                 IsActive: 1
               }
-              await fetch(`/scoreFile/add`, {
+              console.log(formProductId)
+              const resScoreFile = await fetch(`/scoreFile/add`, {
                 method: 'POST',
                 body: JSON.stringify(formProductId),
                 headers: {

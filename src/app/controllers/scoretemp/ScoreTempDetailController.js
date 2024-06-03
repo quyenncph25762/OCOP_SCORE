@@ -3,7 +3,6 @@ const ScoreTempDetailModel = require("../../models/scoretemp/ScoreDetailModel")
 class ScoreTempDetailController {
     getScoreTempDetailFilter(req, res) {
         const id = req.params.id
-        console.log(1)
         ScoreTempDetailModel.getScoreTempDetailByScoreTemp(id, (err, data) => {
             if (err) {
                 return res.status(500).json({
@@ -11,6 +10,18 @@ class ScoreTempDetailController {
                 })
             }
             return res.status(200).json(data)
+        })
+    }
+    // getOne by id
+    getOne(req, res) {
+        const id = req.params.id
+        ScoreTempDetailModel.getOneScoreTempDetailById(id, (err, ScoreTempDetail) => {
+            if (err) {
+                return res.status(500).json({
+                    message: "Lỗi truy vấn"
+                })
+            }
+            return res.status(200).json(ScoreTempDetail?.[0])
         })
     }
     addScoreTempDetail(req, res) {

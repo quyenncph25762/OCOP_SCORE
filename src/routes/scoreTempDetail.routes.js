@@ -9,6 +9,8 @@ router.patch("/revert/:id", ScoreTempDetailController.revert)
 router.patch("/removeToTrash/:id", ScoreTempDetailController.removeToTrash)
 // get phieu cham chi tieu theo phieu cham
 router.get("/scoreTemp/:id", ScoreTempDetailController.getScoreTempDetailFilter)
+// getOne ScoreTempDetail by id
+router.get("/:id", ScoreTempDetailController.getOne)
 // them
 router.post("/add", ScoreTempDetailController.addScoreTempDetail)
 // updae

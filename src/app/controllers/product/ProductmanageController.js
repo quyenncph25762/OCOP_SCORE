@@ -248,55 +248,7 @@ class ProductmanageController {
             }
         })
     }
-    update(req, res) {
-        const product_id = req.params.id
-        ProductmanageModel.findProductUpdate(product_id, req.body, (err, data) => {
-            if (err) {
-                console.log(err)
-                return res.status(500).json({
-                    message: "Lỗi try vấn"
-                })
-            }
-            if (data.length === 0) {
-                const updatedData = {
-                    IsActive: Number(req.body.IsActive),
-                    Avatar: req.file ? req.file.path : req.body.Avatar,
-                    ...req.body
-                };
-                ProductmanageModel.updateProduct(product_id, updatedData, (err, result) => {
-                    if (err) {
-                        console.log(err)
-                        return res.status(500).json({
-                            message: "Lỗi try vấn"
-                        })
-                    } else {
-                        return res.status(203).json({
-                            message: "Câp nhật thành công"
-                        })
-                    }
-                });
-            } else {
-                return res.status(400).json({
-                    message: "Sản phẩm đã tồn tại"
-                })
-            }
-        })
-    }
-    // duyet san pham
-    updateStatus(req, res) {
-        const productId = req.params.id
-        ProductmanageModel.updateStatusProduct(productId, req.body, (err, result) => {
-            if (err) {
-                console.log(err)
-                return res.status(500).json({
-                    message: "Lỗi try vấn"
-                })
-            }
-            return res.status(203).json({
-                message: "Cập nhật trạng thái thành công"
-            })
-        })
-    }
+
     // xoa vao thung rac
     deleteToTrash(req, res, next) {
         const product_id = req.params.id
@@ -357,7 +309,109 @@ class ProductmanageController {
             }
         })
     }
-    // show san pham by isDefault 
+
+
+    // update product
+    update(req, res) {
+        const product_id = req.params.id
+        ProductmanageModel.findProductUpdate(product_id, req.body, (err, data) => {
+            if (err) {
+                console.log(err)
+                return res.status(500).json({
+                    message: "Lỗi try vấn"
+                })
+            }
+            if (data.length === 0) {
+                const updatedData = {
+                    IsActive: Number(req.body.IsActive),
+                    Avatar: req.file ? req.file.path : req.body.Avatar,
+                    ...req.body
+                };
+                ProductmanageModel.updateProduct(product_id, updatedData, (err, result) => {
+                    if (err) {
+                        console.log(err)
+                        return res.status(500).json({
+                            message: "Lỗi try vấn"
+                        })
+                    } else {
+                        return res.status(203).json({
+                            message: "Câp nhật thành công"
+                        })
+                    }
+                });
+            } else {
+                return res.status(400).json({
+                    message: "Sản phẩm đã tồn tại"
+                })
+            }
+        })
+    }
+    // duyet san pham
+    updateStatus(req, res) {
+        const productId = req.params.id
+        ProductmanageModel.updateStatusProduct(productId, req.body, (err, result) => {
+            if (err) {
+                console.log(err)
+                return res.status(500).json({
+                    message: "Lỗi try vấn"
+                })
+            }
+            return res.status(203).json({
+                message: "Cập nhật trạng thái thành công"
+            })
+        })
+    }
+    // update rankOcop Product
+    // update product
+    update(req, res) {
+        const product_id = req.params.id
+        ProductmanageModel.findProductUpdate(product_id, req.body, (err, data) => {
+            if (err) {
+                console.log(err)
+                return res.status(500).json({
+                    message: "Lỗi try vấn"
+                })
+            }
+            if (data.length === 0) {
+                const updatedData = {
+                    IsActive: Number(req.body.IsActive),
+                    Avatar: req.file ? req.file.path : req.body.Avatar,
+                    ...req.body
+                };
+                ProductmanageModel.updateProduct(product_id, updatedData, (err, result) => {
+                    if (err) {
+                        console.log(err)
+                        return res.status(500).json({
+                            message: "Lỗi try vấn"
+                        })
+                    } else {
+                        return res.status(203).json({
+                            message: "Câp nhật thành công"
+                        })
+                    }
+                });
+            } else {
+                return res.status(400).json({
+                    message: "Sản phẩm đã tồn tại"
+                })
+            }
+        })
+    }
+    // duyet san pham
+    updateRankOcop(req, res) {
+        const productId = req.params.id
+        ProductmanageModel.updateRankOcopProduct(productId, req.body, (err, result) => {
+            if (err) {
+                console.log(err)
+                return res.status(500).json({
+                    message: "Lỗi try vấn"
+                })
+            }
+            return res.status(203).json({
+                message: "Cập nhật thành công"
+            })
+        })
+    }
 
 }
 

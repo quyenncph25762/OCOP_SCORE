@@ -73,7 +73,6 @@ async function getOneScoreTemp(code, productId) {
             // tao ten checkbox mac dinh
             let checkBoxScoreName = "Score1"
             let checkboxScore = 1
-
             for (let i = 0; i < ListScoreTempDetail.length; i++) {
                 // kiem tra neu ma co attachFile thi name checkbox thay doi
                 if (ListScoreTempDetail[i].ProductDetailId) {
@@ -113,7 +112,7 @@ async function getOneScoreTemp(code, productId) {
                             ${ListScoreTempDetail[i].IsScore ?
                         `
                        
-                        <td style="color: red; font-style: italic; text-align: center;"> <input type="radio" class="btnsRadio" value="${ListScoreTempDetail[i].MaxScore}" name="${checkBoxScoreName}"></td>`
+                        <td style="color: red; font-style: italic; text-align: center;"> <input type="radio" class="btnsRadio" data-id="${ListScoreTempDetail[i]._id}" value="${ListScoreTempDetail[i].MaxScore}" name="${checkBoxScoreName}"></td>`
                         :
                         `<td></td>`
                     }

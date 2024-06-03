@@ -61,11 +61,18 @@ Handlebars.registerHelper('filter', function (arr, id) {
 });
 // cắt
 Handlebars.registerHelper('split', function (input, delimiter, index) {
-    const dobFormatted = input?.toISOString()?.split('T')?.[0];
-    if (typeof dobFormatted === 'string') {
-        return dobFormatted;
+    if (typeof input === 'string' && delimiter && typeof index === 'number') {
+        const parts = input.split(delimiter);
+        return parts[index];
+    } else if (input instanceof Date) {
+        if (input !== "0000-00-00 00:00:00.000000") {
+            const dobFormatted = input.toISOString()?.split('T')?.[0];
+            console.log(object)
+            return dobFormatted;
+        }
     } else {
-        console.error('Input is not a string');
+        console.error('Input is not a string or date object');
+        return '';
     }
 });
 

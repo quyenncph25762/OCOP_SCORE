@@ -47,6 +47,7 @@
 
                                 </tbody>
                             </table>
+                            <input type="hidden" class="Code" value="">
                             <input type="hidden" id="CreatorUser_id" value="{{User._id}}">
                             <p style="margin-top: 10px;border-bottom: 1px solid #ccc;padding-bottom: 5px;width: 250px;">
                                 Ý kiến của người đánh giá</p>
@@ -66,3 +67,19 @@
 {{!-- product container --}}
 <script src=" /assets/js/scorefile/getOneScoreFile.js"></script>
 <script src="/assets/js/scorefile/addScoreFile.js"></script>
+
+<script>
+    (function () {
+        let codeValueProductGroup = document.querySelector(".Code");
+        function generateRandomCode(length) {
+            let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789';
+            let code = '';
+            for (let i = 0; i < length; i++) {
+                code += characters.charAt(Math.floor(Math.random() * characters.length));
+            }
+            return code;
+        }
+        let codeRandom = generateRandomCode(8);
+        codeValueProductGroup.value = codeRandom;
+    })();
+</script>

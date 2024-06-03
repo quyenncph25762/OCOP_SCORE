@@ -75,16 +75,16 @@
             <div class="modal-body" class="width: 100%">
                 <form>
                     <div class="form-row">
-                        <input type="text" value="{{User._id}}" name="CreatorUser_id" id="CreatorUser_id" hidden>
+                        <input type="text" value="{{User._id}}" name="CreatorUser_id" class="CreatorUser_id" hidden>
                         {{!-- code --}}
                         <div class="col-md-4 mb-3">
                             <label for="Code">Mã</label>
-                            <input name="Code" type="text" class="form-control" id="Code" required>
+                            <input name="Code" type="text" class="form-control Code" required>
                         </div>
                         {{!-- title --}}
                         <div class="col-md-5 mb-3">
                             <label for="Name">Tên nhóm sản phẩm</label>
-                            <input name="Name" type="text" class="form-control" id="Name" required>
+                            <input name="Name" type="text" class="form-control Name" required>
                             <span
                                 style="color: #de2935;font-size: 14px;font-style: italic;margin-top: 5px;font-weight: 600;"
                                 id="messageError"></span>
@@ -92,14 +92,14 @@
                         {{!-- status --}}
                         <div class="custom-control custom-switch col-md-3"
                             style="display: flex; justify-content: center;align-items: center;">
-                            <input name="IsActive" type="checkbox" class="custom-control-input" id="IsActive" checked>
+                            <input name="IsActive" type="checkbox" class="custom-control-input IsActive" checked>
                             <label class="custom-control-label block" for="IsActive">Áp dụng</label>
                         </div>
                         {{!-- note --}}
                         <div class="col-md-12 mb-3 mt-3">
                             <label for="Note">Ghi
                                 chú</label>
-                            <input name="Note" type="text" class="form-control" id="Note">
+                            <input name="Note" type="text" class="form-control Note">
                         </div>
                     </div>
                 </form>
@@ -113,29 +113,30 @@
 </div>
 {{!-- random code --}}
 <script>
-    const codeValue = document.querySelector("#Code")
-    console.log(codeValue)
-    function generateRandomCode(length) {
-        let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789';
-        let code = '';
-        for (let i = 0; i < length; i++) {
-            code += characters.charAt(Math.floor(Math.random() * characters.length));
+    (function () {
+        let codeValueProductGroup = document.querySelector(".Code");
+        function generateRandomCode(length) {
+            let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789';
+            let code = '';
+            for (let i = 0; i < length; i++) {
+                code += characters.charAt(Math.floor(Math.random() * characters.length));
+            }
+            return code;
         }
-        return code;
-    }
-    const codeRandom = generateRandomCode(8)
-    codeValue.value = codeRandom
+        let codeRandom = generateRandomCode(8);
+        codeValueProductGroup.value = codeRandom;
+    })();
 </script>
 
 {{!-- req actions --}}
 
 <script>
     async function handleAdd() {
-        const Code = document.getElementById("Code").value
-        const Name = document.getElementById("Name").value
-        const Note = document.getElementById("Note").value
-        const IsActive = document.getElementById("IsActive").checked
-        const CreatorUser_id = document.getElementById("CreatorUser_id").value
+        const Code = document.querySelector(".Code").value
+        const Name = document.querySelector(".Name").value
+        const Note = document.querySelector(".Note").value
+        const IsActive = document.querySelector(".IsActive").checked
+        const CreatorUser_id = document.querySelector(".CreatorUser_id").value
         const formData = new FormData()
         formData.append("Code", Code)
         formData.append("Name", Name)

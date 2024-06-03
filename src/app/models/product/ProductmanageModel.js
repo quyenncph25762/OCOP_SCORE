@@ -55,17 +55,7 @@ const ProductmanageController = {
         const values = [product.Name];
         connection.query(query, values, callback);
     },
-    updateProduct: (id, product, callback) => {
-        const query = 'UPDATE product SET Name = ?,Code = ?, ProductGroup_id = ? , Customer_id = ?, ProductYearId = ?, Note = ? , Description = ? , RankOcop = ? , Avatar = ? , TotalScore = ? , IsActive = ?  WHERE _id = ?';
-        const values = [product.Name, product.Code, product.ProductGroup_id, product.Customer_id, product.ProductYearId, product.Note, product.Description, product.RankOcop, product.Avatar, product.TotalScore, product.IsActive, id];
-        connection.query(query, values, callback);
-    },
 
-    updateStatusProduct: (id, product, callback) => {
-        const query = 'UPDATE product SET Status = ?  WHERE _id = ?';
-        const values = [product.Status, id];
-        connection.query(query, values, callback);
-    },
     // delete to trash
     deleteToTrashProduct: (product_id, userId, callback) => {
         const query = `UPDATE product SET IsDeleted = 1 , DeleterUser_id = ${userId} , DeletionTime = CURRENT_TIMESTAMP  WHERE _id = ? `;
@@ -104,6 +94,25 @@ const ProductmanageController = {
         `
         connection.query(query, callback)
     },
+
+    // updateProduct
+    updateProduct: (id, product, callback) => {
+        const query = 'UPDATE product SET Name = ?,Code = ?, ProductGroup_id = ? , Customer_id = ?, ProductYearId = ?, Note = ? , Description = ? ,  Avatar = ? ,  IsActive = ?  WHERE _id = ?';
+        const values = [product.Name, product.Code, product.ProductGroup_id, product.Customer_id, product.ProductYearId, product.Note, product.Description, product.Avatar, product.IsActive, id];
+        connection.query(query, values, callback);
+    },
+    // update Status Product
+    updateStatusProduct: (id, product, callback) => {
+        const query = 'UPDATE product SET Status = ?  WHERE _id = ?';
+        const values = [product.Status, id];
+        connection.query(query, values, callback);
+    },
+    // updateRankOcopProuct
+    updateRankOcopProduct: (id, product, callback) => {
+        const query = 'UPDATE product SET RankOcop = ? , TotalScore = ?  WHERE _id = ?';
+        const values = [product.RankOcop, product.ScoreTotal, id];
+        connection.query(query, values, callback);
+    }
 
 }
 module.exports = ProductmanageController;

@@ -105,7 +105,6 @@ class ScoreTempController {
                     }
                     ScoreTempModel.getOneScoreTemp(results.insertId, (err, data) => {
                         if (err) {
-
                             return res.status(500).json({
                                 message: "Lỗi truy vấn"
                             })
