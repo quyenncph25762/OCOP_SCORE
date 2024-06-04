@@ -55,7 +55,13 @@ const ScoreFileModel = {
         const query = `UPDATE scorefile SET ScoreCommitee_id = ? WHERE _id = ${id}`
         const VALUES = [scoreFile.ScoreCommitee_id]
         connection.query(query, VALUES, callback)
-    }
+    },
+    updateScoreTotal: (id, scoreFile, callback) => {
+        const query = `UPDATE scorefile SET ScoreTotal = ? WHERE _id = ${id}`
+        const VALUES = [scoreFile.ScoreTotal]
+        connection.query(query, VALUES, callback)
+    },
+
 }
 
 module.exports = ScoreFileModel

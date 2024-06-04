@@ -80,7 +80,11 @@
                             </div>
                             <div class="d-flex align-items-center justify-content-between">
                                 <p> Xếp hạng OCOP:</p>
-                                <p style="color: rgb(236, 236, 118)" class="startOcop"></p>
+                                <p style="color: rgb(236, 236, 118)" class="startOcop">
+                                    {{#repeat this.ScoreFile.RankOcop}}
+                                    <ion-icon name="star"></ion-icon>
+                                    {{/repeat}}
+                                </p>
                             </div>
                         </div>
                     </div>

@@ -112,9 +112,25 @@ class ScoreFileController {
             })
         })
     }
+    // action cap nhat ScoreCommittee
     updateScoreCommittee(req, res) {
         const id = req.params.id
         ScoreFileModel.updateScoreCommitteOnScoreFile(id, req.body, (err, results) => {
+            if (err) {
+                return res.status(500).json({
+                    message: err
+                })
+            }
+            return res.status(203).json({
+                message: "Cập nhật thành công!"
+            })
+        })
+    }
+    // action cap nhat ScoreTotal
+    updateScoreTotal(req, res) {
+        const id = req.params.id
+        console.log(req.body)
+        ScoreFileModel.updateScoreTotal(id, req.body, (err, results) => {
             if (err) {
                 return res.status(500).json({
                     message: err

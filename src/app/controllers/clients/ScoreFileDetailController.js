@@ -48,13 +48,15 @@ class ScoreFileDetailController {
     updateScoreById(req, res) {
         const id = req.params.id
         if (id) {
-            ScoreFileDetailModel.updateScoreById(id, req.body, (err, data) => {
+            ScoreFileDetailModel.updateScoreFileDetailById(id, req.body, (err, data) => {
                 if (err) {
                     return res.status(500).json({
                         message: "Lỗi truy vấn"
                     })
                 }
-                return res.status(200).json(data[0])
+                return res.status(200).json({
+                    message: "Cập nhật thành công"
+                })
             })
         }
     }

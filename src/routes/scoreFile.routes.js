@@ -12,8 +12,10 @@ router.get("/createScoreFile", ScoreFileController.createPage)
 router.get("/updateScoreFile", ScoreFileController.updatePage)
 // update 
 router.patch("/update/:id", ScoreFileController.update)
-// update One
+// update ScoreCommitt
 router.patch("/updateScoreCommittOnScoreFile/:id", ScoreFileController.updateScoreCommittee)
+// update ScoreTotal
+router.patch("/updateScoreTotal/:id", ScoreFileController.updateScoreTotal)
 // add
 router.post("/add", ScoreFileController.createScoreFile)
 

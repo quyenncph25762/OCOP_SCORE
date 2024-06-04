@@ -52,7 +52,6 @@ const AccountModel = {
         const query = `UPDATE employee SET Password = ? WHERE Email = ?`
         connection.query(query, [password, Email], callback)
     },
-
 }
 
 module.exports = AccountModel
