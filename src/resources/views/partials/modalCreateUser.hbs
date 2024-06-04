@@ -44,8 +44,9 @@
                                 </div>
                                 <div class="col-sm-9">
                                     <div class="row">
+                                        <input type="text" class="form-control" id="Code" hidden>
                                         <div class="col-sm-9 mb-3">
-                                            <label for="Code">Tên truy cập</label>
+                                            <label for="UserName">Tên truy cập</label>
                                             <input type="text" class="form-control" id="UserName">
                                         </div>
                                         <div class="custom-control custom-switch col-md-3"
@@ -64,7 +65,8 @@
                                             <label for="Code">Vai trò</label>
                                             <select name="" id="RoleId" class="form-control">
                                                 {{#each Role}}
-                                                <option value="{{this._id}}">{{this.title}}</option>
+                                                <option value="{{this._id}}" {{#ifCond this.status
+                                                    0}}disabled{{/ifCond}}>{{this.title}}</option>
                                                 {{/each}}
                                             </select>
                                         </div>
@@ -146,6 +148,7 @@
 </script>
 <script>
     async function handleCreateUser() {
+        const Code = document.getElementById("Code").value
         const UserName = document.getElementById("UserName").value
         const FullName = document.getElementById("FullName").value
         const RoleId = document.getElementById("RoleId").value
@@ -183,6 +186,7 @@
         }
 
         const formData = new FormData()
+        formData.append("Code", Code)
         formData.append("UserName", UserName)
         formData.append("FullName", FullName)
         formData.append("roleId", Number(RoleId))
@@ -192,7 +196,7 @@
         formData.append("Password", CryptoJS.SHA256(Password).toString())
         formData.append("Avatar", Avatar.files[0])
 
-        const response = await fetch(`/users`, {
+        const response = await fetch(`/users/add`, {
             method: "POST",
             body: formData
         })
@@ -207,10 +211,9 @@
                 showHideTransition: 'slide',
                 stack: 4
             }));
-            window.location.replace("/employee")
+            window.location.replace("/users")
         } else {
             const data = await response.json()
-            console.log(data)
             $.toast({
                 position: "top-right",
                 heading: 'Thêm thất bại',
@@ -223,4 +226,18 @@
             });
         }
     }
+</script>
+
+<script>
+    const codeValue = document.querySelector("#Code")
+    function generateRandomCode(length) {
+        let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789';
+        let code = '';
+        for (let i = 0; i < length; i++) {
+            code += characters.charAt(Math.floor(Math.random() * characters.length));
+        }
+        return code;
+    }
+    const codeRandom = generateRandomCode(8)
+    codeValue.value = codeRandom
 </script>

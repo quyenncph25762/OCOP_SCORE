@@ -55,9 +55,14 @@
                     </div>
                   </td>
                   <td hidden>{{@index}}</td>
-                  <td>{{this.Name}}</td>
+                  <td style="max-width: 200px;">
+                    <p style="text-wrap: wrap;font-size: 14px;">{{this.Name}}</p>
+                  </td>
                   <td>{{this.Phone}}</td>
-                  <td>Tỉnh {{this.city_name}} , {{this.district_name}} , {{this.ward_name}}</td>
+                  <td>
+                    <p style="text-wrap: wrap;">Tỉnh {{this.city_name}} , {{this.district_name}} , {{this.ward_name}}
+                    </p>
+                  </td>
                   <td style="display: flex;">
                     <div class="action_center">
                       <button style="background-color: transparent;border: none ;cursor: pointer;">

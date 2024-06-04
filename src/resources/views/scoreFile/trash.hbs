@@ -1,0 +1,357 @@
+{{> header}}
+<div class="content-wrapper" style="height: 100vh;">
+    <div class="container-fluid">
+        <div class="row" style="max-width: 100%; display: contents;">
+            <ul class="search-customer"
+                style="list-style: none; display:flex; justify-content: space-between; align-items: center;padding: 0;">
+                <div class="">
+                    <button class="btn btn-danger btnDeleteAll btnDisabledDelete">Xóa mục đã chọn</button>
+                    <button class="btn btn-primary btnRevertAll ml-3 btnDisabledRevert">Khôi phục mục đã
+                        chọn</button>
+                </div>
+            </ul>
+        </div>
+    </div>
+
+    <div class="row" style="display: contents;">
+        <div class="col-lg-6" style="max-width: 100%;">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex align-items">
+                        <span style="cursor: pointer;" class="d-inline-block mr-3" tabindex="0" data-toggle="tooltip"
+                            title="Trở về">
+                            <a href="/scorefile">
+                                <ion-icon name="arrow-undo-outline"></ion-icon>
+                            </a>
+                        </span>
+                        <h5 class="card-title">Khôi phục sản phẩm</h5>
+                    </div>
+                    <table id="myTable" class="table datatables table-bordered table-hover table-striped"
+                        style="font-size: 13px;">
+                        <thead>
+                            <tr>
+                                <th {{#ifCond ScoreFile.length 0}}hidden{{/ifCond}}>
+                                    <div class="checkbox">
+                                        <input type="checkbox" class="check" id="checkAll">
+                                    </div>
+                                </th>
+                                <th>Ảnh</th>
+                                <th style="min-width: 300px;">
+                                    Sản phẩm</th>
+                                <th>Nhóm sản phẩm</th>
+                                <th>Tổng điểm</th>
+                                <th>Xếp hạng</th>
+                                <th>Ngày chấm</th>
+                                <th>Trạng thái</th>
+                                <th>Actions</th>
+                            </tr>
+
+                        </thead>
+                        <tbody>
+                            {{#each ScoreFile}}
+                            {{!-- Chua cham --}}
+                            <tr>
+                                <td>
+                                    <div class="">
+                                        <div class="checkbox">
+                                            <input type="checkbox" class="check" data-idCheckBox="{{this._id}}">
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="approved">
+                                        <img src="{{this.product_avatar}}" alt=""
+                                            style="width: 50px;height: 50px;border-radius: 50%;object-fit: cover;">
+                                    </div>
+                                </td>
+                                <td>
+                                    <ul style="list-style-type: none;font-weight: 600;padding: 0;">
+                                        <!-- name product -->
+                                        <li style="font-size: 14px;" data-toggle="modal" data-target="#exampleModal">
+                                            {{this.product_name}}
+                                        </li>
+                                        <p style="color: #B5B5C3;font-size: 13px;text-wrap: wrap;" class="nameProduct"
+                                            data-toggle="modal" data-target="#exampleModal2">
+                                            Chủ thể: {{toUpperCase this.customer_name}}
+                                        </p>
+                                    </ul>
+                                </td>
+                                <!-- product group -->
+                                <td style="text-wrap: wrap;">Nhóm 19: {{this.productgroup_name}}
+                                </td>
+                                {{!-- tong diem --}}
+                                <td>
+                                    {{#ifCond this.ScoreTotal 0}}
+                                    {{else}}
+                                    <p style="font-weight: 600;text-align: center;color: rgb(236, 236, 118)">
+                                        {{this.ScoreTotal}}</p>
+                                    {{/ifCond}}
+
+                                </td>
+                                <!-- so sao -->
+                                <td>
+                                    {{#repeat this.RankOcop}}
+                                    <ion-icon name="star"></ion-icon>
+                                    {{/repeat}}
+                                </td>
+                                {{!-- Ngay cham --}}
+                                <td>
+                                    {{#if this.formattedScoreDate}}
+                                    {{this.formattedScoreDate}}
+                                    {{/if}}
+                                </td>
+                                {{!-- Trang thai --}}
+                                <td>
+                                    {{#ifCond this.Status 0}}
+                                    <p class="statusLabelDanger">Chưa chấm</p>
+                                    {{/ifCond}}
+                                    {{#ifCond this.Status 1}}
+                                    <p class="statusLabelSuccess">Đã chấm</p>
+                                    {{/ifCond}}
+
+                                <td class="icons">
+                                    <div class="action_center">
+                                        <button data-toggle="modal" data-target="#exampleModal{{this._id}}"
+                                            style="background-color: transparent;border: none;cursor: pointer;">
+                                            <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
+                                                title="Khôi phục">
+                                                <ion-icon name="sync-outline" style="color: white; font-size: 18px;"
+                                                    class="icon_revert" data-id="{{this._id}}"></ion-icon>
+                                            </span>
+                                        </button>
+                                    </div>
+                                    <div class="delete_action">
+                                        <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
+                                            title="Xóa chủ thể">
+                                            <ion-icon class="icon_moveToTrash" name="trash-outline"
+                                                data-id="{{this._id}}">
+                                            </ion-icon>
+                                        </span>
+                                    </div>
+                                </td>
+                            </tr>
+                            {{/each}}
+                        </tbody>
+                    </table>
+                    <!-- table -->
+                    {{!-- {{> modalMarkPage}} --}}
+                    <!-- table -->
+                </div>
+            </div>
+        </div><!--End Row-->
+    </div>
+</div><!--End content-wrapper-->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="/assets/js/custom.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const toastData = localStorage.getItem('toast');
+        if (toastData) {
+            const toast = JSON.parse(toastData);
+            $.toast(toast);
+            localStorage.removeItem('toast');
+        }
+        const btnReverts = document.querySelectorAll(".icon_revert")
+        const btnTrash = document.querySelectorAll(".icon_moveToTrash");
+        //removeOne
+        for (let btn of btnTrash) {
+            btn.addEventListener("click", (event) => {
+                $.confirm({
+                    title: '<ion-icon name="trash-bin-outline"></ion-icon>',
+                    content: 'Bạn có chắc chắn muốn xóa ?',
+                    buttons: {
+                        confirm: {
+                            text: 'Confirm',
+                            btnClass: 'btn-red',
+                            action: function () {
+                                // Lấy ID của mục cần xóa từ thuộc tính data-id của nút
+                                const id = event.target.dataset.id;
+
+                                // Gọi API xóa mục
+                                fetch(`/scoreFile/remove/${id}`, {
+                                    method: 'DELETE'
+                                }).then(response => {
+                                    if (response.ok) {
+                                        localStorage.setItem('toast', JSON.stringify({
+                                            position: "top-right",
+                                            heading: 'SUCCESS!',
+                                            text: 'Đã xóa thành công thành công',
+                                            icon: 'success',
+                                            loader: true,
+                                            loaderBg: '#9EC600',
+                                            showHideTransition: 'slide'
+                                        }));
+                                        window.location.reload()
+                                    } else {
+                                        localStorage.setItem('toast', JSON.stringify({
+                                            position: "top-right",
+                                            heading: 'Xóa không thành công',
+                                            text: 'Đã xảy ra lỗi khi xóa mục',
+                                            icon: 'error',
+                                            loader: true,
+                                            loaderBg: '#9EC600',
+                                            showHideTransition: 'slide'
+                                        }));
+                                    }
+                                }).catch(error => {
+                                    $.alert('Đã hủy');
+                                });
+                            }
+                        },
+                        cancel: function () {
+                            $.alert('Đã hủy!');
+                        }
+                    }
+                });
+            })
+        }
+        //revertOne
+        for (let btnRevert of btnReverts) {
+            btnRevert.addEventListener("click", async (event) => {
+                $.confirm({
+                    title: '<ion-icon name="help-circle-outline"></ion-icon>',
+                    content: 'Bạn muốn khôi phục ?',
+                    buttons: {
+                        confirm: {
+                            text: 'Confirm',
+                            btnClass: 'btn-red',
+                            action: function () {
+                                // Lấy ID của mục cần xóa từ thuộc tính data-id của nút
+                                const id = event.target.dataset.id;
+
+                                // Gọi API xóa mục
+                                fetch(`/scoreFile/revert/${id}`, {
+                                    method: 'PATCH'
+                                }).then(response => {
+                                    if (response.ok) {
+                                        localStorage.setItem('toast', JSON.stringify({
+                                            position: "top-right",
+                                            heading: 'Khôi phục thành công',
+                                            text: 'Đã khôi phục thành công thành công',
+                                            icon: 'info',
+                                            loader: true,
+                                            loaderBg: '#9EC600',
+                                            showHideTransition: 'slide'
+                                        }));
+                                        window.location.reload()
+                                    } else {
+                                        alert('Có lỗi xảy ra khi xóa mục');
+                                    }
+                                }).catch(error => {
+                                    $.alert('Đã hủy');
+                                });
+                            }
+                        },
+                        cancel: function () {
+                            $.alert('Đã hủy!');
+                        }
+                    }
+                });
+            })
+        }
+        const btnsCheck = document.querySelectorAll(".check")
+        const btnDeleteAll = document.querySelector(".btnDeleteAll")
+        const btnDisabledDelete = document.querySelector(".btnDisabledDelete")
+        const btnDisabledRevert = document.querySelector(".btnDisabledRevert")
+        //Chưa checked thì disbale nút xóa all
+        let count = 0
+        const checkBtnDisabled = () => {
+            if (count === 0) {
+                btnDisabledDelete.setAttribute("disabled", true)
+                btnDisabledRevert.setAttribute("disabled", true)
+            } else {
+                btnDisabledDelete.removeAttribute("disabled")
+                btnDisabledRevert.removeAttribute("disabled")
+            }
+        }
+        for (let checked of btnsCheck) {
+            checkBtnDisabled()
+            checked.addEventListener("click", (e) => {
+                if (checked.checked) {
+                    count++
+                } else {
+                    count--
+                }
+                checkBtnDisabled()
+            })
+        }
+        //removeAll
+        btnDeleteAll.addEventListener("click", async (e) => {
+            $.confirm({
+                title: '<ion-icon name="help-circle-outline"></ion-icon>',
+                content: 'Bạn muốn xóa mục đã chọn ?',
+                buttons: {
+                    confirm: {
+                        text: 'Confirm',
+                        btnClass: 'btn-red',
+                        action: async function () {
+                            const id = event.target.dataset.id;
+                            for (let btnCheck of btnsCheck) {
+                                if (btnCheck.checked) {
+                                    const id = btnCheck.dataset.idcheckbox
+                                    const res = await fetch(`/scoreFile/remove/${id}`, {
+                                        method: "DELETE"
+                                    })
+                                }
+                            }
+                            localStorage.setItem('toast', JSON.stringify({
+                                position: "top-right",
+                                heading: 'Xóa thành công',
+                                text: 'Đã xóa thành công thành công',
+                                icon: 'success',
+                                loader: true,
+                                loaderBg: '#9EC600',
+                                showHideTransition: 'slide'
+                            }));
+
+                            window.location.reload()
+
+                        }
+                    }
+                },
+                cancel: function () {
+                    $.alert('Đã hủy!');
+                }
+            })
+        });
+        //RevertByCheckBox
+        const btnRevertAll = document.querySelector(".btnRevertAll")
+        btnRevertAll.addEventListener("click", async (e) => {
+            $.confirm({
+                title: '<ion-icon name="help-circle-outline"></ion-icon>',
+                content: 'Bạn muốn khôi phục mục đã chọn ?',
+                buttons: {
+                    confirm: {
+                        text: 'Confirm',
+                        btnClass: 'btn-red',
+                        action: async function () {
+                            const id = event.target.dataset.id;
+                            for (let btnCheck of btnsCheck) {
+                                if (btnCheck.checked) {
+                                    const id = btnCheck.dataset.idcheckbox
+                                    const res = await fetch(`/scoreFile/revert/${id}`, {
+                                        method: "PATCH"
+                                    })
+                                }
+                            }
+                            localStorage.setItem('toast', JSON.stringify({
+                                position: "top-right",
+                                heading: 'Khôi phục thành công',
+                                text: 'Đã khôi phục thành công thành công',
+                                icon: 'info',
+                                loader: true,
+                                loaderBg: '#9EC600',
+                                showHideTransition: 'slide'
+                            }));
+                            window.location.reload()
+                        }
+                    },
+                    cancel: function () {
+                        $.alert('Đã hủy!');
+                    }
+                }
+            });
+        })
+    })
+</script>
+{{> footer}}

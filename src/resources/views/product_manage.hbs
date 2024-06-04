@@ -85,14 +85,18 @@
                     <div style="display: flex;flex-direction: column;">
                       <p style="color: rgb(236, 236, 118); font-size: 14px;font-weight: 600;">{{this.Name}}</p>
                       {{#ifCond customer_IsDeleted 0}}
-                      <p style="color: #ccc; font-weight: 550;">{{this.customer_name}}</p>
+                      <p style="color: #ccc; font-weight: 550;text-wrap: wrap;">{{this.customer_name}}</p>
                       {{else}}
                       <p style="color: rgb(236, 236, 118);">Không xác định</p>
                       {{/ifCond}}
                     </div>
                   </td>
                   {{#ifCond productgroup_IsDeleted 0}}
-                  <td>{{this.productGroup_name}}</td>
+                  <td style="width: 150px;">
+                    <p style="text-wrap: wrap;">
+                      {{this.productGroup_name}}
+                    </p>
+                  </td>
                   {{else}}
                   <td style="color: rgb(236, 236, 118);">Không xác định</td>
                   {{/ifCond}}

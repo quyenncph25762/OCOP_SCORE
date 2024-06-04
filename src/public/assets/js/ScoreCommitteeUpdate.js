@@ -65,15 +65,15 @@ const handleGetOneScoreCommittee = async (id) => {
         <tr class="form-group removeclass${room} memberData" data-idScoreCommitteeDetail="${employee._id}" data-id="${employee.UserId}">
         <input class="idScoreTempDetail${id}" data-id="${employee._id}" hidden></input>
             <th scope="row">${i}</th>
-            <td>
+            <td style="max-width:200px">
            <div style="display: flex;flex-direction: column">
-           <p style="font-weight:600;font-size:14px">${employee.employee_FullName ? employee.employee_FullName : ""}</p>
-           <p style="color:#ccc">${employee.employee_Email ? employee.employee_Email : ""}</p>
+           <p style="font-weight:600;font-size:13px;text-wrap:wrap">${employee.employee_FullName ? employee.employee_FullName : ""}</p>
+           <p style="color:#ccc;text-wrap:wrap">${employee.employee_Email ? employee.employee_Email : ""}</p>
            </div>
             </td>
-            <td>
+            <td style="max-width:200px">
             <div style="display: flex;flex-direction: column">
-            <p style="font-weight:600;font-size:14px">${employee.department_Name ? employee.department_Name : ""}</p>
+            <p style="font-weight:600;font-size:13px;text-wrap:wrap;">${employee.department_Name ? employee.department_Name : ""}</p>
            <p style="color:#ccc">${employee.workposition_Name ? employee.workposition_Name : ""}</p>
             </div>
             </td>

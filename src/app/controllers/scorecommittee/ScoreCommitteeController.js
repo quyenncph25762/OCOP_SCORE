@@ -149,7 +149,6 @@ class ScoreCommitteController {
         const id = req.params.id
         ScoreCommitteeModel.update(id, req.body, (err, results) => {
             if (err) {
-                console.log(err)
                 return res.status(500).json({
                     message: err
                 })
@@ -168,7 +167,6 @@ class ScoreCommitteController {
         console.log(`req body: ` + req.body)
         ScoreCommitteeModel.updateCharmanScoreCommittee(id, req.body, (err, results) => {
             if (err) {
-                console.log(err)
                 return res.status(500).json({
                     message: err
                 })

@@ -42,11 +42,11 @@ const EmployeeModel = {
         workposition.IsDeleted AS workposition_IsDeleted
             FROM
         employee
-        JOIN
+        LEFT JOIN
             workdepartment ON workdepartment._id = employee.WorkDepartment_id
-        JOIN
+        LEFT JOIN
             workposition ON workposition._id = employee.WorkPosition_id
-        JOIN
+        LEFT JOIN
             role ON role._id = employee.RoleId
         WHERE employee.IsDeleted = 1;
         `

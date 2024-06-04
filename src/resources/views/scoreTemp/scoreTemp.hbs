@@ -71,9 +71,13 @@
                                             <div class="inactive"></div>
                                             {{/ifCond}}
                                         </td>
-                                        <td>{{this.Name}}</td>
+                                        <td style="max-width: 250px;">
+                                            <p style="text-wrap: wrap;">{{this.Name}}</p>
+                                        </td>
                                         {{#ifCond productgroup_IsDeleted 0}}
-                                        <td>{{this.productgroup_name}}</td>
+                                        <td style="max-width: 150px;">
+                                            <p style="text-wrap: wrap;">{{this.productgroup_name}}</p>
+                                        </td>
                                         {{else}}
                                         <td style="color: rgb(236, 236, 118);">Không xác định</td>
                                         {{/ifCond}}
@@ -85,7 +89,6 @@
                                                     data-target="#exampleModalScoreTemp{{this._id}}"></ion-icon>
                                             </span>
                                             {{> modalScoreTemp}}
-
                                             <a href="/scoreTemp/updatePage/{{this._id}}">
                                                 <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
                                                     title="Chỉnh sửa">

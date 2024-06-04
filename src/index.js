@@ -67,7 +67,6 @@ Handlebars.registerHelper('split', function (input, delimiter, index) {
     } else if (input instanceof Date) {
         if (input !== "0000-00-00 00:00:00.000000") {
             const dobFormatted = input.toISOString()?.split('T')?.[0];
-            console.log(object)
             return dobFormatted;
         }
     } else {

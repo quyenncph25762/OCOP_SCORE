@@ -29,6 +29,29 @@ class ScoreFileController {
         }
 
     }
+    // getAllFromTrash
+    getAllFromTrash(req, res) {
+        const cookie = req.cookies
+        if (cookie?.User) {
+            const UserDataCookie = jwt.verify(cookie.User, SECRET_CODE)
+            AccountModel.fetchOneUser(UserDataCookie?._id, (err, User) => {
+                if (err) {
+                    return res.status(400).json({
+                        message: err
+                    })
+                }
+                ScoreFileModel.getAllFromTrash((err, ScoreFile) => {
+                    if (err) {
+                        return res.status(500).json({
+                            message: "Lỗi truy vấn"
+                        })
+                    }
+                    res.render("scoreFile/trash", { User: User[0], ScoreFile: ScoreFile })
+                })
+            })
+        }
+
+    }
     // tim scoreFile theo status = 0
     getScoreByStatus(req, res) {
         ScoreFileModel.getScoreFileByStatus((err, data) => {
@@ -129,7 +152,6 @@ class ScoreFileController {
     // action cap nhat ScoreTotal
     updateScoreTotal(req, res) {
         const id = req.params.id
-        console.log(req.body)
         ScoreFileModel.updateScoreTotal(id, req.body, (err, results) => {
             if (err) {
                 return res.status(500).json({
@@ -141,6 +163,49 @@ class ScoreFileController {
             })
         })
     }
+    // removeToTrash
+    removeToTrash(req, res) {
+        const id = req.params.id
+        ScoreFileModel.removeToTrash(id, (err, results) => {
+            if (err) {
+                return res.status(500).json({
+                    message: err
+                })
+            }
+            return res.status(204).json({
+                message: "Xóa thành công"
+            })
+        })
+    }
+    // removeToTrash
+    revert(req, res) {
+        const id = req.params.id
+        ScoreFileModel.revert(id, (err, results) => {
+            if (err) {
+                return res.status(500).json({
+                    message: err
+                })
+            }
+            return res.status(204).json({
+                message: "Khôi phục thành công"
+            })
+        })
+    }
+    // removeForever
+    removeForever(req, res) {
+        const id = req.params.id
+        ScoreFileModel.remove(id, (err, results) => {
+            if (err) {
+                return res.status(500).json({
+                    message: err
+                })
+            }
+            return res.status(204).json({
+                message: "Xóa thành công"
+            })
+        })
+    }
+
 }
 
 module.exports = new ScoreFileController

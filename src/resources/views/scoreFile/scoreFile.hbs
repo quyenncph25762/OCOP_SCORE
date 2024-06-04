@@ -14,15 +14,21 @@
         <div class="col-lg-6" style="max-width: 100%;">
             <div class="card">
                 <div class="card-body">
-                    <div class="table_header">
-
+                    <div class="d-flex align-items">
+                        <h5 class="card-title">Danh sách sản phẩm</h5>
+                        <span class="d-inline-block ml-3" tabindex="0" data-toggle="tooltip" title="Thùng rác của bạn">
+                            <a href="/scorefile/trash">
+                                <ion-icon name="trash-outline">
+                                </ion-icon>
+                            </a>
+                        </span>
                     </div>
                     <table id="myTable" class="table datatables table-bordered table-hover table-striped"
-                        style="font-size: 13px;">
+                        style="font-size: 13px">
                         <thead>
                             <tr>
                                 <th>Ảnh</th>
-                                <th style="min-width: 300px;">
+                                <th>
                                     Sản phẩm</th>
                                 <th>Nhóm sản phẩm</th>
                                 <th>Tổng điểm</th>
@@ -33,7 +39,6 @@
                             </tr>
 
                         </thead>
-
                         <tbody>
                             {{#each ScoreFile}}
                             {{!-- Chua cham --}}
@@ -47,7 +52,8 @@
                                 <td>
                                     <ul style="list-style-type: none;font-weight: 600;padding: 0;">
                                         <!-- name product -->
-                                        <li style="font-size: 14px;" data-toggle="modal" data-target="#exampleModal">
+                                        <li style="font-size: 14px;color: rgb(236, 236, 118);" data-toggle="modal"
+                                            data-target="#exampleModal">
                                             {{this.product_name}}
                                         </li>
                                         <p style="color: #B5B5C3;font-size: 13px;text-wrap: wrap;" class="nameProduct"
@@ -90,6 +96,7 @@
                                     {{/ifCond}}
 
                                 <td class="icons">
+                                    {{#if this.ScoreCommitee_id}}
                                     {{!-- icon xem ket qua hoi dong --}}
                                     <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
                                         title="Xem kết quả hội đồng">
@@ -97,6 +104,7 @@
                                             data-target="#exampleModal2"></ion-icon>
                                     </span>
                                     {{> modalResultScoreFile}}
+
                                     {{!-- icon xac nhan--}}
                                     <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Xác nhận">
                                         <ion-icon name="checkbox-outline"></ion-icon>
@@ -121,8 +129,13 @@
                                     {{!-- icon xoa--}}
                                     <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
                                         title="Chuyển vào thùng rác">
-                                        <ion-icon name="trash-outline"></ion-icon>
+                                        <ion-icon class="icon_moveToTrash" name="trash-outline" data-id="{{this._id}}">
+                                        </ion-icon>
                                     </span>
+                                    {{else}}
+                                    <span style="font-size: 13px;text-wrap: wrap;cursor: wait;">Hiện chưa có
+                                        hội đồng chấm</span>
+                                    {{/if}}
                                 </td>
                             </tr>
                             {{/each}}
@@ -145,6 +158,60 @@
             const toast = JSON.parse(toastData);
             $.toast(toast);
             localStorage.removeItem('toast');
+        }
+        const btnTrash = document.querySelectorAll('.icon_moveToTrash');
+        for (let btn of btnTrash) {
+            btn.addEventListener("click", (event) => {
+                event.preventDefault();
+                $.confirm({
+                    title: '<ion-icon name="trash-bin-outline"></ion-icon>',
+                    content: 'Bạn có chắc chắn muốn xóa ?',
+                    buttons: {
+                        confirm: {
+                            text: 'Confirm',
+                            btnClass: 'btn-red',
+                            action: function () {
+                                // Lấy ID của mục cần xóa từ thuộc tính data-id của nút
+                                const id = event.target.dataset.id;
+
+                                // Gọi API xóa mục
+                                fetch(`/scoreFile/removeToTrash/${id}`, {
+                                    method: 'PATCH'
+                                }).then(response => {
+                                    if (response.ok) {
+                                        localStorage.setItem('toast', JSON.stringify({
+                                            position: "top-right",
+                                            heading: 'Xóa thành công',
+                                            text: 'Đã xóa thành công thành công',
+                                            icon: 'success',
+                                            loader: true,
+                                            loaderBg: '#9EC600',
+                                            showHideTransition: 'slide',
+                                            stack: 4
+                                        }));
+                                        window.location.reload()
+                                    } else {
+                                        localStorage.setItem('toast', JSON.stringify({
+                                            position: "top-right",
+                                            heading: 'Xóa không thành công',
+                                            text: 'Đã xảy ra lỗi khi xóa mục',
+                                            icon: 'error',
+                                            loader: true,
+                                            loaderBg: '#9EC600',
+                                            showHideTransition: 'slide'
+                                        }));
+                                    }
+                                }).catch(error => {
+                                    $.alert('Đã hủy');
+                                });
+                            }
+                        },
+                        cancel: function () {
+                            $.alert('Đã hủy!');
+                        }
+                    }
+                });
+            });
         }
     })
 </script>

@@ -43,7 +43,7 @@ async function handleGetScoreFileDetail(ScoreFile_id, product_id) {
                     </td>`
             }
     
-                ${listScoreFileDetail[i].scoreTempDetail_maxScore > 0 && listScoreFileDetail[i].scoreTempDetail_isScore ?
+                ${listScoreFileDetail[i].scoreTempDetail_maxScore >= 0 && listScoreFileDetail[i].scoreTempDetail_isScore ?
                 `<td style="font-style: italic; color: rgb(232, 67, 67); font-weight: 600;">
                         (${listScoreFileDetail[i].scoreTempDetail_maxScore} điểm)
                     </td>` :

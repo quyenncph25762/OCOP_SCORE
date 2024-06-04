@@ -1,7 +1,14 @@
 <style>
+    .modal-content {
+        min-width: 1000px;
+    }
 
+    @media only screen and (min-width:650px) and (max-width: 1050px) {
+        .modal-content {
+            max-width: 1000px !important;
+        }
+    }
 </style>
-
 <div class="modal fade" id="exampleModalScoreTemp{{this._id}}" tabindex="-1" role="dialog"
     aria-labelledby="exampleModalLongTitle" aria-hidden="true">
     <div class="modal-dialog" role="document">

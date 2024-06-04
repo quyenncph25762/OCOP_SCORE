@@ -80,7 +80,9 @@
                                     <td hidden>{{this.ProductYearId}}</td>
                                     <td>{{this.Name}}</td>
                                     {{#ifCond productgroup_IsDeleted 0}}
-                                    <td>{{this.productGroup_name}}</td>
+                                    <td style="max-width: 150px;">
+                                        <p style="text-wrap: wrap;">{{this.productGroup_name}}</p>
+                                    </td>
                                     {{else}}
                                     <td style="color: rgb(236, 236, 118);">Không xác định</td>
                                     {{/ifCond}}
@@ -97,7 +99,11 @@
                                     {{/ifCond}}
 
                                     {{#ifCond customer_IsDeleted 0}}
-                                    <td>{{this.customer_name}}</td>
+                                    <td style="max-width: 150px;">
+                                        <p style="text-wrap: wrap;">
+                                            {{this.customer_name}}
+                                        </p>
+                                    </td>
                                     {{else}}
                                     <td style="color: rgb(236, 236, 118);">Không xác định</td>
                                     {{/ifCond}}

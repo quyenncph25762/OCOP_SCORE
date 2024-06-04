@@ -4,6 +4,8 @@ const ScoreFileController = require('../app/controllers/clients/ScoreFileControl
 
 // scoreFile
 router.get("/", ScoreFileController.index)
+// scoreFile From Trash
+router.get("/trash", ScoreFileController.getAllFromTrash)
 // getByStatus = 0
 router.get("/getScoreByStatus", ScoreFileController.getScoreByStatus)
 // createPage
@@ -18,5 +20,12 @@ router.patch("/updateScoreCommittOnScoreFile/:id", ScoreFileController.updateSco
 router.patch("/updateScoreTotal/:id", ScoreFileController.updateScoreTotal)
 // add
 router.post("/add", ScoreFileController.createScoreFile)
+// removeToTrash
+router.patch("/removeToTrash/:id", ScoreFileController.removeToTrash)
+// removeForever
+router.delete("/remove/:id", ScoreFileController.removeForever)
+// revert
+router.patch("/revert/:id", ScoreFileController.revert)
+
 
 module.exports = router;

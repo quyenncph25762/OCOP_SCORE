@@ -1,6 +1,6 @@
 <style>
     .modal-employee {
-        width: 850px;
+        width: 950px;
     }
 
     @media screen and (max-width: 765px) {
@@ -75,7 +75,9 @@
                                     <td>{{this.FullName}}</td>
                                     <td>{{this.Gender}}</td>
                                     {{#ifCond workdepartment_IsDeleted 0}}
-                                    <td>{{this.workdepartment_name}}</td>
+                                    <td>
+                                        <p style="text-wrap: wrap;">{{this.workdepartment_name}}</p>
+                                    </td>
                                     {{else}}
                                     <td style="color: rgb(236, 236, 118);">Không xác định</td>
                                     {{/ifCond}}
@@ -331,7 +333,7 @@
         $(".check").prop('checked', $(this).prop('checked'));
     });
 </script>
-
+{{!-- actions remove --}}
 <script>
     document.addEventListener("DOMContentLoaded", () => {
         const toastData = localStorage.getItem('toast');
@@ -449,6 +451,7 @@
     })
 </script>
 
+{{!-- handleUpdate Employee --}}
 <script>
     async function handleUpdate(id) {
         const Avatar = document.getElementById(`avatar${id}`)

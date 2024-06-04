@@ -4,7 +4,7 @@
     }
 
     .modal-content {
-        height: 100vh;
+        min-height: 95vh;
         overflow-y: auto;
     }
 </style>
@@ -20,7 +20,6 @@
             <div class="modal-body">
                 <table id="myTableEmployeeUpdate" class="table table-hover">
                     <thead>
-                        <p>{{id}}</p>
                         <div class="row" style="margin: 20px 0;">
                             <div class="col-sm-3" style="padding: 0;">
                                 <label for="">Tổ phòng ban</label>
@@ -59,7 +58,7 @@
                             <th scope="col">Vị trí chức danh</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody style="font-size: 13px;">
                         {{#each Employee}}
                         <tr>
                             <td>
@@ -84,7 +83,7 @@
                             <td>{{this.FullName}}</td>
                             <td>{{this.Gender}}</td>
                             {{#ifCond workdepartment_IsDeleted 0}}
-                            <td>{{this.workdepartment_name}}</td>
+                            <td style="max-width: 150px;text-wrap: wrap;">{{this.workdepartment_name}}</td>
                             {{else}}
                             <td style="color: rgb(236, 236, 118);">Không xác định</td>
                             {{/ifCond}}
@@ -123,7 +122,7 @@
             <div class="modal-body">
                 <table id="myTableEmployee" class="table table-hover">
                     <thead>
-                        <div class="row" style="margin: 20px 0;">
+                        <div class="row" style="margin: 20px 0;font-size: 13px;">
                             <div class="col-sm-3" style="padding: 0;">
                                 <label for="">Tổ phòng ban</label>
                                 <select name="" id="WorkDepartmentFilterUpdate" class="form-control">
@@ -184,7 +183,7 @@
                             <td>{{this.FullName}}</td>
                             <td>{{this.Gender}}</td>
                             {{#ifCond workdepartment_IsDeleted 0}}
-                            <td>{{this.workdepartment_name}}</td>
+                            <td style="max-width: 150px;text-wrap: wrap;">{{this.workdepartment_name}}</td>
                             {{else}}
                             <td style="color: rgb(236, 236, 118);">Không xác định</td>
                             {{/ifCond}}
@@ -272,7 +271,6 @@
         return selectedIds;
     };
 
-    // Hàm đặt các tùy chọn cho một phần tử select mà không dùng innerHTML
     const updateSelectOptions = (select, options, selectedId) => {
         const currentOptions = Array.from(select.options).map(option => option.value);
         const newOptions = options.map(option => option._id);
@@ -367,13 +365,13 @@
             <input hidden data-id="${item._id}" id="listEmployee"></input>
              <td>
                 <div style="display: flex;flex-direction: column">
-           <p style="font-weight:600;font-size:14px">${item.FullName ? item.FullName : ""}</p>
+           <p style="font-weight:600;font-size:13px;text-wrap:wrap">${item.FullName ? item.FullName : ""}</p>
            <p style="color:#ccc">${item.Email ? item.Email : ""}</p>
            </div>
             </td>
-           <td>
+           <td style="max-width:200px">
             <div style="display: flex;flex-direction: column">
-            <p style="font-weight:600;font-size:14px">${item.workdepartment_name ? item.workdepartment_name : ""}</p>
+            <p style="font-weight:600;font-size:13px;text-wrap:wrap;">${item.workdepartment_name ? item.workdepartment_name : ""}</p>
            <p style="color:#ccc">${item.workposition_name ? item.workposition_name : ""}</p>
             </div>
             </td>
@@ -605,13 +603,13 @@
                 <input hidden data-id="${item._id} id="listEmployee"></input>
                 <td>
                     <div style="display: flex;flex-direction: column">
-                        <p style="font-weight:600;font-size:14px">${item.FullName ? item.FullName : ""}</p>
+                        <p style="font-weight:600;font-size:13px;text-wrap:wrap;">${item.FullName ? item.FullName : ""}</p>
                         <p style="color:#ccc">${item.Email ? item.Email : ""}</p>
                     </div>
                 </td>
-                <td>
+                <td style="max-width:200px">
                     <div style="display: flex;flex-direction: column">
-                        <p style="font-weight:600;font-size:14px">${item.workdepartment_name ? item.workdepartment_name : ""}</p>
+                        <p style="font-weight:600;font-size:13px;text-wrap:wrap;">${item.workdepartment_name ? item.workdepartment_name : ""}</p>
                         <p style="color:#ccc">${item.workposition_name ? item.workposition_name : ""}</p>
                     </div>
                 </td>
