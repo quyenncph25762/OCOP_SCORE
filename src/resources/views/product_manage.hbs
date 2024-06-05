@@ -564,16 +564,15 @@
                 }
               })
               //object productId de tao scoreFile
-              const formProductId = {
+              const formScoreFile = {
                 Product_id: Number(productId),
                 CreatorUser_id: Number(CreatorUser_id),
-                Status: 1,
-                IsActive: 1
+                Status: 0,
+                IsActive: 0
               }
-              console.log(formProductId)
               const resScoreFile = await fetch(`/scoreFile/add`, {
                 method: 'POST',
-                body: JSON.stringify(formProductId),
+                body: JSON.stringify(formScoreFile),
                 headers: {
                   "Content-Type": "application/json"
                 }

@@ -24,7 +24,6 @@
               vực</span></a></li>
       </ul>
     </li> --}}
-    {{#ifCond (toLowerCase User.role_title) "admin"}}
     <li>
       <a href="/">
         <i class="zmdi zmdi-view-dashboard"></i> <span>Trang chủ</span>
@@ -50,7 +49,6 @@
       <a href="/year-review"><ion-icon name="calendar-clear-outline"></ion-icon> <span class="ml-2">Quản lí năm đánh
           giá</span></a>
     </li>
-    {{/ifCond}}
 
     <li>
       <a href="/customer-manage">
@@ -70,7 +68,6 @@
           OCOP</span>
       </a>
     </li>
-    {{#ifCond (toLowerCase User.role_title) "admin"}}
     <li>
       <a href="/scoreCommittee">
         <ion-icon name="brush-outline"></ion-icon> <span class="ml-2">Hội đồng chấm</span>
@@ -109,7 +106,6 @@
       </ul>
     </li>
 
-    {{/ifCond}}
 
     {{!-- <li>
       <a href="/auth/loginPage" target="_blank">

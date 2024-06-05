@@ -179,7 +179,6 @@ class ProductmanageController {
         })
     }
     create(req, res) {
-        console.log(req.body.Avatar)
         const product = {
             IsActive: req.body.IsActive === "true" ? 1 : 0,
             Avatar: req?.file ? req.file.path : "/Uploads/productDefault.jpg",
@@ -218,7 +217,7 @@ class ProductmanageController {
                     })
                 }
                 else {
-                    res.json({ success: false, message: 'Sản phẩm đã tồn tại trong cơ sở dữ liệu' });
+                    return res.status(400).json({ success: false, message: 'Sản phẩm đã tồn tại trong cơ sở dữ liệu' });
                 }
 
             }
@@ -397,7 +396,6 @@ class ProductmanageController {
             }
         })
     }
-    // duyet san pham
     updateRankOcop(req, res) {
         const productId = req.params.id
         ProductmanageModel.updateRankOcopProduct(productId, req.body, (err, result) => {

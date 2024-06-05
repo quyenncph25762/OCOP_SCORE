@@ -35,32 +35,7 @@ const handleAdd = async () => {
     if (response) {
         // lay id scoreCommittee vua them 
         const IdScoreCommittee = response.ScoreCommittee._id
-        // thuc hien cap nhat scoreFile them scoreCommitee
-        const res = await fetch(`/scoreFile/getScoreByStatus`, {
-            method: "GET"
-        })
-        if (!res.ok) {
-            alert("Đã xảy ra lỗi không mong muốn")
-        }
-        const listScoreFile = await res.json()
-        // lay danh sach scoreFile , roi cap nhat tung scoreFile co status bang 0
-        const form = {
-            ScoreCommitee_id: IdScoreCommittee
-        }
-        if (listScoreFile.length > 0) {
-            for (const scoreFile of listScoreFile) {
-                await fetch(`/scoreFile/updateScoreCommittOnScoreFile/${scoreFile._id}`, {
-                    method: "PATCH",
-                    body: JSON.stringify(form),
-                    headers: {
-                        "Content-Type": "application/json"
-                    }
-                })
-            }
-        }
-
         // Them scoreCommittee detail
-
         // vai tro cua hoi dong
         let CommitteeRole = Array.from(document.querySelectorAll(".CommitteeRole")).map(e => e.value)
         CommitteeRole = CommitteeRole.map(Number)

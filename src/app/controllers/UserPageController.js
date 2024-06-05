@@ -74,7 +74,7 @@ class UserPageController {
                         FullName: req.body.FullName,
                         UserName: req.body.UserName,
                         Email: req.body.Email,
-                        Avatar: req.file ? req.file.path : '/Uploads/user.png',
+                        Avatar: req.file ? req.file.path : 'Uploads/user.png',
                         Phone: req.body.Phone,
                         roleId: req.body.roleId,
                         CreatorUser_id: req.body.CreatorUser_id,

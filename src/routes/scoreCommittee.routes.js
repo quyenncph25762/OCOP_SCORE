@@ -9,6 +9,8 @@ router.post("/add", ScoreCommitteeController.create)
 router.patch("/update/:id", ScoreCommitteeController.update)
 // update charName
 router.patch("/updateCharMan/:id", ScoreCommitteeController.updateCharman)
+// update isDefault
+router.patch("/updateIsDefault/:id", ScoreCommitteeController.updateIsDefault)
 // trang thung rac
 router.get("/trashPage", ScoreCommitteeController.trashPage)
 // remove vao thung rac

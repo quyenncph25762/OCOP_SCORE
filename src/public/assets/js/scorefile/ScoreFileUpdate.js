@@ -149,6 +149,7 @@ async function handleGetScoreFileDetail(ScoreFile_id, product_id) {
 
 
 }
+
 function repeatStarUpdate(number) {
     star = ""
     for (i = 0; i < number; i++) {

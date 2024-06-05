@@ -49,6 +49,12 @@ const ScoreCommitteeModel = {
         const VALUES = [scoreCommittee.Employee_id]
         connection.query(query, VALUES, callback)
     },
+    // cap nhat IsDefault
+    updateIsDefaultScoreCommittee: (id, scoreCommittee, callback) => {
+        const query = `UPDATE scorecommittee SET IsDefault = ? WHERE _id = ${id}`
+        const VALUES = [scoreCommittee.IsDefault]
+        connection.query(query, VALUES, callback)
+    },
     findScoreCommitteeUpdate(id, scoreCommittee, callback) {
         const query = `SELECT * FROM scorecommittee WHERE Name = ? AND _id !=${id}`
         const VALUES = [scoreCommittee.Name]

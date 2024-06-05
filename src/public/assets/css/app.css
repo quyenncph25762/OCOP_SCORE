@@ -252,6 +252,12 @@ ion-icon[name="checkbox-outline"] {
     cursor: pointer;
 }
 
+ion-icon[name="newspaper-outline"] {
+    color: rgb(48, 190, 150);
+    font-size: 20px;
+    cursor: pointer;
+}
+
 ion-icon[name="pencil-outline"] {
     color: rgb(171, 199, 33);
     font-size: 20px;

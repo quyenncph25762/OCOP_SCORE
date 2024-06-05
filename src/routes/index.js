@@ -26,6 +26,7 @@ function route(app) {
     // userPage
     app.use("/users", userPageRouter)
     // client
+    app.use("/client", clientRouter)
     // scoreFile
     app.use("/scoreFile", scoreFileRouter)
     app.use("/scoreFileDetail", scoreFileDetailRouter)

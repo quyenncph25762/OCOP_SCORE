@@ -6,6 +6,8 @@ const ScoreFileController = require('../app/controllers/clients/ScoreFileControl
 router.get("/", ScoreFileController.index)
 // scoreFile From Trash
 router.get("/trash", ScoreFileController.getAllFromTrash)
+// getScoreFileByScoreCommitee
+router.get("/byIdScoreCommittee/:id", ScoreFileController.getScoreFileByScoreCommittee)
 // getByStatus = 0
 router.get("/getScoreByStatus", ScoreFileController.getScoreByStatus)
 // createPage

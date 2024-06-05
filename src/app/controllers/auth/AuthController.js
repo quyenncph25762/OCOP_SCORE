@@ -92,7 +92,6 @@ class AuthController {
         res.render("auth/resetPassword")
     }
     sendResetLinkEmail = (req, res) => {
-        console.log(req.body);
         EmployeeModel.findEmployeeByEmail(req.body, (err, employee) => {
             if (err) {
                 return res.status(500).json({

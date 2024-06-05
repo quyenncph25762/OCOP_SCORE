@@ -7,6 +7,7 @@ const workPositionModal = require("../../models/workposition/WorkPositionModel")
 const ScoreCommitteeDetailModel = require("../../models/scoreCommittee/ScoreCommitteeDetailModel")
 const jwt = require("jsonwebtoken")
 const dotenv = require("dotenv")
+const ScoreFileModel = require("../../models/scorefile/ScoreFileModel")
 dotenv.config();
 const { SECRET_CODE } = process.env
 class ScoreCommitteController {
@@ -173,6 +174,39 @@ class ScoreCommitteController {
             }
             return res.status(203).json({
                 message: "Cập nhật thành công"
+            })
+        })
+    }
+    // update IsDefault
+    updateIsDefault = async (req, res) => {
+        const id = req.params.id
+        // cap nhat cham diem
+        ScoreCommitteeModel.updateIsDefaultScoreCommittee(id, req.body, async (err, results) => {
+            if (err) {
+                return res.status(500).json({
+                    message: err
+                })
+            }
+            // lay danh sach scorefile co status = 0
+            ScoreFileModel.getScoreFileByStatus(async (err, data) => {
+                if (err) {
+                    return res.status(500).json({
+                        message: err
+                    })
+                }
+                // roi cap nhat scoreCommiteee cua scorefile 
+                await data.forEach(async (element) => {
+                    await ScoreFileModel.updateScoreCommitteOnScoreFile(element._id, { ScoreCommitee_id: id }, (err, results) => {
+                        if (err) {
+                            return res.status(500).json({
+                                message: err
+                            })
+                        }
+                    })
+                });
+                return res.status(203).json({
+                    message: "Cập nhật thành công"
+                })
             })
         })
     }

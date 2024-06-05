@@ -2,6 +2,12 @@
     th.dt-type-numeric.dt-orderable-asc.dt-orderable-desc {
         text-align: center;
     }
+
+    ion-icon[name="help-circle-outline"] {
+        color: rgb(0, 187, 255);
+        font-size: 40px;
+        cursor: pointer;
+    }
 </style>
 {{> header}}
 <div class="content-wrapper" style="height: 100vh;">
@@ -75,10 +81,11 @@
                                 </td>
                                 <td>
                                     <div class="icons">
-                                        <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
-                                            title="Mặc định">
-                                            <ion-icon name="build-outline"></ion-icon>
-                                        </span>
+                                        <button onclick="handleUpdateIsDefault('{{this._id}}')" class="d-inline-block"
+                                            style="background: transparent;border: none;" tabindex="0"
+                                            data-toggle="tooltip" title="Bắt đầu chấm">
+                                            <ion-icon name="newspaper-outline" style="cursor: pointer;"></ion-icon>
+                                        </button>
                                         {{!-- nhan vao nut handleUpadte de hien thi scoreCommitteeDetail --}}
                                         <button type="button" style="background: transparent; border: none;"
                                             onclick="handleGetOneScoreCommittee('{{this._id}}')" class="d-inline-block"
@@ -109,7 +116,6 @@
     </div>
 </div><!--End content-wrapper-->
 {{> footer}}
-
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="/assets/js/custom.js"></script>
@@ -175,6 +181,8 @@
 <script>
     const handleAddCheck = () => {
         const tbody = document.querySelector(".tbodyUpdate")
-        tbody.innerHTML = ""
+        if (tbody) {
+            tbody.innerHTML = ""
+        }
     }
 </script>

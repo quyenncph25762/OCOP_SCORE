@@ -116,7 +116,7 @@ class EmployeeControllers {
                         FullName: req.body.FullName,
                         UserName: req.body.UserName,
                         Email: req.body.Email,
-                        Avatar: req.file ? req.file.path : req.body.Gender === "nam" ? "/Uploads/user_boy.jpg" : "/Uploads/user_girl.png",
+                        Avatar: req.file ? req.file.path : req.body.Gender === "nam" ? "Uploads/user_boy.jpg" : "Uploads/user_girl.png",
                         Gender: req.body.Gender,
                         DoB: req.body.DoB,
                         Phone: req.body.Phone,

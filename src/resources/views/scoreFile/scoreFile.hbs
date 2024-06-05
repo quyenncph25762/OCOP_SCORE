@@ -29,6 +29,7 @@
                             <tr>
                                 <th>Ảnh</th>
                                 <th>
+
                                     Sản phẩm</th>
                                 <th>Nhóm sản phẩm</th>
                                 <th>Tổng điểm</th>
@@ -56,8 +57,7 @@
                                             data-target="#exampleModal">
                                             {{this.product_name}}
                                         </li>
-                                        <p style="color: #B5B5C3;font-size: 13px;text-wrap: wrap;" class="nameProduct"
-                                            data-toggle="modal" data-target="#exampleModal2">
+                                        <p style="color: #B5B5C3;font-size: 13px;text-wrap: wrap;" class="nameProduct">
                                             Chủ thể: {{toUpperCase this.customer_name}}
                                         </p>
                                     </ul>
@@ -94,48 +94,63 @@
                                     {{#ifCond this.Status 1}}
                                     <p class="statusLabelSuccess">Đã chấm</p>
                                     {{/ifCond}}
-
-                                <td class="icons">
-                                    {{#if this.ScoreCommitee_id}}
+                                    {{!-- <p>{{User.RoleId}}</p> --}}
+                                <td>
+                                    {{#ifCond ../User.RoleId 1}}
                                     {{!-- icon xem ket qua hoi dong --}}
-                                    <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
-                                        title="Xem kết quả hội đồng">
+                                    <button onclick="handleResultScoreFiles('{{this.scorecommitee_id}}')"
+                                        style="background: transparent;border: none;" class="d-inline-block"
+                                        tabindex="0" data-toggle="tooltip" title="Xem kết quả hội đồng">
                                         <ion-icon name="receipt-outline" data-toggle="modal"
-                                            data-target="#exampleModal2"></ion-icon>
-                                    </span>
-                                    {{> modalResultScoreFile}}
+                                            data-target="#modalResultsScoreFile{{this._id}}"></ion-icon>
+                                    </button>
+                                    {{> modalResultScoreFile id=this._id}}
+                                    {{else}}
 
+
+                                    {{!-- Neu da cham thi hien icon xac nhan va chinh sua--}}
+                                    {{#ifCond this.Status 1}}
                                     {{!-- icon xac nhan--}}
                                     <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Xác nhận">
                                         <ion-icon name="checkbox-outline"></ion-icon>
                                     </span>
                                     {{!-- icon chinh sua --}}
-                                    {{#ifCond this.Status 1}}
                                     <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Chỉnh sửa">
                                         <a style="text-decoration: none;"
                                             href="/scoreFile/updateScoreFile?productId={{this.Product_id}}&code={{this.productgroup_code}}&ScoreFile_id={{this._id}}">
                                             <ion-icon name="create-outline"></ion-icon>
                                         </a>
                                     </span>
-                                    {{else}}
-                                    {{!-- icon cham diem --}}
-                                    <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Chấm điểm">
-                                        <a style="text-decoration: none;"
-                                            href="/scoreFile/createScoreFile?productId={{this.Product_id}}&code={{this.productgroup_code}}&_id={{this._id}}">
-                                            <ion-icon name="pencil-outline"></ion-icon>
-                                        </a>
-                                    </span>
                                     {{/ifCond}}
+
+                                    {{!-- Neu User ma co trong hoi dong thi moi cho cham diem --}}
+                                    {{!-- icon cham diem --}}
+                                    {{#ifCond this.Status 0}}
+                                    {{!-- <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
+                                        title="Chấm điểm"> --}}
+                                        <div class="box_icon-isCommittee" data-id="{{this._id}}"
+                                            data-idCommittee="{{this.ScoreCommitee_id}}" data-UserId="{{../User._id}}"
+                                            data-ProductId="{{this.Product_id}}"
+                                            data-productGroupCode="{{this.productgroup_code}}">
+                                        </div>
+                                        {{!--
+                                    </span> --}}
+                                    {{/ifCond}}
+                                    {{#ifCond this.IsCommittee 1}}
+                                    {{#ifCond this.Status 1}}
                                     {{!-- icon xoa--}}
                                     <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
                                         title="Chuyển vào thùng rác">
-                                        <ion-icon class="icon_moveToTrash" name="trash-outline" data-id="{{this._id}}">
+                                        <ion-icon style="" class="icon_moveToTrash" name="trash-outline"
+                                            data-id="{{this._id}}">
                                         </ion-icon>
                                     </span>
-                                    {{else}}
-                                    <span style="font-size: 13px;text-wrap: wrap;cursor: wait;">Hiện chưa có
-                                        hội đồng chấm</span>
-                                    {{/if}}
+                                    {{/ifCond}}
+                                    {{/ifCond}}
+                                    {{/ifCond}}
+                                    {{!-- admin moi co quyen xem ket qua hoi dong --}}
+
+
                                 </td>
                             </tr>
                             {{/each}}
@@ -149,8 +164,12 @@
         </div><!--End Row-->
     </div>
 </div><!--End content-wrapper-->
+{{> footer}}
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="/assets/js/custom.js"></script>
+<script src="/assets/js/scorefile/checkisCommittee.js"></script>
+<script src="/assets/js/scorefile/ResultScoreFile.js"></script>
+{{!-- actions xoa --}}
 <script>
     document.addEventListener("DOMContentLoaded", () => {
         const toastData = localStorage.getItem('toast');
@@ -215,4 +234,4 @@
         }
     })
 </script>
-{{> footer}}
+{{!-- validate isScoreCommitee --}}

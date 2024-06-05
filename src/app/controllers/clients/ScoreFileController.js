@@ -1,6 +1,7 @@
 const ScoreFileModel = require("../../models/scorefile/ScoreFileModel")
 const AccountModel = require("../../models/Account")
 const ProductModel = require("../../models/product/ProductmanageModel")
+const EmployeeModel = require("../../models/employee/EmployeeModel")
 const jwt = require("jsonwebtoken")
 const dotenv = require("dotenv")
 dotenv.config();
@@ -13,11 +14,11 @@ class ScoreFileController {
             const UserDataCookie = jwt.verify(cookie.User, SECRET_CODE)
             AccountModel.fetchOneUser(UserDataCookie?._id, (err, User) => {
                 if (err) {
-                    return res.status(400).json({
+                    return res.status(500).json({
                         message: err
                     })
                 }
-                ScoreFileModel.getAll((err, ScoreFile) => {
+                ScoreFileModel.getScoreFileByEmployee(UserDataCookie?._id, (err, ScoreFile) => {
                     if (err) {
                         return res.status(500).json({
                             message: "Lỗi truy vấn"
@@ -52,6 +53,18 @@ class ScoreFileController {
         }
 
     }
+    // get ScoreFile by scoreCommittee
+    getScoreFileByScoreCommittee(req, res) {
+        const idScoreCommitee = req.params.id
+        ScoreFileModel.getScoreFileByScoreCommittee(idScoreCommitee, (err, scorefiles) => {
+            if (err) {
+                return res.status(500).json({
+                    message: err
+                })
+            }
+            return res.status(200).json(scorefiles)
+        })
+    }
     // tim scoreFile theo status = 0
     getScoreByStatus(req, res) {
         ScoreFileModel.getScoreFileByStatus((err, data) => {
@@ -65,17 +78,30 @@ class ScoreFileController {
     }
     // tao scoreFile
     createScoreFile(req, res) {
-        ScoreFileModel.create(req.body, (err, results) => {
+        EmployeeModel.fetchAllEmployee(async (err, employees) => {
             if (err) {
+                console.log(err)
                 return res.status(500).json({
                     message: "Lỗi truy vấn"
                 })
             }
+            await employees.forEach(async (employee) => {
+                ScoreFileModel.create({
+                    forEmployeeId: employee._id,
+                    ...req.body
+                }, (err, results) => {
+                    if (err) {
+                        return res.status(500).json({
+                            message: "Lỗi truy vấn"
+                        })
+                    }
+                })
+            });
             return res.status(200).json({
                 message: "Them thanh cong"
             })
-
         })
+
     }
     // page cap nhat
     createPage(req, res) {
@@ -104,12 +130,14 @@ class ScoreFileController {
                     })
                 }
                 const idScoreFile = Number(req.query.ScoreFile_id)
+
                 ScoreFileModel.getOne(idScoreFile, (err, ScoreFile) => {
                     if (err) {
                         return res.status(500).json({
                             message: err
                         })
                     }
+                    console.log(ScoreFile[0])
                     res.render("scoreFile/scoreFileUpdate", { User: User[0], ScoreFile: ScoreFile[0] })
                 })
             })
