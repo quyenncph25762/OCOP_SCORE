@@ -217,6 +217,20 @@ class ScoreFileController {
             })
         })
     }
+    // action cap nhat ScoreTotal
+    updateStatusScoreFile(req, res) {
+        const id = req.params.id
+        ScoreFileModel.updateStatus(id, req.body, (err, results) => {
+            if (err) {
+                return res.status(500).json({
+                    message: err
+                })
+            }
+            return res.status(203).json({
+                message: "Cập nhật thành công!"
+            })
+        })
+    }
     // removeToTrash
     removeToTrash(req, res) {
         const id = req.params.id

@@ -94,6 +94,9 @@
                                     {{#ifCond this.Status 1}}
                                     <p class="statusLabelSuccess">Đã chấm</p>
                                     {{/ifCond}}
+                                    {{#ifCond this.Status 2}}
+                                    <p class="statusLabelSuccess">Đã nộp phiếu</p>
+                                    {{/ifCond}}
                                     {{!-- <p>{{User.RoleId}}</p> --}}
                                 <td>
                                     {{#ifCond ../User.RoleId 1}}
@@ -111,9 +114,11 @@
                                     {{!-- Neu da cham thi hien icon xac nhan va chinh sua--}}
                                     {{#ifCond this.Status 1}}
                                     {{!-- icon xac nhan--}}
-                                    <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Xác nhận">
+                                    <button style="background: transparent;border: none;" class="d-inline-block"
+                                        tabindex="0" data-toggle="tooltip" title="Xác nhận"
+                                        onclick="handleUpdateStatus('{{this._id}}')">
                                         <ion-icon name="checkbox-outline"></ion-icon>
-                                    </span>
+                                    </button>
                                     {{!-- icon chinh sua --}}
                                     <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Chỉnh sửa">
                                         <a style="text-decoration: none;"
@@ -123,6 +128,16 @@
                                     </span>
                                     {{/ifCond}}
 
+                                    {{!-- Nếu status = 2 thì có thể xem phiếu chấm của họ --}}
+                                    {{#ifCond this.Status 2}}
+                                    <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
+                                        title="Xem chi tiết">
+                                        <a
+                                            href="/scoreFile/reviewPage?productId={{this.Product_id}}&code={{this.productgroup_code}}&ScoreFile_id={{this._id}}">
+                                            <ion-icon name="eye-outline"></ion-icon>
+                                        </a>
+                                    </span>
+                                    {{/ifCond}}
                                     {{!-- Neu User ma co trong hoi dong thi moi cho cham diem --}}
                                     {{!-- icon cham diem --}}
                                     {{#ifCond this.Status 0}}
@@ -149,8 +164,6 @@
                                     {{/ifCond}}
                                     {{/ifCond}}
                                     {{!-- admin moi co quyen xem ket qua hoi dong --}}
-
-
                                 </td>
                             </tr>
                             {{/each}}
@@ -234,4 +247,49 @@
         }
     })
 </script>
-{{!-- validate isScoreCommitee --}}
+{{!-- xac nhan phieu --}}
+<script>
+    async function handleUpdateStatus(idScoreFile) {
+
+        $.confirm({
+            title: '<ion-icon name="help-circle-outline"></ion-icon>',
+            content: 'Xác nhận nộp phiếu?',
+            buttons: {
+                confirm: {
+                    text: 'Confirm',
+                    btnClass: 'btn-blue',
+                    action: async function () {
+                        const formScoreFile = {
+                            Status: 2
+                        }
+                        const response = await fetch(`/scorefile/updateStatus/${idScoreFile}`, {
+                            method: "PATCH",
+                            body: JSON.stringify(formScoreFile),
+                            headers: {
+                                "Content-Type": "application/json"
+                            }
+                        })
+                        if (!response.ok) {
+                            console.log("Lỗi khi cập nhật status scorefile")
+                            return
+                        }
+                        localStorage.setItem('toast', JSON.stringify({
+                            position: "top-right",
+                            heading: 'SUCCESS!',
+                            text: 'Đã nộp phiếu chấm.',
+                            icon: 'success',
+                            loader: true,
+                            loaderBg: '#9EC600',
+                            showHideTransition: 'slide',
+                            stack: 4
+                        }));
+                        window.location.reload()
+                    }
+                },
+                cancel: function () {
+                    $.alert('Đã hủy!');
+                }
+            }
+        });
+    }
+</script>

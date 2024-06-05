@@ -22,6 +22,8 @@ router.patch("/update/:id", ScoreFileController.update)
 router.patch("/updateScoreCommittOnScoreFile/:id", ScoreFileController.updateScoreCommittee)
 // update ScoreTotal
 router.patch("/updateScoreTotal/:id", ScoreFileController.updateScoreTotal)
+// update ScoreTotal
+router.patch("/updateStatus/:id", ScoreFileController.updateStatusScoreFile)
 // add
 router.post("/add", ScoreFileController.createScoreFile)
 // removeToTrash

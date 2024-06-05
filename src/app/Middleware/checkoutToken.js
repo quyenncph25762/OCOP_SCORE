@@ -25,7 +25,6 @@ class CheckController {
                     });
                 }
             }
-            console.log(payload)
             const user = await fetch(`http://localhost:3000/auth/get/${payload?._id}`, {
                 method: "GET"
             })

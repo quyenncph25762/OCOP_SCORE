@@ -33,7 +33,7 @@ const ScoreFileModel = {
         LEFT JOIN 
             workposition ON workposition._id = employee.WorkPosition_id
         WHERE 
-            scorefile.IsDeleted = 0 AND scorefile.Product_id IS NOT NULL AND scorefile.ScoreCommitee_id = ?
+            scorefile.IsDeleted = 0 AND scorefile.Status = 2 AND scorefile.Product_id IS NOT NULL AND scorefile.ScoreCommitee_id = ?
     `;
         connection.query(query, [idScoreCommitee], callback);
     },
@@ -135,6 +135,12 @@ const ScoreFileModel = {
     updateScoreTotal: (id, scoreFile, callback) => {
         const query = `UPDATE scorefile SET ScoreTotal = ? WHERE _id = ${id}`
         const VALUES = [scoreFile.ScoreTotal]
+        connection.query(query, VALUES, callback)
+    },
+    // update Status = 2
+    updateStatus: (id, scoreFile, callback) => {
+        const query = `UPDATE scorefile SET Status = ? WHERE _id = ${id}`
+        const VALUES = [scoreFile.Status]
         connection.query(query, VALUES, callback)
     },
     // xoa vao thung rac
