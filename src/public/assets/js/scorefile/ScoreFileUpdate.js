@@ -316,31 +316,31 @@ async function updateScoreTotal() {
                 console.log(`Lỗi khi cập nhật Total scoreFle`)
             }
             // thuc hien update totalScore Product
-            let RankOcop = 0
-            if (TotalAfter >= 90) {
-                RankOcop = 5
-            } else if (TotalAfter >= 70) {
-                RankOcop = 4
-            } else if (TotalAfter >= 50) {
-                RankOcop = 3
-            } else if (TotalAfter >= 30) {
-                RankOcop = 2
-            } else {
-                RankOcop = 1
-            }
-            const responseProduct = await fetch(`/product-manage/updateRankOcop/${productId}`, {
-                method: "PATCH",
-                body: JSON.stringify({
-                    ScoreTotal: TotalAfter,
-                    RankOcop: RankOcop
-                }),
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            })
-            if (!responseProduct.ok) {
-                console.log(`Cập nhật RankOcop k thành công product`)
-            }
+            // let RankOcop = 0
+            // if (TotalAfter >= 90) {
+            //     RankOcop = 5
+            // } else if (TotalAfter >= 70) {
+            //     RankOcop = 4
+            // } else if (TotalAfter >= 50) {
+            //     RankOcop = 3
+            // } else if (TotalAfter >= 30) {
+            //     RankOcop = 2
+            // } else {
+            //     RankOcop = 1
+            // }
+            // const responseProduct = await fetch(`/product-manage/updateRankOcop/${productId}`, {
+            //     method: "PATCH",
+            //     body: JSON.stringify({
+            //         ScoreTotal: TotalAfter,
+            //         RankOcop: RankOcop
+            //     }),
+            //     headers: {
+            //         "Content-Type": "application/json"
+            //     }
+            // })
+            // if (!responseProduct.ok) {
+            //     console.log(`Cập nhật RankOcop k thành công product`)
+            // }
         }
     }
 }

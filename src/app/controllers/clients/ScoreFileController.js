@@ -103,7 +103,7 @@ class ScoreFileController {
         })
 
     }
-    // page cap nhat
+    // page tao moi
     createPage(req, res) {
         const cookie = req.cookies
         if (cookie?.User) {
@@ -119,6 +119,7 @@ class ScoreFileController {
         }
 
     }
+    // updatePage
     updatePage(req, res) {
         const cookie = req.cookies
         if (cookie?.User) {
@@ -139,6 +140,31 @@ class ScoreFileController {
                     }
                     console.log(ScoreFile[0])
                     res.render("scoreFile/scoreFileUpdate", { User: User[0], ScoreFile: ScoreFile[0] })
+                })
+            })
+        }
+
+    }
+    // reviewPage
+    reviewPage(req, res) {
+        const cookie = req.cookies
+        if (cookie?.User) {
+            const UserDataCookie = jwt.verify(cookie.User, SECRET_CODE)
+            AccountModel.fetchOneUser(UserDataCookie?._id, (err, User) => {
+                if (err) {
+                    return res.status(500).json({
+                        message: err
+                    })
+                }
+                const idScoreFile = Number(req.query.ScoreFile_id)
+                ScoreFileModel.getOne(idScoreFile, (err, ScoreFile) => {
+                    if (err) {
+                        return res.status(500).json({
+                            message: err
+                        })
+                    }
+                    console.log(ScoreFile[0])
+                    res.render("scoreFile/review", { User: User[0], ScoreFile: ScoreFile[0] })
                 })
             })
         }

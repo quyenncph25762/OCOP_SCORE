@@ -1,0 +1,161 @@
+{{> header}}
+<div class="content-wrapper">
+    <div class="container-fluid">
+        <div class="row" style="max-width: 100%; display: contents;">
+            <ul class="search-customer"
+                style="list-style: none; display:flex; justify-content: space-between; align-items: center;padding: 0;">
+                <div class="import_customer_button"
+                    style="list-style: none; display:flex; justify-content: space-between; align-items: center;">
+                    <button class="btn btn-light" style="display: flex;align-items: center;">
+                        <ion-icon name="arrow-undo-outline"></ion-icon>
+                        <a href="/scorefile" style="margin-left: 8px;margin-bottom: 0;">Trở về danh sách phiếu
+                            chấm</a>
+                    </button>
+                </div>
+            </ul>
+            </li>
+            </ul>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="row row-content">
+            <div class="col-sm-3">
+                <div class="card shadow">
+                    <div class="card-body">
+                        <p style="font-size: 14px;font-weight: 600">Người chấm: {{ScoreFile.employee_FullName}}</p>
+                        <p style="font-size: 13px;font-weight: 600">{{ScoreFile.workposition_name}} -
+                            {{ScoreFile.workdepartment_title}}</p>
+                    </div>
+                </div>
+                <div class="card shadow">
+                    {{!-- product --}}
+                    <div class="card-body" id="product-container">
+                        <div class="">
+                            <input type="hidden" value="${productId}" id="Product_id">
+                            <input type="hidden" id="Customer_id" value="${Product.Customer_id}">
+                            <img name="Avatar" style="width: 100%;height: 150px;" src="{{ScoreFile.product_avatar}}"
+                                alt="">
+                        </div>
+                        <p name="Name" class="title-scoreTempDetail">{{ScoreFile.product_name}}</p>
+                        <div class="my-4"></div>
+                        <div class="" style="font-size: 16px;">
+                            <div class="d-flex justify-content-between">
+                                <p style="font-size: 14px;min-width: 75px">Chủ thể:</p>
+                                <p class=""
+                                    style="font-weight: 600;font-size: 12px;opacity: 0.7;text-transform: uppercase">
+                                    {{ScoreFile.customer_name}}</p>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <p style="font-size: 14px;min-width: 75px">Nhóm sản phẩm:</p>
+                                <p class="" style="font-weight: 600;font-size: 12px;opacity: 0.7">
+                                    {{ScoreFile.productgroup_name}}</p>
+                            </div>
+                        </div>
+                        {{!-- Phần A --}}
+                        <div class="" style="border-top: 1px dashed #ccc;padding: 20px 0;font-weight: 600;">
+                            <div class="d-flex align-items-center justify-content-between box-partA">
+                                <p> Phần A:</p>
+                                <div class="d-flex" style="color: rgb(24, 93, 170);">
+                                    <p class="partA"></p>/
+                                    <p class="totalPartA"></p>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center justify-content-between box-partB">
+                                <p> Phần B:</p>
+                                <div class="d-flex" style="color: rgb(24, 93, 170)">
+                                    <p class="partB"></p>/
+                                    <p class="totalPartB"></p>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center justify-content-between box-partC">
+                                <p> Phần C:</p>
+                                <div class="d-flex" style="color: rgb(24, 93, 170)">
+                                    <p class="partC"></p>/
+                                    <p class="totalPartC"></p>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center justify-content-between box-partD">
+                                <p> Phần D:</p>
+                                <div class="d-flex" style="color: rgb(24, 93, 170)">
+                                    <p class="partD"></p>/
+                                    <p class="totalPartD"></p>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center justify-content-between">
+                                <p> Tổng điểm:</p>
+                                <div class="d-flex" style="color: rgb(232, 67, 67)">
+                                    <p class="TotalAfter"></p>/
+                                    <p class="TotalBefore"></p>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center justify-content-between">
+                                <p> Xếp hạng OCOP:</p>
+                                <p style="color: rgb(236, 236, 118)" class="startOcop">
+                                    {{#repeat this.ScoreFile.RankOcop}}
+                                    <ion-icon name="star"></ion-icon>
+                                    {{/repeat}}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-sm-9 list_citationUpdate" style="overflow-y: auto;height: 100%;font-size: 12px;">
+                <div class="col-12">
+                    <div class="card shadow">
+                        <div class="card-body">
+                            <table class="table table-bordered table-striped table-hover table-scoreTemp">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">
+                                        </th>
+                                        <th scope="col">
+                                            Số điểm
+                                        </th>
+                                        <th scope="col">
+                                            File đính kèm
+                                        </th>
+                                        <th scope="col">
+                                            Chọn
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbodyScoreFileUpdate">
+
+                                </tbody>
+                            </table>
+                            <input type="hidden" class="Code" value="">
+                            <input type="hidden" id="CreatorUser_id" value="{{User._id}}">
+                            <p style="margin-top: 10px;border-bottom: 1px solid #ccc;padding-bottom: 5px;width: 250px;">
+                                Ý kiến của người đánh giá</p>
+                            <textarea name="" id="Note"
+                                style="width: 100%;background-color: #ccc;padding: 12px;color: #000;">
+                                {{ScoreFile.Note}}
+                                </textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{> modalProductDetail}}
+    </div>
+
+</div><!--End content-wrapper-->
+{{> footer}}
+<script src="/assets/js/scorefile/ReviewScoreFile.js"></script>
+<script>
+    (function () {
+        let codeValueProductGroup = document.querySelector(".Code");
+        function generateRandomCode(length) {
+            let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789';
+            let code = '';
+            for (let i = 0; i < length; i++) {
+                code += characters.charAt(Math.floor(Math.random() * characters.length));
+            }
+            return code;
+        }
+        let codeRandom = generateRandomCode(8);
+        codeValueProductGroup.value = codeRandom;
+    })();
+</script>

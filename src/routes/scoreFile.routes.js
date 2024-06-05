@@ -14,6 +14,8 @@ router.get("/getScoreByStatus", ScoreFileController.getScoreByStatus)
 router.get("/createScoreFile", ScoreFileController.createPage)
 // updatePage
 router.get("/updateScoreFile", ScoreFileController.updatePage)
+// updatePage
+router.get("/reviewPage", ScoreFileController.reviewPage)
 // update 
 router.patch("/update/:id", ScoreFileController.update)
 // update ScoreCommitt
