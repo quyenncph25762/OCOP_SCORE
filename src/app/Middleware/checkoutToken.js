@@ -30,11 +30,12 @@ class CheckController {
             })
             const data = await user?.json()
             const UserRoleTitle = data?.role_title?.toLowerCase()
-            if (!user) {
+            if (!UserRoleTitle) {
                 return res.status(400).json({
                     message: "USER KHONG TON TAI TRONG HE THONG"
                 })
             }
+            console.log(UserRoleTitle)
             if (UserRoleTitle !== "admin") {
                 return res.status(400).json({
                     message: "Bạn không có quyền để thực hiện hành động này",

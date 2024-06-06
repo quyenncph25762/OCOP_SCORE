@@ -187,25 +187,80 @@ class ScoreCommitteController {
                     message: err
                 })
             }
-            // lay danh sach scorefile co status = 0
-            ScoreFileModel.getScoreFileByStatus(async (err, data) => {
+            // lay danh sach scoreCommiteeDetail
+            ScoreCommitteeDetailModel.getByScoreCommittee(id, (err, listScoreCommitteeDetail) => {
                 if (err) {
                     return res.status(500).json({
                         message: err
                     })
                 }
-                // roi cap nhat scoreCommiteee cua scorefile 
-                await data.forEach(async (element) => {
-                    await ScoreFileModel.updateScoreCommitteOnScoreFile(element._id, { ScoreCommitee_id: id }, (err, results) => {
+                // tao ra 1 mang chua id llistScoreCommitteeDetail
+                const listEmployeeId = Array.from(
+                    new Set(listScoreCommitteeDetail
+                        .map(employee => [employee.UserId, employee.SecUserId])
+                        .flat()
+                        .filter(id => id !== undefined && id !== null))
+                )
+                // lay scorefile theo status = 0
+                ScoreFileModel.getScoreFileByStatus(async (err, data) => {
+                    if (err) {
+                        return res.status(500).json({
+                            message: err
+                        })
+                    }
+                    // lay danh sach admin de admin co the xem dc phieu 
+                    EmployeeModel.getAllAdmin(async (err, employeesAdmin) => {
                         if (err) {
                             return res.status(500).json({
                                 message: err
                             })
                         }
+                        // lay ra listEmployee Id roi push vao mang listEmployeeId
+                        const employeesAdminId = employeesAdmin.map((employee) => employee._id)
+                        if (employeesAdminId.length > 0) {
+                            employeesAdminId.forEach((employeeId) => listEmployeeId.push(employeeId))
+                        }
+                        // loc scorefile nhung employee nao dang o trong scorecommitteeDetail
+                        const dataFilter = data.filter((item) => listEmployeeId.includes(item.forEmployeeId))
+                        // nhung scorefile nao k co trong scoreCommittee thi them scoreCommittee tranh truong hop get all scorefile status = 0
+                        const dataFilterDifferent = data.filter((item) => !listEmployeeId.includes(item.forEmployeeId))
+                        const formScoreFile = {
+                            ScoreCommitee_id: id,
+                            IsActive: 1
+                        }
+                        console.log(dataFilter)
+                        await dataFilter.forEach(async (element) => {
+                            if (!element.ScoreCommitee_id) {
+                                // thuc hien cap nhat trang thai cham diem cho scorefile
+                                await ScoreFileModel.updateScoreCommitteOnScoreFile(element._id, formScoreFile, (err, result) => {
+                                    if (err) {
+                                        return res.status(500).json({
+                                            message: err
+                                        })
+                                    }
+                                })
+                            }
+                        })
+                        // thuc hien chi update scoreCommittee 
+                        await dataFilterDifferent.forEach(async (element) => {
+                            if (!element.ScoreCommitee_id) {
+                                // thuc hien cap nhat trang thai cham diem cho scorefile
+                                await ScoreFileModel.updateScoreCommitteOnScoreFile(element._id, {
+                                    ScoreCommitee_id: id,
+                                    IsActive: 0
+                                }, (err, result) => {
+                                    if (err) {
+                                        return res.status(500).json({
+                                            message: err
+                                        })
+                                    }
+                                })
+                            }
+                        })
+                        return res.status(203).json({
+                            message: "Cập nhật thành công"
+                        })
                     })
-                });
-                return res.status(203).json({
-                    message: "Cập nhật thành công"
                 })
             })
         })

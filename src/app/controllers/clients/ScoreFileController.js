@@ -20,6 +20,7 @@ class ScoreFileController {
                 }
                 ScoreFileModel.getScoreFileByEmployee(UserDataCookie?._id, (err, ScoreFile) => {
                     if (err) {
+                        console.log(err)
                         return res.status(500).json({
                             message: "Lỗi truy vấn"
                         })
@@ -56,6 +57,7 @@ class ScoreFileController {
     // get ScoreFile by scoreCommittee
     getScoreFileByScoreCommittee(req, res) {
         const idScoreCommitee = req.params.id
+
         ScoreFileModel.getScoreFileByScoreCommittee(idScoreCommitee, (err, scorefiles) => {
             if (err) {
                 return res.status(500).json({
@@ -88,6 +90,8 @@ class ScoreFileController {
             await employees.forEach(async (employee) => {
                 ScoreFileModel.create({
                     forEmployeeId: employee._id,
+                    IsActive: 0,
+                    Status: 0,
                     ...req.body
                 }, (err, results) => {
                     if (err) {

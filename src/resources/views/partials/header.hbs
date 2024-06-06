@@ -73,11 +73,13 @@
           OCOP</span>
       </a>
     </li>
+    {{#ifCond User.RoleId 1}}
     <li>
       <a href="/scoreCommittee">
         <ion-icon name="brush-outline"></ion-icon> <span class="ml-2">Hội đồng chấm</span>
       </a>
     </li>
+    {{/ifCond}}
 
     <li>
       <a href="/scoreFile">

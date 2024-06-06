@@ -3,6 +3,7 @@ var AverageScore = 0
 // tinh so sao ocop trung bình
 var totalRankOcop = 0
 async function handleResultScoreFiles(idScoreCommittee, productId) {
+    console.log(idScoreCommittee)
     const tbodyResultsScoreFile = document.getElementById(`tbodyResultsScoreFile${productId}`)
     const response = await fetch(`/scorefile/byIdScoreCommittee/${idScoreCommittee}`, {
         method: "GET"

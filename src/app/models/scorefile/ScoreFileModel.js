@@ -16,7 +16,8 @@ const ScoreFileModel = {
             scorecommittee._id AS scorecommitee_id,
             employee.FullName AS employee_FullName,
             workdepartment.title AS workdepartment_title,
-            workposition.Name AS workposition_name
+            workposition.Name AS workposition_name,
+            scorecommittee.Name AS scorecommittee_name
         FROM scorefile
         LEFT JOIN 
             product ON product._id = scorefile.Product_id
@@ -52,7 +53,8 @@ const ScoreFileModel = {
         productgroup._id AS productgroup_id,
         DATE_FORMAT(scorefile.ScoreDate, '%Y-%m-%d') AS formattedScoreDate,
         scorecommittee._id AS scorecommitee_id,
-        scorecommittee.Employee_id AS scorecommittee_employeeId
+        scorecommittee.Employee_id AS scorecommittee_employeeId,
+        scorecommittee.Name AS scorecommittee_name
     FROM 
         scorefile
     LEFT JOIN 
@@ -69,8 +71,9 @@ const ScoreFileModel = {
         scorefile._id DESC
 `;
 
-        connection.query(query, callback);
+        connection.query(query, [id], callback);
     },
+
     // get all where IsDeleted = 1
     getAllFromTrash: (callback) => {
         const query = `
@@ -140,8 +143,8 @@ const ScoreFileModel = {
     },
     // update hoi dong
     updateScoreCommitteOnScoreFile: (id, scoreFile, callback) => {
-        const query = `UPDATE scorefile SET ScoreCommitee_id = ? WHERE _id = ${id}`
-        const VALUES = [scoreFile.ScoreCommitee_id]
+        const query = `UPDATE scorefile SET ScoreCommitee_id = ? , IsActive = ? WHERE _id = ${id}`
+        const VALUES = [scoreFile.ScoreCommitee_id, scoreFile.IsActive]
         connection.query(query, VALUES, callback)
     },
     // update totalScore

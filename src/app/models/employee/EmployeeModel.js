@@ -32,6 +32,11 @@ const EmployeeModel = {
         `
         connection.query(query, callback)
     },
+    // get ra tat ca tai khoan admin
+    getAllAdmin(callback) {
+        const query = `SELECT * FROM employee WHERE RoleId = 1`
+        connection.query(query, callback)
+    },
     // lay tat ca trong thung rac
     fetchAllEmployeeFromTrash: (callback) => {
         const query = `SELECT employee.*,

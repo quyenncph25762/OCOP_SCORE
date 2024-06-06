@@ -59,7 +59,6 @@ class EmployeeControllers {
             res.redirect("/auth/loginPage")
         }
     }
-
     // getAll 
     getAll(req, res) {
         EmployeeModel.fetchAllEmployee((err, data) => {
@@ -100,6 +99,7 @@ class EmployeeControllers {
             res.redirect("/auth/loginPage")
         }
     }
+    // get ra nhung tai khoan co role la admin
     // them
     create = async (req, res, next) => {
         console.log(req.body.Gender)
