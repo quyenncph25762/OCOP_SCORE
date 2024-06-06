@@ -85,15 +85,16 @@
                                             <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
                                                 title="Chỉnh sửa">
                                                 <ion-icon name="create-outline" data-toggle="modal"
-                                                    data-target="#exampleModal{{this._id}}"></ion-icon>
+                                                    data-target="#modalUpdateUser{{this._id}}"></ion-icon>
                                             </span>
+                                            {{> modalUpdateUser Role=../Role}}
                                             <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
                                                 title="Khóa tài khoản">
                                                 <ion-icon name="lock-closed-outline"></ion-icon>
                                             </span>
                                             <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Xóa">
-                                                <ion-icon id="icon_moveToTrash" name="trash-outline"
-                                                    data-id="{{this._id}}">
+                                                <ion-icon id="icon_moveToTrash" data-userName="{{this.UserName}}"
+                                                    name="trash-outline" data-id="{{this._id}}">
                                                 </ion-icon>
                                             </span>
                                         </div>
@@ -113,7 +114,8 @@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="/assets/js/custom.js"></script>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", () => {
         const toastData = localStorage.getItem('toast');
@@ -126,9 +128,10 @@
         //remove One
         for (let btn of btnTrash) {
             btn.addEventListener("click", (event) => {
+                const userName = event.target.dataset.username;
                 $.confirm({
                     title: '<ion-icon name="trash-bin-outline"></ion-icon>',
-                    content: 'Bạn có chắc chắn muốn xóa ?',
+                    content: `Bạn có chắc chắn muốn xóa ${userName} ?`,
                     buttons: {
                         confirm: {
                             text: 'Confirm',
@@ -136,7 +139,6 @@
                             action: function () {
                                 // Lấy ID của mục cần xóa từ thuộc tính data-id của nút
                                 const id = event.target.dataset.id;
-
                                 // Gọi API xóa mục
                                 fetch(`/employee/removeToTrash/${id}`, {
                                     method: 'DELETE'

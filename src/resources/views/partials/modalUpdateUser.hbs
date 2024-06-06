@@ -1,0 +1,210 @@
+<style>
+    .modal-content {
+        min-width: 800px;
+    }
+
+    #AvatarPreview {
+        border-radius: 50%;
+    }
+
+    @media screen and (min-width: 350px) and (max-width: 765px) {
+        .modal-content {
+            min-width: 100% !important;
+        }
+    }
+</style>
+<!-- Modal -->
+<div class="modal fade" id="modalUpdateUser{{this._id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Cập nhật tài khoản</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-row">
+                        <div class="col-sm-12">
+                            <p style="font-size: 16px;margin-bottom: 18px;">Thông tin người dùng</p>
+                            <div class="row">
+                                <div class="col-sm-3 mb-3" style="position: relative;">
+                                    <input id="AvatarUpdate{{this._id}}" type="file" accept="image/*" hidden>
+                                    <img id="AvatarPreviewUpdate{{this._id}}"
+                                        onclick="document.getElementById('Avatar').click()"
+                                        style="width:150px;height:150px;border-radius:50%;object-fit: cover;"
+                                        src="{{this.Avatar}}" alt="">
+                                </div>
+                                <div class="col-sm-9">
+                                    <div class="row">
+                                        <input type="text" class="form-control" id="CodeUpdate" hidden>
+                                        <div class="col-sm-9 mb-3">
+                                            <label for="UserName">Tên truy cập</label>
+                                            <input value="{{this.UserName}}" type="text" class="form-control"
+                                                id="UserNameUpdate{{this._id}}">
+                                        </div>
+                                        <div class="custom-control custom-switch col-md-3"
+                                            style="display: flex; justify-content: center;align-items: center;">
+                                            {{#ifCond this.IsActive 1}}
+                                            <input name="IsActiveUpdate{{this._id}}" type="checkbox"
+                                                class="custom-control-input" id="IsActiveUpdate{{this._id}}" checked>
+                                            <label class="custom-control-label block"
+                                                for="IsActiveUpdate{{this._id}}">Kích
+                                                hoạt</label>
+                                            {{else}}
+                                            <input name="IsActiveUpdate{{this._id}}" type="checkbox"
+                                                class="custom-control-input" id="IsActiveUpdate{{this._id}}">
+                                            <label class="custom-control-label block"
+                                                for="IsActiveUpdate{{this._id}}">Kích
+                                                hoạt</label>
+                                            {{/ifCond}}
+
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6 mb-3">
+                                            <label for="Code">Họ và tên</label>
+                                            <input type="text" class="form-control" value="{{this.FullName}}"
+                                                id="FullNameUpdate{{this._id}}">
+                                        </div>
+                                        <div class="col-sm-6 mb-3">
+                                            <label for="Code">Vai trò</label>
+                                            <select name="" id="RoleIdUpdate{{this._id}}" class="form-control">
+                                                {{#each Role}}
+                                                <option value="{{this._id}}" {{#ifCond this.status
+                                                    0}}disabled{{/ifCond}} {{#ifCond this._id
+                                                    ../this.RoleId}}selected{{/ifCond}}>{{this.title}}</option>
+                                                {{/each}}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 mb-3">
+                                    <label for="Code">Địa chỉ email</label>
+                                    <input type="text" class="form-control" value="{{this.Email}}"
+                                        id="EmailUpdate{{this._id}}">
+                                </div>
+                                <div class="col-sm-6 mb-3">
+                                    <label for="Phone">Số điện thoại</label>
+                                    <input type="text" class="form-control" value="{{this.Phone}}"
+                                        id="PhoneUpdate{{this._id}}">
+                                </div>
+                                <input type="hidden" id="PasswordOld{{this._id}}" value="{{this.Password}}">
+                                <div class="col-sm-6 mb-3">
+                                    <label for="Password">Mật khẩu mới</label>
+                                    <input type="password" class="form-control" id="PasswordNewUpdate{{this._id}}">
+                                </div>
+                                <div class="col-sm-6 mb-3">
+                                    <label for="ConfirmPassword">Xác nhận mật khẩu</label>
+                                    <input type="password" class="form-control" id="ConfirmPasswordUpdate{{this._id}}">
+                                </div>
+                                <p class="col-sm-6" style="font-style: italic;color: #F64E60;font-size: 13px;">* Kiểm
+                                    tra kĩ thông tin
+                                    trước
+                                    khi thêm người dùng mới</p>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-dismiss="modal">Hủy bỏ</button>
+                <button type="submit" class="btn btn-warning" onclick="handleUpdateUser('{{this._id}}')">
+                    <div class="" style="display: flex;align-items: center;gap: 10px;">
+                        <ion-icon name="save-outline"></ion-icon>
+                        <p class="m-0">Lưu thông tin</p>
+                    </div>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{!-- avatar file reader --}}
+{{!-- actions cap nhat user --}}
+
+<script>
+    async function handleUpdateUser(idUser) {
+        if (idUser) {
+            const UserName = document.getElementById(`UserNameUpdate${idUser}`).value
+            const FullName = document.getElementById(`FullNameUpdate${idUser}`).value
+            const RoleId = document.getElementById(`RoleIdUpdate${idUser}`).value
+            const Email = document.getElementById(`EmailUpdate${idUser}`).value
+            const Phone = document.getElementById(`PhoneUpdate${idUser}`).value
+            const IsActive = document.getElementById(`IsActiveUpdate${idUser}`).checked
+            const PasswordOld = document.getElementById(`PasswordOld${idUser}`).value
+            const Password = document.getElementById(`PasswordNewUpdate${idUser}`).value
+            const ConfirmPassword = document.getElementById(`ConfirmPasswordUpdate${idUser}`).value
+            if (Password.length >= 1 && Password.length < 6 || ConfirmPassword.length >= 1 && ConfirmPassword.length < 6) {
+                console.log(Password.length)
+                $.toast({
+                    position: "top-right",
+                    heading: 'Warning',
+                    text: 'Mật khẩu phải từ 6 kí tự',
+                    icon: 'warning',
+                    loader: true,
+                    loaderBg: '#f2a654',
+                    showHideTransition: 'slide',
+                    stack: 4
+                });
+                return
+            }
+            if (Password !== ConfirmPassword) {
+                $.toast({
+                    position: "top-right",
+                    heading: 'Warning',
+                    text: 'Mật khẩu và mật khẩu xác nhận không khớp!',
+                    icon: 'warning',
+                    loader: true,
+                    loaderBg: '#f2a654',
+                    showHideTransition: 'slide',
+                    stack: 4
+                });
+                return
+            }
+            const formUser = {
+                UserName: UserName,
+                FullName: FullName,
+                RoleId: Number(RoleId),
+                Email: Email,
+                IsActive: IsActive === true ? 1 : 0,
+                Phone: Phone,
+                Password: Password.trim() === "" ? CryptoJS.SHA256(PasswordOld).toString() : CryptoJS.SHA256(Password).toString()
+            }
+            const response = await fetch(`/users/update/${idUser}`, {
+                method: "PATCH",
+                body: JSON.stringify(formUser),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            })
+            if (response.ok) {
+                localStorage.setItem('toast', JSON.stringify({
+                    position: "top-right",
+                    heading: 'SUCCESS',
+                    text: 'Cập nhật thành công',
+                    icon: 'success',
+                    loader: true,
+                    loaderBg: '#9EC600',
+                    showHideTransition: 'slide',
+                    stack: 4
+                }));
+                window.location.replace("/users")
+            } else {
+                const data = await response.json()
+                $.toast({
+                    position: "top-right",
+                    heading: 'WARNING!',
+                    text: data.message || 'Đã có lỗi xảy ra',
+                    icon: 'warning',
+                    loader: true,
+                    loaderBg: '#f2a654',
+                    showHideTransition: 'slide',
+                    stack: 4
+                });
+            }
+        }
+    }
+</script>

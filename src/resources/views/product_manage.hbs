@@ -279,12 +279,12 @@
                         data-target="#exampleModalDetail{{this._id}}"></ion-icon>
                     </span>
                     {{!-- icon duyet --}}
-                    {{#ifCond this.Status 0}}
+                    {{#ifCondAnd this.Status 0 ../User.RoleId 1}}
                     <span onclick="handleProductStatus('{{this._id}}')" class="d-inline-block" tabindex="0"
                       data-toggle="tooltip" title="Duyệt">
                       <ion-icon name="checkbox-outline"></ion-icon>
                     </span>
-                    {{/ifCond}}
+                    {{/ifCondAnd}}
                     {{!-- icon xoa --}}
                     <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Xóa">
                       <ion-icon id="icon_moveToTrash" name="trash-outline" data-id="{{this._id}}">

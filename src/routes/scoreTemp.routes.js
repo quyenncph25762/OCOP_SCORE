@@ -17,7 +17,9 @@ router.post("/add", ScoreTempController.add)
 // update
 router.get("/updatePage/:id", ScoreTempController.getOne)
 router.put("/update/:id", ScoreTempController.update)
-// getByProductGroup
+// getByProductGroupCode
 router.get("/byProductGroup/:code", ScoreTempController.getScoreTempByProductGroup)
+// getByProductGroupId
+router.get("/byProductGroupId/:id", ScoreTempController.getScoreTempByProductGroupId)
 
 module.exports = router;

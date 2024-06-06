@@ -1,4 +1,29 @@
 {{> header}}
+<style>
+    .radio-custom+.radio-custom-label:before {
+        content: '';
+        border: none !important;
+        background: transparent;
+        display: inline-block;
+        vertical-align: middle;
+        width: 24px;
+        height: 24px;
+        padding: 2px;
+        transition: linear 0.25s all;
+        /* margin-right: 10px; */
+        text-align: center;
+        /* border-radius: 50%; */
+    }
+
+    .radio-custom:checked+.radio-custom-label:before {
+        bottom: 0;
+        content: "\f00c";
+        font-family: 'FontAwesome';
+        color: #04b962;
+        border: 2px solid #04b962;
+        font-size: 20px;
+    }
+</style>
 <div class="content-wrapper">
     <div class="container-fluid">
         <div class="row" style="max-width: 100%; display: contents;">

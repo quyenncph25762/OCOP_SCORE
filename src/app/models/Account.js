@@ -54,14 +54,29 @@ const AccountModel = {
         const query = `UPDATE employee SET Password = ? WHERE Email = ?`
         connection.query(query, [password, Email], callback)
     },
+    // tim ten user xem da ton tai chua
     findUserAdd: (employee, callback) => {
         const query = `SELECT * FROM employee WHERE FullName = ?`;
         const values = [employee.FullName];
         connection.query(query, values, callback);
     },
+    // tim ten user xem da ton tai chua
+    findUserUpdate: (id, employee, callback) => {
+        const query = `SELECT * FROM employee WHERE UserName = ? AND _id != ${id}`;
+        const values = [employee.UserName];
+        connection.query(query, values, callback);
+    },
+    // Them nguoi dung
     AddUser: (employee, callback) => {
-        const query = `INSERT INTO employee (Code,FullName,UserName,Email,Avatar,Phone,roleId,CreatorUser_id,Password) VALUES (?,?,?,?,?,?,?,?,?)`
-        const values = [employee.Code, employee.FullName, employee.UserName, employee.Email, employee.Avatar, employee.Phone, employee.roleId, employee.CreatorUser_id, employee.Password]
+        const query = `INSERT INTO employee (Code,FullName,UserName,Email,Avatar,Phone,RoleId,CreatorUser_id,IsActive,Password) VALUES (?,?,?,?,?,?,?,?,?)`
+        const values = [employee.Code, employee.FullName, employee.UserName, employee.Email, employee.Avatar, employee.Phone, employee.RoleId, employee.CreatorUser_id, employee.IsActive, employee.Password]
+        connection.query(query, values, callback)
+    },
+    // update nguoi dung
+    updateUser: (id, employee, callback) => {
+        const query = `UPDATE employee SET FullName = ? , UserName = ? , Email = ? , Phone = ? , RoleId = ? , Password = ?,  IsActive = ? WHERE _id = ${id}`
+        console.log(query)
+        const values = [employee.FullName, employee.UserName, employee.Email, employee.Phone, employee.RoleId, employee.Password, employee.IsActive]
         connection.query(query, values, callback)
     },
 }

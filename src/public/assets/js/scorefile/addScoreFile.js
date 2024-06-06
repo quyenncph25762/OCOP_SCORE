@@ -19,6 +19,7 @@ const handleAddScoreFile = async () => {
                 scoreValues[id] = Number(btn.value);
             }
         }
+
         // dùng for chạy qua các id để lấy phiếu chi tiết rồi push vào mảng 
         const arrScoreTempDetail = []
         for (const id of ScoreTempDetail_id) {
@@ -127,6 +128,8 @@ const handleAddScoreFile = async () => {
         }
         //ADD scoreFileDetail
         // Sau khi co nhung phieu chi tiet thuc hien them vao scoreFileDetail
+
+
         if (arrScoreTempDetail.length > 0) {
             const arrResponse = []
             for (const item of arrScoreTempDetail) {
@@ -134,7 +137,7 @@ const handleAddScoreFile = async () => {
                     ScoreFile_id: Number(scoreFileId),
                     CreatorUser_id: Number(CreatorUser_id),
                     ScoreTempDetail_id: item._id,
-                    Score: scoreValues[item._id] ? scoreValues[item._id] : 0
+                    Score: (scoreValues[item._id] !== undefined && scoreValues[item._id] !== null) ? scoreValues[item._id] : null
                 }
                 const response = await fetch(`/scoreFileDetail/add`, {
                     method: "POST",

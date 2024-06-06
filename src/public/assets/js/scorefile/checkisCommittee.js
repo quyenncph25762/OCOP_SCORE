@@ -4,10 +4,11 @@ const idCommittee = boxIsCommittee.map(e => Number(e.getAttribute("data-idCommit
 const UserIdSessions = boxIsCommittee.map(e => Number(e.getAttribute("data-UserId")))
 const productId = boxIsCommittee.map(e => Number(e.getAttribute("data-ProductId")))
 const productGroupCode = boxIsCommittee.map(e => e.getAttribute("data-productGroupCode"))
+const productgroupId = boxIsCommittee.map(e => e.getAttribute("data-productgroupId"))
 if (boxIsCommittee.length > 0) {
-    checkIsCommitee(idCommittee, UserIdSessions, productId, productGroupCode, idScoreFile)
+    checkIsCommitee(idCommittee, UserIdSessions, productId, productGroupCode, idScoreFile, productgroupId)
 }
-async function checkIsCommitee(idCommittee, UserIdSessions, productId, productGroupCode, idScoreFile) {
+async function checkIsCommitee(idCommittee, UserIdSessions, productId, productGroupCode, idScoreFile, productgroupId) {
     const res = await fetch(`/scoreCommitteeDetail/getByScoreCommittee/${idCommittee[0]}`, {
         method: "GET"
     })
@@ -15,9 +16,7 @@ async function checkIsCommitee(idCommittee, UserIdSessions, productId, productGr
         console.log("ERR: CheckIsCommittee")
     }
     const data = await res.json()
-    const check = data?.find((user) => {
-        return user.UserId === UserIdSessions[0];
-    });
+    const check = data?.find(user => user.UserId && user.UserId === UserIdSessions[0] || user.SecUserId && user.SecUserId === UserIdSessions[0]);
     if (!check) {
         boxIsCommittee.innerHTML = ""
     } else {
@@ -25,7 +24,7 @@ async function checkIsCommitee(idCommittee, UserIdSessions, productId, productGr
             boxIsCommittee[i].innerHTML = `
             
             <a style="text-decoration: none;"
-                href="/scoreFile/createScoreFile?productId=${productId[i]}&code=${productGroupCode[i]}&_id=${idScoreFile[i]}">
+                href="/scoreFile/createScoreFile?productId=${productId[i]}&productgroupId=${productgroupId}&code=${productGroupCode[i]}&_id=${idScoreFile[i]}">
                 <ion-icon name="ribbon-outline"></ion-icon>
         </a>
             `

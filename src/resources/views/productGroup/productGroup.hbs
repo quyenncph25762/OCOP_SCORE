@@ -15,9 +15,10 @@
             </ul>
         </div>
     </div>
+    <!-- End container-fluid-->
     {{!-- body --}}
     <div class="row" style="display: contents;">
-        <div class="col-lg-6" style="max-width: 100%;">
+        <div class="col-lg-12" style="max-width: 100%;">
             <div class="card">
                 <div class="card-body">
                     <div class="d-flex align-items">
@@ -70,25 +71,17 @@
                                     </td>
                                     <td>{{this.Note}}</td>
                                     <td scope="row" style="display: flex;">
-                                        <div class="action_center">
-                                            <button
-                                                style="background-color: transparent;border: none ;cursor: pointer;">
-                                                <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
-                                                    title="Chỉnh sửa">
-                                                    <ion-icon name="create-outline" data-toggle="modal"
-                                                        data-target="#exampleModal{{this._id}}"></ion-icon>
-                                                </span>
-                                            </button>
-                                            {{> modalProductGroup}}
-                                        </div>
-                                        <div class="delete_action">
-                                            <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
-                                                title="Xóa chủ thể">
-                                                <ion-icon id="icon_moveToTrash" name="trash-outline"
-                                                    data-id="{{this._id}}">
-                                                </ion-icon>
-                                            </span>
-                                        </div>
+                                        <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
+                                            title="Chỉnh sửa">
+                                            <ion-icon name="create-outline" data-toggle="modal"
+                                                data-target="#exampleModal{{this._id}}"></ion-icon>
+                                        </span>
+                                        {{> modalProductGroup}}
+                                        <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
+                                            title="Xóa chủ thể">
+                                            <ion-icon id="icon_moveToTrash" name="trash-outline" data-id="{{this._id}}">
+                                            </ion-icon>
+                                        </span>
                                     </td>
                                 </tr>
                                 {{else}}
@@ -103,13 +96,12 @@
             </div>
         </div><!--End Row-->
     </div>
-    <!-- End container-fluid-->
 </div><!--End content-wrapper-->
 {{> footer}}
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="/assets/js/custom.js"></script>
-
+<script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
 <script>
     window.dataLayer = window.dataLayer || [];
     function gtag() {
@@ -122,7 +114,7 @@
         $(".check").prop('checked', $(this).prop('checked'));
     });
 </script>
-<script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
+
 
 <script>
     document.addEventListener("DOMContentLoaded", () => {

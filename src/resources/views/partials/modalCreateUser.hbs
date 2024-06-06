@@ -30,40 +30,41 @@
                         <div class="col-sm-12">
                             <p style="font-size: 16px;margin-bottom: 18px;">Thông tin người dùng</p>
                             <div class="row">
-                                <input type="text" hidden id="CreatorUser_id" value="{{User._id}}">
+                                <input type="text" hidden id="CreatorUser_idCreate" value="{{User._id}}">
                                 <div class="col-sm-3 mb-3" style="position: relative;">
                                     <div data-toggle="tooltip" data-html="true" title="Xóa ảnh" onclick="removeUpload()"
                                         style="position: absolute;top: 0;right: 0;">
                                         <ion-icon name="close-outline"></ion-icon>
                                     </div>
-                                    <input type="file" id="Avatar" accept="image/*" hidden>
-                                    <img id="AvatarPreview" onclick="document.getElementById('Avatar').click()"
+                                    <input type="file" id="AvatarCreate" accept="image/*" hidden>
+                                    <img id="AvatarPreviewCreate" onclick="document.getElementById('Avatar').click()"
                                         style="width: 100%;height: 100%;object-fit: cover;" src="/Uploads/user.png"
                                         alt="">
 
                                 </div>
                                 <div class="col-sm-9">
                                     <div class="row">
-                                        <input type="text" class="form-control" id="Code" hidden>
+                                        <input type="text" class="form-control" id="CodeCreate" hidden>
                                         <div class="col-sm-9 mb-3">
-                                            <label for="UserName">Tên truy cập</label>
-                                            <input type="text" class="form-control" id="UserName">
+                                            <label for="UserNameCreate">Tên truy cập</label>
+                                            <input type="text" class="form-control" id="UserNameCreate">
                                         </div>
                                         <div class="custom-control custom-switch col-md-3"
                                             style="display: flex; justify-content: center;align-items: center;">
-                                            <input name="status" type="checkbox" class="custom-control-input"
-                                                id="IsActive" checked>
-                                            <label class="custom-control-label block" for="IsActive">Kích hoạt</label>
+                                            <input name="IsActiveCreate" type="checkbox" class="custom-control-input"
+                                                id="IsActiveCreate" checked>
+                                            <label class="custom-control-label block" for="IsActiveCreate">Kích
+                                                hoạt</label>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-sm-6 mb-3">
-                                            <label for="Code">Họ và tên</label>
-                                            <input type="text" class="form-control" id="FullName">
+                                            <label for="FullNameCreate">Họ và tên</label>
+                                            <input type="text" class="form-control" id="FullNameCreate">
                                         </div>
                                         <div class="col-sm-6 mb-3">
-                                            <label for="Code">Vai trò</label>
-                                            <select name="" id="RoleId" class="form-control">
+                                            <label for="RoleIdCreate">Vai trò</label>
+                                            <select name="" id="RoleIdCreate" class="form-control">
                                                 {{#each Role}}
                                                 <option value="{{this._id}}" {{#ifCond this.status
                                                     0}}disabled{{/ifCond}}>{{this.title}}</option>
@@ -73,20 +74,20 @@
                                     </div>
                                 </div>
                                 <div class="col-sm-6 mb-3">
-                                    <label for="Code">Địa chỉ email</label>
-                                    <input type="text" class="form-control" id="Email">
+                                    <label for="EmailCreate">Địa chỉ email</label>
+                                    <input type="text" class="form-control" id="EmailCreate">
                                 </div>
                                 <div class="col-sm-6 mb-3">
-                                    <label for="Phone">Số điện thoại</label>
-                                    <input type="text" class="form-control" id="Phone">
+                                    <label for="PhoneCreate">Số điện thoại</label>
+                                    <input type="text" class="form-control" id="PhoneCreate">
                                 </div>
                                 <div class="col-sm-6 mb-3">
-                                    <label for="Password">Mật khẩu</label>
-                                    <input type="password" class="form-control" id="PasswordNew">
+                                    <label for="PasswordNewCreate">Mật khẩu</label>
+                                    <input type="PasswordNewCreate" class="form-control" id="PasswordNewCreate">
                                 </div>
                                 <div class="col-sm-6 mb-3">
-                                    <label for="ConfirmPassword">Xác nhận mật khẩu</label>
-                                    <input type="password" class="form-control" id="ConfirmPassword">
+                                    <label for="ConfirmPasswordCreate">Xác nhận mật khẩu</label>
+                                    <input type="password" class="form-control" id="ConfirmPasswordCreate">
                                 </div>
                                 <p class="col-sm-6" style="font-style: italic;color: #F64E60;font-size: 13px;">* Kiểm
                                     tra kĩ thông tin
@@ -109,10 +110,11 @@
         </div>
     </div>
 </div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"></script>
+
+
+{{!-- random userName --}}
 <script>
-    const UserNameValue = document.querySelector("#UserName")
+    const UserNameValue = document.querySelector("#UserNameCreate")
     function generateRandomUser(length) {
         let characters = '0123456789';
         let code = '';
@@ -127,9 +129,9 @@
 {{!-- avatar file reader --}}
 <script>
     document.addEventListener("DOMContentLoaded", () => {
-        const avatarImage = document.getElementById("AvatarPreview");
+        const avatarImage = document.getElementById("AvatarPreviewCreate");
         const defaultImageUrl = avatarImage.src;
-        document.getElementById("Avatar").addEventListener("change", (event) => {
+        document.getElementById("AvatarCreate").addEventListener("change", (event) => {
             const file = event.target.files[0]
             if (file) {
                 const reader = new FileReader();
@@ -140,25 +142,27 @@
             }
         })
         window.removeUpload = () => {
-            const fileInput = document.getElementById('Avatar');
+            const fileInput = document.getElementById('AvatarCreate');
             fileInput.value = ''; // Xóa nội dung của input file
             avatarImage.src = defaultImageUrl; // Đặt lại hình ảnh mặc định
         };
     })
 </script>
+{{!-- actions tao user --}}
 <script>
     async function handleCreateUser() {
-        const Code = document.getElementById("Code").value
-        const UserName = document.getElementById("UserName").value
-        const FullName = document.getElementById("FullName").value
-        const RoleId = document.getElementById("RoleId").value
-        const Email = document.getElementById("Email").value
-        const Phone = document.getElementById("Phone").value
-        const Password = document.getElementById("PasswordNew").value
-        const ConfirmPassword = document.getElementById("ConfirmPassword").value
-        const CreatorUser_id = document.getElementById("CreatorUser_id").value
-        const Avatar = document.getElementById("Avatar")
-        if (PasswordNew.length < 6 || ConfirmPassword.length < 6) {
+        const Code = document.getElementById("CodeCreate").value
+        const UserName = document.getElementById("UserNameCreate").value
+        const FullName = document.getElementById("FullNameCreate").value
+        const RoleId = document.getElementById("RoleIdCreate").value
+        const Email = document.getElementById("EmailCreate").value
+        const Phone = document.getElementById("PhoneCreate").value
+        const Password = document.getElementById("PasswordNewCreate").value
+        const ConfirmPassword = document.getElementById("ConfirmPasswordCreate").value
+        const CreatorUser_id = document.getElementById("CreatorUser_idCreate").value
+        const IsActive = document.getElementById("IsActiveCreate").checked
+        const Avatar = document.getElementById("AvatarCreate")
+        if (Password.length < 6 || ConfirmPassword.length < 6) {
             $.toast({
                 position: "top-right",
                 heading: 'Warning',
@@ -189,8 +193,9 @@
         formData.append("Code", Code)
         formData.append("UserName", UserName)
         formData.append("FullName", FullName)
-        formData.append("roleId", Number(RoleId))
+        formData.append("RoleId", Number(RoleId))
         formData.append("CreatorUser_id", CreatorUser_id)
+        formData.append("IsActive", IsActive === true ? 1 : 0)
         formData.append("Email", Email)
         formData.append("Phone", Phone)
         formData.append("Password", CryptoJS.SHA256(Password).toString())
@@ -227,9 +232,9 @@
         }
     }
 </script>
-
+{{!-- code random --}}
 <script>
-    const codeValue = document.querySelector("#Code")
+    const codeValue = document.querySelector("#CodeCreate")
     function generateRandomCode(length) {
         let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789';
         let code = '';

@@ -20,6 +20,10 @@ const ScoreTempModel = {
         const query = `SELECT * FROM scoretemp WHERE IsDeleted = 0 AND Code = '${productGroup_code}'`
         connection.query(query, callback)
     },
+    getScoreTempByProductGroupId: (getScoreTempByProductGroupId, callback) => {
+        const query = `SELECT * FROM scoretemp WHERE IsDeleted = 0 AND ProductGroup_id = '${getScoreTempByProductGroupId}'`
+        connection.query(query, callback)
+    },
     // tat ca phieu tu thung rac
     getAllScoreTempFromTrash: (callback) => {
         const query = `SELECT 

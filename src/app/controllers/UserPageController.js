@@ -62,7 +62,6 @@ class UserPageController {
     create(req, res) {
         AccountModel.findUserAdd(req.body, (err, data) => {
             if (err) {
-                console.log(err)
                 return res.status(500).json({
                     message: "Loi truy van"
                 })
@@ -89,6 +88,35 @@ class UserPageController {
                                 message: 'Thêm mới thành công'
                             });
                         }
+                    })
+                } else {
+                    return res.status(400).json({
+                        message: "Tên đã tồn tại"
+                    })
+                }
+            }
+        })
+    }
+    update(req, res) {
+        const id = req.params.id
+        AccountModel.findUserUpdate(id, req.body, (err, data) => {
+            if (err) {
+                console.log(err)
+                return res.status(500).json({
+                    message: "Loi truy van"
+                })
+            } else {
+                if (data.length === 0) {
+                    AccountModel.updateUser(id, req.body, (err, data) => {
+                        if (err) {
+                            console.log(err)
+                            return res.status(500).json({
+                                message: err
+                            });
+                        }
+                        return res.status(201).json({
+                            message: 'Cập nhật thành công'
+                        });
                     })
                 } else {
                     return res.status(400).json({

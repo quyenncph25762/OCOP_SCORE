@@ -50,11 +50,14 @@ Handlebars.registerHelper('ifCondNot', function (v1, v2, options) {
 });
 
 Handlebars.registerHelper('ifCondOr', function (v1, v2, v3, v4, options) {
-    console.log(`v1:`, v1)
-    console.log(`v2:`, v2)
-    console.log(`v3:`, v3)
-    console.log(`v4:`, v4)
     if (v1 === v2 || v3 === v4) {
+        return options.fn(this);
+    }
+    return options.inverse(this);
+});
+
+Handlebars.registerHelper('ifCondAnd', function (v1, v2, v3, v4, options) {
+    if (v1 === v2 && v3 === v4) {
         return options.fn(this);
     }
     return options.inverse(this);

@@ -2,7 +2,7 @@ const url = new URL(location.href)
 const params = new URLSearchParams(url.searchParams)
 var arrIdOld = []
 // lay gia tri tren thanh url
-if (params.has("ScoreFile_id") && params.has("code") && params.has("productId")) {
+if (params.has("ScoreFile_id") && params.has("productId")) {
     // lay id scorefile tren thanh url
     const product_id = params.get("productId")
     const ScoreFile_id = params.get("ScoreFile_id")
@@ -59,7 +59,8 @@ async function handleGetScoreFileDetail(ScoreFile_id, product_id) {
     
                 ${listScoreFileDetail[i].scoreTempDetail_isScore ?
                 `<td style="color: red; font-style: italic; text-align: center;">
-                        <input type="radio" class="btnsRadio" data-score=${listScoreFileDetail[i].scoreTempDetail_maxScore} data-id="${listScoreFileDetail[i]._id}" value="${listScoreFileDetail[i].scoreTempDetail_maxScore}" name="${checkBoxScoreName}" ${listScoreFileDetail[i].scoreTempDetail_maxScore === listScoreFileDetail[i].Score ? "checked" : "disabled"}>
+                        <input type="radio" class="btnsRadio radio-custom" data-score=${listScoreFileDetail[i].scoreTempDetail_maxScore} data-id="${listScoreFileDetail[i]._id}" value="${listScoreFileDetail[i].scoreTempDetail_maxScore}" id="radio-${i}" name="${checkBoxScoreName}" ${listScoreFileDetail[i].scoreTempDetail_maxScore === listScoreFileDetail[i].Score ? "checked" : "disabled"}>
+                        <label for="radio-${i}" class="radio-custom-label"></label>
                     </td>` :
                 `<td></td>`
             }

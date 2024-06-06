@@ -34,6 +34,8 @@ const ScoreFileModel = {
             workposition ON workposition._id = employee.WorkPosition_id
         WHERE 
             scorefile.IsDeleted = 0 AND scorefile.Status = 2 AND scorefile.Product_id IS NOT NULL AND scorefile.ScoreCommitee_id = ?
+         ORDER BY 
+        scorefile._id DESC
     `;
         connection.query(query, [idScoreCommitee], callback);
     },
@@ -47,16 +49,26 @@ const ScoreFileModel = {
         customer.Name AS customer_name,
         productgroup.Name AS productgroup_name,   
         productgroup.Code AS productgroup_code,
+        productgroup._id AS productgroup_id,
         DATE_FORMAT(scorefile.ScoreDate, '%Y-%m-%d') AS formattedScoreDate,
         scorecommittee._id AS scorecommitee_id,
         scorecommittee.Employee_id AS scorecommittee_employeeId
-    FROM scorefile
-    LEFT JOIN product ON product._id = scorefile.Product_id
-    LEFT JOIN customer ON customer._id = product.Customer_id
-    LEFT JOIN productgroup ON productgroup._id = product.ProductGroup_id
-    LEFT JOIN scorecommittee ON scorecommittee._id = scorefile.Scorecommitee_id
-    WHERE scorefile.IsDeleted = 0 AND scorefile.Product_id IS NOT NULL AND scorefile.forEmployeeId = ${id}
+    FROM 
+        scorefile
+    LEFT JOIN 
+        product ON product._id = scorefile.Product_id
+    LEFT JOIN 
+        customer ON customer._id = product.Customer_id
+    LEFT JOIN 
+        productgroup ON productgroup._id = product.ProductGroup_id
+    LEFT JOIN 
+        scorecommittee ON scorecommittee._id = scorefile.Scorecommitee_id
+    WHERE 
+        scorefile.IsDeleted = 0 AND scorefile.Product_id IS NOT NULL AND scorefile.forEmployeeId = ?
+    ORDER BY 
+        scorefile._id DESC
 `;
+
         connection.query(query, callback);
     },
     // get all where IsDeleted = 1

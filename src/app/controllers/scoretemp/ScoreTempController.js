@@ -46,6 +46,19 @@ class ScoreTempController {
             return res.status(200).json(scoretemp?.[0])
         })
     }
+    // lay scoretemp theo productgroupId
+    getScoreTempByProductGroupId(req, res) {
+        const idProductGroup = req.params.id
+
+        ScoreTempModel.getScoreTempByProductGroupId(idProductGroup, (err, scoretemp) => {
+            if (err) {
+                return res.status(500).json({
+                    message: "Lỗi truy xuất"
+                })
+            }
+            return res.status(200).json(scoretemp?.[0])
+        })
+    }
     // trang them scoretemp
     addPage(req, res, next) {
         const cookie = req.cookies

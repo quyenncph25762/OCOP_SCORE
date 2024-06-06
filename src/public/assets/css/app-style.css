@@ -3891,11 +3891,11 @@ table.grid td {
 
 
 .footer {
-    bottom: 0px;
     color: rgba(255, 255, 255, 0.73);
     text-align: center;
     padding: 12px 30px;
     position: absolute;
+    bottom: 0;
     right: 0;
     left: 250px;
     background-color: transparent;

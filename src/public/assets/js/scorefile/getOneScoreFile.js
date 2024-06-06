@@ -2,11 +2,12 @@ const url = new URL(location.href)
 const params = new URLSearchParams(url.searchParams)
 
 
-if (params.has("productId") && params.has("code")) {
+if (params.has("productId") && params.has("code") && params.has("productgroupId")) {
     const productId = params.get("productId")
     const code = params.get("code")
+    const productgroupId = params.get("productgroupId")
     getOneProduct(productId)
-    getOneScoreTemp(code, productId)
+    getOneScoreTemp(code, productId, productgroupId)
 } else {
     console.log("error")
 }
@@ -40,7 +41,7 @@ async function getOneProduct(productId) {
         console.log(error)
     }
 }
-async function getOneScoreTemp(code, productId) {
+async function getOneScoreTemp(code, productId, productgroupId) {
     try {
         // goi vien dan theo productDetail
         const responseProductDetailByProduct = await fetch(`/productDetail/${productId}`, {
@@ -48,7 +49,7 @@ async function getOneScoreTemp(code, productId) {
         })
         const listProductDetail = await responseProductDetailByProduct.json()
         // goi scoretemp theo nhom san pham
-        const response = await fetch(`/scoretemp/byProductGroup/${code}`, {
+        const response = await fetch(`/scoretemp/byProductGroupId/${productgroupId}`, {
             method: "GET"
         })
         if (!response.ok) {
@@ -97,7 +98,7 @@ async function getOneScoreTemp(code, productId) {
                                 </td > `
                     }
                             
-                            ${ListScoreTempDetail[i].MaxScore > 0 && ListScoreTempDetail[i].IsScore ?
+                            ${ListScoreTempDetail[i].MaxScore >= 0 && ListScoreTempDetail[i].IsScore ?
                         `<td style="font-style: italic; color: rgb(232, 67, 67); font-weight: 600;">(${ListScoreTempDetail[i].MaxScore} điểm)</td>`
                         :
                         `<td></td>`
@@ -112,7 +113,12 @@ async function getOneScoreTemp(code, productId) {
                             ${ListScoreTempDetail[i].IsScore ?
                         `
                        
-                        <td style="color: red; font-style: italic; text-align: center;"> <input type="radio" class="btnsRadio" data-id="${ListScoreTempDetail[i]._id}" value="${ListScoreTempDetail[i].MaxScore}" name="${checkBoxScoreName}"></td>`
+                        <td style="color: red; font-style: italic; text-align: center;"> 
+                        <input type="radio" class="btnsRadio radio-custom" id="radio-${i}" data-id="${ListScoreTempDetail[i]._id}" value="${ListScoreTempDetail[i].MaxScore}" name="${checkBoxScoreName}">
+                        <label for="radio-${i}" class="radio-custom-label"></label>
+                        </td>
+                        
+                        `
                         :
                         `<td></td>`
                     }
