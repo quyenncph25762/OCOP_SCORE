@@ -48,7 +48,8 @@ const ScoreFileModel = {
         productgroup.Name AS productgroup_name,   
         productgroup.Code AS productgroup_code,
         DATE_FORMAT(scorefile.ScoreDate, '%Y-%m-%d') AS formattedScoreDate,
-        scorecommittee._id AS scorecommitee_id
+        scorecommittee._id AS scorecommitee_id,
+        scorecommittee.Employee_id AS scorecommittee_employeeId
     FROM scorefile
     LEFT JOIN product ON product._id = scorefile.Product_id
     LEFT JOIN customer ON customer._id = product.Customer_id

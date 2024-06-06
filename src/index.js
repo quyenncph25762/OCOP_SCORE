@@ -41,6 +41,31 @@ Handlebars.registerHelper('ifCond', function (v1, v2, options) {
     }
     return options.inverse(this);
 });
+// helpers not
+Handlebars.registerHelper('ifCondNot', function (v1, v2, options) {
+    if (v1 !== v2) {
+        return options.fn(this);
+    }
+    return options.inverse(this);
+});
+
+Handlebars.registerHelper('ifCondOr', function (v1, v2, v3, v4, options) {
+    console.log(`v1:`, v1)
+    console.log(`v2:`, v2)
+    console.log(`v3:`, v3)
+    console.log(`v4:`, v4)
+    if (v1 === v2 || v3 === v4) {
+        return options.fn(this);
+    }
+    return options.inverse(this);
+});
+
+Handlebars.registerHelper('ifCond', function (v1, v2, options) {
+    if (v1 === v2) {
+        return options.fn(this);
+    }
+    return options.inverse(this);
+});
 
 // chuyển chữ viết thường
 Handlebars.registerHelper('toLowerCase', function (str) {

@@ -98,18 +98,34 @@
                                     <p class="statusLabelSuccess">Đã nộp phiếu</p>
                                     {{/ifCond}}
                                     {{!-- <p>{{User.RoleId}}</p> --}}
-                                <td>
-                                    {{#ifCond ../User.RoleId 1}}
+                                <td style="display: flex;">
+                                    {{!-- Toán tử or nếu user là admin và user._id === với charman thì cho xem kết quả
+                                    hội đồng --}}
+                                    {{#ifCondOr ../User.RoleId 1 ../User._id this.scorecommittee_employeeId}}
                                     {{!-- icon xem ket qua hoi dong --}}
-                                    <button onclick="handleResultScoreFiles('{{this.scorecommitee_id}}')"
+                                    <button
+                                        onclick="handleResultScoreFiles('{{this.scorecommitee_id}}','{{this.Product_id}}')"
                                         style="background: transparent;border: none;" class="d-inline-block"
                                         tabindex="0" data-toggle="tooltip" title="Xem kết quả hội đồng">
                                         <ion-icon name="receipt-outline" data-toggle="modal"
                                             data-target="#modalResultsScoreFile{{this._id}}"></ion-icon>
                                     </button>
                                     {{> modalResultScoreFile id=this._id}}
-                                    {{else}}
-
+                                    {{/ifCondOr}}
+                                    {{#ifCondNot ../User.RoleId 1}}
+                                    {{!-- Neu User ma co trong hoi dong thi moi cho cham diem --}}
+                                    {{!-- icon cham diem --}}
+                                    {{#ifCond this.Status 0}}
+                                    {{!-- <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
+                                        title="Chấm điểm"> --}}
+                                        <div class="box_icon-isCommittee" data-id="{{this._id}}"
+                                            data-idCommittee="{{this.ScoreCommitee_id}}" data-UserId="{{../User._id}}"
+                                            data-ProductId="{{this.Product_id}}"
+                                            data-productGroupCode="{{this.productgroup_code}}">
+                                        </div>
+                                        {{!--
+                                    </span> --}}
+                                    {{/ifCond}}
 
                                     {{!-- Neu da cham thi hien icon xac nhan va chinh sua--}}
                                     {{#ifCond this.Status 1}}
@@ -138,20 +154,8 @@
                                         </a>
                                     </span>
                                     {{/ifCond}}
-                                    {{!-- Neu User ma co trong hoi dong thi moi cho cham diem --}}
-                                    {{!-- icon cham diem --}}
-                                    {{#ifCond this.Status 0}}
-                                    {{!-- <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
-                                        title="Chấm điểm"> --}}
-                                        <div class="box_icon-isCommittee" data-id="{{this._id}}"
-                                            data-idCommittee="{{this.ScoreCommitee_id}}" data-UserId="{{../User._id}}"
-                                            data-ProductId="{{this.Product_id}}"
-                                            data-productGroupCode="{{this.productgroup_code}}">
-                                        </div>
-                                        {{!--
-                                    </span> --}}
-                                    {{/ifCond}}
-                                    {{#ifCond this.IsCommittee 1}}
+
+
                                     {{#ifCond this.Status 1}}
                                     {{!-- icon xoa--}}
                                     <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
@@ -161,8 +165,7 @@
                                         </ion-icon>
                                     </span>
                                     {{/ifCond}}
-                                    {{/ifCond}}
-                                    {{/ifCond}}
+                                    {{/ifCondNot}}
                                     {{!-- admin moi co quyen xem ket qua hoi dong --}}
                                 </td>
                             </tr>

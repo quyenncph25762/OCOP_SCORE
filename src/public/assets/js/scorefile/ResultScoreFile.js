@@ -2,8 +2,8 @@
 var AverageScore = 0
 // tinh so sao ocop trung bình
 var totalRankOcop = 0
-async function handleResultScoreFiles(idScoreCommittee) {
-    const tbodyResultsScoreFile = document.getElementById("tbodyResultsScoreFile")
+async function handleResultScoreFiles(idScoreCommittee, productId) {
+    const tbodyResultsScoreFile = document.getElementById(`tbodyResultsScoreFile${productId}`)
     const response = await fetch(`/scorefile/byIdScoreCommittee/${idScoreCommittee}`, {
         method: "GET"
     })
@@ -12,14 +12,13 @@ async function handleResultScoreFiles(idScoreCommittee) {
     }
     const listScoreFile = await response.json()
     // Lọc những employee đã chấm xong
-    const filterScoreFile = listScoreFile.filter((scorefile) => scorefile.Employee_id)
+    const filterScoreFile = listScoreFile.filter((scorefile) => scorefile.Employee_id && scorefile.Product_id === Number(productId))
     tbodyResultsScoreFile.innerHTML = ""
     if (filterScoreFile.length > 0) {
         let i = 0
         let totalScore = 0
 
         for (const scorefile of filterScoreFile) {
-            console.log(scorefile)
             i += 1
             // tinh diem trung binh
             AverageScore = ((totalScore += scorefile.ScoreTotal) / filterScoreFile.length)
