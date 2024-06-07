@@ -13,13 +13,7 @@ if (params.has("ScoreFile_id") && params.has("productId")) {
 // lay ra scoreFile
 async function handleGetScoreFileDetail(ScoreFile_id, product_id) {
     // tao ten checkbox mac dinh
-    const response = await fetch(`/scoreFileDetail/byScoreFile/${ScoreFile_id}`, {
-        method: "GET"
-    })
-    if (!response.ok) {
-        console.log("Lỗi k get đc scoreFileDetail")
-    }
-    const listScoreFileDetail = await response.json()
+    const listScoreFileDetail = await FuncListScoreFileDetail(ScoreFile_id)
     let tbodyScoreFileUpdate = document.getElementById("tbodyScoreFileUpdate")
     let checkBoxScoreName = "Score1"
     let checkboxScore = 1
@@ -158,6 +152,133 @@ function repeatStarUpdate(number) {
     }
     return star
 }
+
+async function handleAddScoreFile(userId, scoreFileId, ScoreCommitee_id, productId, productgroupId) {
+    const getOneScoreFile = await FuncGetOneScoreFile(scoreFileId)
+    const listScoreFile = await FuncListScoreFileDetail(scoreFileId)
+    const idScoreFileUpdate = await filterScoreFileId(userId, ScoreCommitee_id)
+
+    // lấy tất cả trường của scorefile getOne
+    const { Product_id, Customer_id, CreatorUser_id, Employee_id, EmployeeUserId, ScoreDate, RankOcop, Note, Code, ScoreTotal, ScoreTemp_id, Status, IsActive } = getOneScoreFile
+    const now = Date.now();
+    const date = new Date(now);
+    const formScoreFile = {
+        Product_id: Product_id,
+        Customer_id: Customer_id,
+        CreatorUser_id: Number(userId),
+        Employee_id: Number(userId),
+        EmployeeUserId: Number(userId),
+        ScoreDate: date,
+        RankOcop: RankOcop,
+        Note: Note,
+        Code: (("copy") + Code),
+        ScoreTotal: ScoreTotal,
+        ScoreTemp_id: ScoreTemp_id,
+        Status: 1,
+        IsActive: IsActive
+    }
+    // thực hiện update scorefile userId theo thư kí
+    const res = await fetch(`/scorefile/update/${idScoreFileUpdate}`, {
+        method: "PATCH",
+        body: JSON.stringify(formScoreFile),
+        headers: {
+            "Content-Type": "application/json"
+        }
+    })
+    if (!res.ok) {
+        console.log("Lỗi khi cập nhật scorefile")
+        return
+    }
+    // sau khi update scorefile xong thực hiện thếm scorefile detail
+    if (listScoreFile.length > 0) {
+        const arrResponse = []
+        for (const scorefile of listScoreFile) {
+            const { ScoreTempDetail_id, Score } = scorefile
+            const formScoreFile = {
+                ScoreFile_id: idScoreFileUpdate,
+                ScoreTempDetail_id: ScoreTempDetail_id,
+                Score: Score,
+                CreatorUser_id: userId
+            }
+            const response = await fetch(`/scoreFileDetail/add`, {
+                method: "POST",
+                body: JSON.stringify(formScoreFile),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            })
+            if (!response.ok) {
+                console.log("Lỗi khi thêm scoreFileDetail")
+                return
+            }
+            arrResponse.push(response)
+        }
+
+        if (arrResponse.length > 0) {
+            await Promise.all(arrResponse)
+            localStorage.setItem('toast', JSON.stringify({
+                position: "top-right",
+                heading: 'SUCCESS',
+                text: 'Đã thêm thành công',
+                icon: 'success',
+                loader: true,
+                loaderBg: '#9EC600',
+                stack: 4
+            }));
+            window.location.replace(`/scoreFile/updateScoreFile?productId=${productId}&productgroupId=${productgroupId}&ScoreFile_id=${idScoreFileUpdate}`)
+        }
+    }
+}
+
+// danh sach scorefile detail
+async function FuncListScoreFileDetail(scoreFileId) {
+    const response = await fetch(`/scoreFileDetail/byScoreFile/${scoreFileId}`, {
+        method: "GET"
+    })
+    if (!response.ok) {
+        console.log("Lỗi khi goi danh sách scorefiledetail theo scorefile")
+        return
+    }
+    return await response.json()
+}
+// lay ra idScoreFile can cap nhat
+async function filterScoreFileId(userId, ScoreCommitee_id) {
+    try {
+        const response = await fetch(`/scoreFile/byIdScoreCommitteeAll/${ScoreCommitee_id}`, {
+            method: "GET"
+        })
+        if (!response.ok) {
+            console.log("Lỗi khi gọi danh sách scorefile theo id hội đồng")
+        }
+        const listScoreFile = await response.json()
+        if (listScoreFile) {
+            const arrUserId = listScoreFile.find((scorefile) => scorefile.forEmployeeId === Number(userId))
+            if (arrUserId) {
+                const idScoreFile = arrUserId._id
+                return idScoreFile
+            }
+
+        }
+    } catch (error) {
+        console.log(error)
+    }
+}
+// 
+async function FuncGetOneScoreFile(scoreFileId) {
+    try {
+        const response = await fetch(`/scoreFile/getOne/${scoreFileId}`, {
+            method: "GET"
+        })
+        if (!response.ok) {
+            console.log("Lỗi khi get 1 scorefile")
+        }
+        const data = await response.json()
+        return data
+    } catch (error) {
+        console.log(error)
+    }
+}
+
 
 
 

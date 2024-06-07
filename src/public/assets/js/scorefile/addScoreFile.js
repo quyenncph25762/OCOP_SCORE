@@ -128,8 +128,6 @@ const handleAddScoreFile = async () => {
         }
         //ADD scoreFileDetail
         // Sau khi co nhung phieu chi tiet thuc hien them vao scoreFileDetail
-
-
         if (arrScoreTempDetail.length > 0) {
             const arrResponse = []
             for (const item of arrScoreTempDetail) {

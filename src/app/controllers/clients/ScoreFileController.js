@@ -33,6 +33,18 @@ class ScoreFileController {
         }
 
     }
+    // getOne
+    getOneController(req, res) {
+        const id = req.params.id
+        ScoreFileModel.getOne(id, (err, data) => {
+            if (err) {
+                return res.status(500).json({
+                    message: err
+                })
+            }
+            return res.status(200).json(data[0])
+        })
+    }
     // getAllFromTrash
     getAllFromTrash(req, res) {
         const cookie = req.cookies
@@ -61,6 +73,19 @@ class ScoreFileController {
         const idScoreCommitee = req.params.id
 
         ScoreFileModel.getScoreFileByScoreCommittee(idScoreCommitee, (err, scorefiles) => {
+            if (err) {
+                return res.status(500).json({
+                    message: err
+                })
+            }
+            return res.status(200).json(scorefiles)
+        })
+    }
+    // get ScoreFile by scoreCommitteeAll
+    getScoreFileByScoreCommitteeAll(req, res) {
+        const idScoreCommitee = req.params.id
+
+        ScoreFileModel.getScoreFileByScoreCommitteeAll(idScoreCommitee, (err, scorefiles) => {
             if (err) {
                 return res.status(500).json({
                     message: err

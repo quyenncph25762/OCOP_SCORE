@@ -324,6 +324,12 @@ ion-icon[name="attach-outline"] {
     cursor: pointer;
 }
 
+ion-icon[name="alert-circle-outline"] {
+    color: rgb(221, 62, 72);
+    font-size: 20px;
+    cursor: pointer;
+}
+
 
 ion-icon[name="attach-outline"]:hover {
     background-color: #ccc;

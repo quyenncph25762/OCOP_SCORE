@@ -2,7 +2,7 @@ const url = new URL(location.href)
 const params = new URLSearchParams(url.searchParams)
 var arrIdOld = []
 // lay gia tri tren thanh url
-if (params.has("ScoreFile_id") && params.has("code") && params.has("productgroupId") && params.has("productId")) {
+if (params.has("ScoreFile_id") || params.has("code") && params.has("productgroupId") && params.has("productId")) {
     // lay id scorefile tren thanh url
     const product_id = params.get("productId")
     const ScoreFile_id = params.get("ScoreFile_id")

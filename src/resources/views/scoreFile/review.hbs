@@ -52,6 +52,17 @@
                         <p style="font-size: 14px;font-weight: 600">Người chấm: {{ScoreFile.employee_FullName}}</p>
                         <p style="font-size: 13px;font-weight: 600">{{ScoreFile.workposition_name}} -
                             {{ScoreFile.workdepartment_title}}</p>
+
+                        {{#ifCondNot User._id ScoreFile.Employee_id}}
+                        <button class="btn btn-light"
+                            onclick="handleAddScoreFile('{{User._id}}','{{ScoreFile._id}}','{{ScoreFile.ScoreCommitee_id}}','{{Product_id}}','{{this.productgroup_id}}')">Chấm
+                            điểm theo thư
+                            kí</button>
+                        <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
+                            title="Phiếu của bạn lập tức chấm theo thư kí">
+                            <ion-icon name="alert-circle-outline" style="font-weight: 600;"></ion-icon>
+                        </span>
+                        {{/ifCondNot}}
                     </div>
                 </div>
                 {{!-- product info --}}

@@ -1,7 +1,44 @@
 const connection = require("../../../config/db")
 
 const ScoreFileModel = {
-    // 
+    // get tat ca scorefile theo scorecommittee
+    getScoreFileByScoreCommitteeAll: (idScoreCommitee, callback) => {
+        const query = `
+        SELECT 
+            scorefile.*,
+            product.Name AS product_name,
+            product.Avatar AS product_avatar,
+            customer.Name AS customer_name,
+            productgroup.Name AS productgroup_name,   
+            productgroup.Code AS productgroup_code,
+            DATE_FORMAT(scorefile.ScoreDate, '%Y-%m-%d') AS formattedScoreDate,
+            scorecommittee._id AS scorecommitee_id,
+            employee.FullName AS employee_FullName,
+            workdepartment.title AS workdepartment_title,
+            workposition.Name AS workposition_name,
+            scorecommittee.Name AS scorecommittee_name
+        FROM scorefile
+        LEFT JOIN 
+            product ON product._id = scorefile.Product_id
+        LEFT JOIN 
+            customer ON customer._id = product.Customer_id
+        LEFT JOIN 
+            productgroup ON productgroup._id = product.ProductGroup_id
+        LEFT JOIN 
+            scorecommittee ON scorecommittee._id = scorefile.Scorecommitee_id
+        LEFT JOIN 
+            employee ON employee._id = scorefile.Employee_id
+        LEFT JOIN 
+            workdepartment ON workdepartment._id = employee.WorkDepartment_id
+        LEFT JOIN 
+            workposition ON workposition._id = employee.WorkPosition_id
+        WHERE 
+            scorefile.IsDeleted = 0 AND scorefile.Product_id IS NOT NULL AND scorefile.ScoreCommitee_id = ?
+         ORDER BY 
+        scorefile._id DESC
+    `;
+        connection.query(query, [idScoreCommitee], callback);
+    },
     // get scoreFileByScoreCommitee
     getScoreFileByScoreCommittee: (idScoreCommitee, callback) => {
         const query = `
@@ -98,6 +135,7 @@ const ScoreFileModel = {
         const query = `SELECT * FROM scorefile WHERE Status = 0 AND	IsDeleted = 0`
         connection.query(query, callback)
     },
+    // getOne
     getOne: (id, callback) => {
         const query = `
         SELECT 
