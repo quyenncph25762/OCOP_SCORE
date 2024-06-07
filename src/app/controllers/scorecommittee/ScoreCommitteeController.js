@@ -221,16 +221,15 @@ class ScoreCommitteController {
                             employeesAdminId.forEach((employeeId) => listEmployeeId.push(employeeId))
                         }
                         // loc scorefile nhung employee nao dang o trong scorecommitteeDetail
-                        const dataFilter = data.filter((item) => listEmployeeId.includes(item.forEmployeeId))
+                        const dataFilter = Array.from(new Set(data.filter((item) => listEmployeeId.includes(item.forEmployeeId))))
                         // nhung scorefile nao k co trong scoreCommittee thi them scoreCommittee tranh truong hop get all scorefile status = 0
                         const dataFilterDifferent = data.filter((item) => !listEmployeeId.includes(item.forEmployeeId))
                         const formScoreFile = {
                             ScoreCommitee_id: id,
                             IsActive: 1
                         }
-                        console.log(dataFilter)
                         await dataFilter.forEach(async (element) => {
-                            if (!element.ScoreCommitee_id) {
+                            if (!element.ScoreCommitee_id || element.ScoreCommitee_id === Number(id)) {
                                 // thuc hien cap nhat trang thai cham diem cho scorefile
                                 await ScoreFileModel.updateScoreCommitteOnScoreFile(element._id, formScoreFile, (err, result) => {
                                     if (err) {

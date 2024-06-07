@@ -3,7 +3,7 @@ var AverageScore = 0
 // tinh so sao ocop trung bình
 var totalRankOcop = 0
 async function handleResultScoreFiles(idScoreCommittee, productId) {
-    console.log(idScoreCommittee)
+    const ArrSecUserId = await FuncListSecUserId(idScoreCommittee)
     const tbodyResultsScoreFile = document.getElementById(`tbodyResultsScoreFile${productId}`)
     const response = await fetch(`/scorefile/byIdScoreCommittee/${idScoreCommittee}`, {
         method: "GET"
@@ -12,8 +12,12 @@ async function handleResultScoreFiles(idScoreCommittee, productId) {
         console.log("Lỗi khi gọi ResultScoreFiles")
     }
     const listScoreFile = await response.json()
-    // Lọc những employee đã chấm xong
-    const filterScoreFile = listScoreFile.filter((scorefile) => scorefile.Employee_id && scorefile.Product_id === Number(productId))
+    // console.log(listScoreFile)
+    // Lọc những employee đã chấm xong và k có secUserId
+    const filterScoreFile = listScoreFile.filter(scorefile =>
+        scorefile.Employee_id && scorefile.Product_id === Number(productId) &&
+        !ArrSecUserId.includes(scorefile.Employee_id)
+    );
     tbodyResultsScoreFile.innerHTML = ""
     if (filterScoreFile.length > 0) {
         let i = 0
@@ -141,4 +145,17 @@ function rankOcop() {
     } else {
         totalRankOcop = 1
     }
+}
+
+async function FuncListSecUserId(idScoreCommittee) {
+    const response = await fetch(`/scoreCommitteeDetail/getByScoreCommittee/${idScoreCommittee}`, {
+        method: "GET"
+    })
+    if (!response.ok) {
+        console.log("Lỗi khi lấy ra danh sách scoreCommitteeDetail")
+        return
+    }
+    const listUser = await response.json()
+    const arrSecUserId = listUser.map((user) => Number(user.SecUserId)).filter(id => id !== undefined && id !== null)
+    return arrSecUserId
 }

@@ -4,6 +4,7 @@ const ProductModel = require("../../models/product/ProductmanageModel")
 const EmployeeModel = require("../../models/employee/EmployeeModel")
 const jwt = require("jsonwebtoken")
 const dotenv = require("dotenv")
+const ScoreCommitteeDetailModel = require("../../models/scoreCommittee/ScoreCommitteeDetailModel")
 dotenv.config();
 const { SECRET_CODE } = process.env
 
@@ -25,6 +26,7 @@ class ScoreFileController {
                             message: "Lỗi truy vấn"
                         })
                     }
+                    console.log(ScoreFile)
                     res.render("scoreFile/scoreFile", { User: User[0], ScoreFile: ScoreFile })
                 })
             })
@@ -110,6 +112,9 @@ class ScoreFileController {
     // page tao moi
     createPage(req, res) {
         const cookie = req.cookies
+        const idScoreCommitee = req.query.scoreCommitteeId
+        const productId = req.query.productId
+        const scorefileId = req.query._id
         if (cookie?.User) {
             const UserDataCookie = jwt.verify(cookie.User, SECRET_CODE)
             AccountModel.fetchOneUser(UserDataCookie?._id, (err, User) => {
@@ -118,7 +123,35 @@ class ScoreFileController {
                         message: err
                     })
                 }
-                res.render("scoreFile/createScoreFile", { User: User[0] })
+                // lay id hoi dong
+
+                if (idScoreCommitee) {
+                    // lay danh sach hoi dong chi tiet
+                    ScoreCommitteeDetailModel.getByScoreCommittee(idScoreCommitee, async (err, listScoreCommitteeDetail) => {
+                        if (err) {
+                            return res.status(500).json({
+                                message: err
+                            })
+                        }
+                        // thuc hien tim ra id hoi dong chi tiet bang cach loc xem co userid nao === voi user.id dang dang nhap khong
+                        const scoreCommitteeDetailFilter = listScoreCommitteeDetail?.filter((item) => item.UserId === User[0]._id)
+
+                        // lay danh sach scorefile theo hoi dong
+                        ScoreFileModel.getScoreFileByScoreCommittee(idScoreCommitee, (err, listScoreFile) => {
+                            if (err) {
+                                return res.status(500).json({
+                                    message: err
+                                })
+                            }
+                            // tim ra scorefile cua secUserId
+                            const scoreFileSecUserId = listScoreFile?.filter((employee) => employee.Employee_id === scoreCommitteeDetailFilter[0].SecUserId)
+                            // sau khi tim dc thi thuc hien truyen vao handlebars
+                            res.render("scoreFile/createScoreFile", { User: User[0], scoreCommitteeDetail: scoreCommitteeDetailFilter ? scoreCommitteeDetailFilter[0] : [], productId: productId, scorefileId: scoreFileSecUserId ? scoreFileSecUserId[0] : [] })
+                        })
+
+
+                    })
+                }
             })
         }
 

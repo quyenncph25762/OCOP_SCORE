@@ -31,11 +31,12 @@
                 style="list-style: none; display:flex; justify-content: space-between; align-items: center;padding: 0;">
                 <div class="import_customer_button"
                     style="list-style: none; display:flex; justify-content: space-between; align-items: center;">
-                    <button class="btn btn-light" style="display: flex;align-items: center;">
-                        <ion-icon name="arrow-undo-outline"></ion-icon>
-                        <a href="/scorefile" style="margin-left: 8px;margin-bottom: 0;">Trở về danh sách phiếu
-                            chấm</a>
-                    </button>
+                    <a href="/scorefile">
+                        <button class="btn btn-light" style="display: flex;align-items: center;">
+                            <ion-icon name="arrow-undo-outline" style="margin-right: 8px;margin-bottom: 0;"></ion-icon>
+                            <p style="margin: 0;">Trở về danh sách phiếu chấm</p>
+                        </button>
+                    </a>
                 </div>
             </ul>
             </li>
@@ -45,6 +46,7 @@
     <div class="col-md-12">
         <div class="row row-content">
             <div class="col-sm-3">
+                {{!-- mguoi cham --}}
                 <div class="card shadow">
                     <div class="card-body">
                         <p style="font-size: 14px;font-weight: 600">Người chấm: {{ScoreFile.employee_FullName}}</p>
@@ -52,6 +54,7 @@
                             {{ScoreFile.workdepartment_title}}</p>
                     </div>
                 </div>
+                {{!-- product info --}}
                 <div class="card shadow">
                     {{!-- product --}}
                     <div class="card-body" id="product-container">

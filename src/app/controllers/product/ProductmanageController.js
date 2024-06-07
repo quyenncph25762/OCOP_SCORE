@@ -247,7 +247,6 @@ class ProductmanageController {
             }
         })
     }
-
     // xoa vao thung rac
     deleteToTrash(req, res, next) {
         const product_id = req.params.id

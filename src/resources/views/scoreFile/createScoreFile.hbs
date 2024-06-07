@@ -7,7 +7,7 @@
                 <p style="font-size: 18px;font-weight: 600">Chấm điểm OCOP | Tên sản phẩm</p>
                 <div class="import_customer_button"
                     style="list-style: none; display:flex; justify-content: space-between; align-items: center;">
-                    <button class="btn btn-success" onclick="handleAddScoreFile()">Thêm mới</button>
+                    <button class="btn btn-success" onclick="handleAddScoreFile()">Chấm điểm</button>
                 </div>
             </ul>
             </li>
@@ -17,6 +17,30 @@
     <div class="col-md-12">
         <div class="row row-content">
             <div class="col-sm-3">
+                {{#if scoreCommitteeDetail.SecUserId}}
+                <div class="card shadow">
+                    <div class="card-body d-flex">
+                        <p style="font-size: 14px;font-weight: 600">Thư kí: {{scoreCommitteeDetail.secUser_FullName}}
+                        </p>
+                        {{#if scorefileId}}
+                        {{#ifCondOr scorefileId.Status 0 scorefileId.Status 1}}
+                        Hiện chưa chấm
+                        {{else}}
+                        <span class="d-inline-block ml-3" tabindex="0" data-toggle="tooltip"
+                            title="Tham khảo phiếu chấm">
+                            <a href="/scoreFile/reviewPage?productId={{productId}}&ScoreFile_id={{scorefileId._id}}">
+                                <ion-icon name="documents-outline"></ion-icon>
+                            </a>
+                        </span>
+                        {{/ifCondOr}}
+                        {{else}}
+                        <span class="d-inline-block ml-3" tabindex="0" data-toggle="tooltip" title="Đang chấm">
+                            <ion-icon style="cursor: wait;" name="documents-outline"></ion-icon>
+                        </span>
+                        {{/if}}
+                    </div>
+                </div>
+                {{/if}}
                 <div class="card shadow">
                     {{!-- product --}}
                     <div class="card-body" id="product-container">

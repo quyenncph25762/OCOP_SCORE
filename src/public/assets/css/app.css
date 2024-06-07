@@ -246,6 +246,12 @@ ion-icon[name="close-outline"] {
     cursor: pointer;
 }
 
+ion-icon[name="documents-outline"] {
+    color: rgb(48, 190, 150);
+    font-size: 20px;
+    cursor: pointer;
+}
+
 ion-icon[name="checkbox-outline"] {
     color: rgb(24, 93, 170);
     font-size: 20px;
@@ -495,3 +501,7 @@ input.form-control.input-headerTable.w-100 {
     border: 2px solid #04b962;
     font-size: 16px;
 }
+
+/* customer checkbox */
+
+/* <div class="checkbox-wrapper-13"><input id="c1-13" type="checkbox"><label for="c1-13">Checkbox</label></div> */
