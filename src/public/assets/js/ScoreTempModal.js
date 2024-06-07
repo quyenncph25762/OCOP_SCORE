@@ -11,7 +11,6 @@ async function handleclickDetail(id) {
         }
         tbody.innerHTML = '';
         const ScoreTemp = await response.json();
-        console.log(ScoreTemp)
         for (const item of ScoreTemp) {
             tbody.innerHTML += `
             ${item.IsScore === 0 ?

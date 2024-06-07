@@ -8,9 +8,7 @@ router.patch("/revert/:id", ScoreTempController.revert)
 // removeToTrash
 router.patch("/removeToTrash/:id", ScoreTempController.removeToTrash)
 // pageTrash
-router.get("/", ScoreTempController.index)
-// get
-router.get("/trash", ScoreTempController.pageTrash)
+router.get("/trashPage", ScoreTempController.pageTrash)
 // add
 router.get("/addPage", ScoreTempController.addPage)
 router.post("/add", ScoreTempController.add)
@@ -21,5 +19,8 @@ router.put("/update/:id", ScoreTempController.update)
 router.get("/byProductGroup/:code", ScoreTempController.getScoreTempByProductGroup)
 // getByProductGroupId
 router.get("/byProductGroupId/:id", ScoreTempController.getScoreTempByProductGroupId)
-
+// get
+router.get("/", ScoreTempController.index)
+// getOne
+router.get("/getOne/:id", ScoreTempController.getOneAction)
 module.exports = router;

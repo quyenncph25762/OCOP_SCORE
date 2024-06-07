@@ -46,6 +46,9 @@ async function handleResultScoreFiles(idScoreCommittee, productId) {
                                     <ion-icon name="eye-outline"></ion-icon>
                                 </a>
                             </span>
+                            <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Yêu cầu chấm lại">
+                                    <ion-icon name="hand-left-outline" onclick="handleRevertScoreFile(${scorefile._id})"></ion-icon>
+                            </span>
                             <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Phiếu chấm">
                                 <a href="">
                                     <ion-icon name="link-outline"></ion-icon>
@@ -82,6 +85,7 @@ function repeatStar(number) {
     }
     return starInnter;
 }
+// ham cap nhat tong diem va rank ocop
 async function handleResult(idProduct) {
     try {
         rankOcop()
@@ -127,12 +131,11 @@ async function handleResult(idProduct) {
                 }
             }
         });
-
-
     } catch (error) {
         console.log(error)
     }
 }
+// ham tinh rank ocop
 function rankOcop() {
     if (AverageScore >= 90) {
         totalRankOcop = 5
@@ -146,7 +149,7 @@ function rankOcop() {
         totalRankOcop = 1
     }
 }
-
+// ham goi ra danh sach thu ki
 async function FuncListSecUserId(idScoreCommittee) {
     const response = await fetch(`/scoreCommitteeDetail/getByScoreCommittee/${idScoreCommittee}`, {
         method: "GET"
@@ -158,4 +161,47 @@ async function FuncListSecUserId(idScoreCommittee) {
     const listUser = await response.json()
     const arrSecUserId = listUser.map((user) => Number(user.SecUserId)).filter(id => id !== undefined && id !== null)
     return arrSecUserId
+}
+// ham cham lai
+async function handleRevertScoreFile(idScoreFile) {
+    $.confirm({
+        title: '<ion-icon name="help-circle-outline"></ion-icon>',
+        content: 'Yêu cầu chấm lại ?',
+        buttons: {
+            confirm: {
+                text: 'Confirm',
+                btnClass: 'btn-blue',
+                action: async function () {
+                    const response = await fetch(`/scorefile/updateStatus/${idScoreFile}`, {
+                        method: "PATCH",
+                        body: JSON.stringify({
+                            Status: 1
+                        }),
+                        headers: {
+                            "Content-Type": "application/json"
+                        }
+                    })
+                    if (!response.ok) {
+                        console.log("Lỗi khi yêu cầu chấm lại")
+                        return
+                    }
+                    localStorage.setItem('toast', JSON.stringify({
+                        position: "top-right",
+                        heading: 'SUCCESS',
+                        text: 'Cập nhật thành công!',
+                        icon: 'success',
+                        loader: true,
+                        loaderBg: '#9EC600',
+                        showHideTransition: 'slide',
+                        stack: 4
+                    }));
+                    window.location.reload()
+                }
+            },
+            cancel: function () {
+                $.alert('Đã hủy!');
+            }
+        }
+    });
+
 }

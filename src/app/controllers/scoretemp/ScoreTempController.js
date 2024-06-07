@@ -102,14 +102,7 @@ class ScoreTempController {
                 })
             }
             if (data.length === 0) {
-                ScoreTempModel.create({
-                    Code: req.body.Code,
-                    Name: req.body.Name,
-                    Note: req.body.Note,
-                    IsActive: req.body.IsActive === true ? 1 : 0,
-                    ProductGroup_id: req.body.ProductGroup_id,
-                    CreatorUser_id: req.body.CreatorUser_id
-                }, (err, results) => {
+                ScoreTempModel.create(req.body, (err, results) => {
                     if (err) {
                         console.log(err)
                         return res.status(500).json({
@@ -189,10 +182,21 @@ class ScoreTempController {
             })
         }
     }
+    // getOneAction
+    getOneAction(req, res) {
+        const id = req.params.id
+        ScoreTempModel.getOneScoreTemp(id, (err, data) => {
+            if (err) {
+                return res.status(500).json({
+                    message: "Lỗi truy vấn"
+                })
+            }
+            return res.status(200).json(data[0])
+        })
+    }
     // cap nhat
     update(req, res) {
         const id = req.params.id
-
         ScoreTempModel.findScoreTemUpdate(id, req.body, (err, data) => {
             if (err) {
                 return res.status(500).json({
@@ -200,13 +204,7 @@ class ScoreTempController {
                 })
             }
             if (data.length === 0) {
-                ScoreTempModel.updateScoreTemp(id, {
-                    Code: req.body.Code,
-                    Name: req.body.Name,
-                    Note: req.body.Note,
-                    IsActive: req.body.IsActive === true ? 1 : 0,
-                    ProductGroup_id: req.body.ProductGroup_id
-                }, (err, data) => {
+                ScoreTempModel.updateScoreTemp(id, req.body, (err, data) => {
                     if (err) {
                         return res.status(500).json({
                             message: "Lỗi truy vấn"
@@ -259,6 +257,7 @@ class ScoreTempController {
     }
     // trang chua cac scoretemp isDeleted = 1
     pageTrash(req, res) {
+        console.log("Hello world")
         const cookie = req.cookies
         if (cookie?.User) {
             const UserDataCookie = jwt.verify(cookie.User, SECRET_CODE)
@@ -268,18 +267,14 @@ class ScoreTempController {
                         message: "Lỗi truy vấn"
                     })
                 }
-                if (User?.[0].role_title.toLowerCase() !== "admin") {
-                    res.redirect("/client")
-                } else {
-                    ScoreTempModel.getAllScoreTempFromTrash((err, ScoreTemp) => {
-                        if (err) {
-                            return res.status(500).json({
-                                message: "Lỗi truy vấn"
-                            })
-                        }
-                        res.render("scoreTemp/trash", { User: User[0], ScoreTemp: ScoreTemp })
-                    })
-                }
+                ScoreTempModel.getAllScoreTempFromTrash((err, ScoreTemp) => {
+                    if (err) {
+                        return res.status(500).json({
+                            message: "Lỗi truy vấn"
+                        })
+                    }
+                    res.render("scoreTemp/trash", { User: User[0], ScoreTemp: ScoreTemp })
+                })
             })
         }
     }

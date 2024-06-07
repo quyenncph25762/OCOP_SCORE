@@ -57,13 +57,15 @@
                                             data-target="#exampleModal">
                                             {{this.product_name}}
                                         </li>
-                                        <p style="color: #B5B5C3;font-size: 13px;text-wrap: wrap;" class="nameProduct">
+                                        <p class="text-overhidden"
+                                            style="color: #B5B5C3;font-size: 13px;text-wrap: wrap;" class="nameProduct">
                                             Chủ thể: {{toUpperCase this.customer_name}}
                                         </p>
                                     </ul>
                                 </td>
                                 <!-- product group -->
-                                <td style="text-wrap: wrap;">Nhóm 19: {{this.productgroup_name}}
+                                <td style="text-wrap: wrap;">
+                                    <p class="text-overhidden">Nhóm 19: {{this.productgroup_name}}</p>
                                 </td>
                                 {{!-- tong diem --}}
                                 <td>

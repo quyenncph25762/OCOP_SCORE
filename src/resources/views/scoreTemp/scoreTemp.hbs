@@ -25,7 +25,7 @@
                     <div class="d-flex align-items">
                         <h5 class="card-title">Danh sách sản phẩm</h5>
                         <span class="d-inline-block ml-3" tabindex="0" data-toggle="tooltip" title="Thùng rác của bạn">
-                            <a href="/scoreTemp/trash">
+                            <a href="/scoreTemp/trashPage">
                                 <ion-icon name="trash-outline">
                                 </ion-icon>
                             </a>
@@ -64,12 +64,15 @@
                                         <div class="inactive"></div>
                                         {{/ifCond}}
                                     </td>
-                                    <td style="max-width: 250px;">
-                                        <p style="text-wrap: wrap;">{{this.Name}}</p>
+                                    <td
+                                        style="max-width: 250px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                        <p class="text-overhidden">
+                                            {{this.Name}}
+                                        </p>
                                     </td>
                                     {{#ifCond productgroup_IsDeleted 0}}
                                     <td style="max-width: 150px;">
-                                        <p style="text-wrap: wrap;">{{this.productgroup_name}}</p>
+                                        <p class="text-overhidden">{{this.productgroup_name}}</p>
                                     </td>
                                     {{else}}
                                     <td style="color: rgb(236, 236, 118);">Không xác định</td>
@@ -92,6 +95,11 @@
                                             </a>
                                         </span>
                                         <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
+                                            title="Nhân bản">
+                                            <ion-icon name="copy-outline"
+                                                onclick="handleCoppy('{{this._id}}','{{../User._id}}')"></ion-icon>
+                                        </span>
+                                        <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
                                             title="Xóa chủ thể">
                                             <ion-icon id="icon_moveToTrash" name="trash-outline" data-id="{{this._id}}">
                                             </ion-icon>
@@ -111,6 +119,7 @@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="/assets/js/ScoreTempModal.js"></script>
+<script src="/assets/js/scoretemp/scoreTempCopy.js"></script>
 <script src="/assets/js/custom.js"></script>
 {{!-- Checkbox --}}
 <script>
@@ -125,6 +134,7 @@
         $(".check").prop('checked', $(this).prop('checked'));
     });
 </script>
+{{!-- --}}
 <script>
     document.addEventListener("DOMContentLoaded", () => {
         const toastData = localStorage.getItem('toast');

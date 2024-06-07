@@ -7,7 +7,7 @@ async function handleUpdate(id) {
     const ScoreTemp = {
         Code: Code,
         Name: Name,
-        IsActive: IsActive,
+        IsActive: IsActive === true ? 1 : 0,
         ProductGroup_id: ProductGroup_id,
         Note: Note
     }
@@ -34,7 +34,7 @@ async function handleUpdate(id) {
             const ProductDetail = {
                 ScoreTemp_id: id,
                 Name: NewNameDetail[i],
-                IsScore: NewIsMark[i],
+                IsScore: NewIsMark[i] === true ? 1 : 0,
                 MaxScore: NewMaxScoreDetail[i],
                 ValidatedRank: Number(NewValidatedRankDetail[i]),
                 ProductDetailId: NewProductDetailIdDetail[i] === "" ? null : NewProductDetailIdDetail[i],

@@ -25,11 +25,7 @@ class ScoreTempDetailController {
         })
     }
     addScoreTempDetail(req, res) {
-        ScoreTempDetailModel.create({
-            IsIsActive: req.body.IsActive === true ? 1 : 0,
-            IsScore: req.body.IsScore === true ? 1 : 0,
-            ...req.body
-        }, (err, data) => {
+        ScoreTempDetailModel.create(req.body, (err, data) => {
             if (err) {
                 console.log(err)
                 return res.status(500).json({
@@ -43,10 +39,7 @@ class ScoreTempDetailController {
     }
     updateScoreTempDetail(req, res) {
         const id = req.params.id
-        ScoreTempDetailModel.update(id, {
-            IsScore: req.body.IsScore === true ? 1 : 0,
-            ...req.body
-        }, (err, data) => {
+        ScoreTempDetailModel.update(id, req.body, (err, data) => {
             if (err) {
                 console.log(err)
                 return res.status(500).json({

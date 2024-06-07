@@ -8,7 +8,7 @@ async function handleAdd() {
     const ScoreTemp = {
         Code: Code,
         Name: Name,
-        IsActive: IsActive,
+        IsActive: IsActive === true ? 1 : 0,
         ProductGroup_id: ProductGroup_id,
         Note: Note,
         CreatorUser_id: CreatorUser_id
@@ -33,7 +33,7 @@ async function handleAdd() {
             const ProductDetail = {
                 ScoreTemp_id: messageRes.data?._id,
                 Name: NameDetail[i],
-                IsScore: IsMark[i],
+                IsScore: IsMark[i] === true ? 1 : 0,
                 MaxScore: MaxScoreDetail[i],
                 ValidatedRank: Number(ValidatedRankDetail[i]),
                 ProductDetailId: ProductDetailIdDetail[i] === "" ? null : ProductDetailIdDetail[i],
