@@ -187,8 +187,8 @@ const ScoreFileModel = {
     },
     // update totalScore
     updateScoreTotal: (id, scoreFile, callback) => {
-        const query = `UPDATE scorefile SET ScoreTotal = ? WHERE _id = ${id}`
-        const VALUES = [scoreFile.ScoreTotal]
+        const query = `UPDATE scorefile SET ScoreTotal = ? , RankOcop = ? WHERE _id = ${id}`
+        const VALUES = [scoreFile.ScoreTotal, scoreFile.RankOcop]
         connection.query(query, VALUES, callback)
     },
     // update Status = 2

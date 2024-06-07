@@ -51,27 +51,30 @@ const handleAddScoreFile = async () => {
         for (let i = 0; i < arrScoreTempDetail.length; i++) {
             if (arrScoreTempDetail[i].MaxScore > 5 && arrScoreTempDetail[i].IsScore === 0) {
                 count += 1
+                if (count === 1) {
+                    totalPartA = arrScoreTempDetail[i].MaxScore
+                } else if (count === 2) {
+                    totalPartB = arrScoreTempDetail[i].MaxScore
+                } else {
+                    totalPartC = arrScoreTempDetail[i].MaxScore
+                }
             }
             if (arrScoreTempDetail[i].MaxScore > 0 && arrScoreTempDetail[i].IsScore
                 === 1) {
                 if (count === 1) {
-                    totalPartA += arrScoreTempDetail[i].MaxScore
                     if (scoreValues[arrScoreTempDetail[i]._id]) {
                         scorePartA += scoreValues[arrScoreTempDetail[i]._id]
 
                     }
                 } else if (count === 2) {
-                    totalPartB += arrScoreTempDetail[i].MaxScore
                     if (scoreValues[arrScoreTempDetail[i]._id]) {
                         scorePartB += scoreValues[arrScoreTempDetail[i]._id]
                     }
                 } else if (count === 3) {
-                    totalPartC += arrScoreTempDetail[i].MaxScore
                     if (scoreValues[arrScoreTempDetail[i]._id]) {
                         scorePartC += scoreValues[arrScoreTempDetail[i]._id]
                     }
                 } else {
-                    totalPartD += arrScoreTempDetail[i].MaxScore
                     if (scoreValues[arrScoreTempDetail[i]._id]) {
                         scorePartD += scoreValues[arrScoreTempDetail[i]._id]
                     }

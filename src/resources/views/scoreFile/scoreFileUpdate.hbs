@@ -1,5 +1,5 @@
 {{> header}}
-<div class="content-wrapper">
+<div class="content-wrapper ">
     <div class="container-fluid">
         <div class="row" style="max-width: 100%; display: contents;">
             <ul class="search-customer"
@@ -13,7 +13,6 @@
                 <div class="import_customer_button"
                     style="list-style: none; display:flex; justify-content: space-between; align-items: center;">
                     <button class="btn btn-warning" onclick="handleUpdate()">Cập nhật phiếu</button>
-
                 </div>
             </ul>
             </li>
@@ -96,12 +95,12 @@
                     </div>
                 </div>
             </div>
-            <div class="col-sm-9 list_citationUpdate" style="overflow-y: auto;height: 100%;font-size: 12px;">
+            <div class="col-sm-9 list_citationUpdate" style="overflow-y: auto;height: 100vh;font-size: 12px;">
                 <div class="col-12">
                     <div class="card shadow">
                         <div class="card-body">
                             <table class="table table-bordered table-striped table-hover table-scoreTemp">
-                                <thead>
+                                <thead class="sticky-top" style="backdrop-filter: blur(5px);">
                                     <tr>
                                         <th scope="col">
                                         </th>

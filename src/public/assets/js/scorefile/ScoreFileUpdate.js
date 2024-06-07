@@ -93,27 +93,30 @@ async function handleGetScoreFileDetail(ScoreFile_id, product_id) {
     for (let i = 0; i < listScoreFileDetail.length; i++) {
         if (listScoreFileDetail[i].scoreTempDetail_maxScore > 5 && listScoreFileDetail[i].scoreTempDetail_isScore === 0) {
             count += 1
+            if (count === 1) {
+                totalPartA = listScoreFileDetail[i].scoreTempDetail_maxScore
+            } else if (count === 2) {
+                totalPartB = listScoreFileDetail[i].scoreTempDetail_maxScore
+            } else {
+                totalPartC = listScoreFileDetail[i].scoreTempDetail_maxScore
+            }
         }
         if (listScoreFileDetail[i].scoreTempDetail_maxScore > 0 && listScoreFileDetail[i].scoreTempDetail_isScore
             === 1) {
             if (count === 1) {
-                totalPartA += listScoreFileDetail[i].scoreTempDetail_maxScore
                 if (scoreValues[listScoreFileDetail[i]._id]) {
                     scorePartA += scoreValues[listScoreFileDetail[i]._id]
 
                 }
             } else if (count === 2) {
-                totalPartB += listScoreFileDetail[i].scoreTempDetail_maxScore
                 if (scoreValues[listScoreFileDetail[i]._id]) {
                     scorePartB += scoreValues[listScoreFileDetail[i]._id]
                 }
             } else if (count === 3) {
-                totalPartC += listScoreFileDetail[i].MaxScore
                 if (scoreValues[listScoreFileDetail[i]._id]) {
                     scorePartC += scoreValues[listScoreFileDetail[i]._id]
                 }
             } else {
-                totalPartD += listScoreFileDetail[i].MaxScore
                 if (scoreValues[listScoreFileDetail[i]._id]) {
                     scorePartD += scoreValues[listScoreFileDetail[i]._id]
                 }
@@ -266,27 +269,30 @@ async function updateScoreTotal() {
         for (let i = 0; i < listScoreFileDetail.length; i++) {
             if (listScoreFileDetail[i].scoreTempDetail_maxScore > 5 && listScoreFileDetail[i].scoreTempDetail_isScore === 0) {
                 count += 1
+                if (count === 1) {
+                    totalPartA = listScoreFileDetail[i].scoreTempDetail_maxScore
+                } else if (count === 2) {
+                    totalPartB = listScoreFileDetail[i].scoreTempDetail_maxScore
+                } else {
+                    totalPartC = listScoreFileDetail[i].scoreTempDetail_maxScore
+                }
             }
             if (listScoreFileDetail[i].scoreTempDetail_maxScore > 0 && listScoreFileDetail[i].scoreTempDetail_isScore
                 === 1) {
                 if (count === 1) {
-                    totalPartA += listScoreFileDetail[i].scoreTempDetail_maxScore
                     if (scoreValues[listScoreFileDetail[i]._id]) {
                         scorePartA += scoreValues[listScoreFileDetail[i]._id]
 
                     }
                 } else if (count === 2) {
-                    totalPartB += listScoreFileDetail[i].scoreTempDetail_maxScore
                     if (scoreValues[listScoreFileDetail[i]._id]) {
                         scorePartB += scoreValues[listScoreFileDetail[i]._id]
                     }
                 } else if (count === 3) {
-                    totalPartC += listScoreFileDetail[i].MaxScore
                     if (scoreValues[listScoreFileDetail[i]._id]) {
                         scorePartC += scoreValues[listScoreFileDetail[i]._id]
                     }
                 } else {
-                    totalPartD += listScoreFileDetail[i].MaxScore
                     if (scoreValues[listScoreFileDetail[i]._id]) {
                         scorePartD += scoreValues[listScoreFileDetail[i]._id]
                     }
@@ -294,11 +300,24 @@ async function updateScoreTotal() {
             }
         }
         const TotalAfter = (scorePartA + scorePartB + scorePartC + scorePartD)
+        let RankOcop = 0
+        if (TotalAfter >= 90) {
+            RankOcop = 5
+        } else if (TotalAfter >= 70) {
+            RankOcop = 4
+        } else if (TotalAfter >= 50) {
+            RankOcop = 3
+        } else if (TotalAfter >= 30) {
+            RankOcop = 2
+        } else {
+            RankOcop = 1
+        }
         if (TotalAfter && TotalAfter > 0) {
             const res = await fetch(`/scorefile/updateScoreTotal/${ScoreFile_id}`, {
                 method: "PATCH",
                 body: JSON.stringify({
-                    ScoreTotal: TotalAfter
+                    ScoreTotal: TotalAfter,
+                    RankOcop: RankOcop
                 }),
                 headers: {
                     "Content-Type": "application/json"

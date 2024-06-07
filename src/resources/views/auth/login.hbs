@@ -174,7 +174,7 @@
                     }));
                     window.location.replace("/client");
                 }
-                setCookie('User', data.token, 1);
+                setCookie('User', data.token, 24);
                 const dataUser = data.User._id;
                 localStorage.setItem('User', JSON.stringify(dataUser));
             },

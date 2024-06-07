@@ -46,9 +46,6 @@ th {
     font-size: 13px;
 }
 
-
-
-
 /* Style for the button */
 #showFormButton {
     background-color: #4CAF50;
@@ -526,6 +523,8 @@ input.form-control.input-headerTable.w-100 {
     text-overflow: ellipsis;
     white-space: normal;
 }
+
+
 
 /* customer checkbox */
 
