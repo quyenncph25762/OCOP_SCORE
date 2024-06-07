@@ -34,7 +34,7 @@ const handleShowListCitationUpdate = async (id) => {
                 const listImg = dataGallery.map((gallery) => {
                     return `<div class="file-item">
                     <a href="${gallery.imgUrl}" class="gallery-items" style="max-width:100px; overflow: hidden">${gallery.imgName}</a> 
-                    <button onClick="handleIdGallery('${gallery._id}')" class="remove-file-button btn btn-danger">Remove</button>
+                    <ion-icon onClick="handleIdGallery('${gallery._id}')" name="trash-outline" class="remove-file-button"></ion-icon>
                     </div>`
                 }).join("")
                 tbody.innerHTML += `

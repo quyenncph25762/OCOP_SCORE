@@ -4,14 +4,8 @@ var AverageScore = 0
 var totalRankOcop = 0
 async function handleResultScoreFiles(idScoreCommittee, productId) {
     const ArrSecUserId = await FuncListSecUserId(idScoreCommittee)
+    const listScoreFile = await FuncListScoreFileByScoreCommittee(idScoreCommittee)
     const tbodyResultsScoreFile = document.getElementById(`tbodyResultsScoreFile${productId}`)
-    const response = await fetch(`/scorefile/byIdScoreCommittee/${idScoreCommittee}`, {
-        method: "GET"
-    })
-    if (!response.ok) {
-        console.log("Lỗi khi gọi ResultScoreFiles")
-    }
-    const listScoreFile = await response.json()
     // console.log(listScoreFile)
     // Lọc những employee đã chấm xong và k có secUserId
     const filterScoreFile = listScoreFile.filter(scorefile =>
@@ -205,3 +199,14 @@ async function handleRevertScoreFile(idScoreFile) {
     });
 
 }
+
+//list ScoreFile theo scoreCommittee
+async function FuncListScoreFileByScoreCommittee(idScoreCommittee) {
+    const response = await fetch(`/scorefile/byIdScoreCommittee/${idScoreCommittee}`, {
+        method: "GET"
+    })
+    if (!response.ok) {
+        console.log("Lỗi khi gọi ResultScoreFiles")
+    }
+    return await response.json()
+} 

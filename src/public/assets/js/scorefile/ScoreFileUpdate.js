@@ -13,13 +13,7 @@ if (params.has("ScoreFile_id") || params.has("code") && params.has("productgroup
 // lay ra scoreFile
 async function handleGetScoreFileDetail(ScoreFile_id, product_id) {
     // tao ten checkbox mac dinh
-    const response = await fetch(`/scoreFileDetail/byScoreFile/${ScoreFile_id}`, {
-        method: "GET"
-    })
-    if (!response.ok) {
-        console.log("Lỗi k get đc scoreFileDetail")
-    }
-    const listScoreFileDetail = await response.json()
+    const listScoreFileDetail = await FuncListScoreDetailByScoreFile(ScoreFile_id)
     let tbodyScoreFileUpdate = document.getElementById("tbodyScoreFileUpdate")
     let checkBoxScoreName = "Score1"
     let checkboxScore = 1
@@ -67,7 +61,6 @@ async function handleGetScoreFileDetail(ScoreFile_id, product_id) {
             </tr>
         `;
     }
-
     const btnsRadio = Array.from(document.querySelectorAll(".btnsRadio"))
     // lọc ra những scoreTempDetail nào đã checked
     const scoreValues = {};
@@ -147,8 +140,6 @@ async function handleGetScoreFileDetail(ScoreFile_id, product_id) {
     // total
     document.querySelector(".TotalBefore").innerHTML = TotalBefore
     document.querySelector(".TotalAfter").innerHTML = TotalAfter
-
-
 }
 
 function repeatStarUpdate(number) {
@@ -318,6 +309,16 @@ async function updateScoreTotal() {
             }
         }
     }
+}
+// list scoreFileDetail by ScoreFile
+async function FuncListScoreDetailByScoreFile(ScoreFile_id) {
+    const response = await fetch(`/scoreFileDetail/byScoreFile/${ScoreFile_id}`, {
+        method: "GET"
+    })
+    if (!response.ok) {
+        console.log("Lỗi k get đc scoreFileDetail")
+    }
+    return await response.json()
 }
 
 

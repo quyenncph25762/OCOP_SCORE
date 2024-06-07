@@ -7,11 +7,12 @@ $(document).on('change', '.file-input', function () {
     for (var i = 0; i < files.length; i++) {
         var fileName = files[i].name;
         // Tạo phần tử chứa cả nút xóa và đường dẫn đến file
+
         var fileListItem = $('<div class="file-item"></div>');
         // Tạo đường dẫn đến file
         var fileLink = $('<a style="max-width:100px; overflow: hidden" href="' + fileName + '">' + fileName + '</a>');
         // Tạo nút xóa
-        var removeButton = $('<button class="remove-file-button btn btn-danger">Remove</button>');
+        var removeButton = $('<ion-icon name="trash-outline" class="remove-file-button"></ion-icon> ');
         removeButton.data('index', i); // Lưu chỉ mục của tệp
         // Thêm đường dẫn và nút xóa vào phần tử chứa
         fileListItem.append(fileLink);
