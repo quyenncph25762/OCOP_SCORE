@@ -2,10 +2,12 @@ const express = require('express');
 const router = express.Router();
 const RoleController = require('../app/controllers/role/RoleController');
 const upload = require("../app/Middleware/uploadMiddle")
-router.get("/", RoleController.index)
-router.post("/add", upload.single(), RoleController.create)
+const CheckController = require("../app/Middleware/checkoutToken")
+
+router.get("/", CheckController.checkout, RoleController.index)
+router.post("/add", CheckController.checkout, upload.single(), RoleController.create)
 // fetchAll trash
-router.get("/trash", RoleController.getAllRoleFromTrash)
+router.get("/trash", CheckController.checkout, RoleController.getAllRoleFromTrash)
 // remove to trash
 router.delete("/removeToTrash/:id", RoleController.removeToTrash)
 // delete

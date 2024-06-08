@@ -11,13 +11,11 @@ class CheckController {
                 message: "Bạn chưa đăng nhập!"
             });
         }
-
         try {
             const payload = jwt.verify(token, SECRET_CODE);
             const userResponse = await fetch(`http://localhost:3000/auth/get/${payload?._id}`, {
                 method: "GET"
             });
-
             if (!userResponse.ok) {
                 return res.status(500).json({
                     message: "Lỗi khi lấy thông tin người dùng"
@@ -25,20 +23,19 @@ class CheckController {
             }
 
             const data = await userResponse.json();
-            const UserRoleTitle = data?.role_title?.toLowerCase();
+            const RoleId = data?.RoleId;
 
-            if (!UserRoleTitle) {
+            if (!RoleId) {
                 return res.status(400).json({
                     message: "USER KHONG TON TAI TRONG HE THONG"
                 });
             }
 
-            if (UserRoleTitle !== "admin") {
+            if (RoleId !== 1) {
                 return res.status(403).json({
                     message: "Bạn không có quyền để thực hiện hành động này",
                 });
             }
-
             next(); // Chỉ gọi next() nếu không có lỗi nào xảy ra
         } catch (err) {
             if (err.name === "JsonWebTokenError") {

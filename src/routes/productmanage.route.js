@@ -3,11 +3,13 @@ const router = express.Router();
 const uploadCloud = require("../config/cloudinary/cloudinary")
 const productmanageController = require('../app/controllers/product/ProductmanageController');
 const upload = require("../app/Middleware/uploadMiddle")
+const CheckController = require("../app/Middleware/checkoutToken")
+
 //route phải khớp từ trên xuống nên route gốc phải để dưới cùng
 // update RankOcop
 router.patch("/updateRankOcop/:id", productmanageController.updateRankOcop)
 // update status product
-router.patch("/updateStatus/:id", productmanageController.updateStatus)
+router.patch("/updateStatus/:id", CheckController.checkout, productmanageController.updateStatus)
 // khoi phuc
 router.patch("/revert/:id", productmanageController.revert)
 // xoa vao thung rac

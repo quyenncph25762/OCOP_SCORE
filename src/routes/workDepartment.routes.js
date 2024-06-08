@@ -2,10 +2,11 @@ const express = require('express');
 const WorkDepartmentController = require('../app/controllers/workdepartment/WorkDepartmentController');
 const router = express.Router();
 const upload = require("../app/Middleware/uploadMiddle")
-router.get("/", WorkDepartmentController.index)
+const CheckController = require("../app/Middleware/checkoutToken")
+router.get("/", CheckController.checkout, WorkDepartmentController.index)
 router.post("/add", upload.single(), WorkDepartmentController.create)
 // fetchAll trash
-router.get("/trash", WorkDepartmentController.getAllWorkDepartmentFromTrash)
+router.get("/trash", CheckController.checkout, WorkDepartmentController.getAllWorkDepartmentFromTrash)
 // remove to trash
 router.delete("/removeToTrash/:id", WorkDepartmentController.removeToTrash)
 // delete

@@ -3,7 +3,9 @@ const router = express.Router();
 const EmployeeController = require('../app/controllers/employee/EmployeeController');
 const uploadCloud = require("../config/cloudinary/cloudinary")
 const upload = require("../app/Middleware/uploadMiddle")
-router.get("/", EmployeeController.index)
+const CheckController = require("../app/Middleware/checkoutToken")
+
+router.get("/", CheckController.checkout, EmployeeController.index)
 router.get("/getAll", EmployeeController.getAll)
 // getAll
 router.post("/add", upload.single("Avatar"), EmployeeController.create)
