@@ -29,11 +29,13 @@ const ProductDetailModel = {
         const query = `DELETE FROM product_detail WHERE Product_id = ?`
         connection.query(query, [id], callback)
     },
+    // 
     createProductDetail: (productDetail, callback) => {
         const query = `INSERT INTO product_detail (ProductDetail_Name,Code,Product_id) VALUES (?,?,?)`
         const VALUES = [productDetail.ProductDetail_Name, productDetail.Code, productDetail.Product_id]
         connection.query(query, VALUES, callback)
-    }
+    },
+
 }
 
 module.exports = ProductDetailModel

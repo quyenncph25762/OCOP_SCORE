@@ -96,6 +96,20 @@ class ScoreTempDetailController {
             })
         })
     }
+    // lay scoreDetail theo scorefile
+    getScoreDetailByScoreFile(req, res) {
+        const scoreFileId = req.params.id
+        ScoreTempDetailModel.getScoreTempDetailByScoreFile(scoreFileId, (err, data) => {
+            if (err) {
+                console.log(err)
+                return res.status(500).json({
+                    message: "Lỗi truy vấn"
+                })
+            }
+            return res.status(200).json(data)
+        })
+    }
+
 }
 
 module.exports = new ScoreTempDetailController

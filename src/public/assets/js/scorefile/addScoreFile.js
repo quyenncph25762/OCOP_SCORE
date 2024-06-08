@@ -23,7 +23,7 @@ const handleAddScoreFile = async () => {
         // dùng for chạy qua các id để lấy phiếu chi tiết rồi push vào mảng 
         const arrScoreTempDetail = []
         for (const id of ScoreTempDetail_id) {
-            const response = await fetch(`/scoreTempDetail/${id}`, {
+            const response = await fetch(`/scoreTempDetail/getOne/${id}`, {
                 method: "GET"
             })
             if (!response.ok) {
@@ -98,7 +98,7 @@ const handleAddScoreFile = async () => {
         } else {
             RankOcop = 1
         }
-
+        const newRankOcop = await checkingRankOcop(RankOcop, scoreFileId)
         // ADD SCOREFILE
         const now = Date.now();
         const date = new Date(now);
@@ -109,7 +109,7 @@ const handleAddScoreFile = async () => {
             Employee_id: Number(CreatorUser_id),
             EmployeeUserId: Number(CreatorUser_id),
             ScoreDate: date,
-            RankOcop: RankOcop,
+            RankOcop: newRankOcop,
             Note: Note,
             Code: Code,
             ScoreTotal: TotalAfter,
@@ -164,6 +164,85 @@ const handleAddScoreFile = async () => {
                 stack: 4
             }));
             window.location.replace("/scoreFile")
+        }
+    }
+}
+
+// list scoreFileDetail by ScoreFile
+async function FuncListScoreDetailByScoreFile(ScoreFile_id) {
+    const response = await fetch(`/scoreFileDetail/byScoreFile/${ScoreFile_id}`, {
+        method: "GET"
+    })
+    if (!response.ok) {
+        console.log("Lỗi k get đc scoreFileDetail")
+    }
+    return await response.json()
+}
+
+// hàm tính điểm câu hỏi liệt
+async function checkingRankOcop(RankOcop, ScoreFile_id) {
+    try {
+        const response = await fetch(`/scoreTempDetail/byScoreFile/${ScoreFile_id}`, {
+            method: "GET"
+        })
+        if (!response.ok) {
+            console.log("Lỗi khi call scoretempDetail By scoreFile")
+        }
+        const listScoreDetail = await response.json()
+        if (RankOcop === 2) {
+            return RankOcop === 2
+        } else if (RankOcop === 3) {
+            // lay danh sach cau hoi 3 sao
+            let scoreRank = listScoreDetail.filter((scoreDetail) => scoreDetail.ValidatedRank === RankOcop).map((item) => item._id)
+            const results = await checkScoreFileDetail(ScoreFile_id, scoreRank, RankOcop)
+            // kiem tra neu ma dat het thi lay rank ocop
+            return results ? results : RankOcop
+        } else if (RankOcop === 4) {
+            // lay danh sach cau hoi 4 sao
+            let scoreRank = listScoreDetail.filter((scoreDetail) => scoreDetail.ValidatedRank === RankOcop).map((item) => item._id)
+            const results = await checkScoreFileDetail(ScoreFile_id, scoreRank, RankOcop)
+            return results ? results : RankOcop
+        } else {
+            // lay danh sach cau hoi 5 sao
+            let scoreRank = listScoreDetail.filter((scoreDetail) => scoreDetail.ValidatedRank === 5).map((item) => item._id)
+            const results = await checkScoreFileDetail(ScoreFile_id, scoreRank, RankOcop)
+            return results ? results : RankOcop
+        }
+    } catch (error) {
+        console.log(error)
+    }
+}
+// hàm check những scorefileDetail nào đã check và check xem những scoreDetail đó có bỏ qua số sao nào không 
+async function checkScoreFileDetail(scoreFileId, arrRank, RankOcop) {
+    // lay ra danh sach scorefileDetail da cham
+    const response = await fetch(`/scoreFileDetail/IsScoreByScoreFile/${scoreFileId}`, {
+        method: "GET"
+    })
+    if (!response.ok) {
+        console.log(`ERR: checkScoreFileDetail`)
+        return
+    }
+    const data = await response.json()
+    // lay ra scoretempdetail trong scorefiledetail do
+    const listScoreChecked = data.map((scoreDetail) => scoreDetail.ScoreTempDetail_id)
+    // dieu neu rank ocop = 3   
+    if (RankOcop === 2) {
+        return checkRank(RankOcop, arrRank, listScoreChecked)
+    } else if (RankOcop === 3) {
+        return checkRank(RankOcop, arrRank, listScoreChecked)
+    } else if (RankOcop === 4) {
+        return checkRank(RankOcop, arrRank, listScoreChecked)
+    } else {
+        return checkRank(RankOcop, arrRank, listScoreChecked)
+    }
+
+}
+
+function checkRank(RankOcop, arrRank, listScoreChecked) {
+    for (const id of arrRank) {
+        const results = listScoreChecked.includes(id)
+        if (!results) {
+            return RankOcop - 1
         }
     }
 }

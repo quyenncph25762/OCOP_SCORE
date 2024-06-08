@@ -88,6 +88,7 @@ class ProductDetailController {
             return res.status(200).json(data)
         })
     }
+
 }
 
 module.exports = new ProductDetailController

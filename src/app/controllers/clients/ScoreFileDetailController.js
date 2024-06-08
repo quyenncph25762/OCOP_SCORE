@@ -13,6 +13,20 @@ class ScoreFileDetailController {
             return res.status(200).json(ListScoreFileDetail)
         })
     }
+    // lay tat ca scorefileDetail da cham theo scorefile
+    getIsScoreByScoreFile(req, res) {
+        const scorefileId = req.params.id
+        ScoreFileDetailModel.getScoreFileDetailScoreByScoreFile(scorefileId, (err, data) => {
+            if (err) {
+                console.log(err)
+                return res.status(500).json({
+                    message: "Lỗi truy vấn"
+                })
+            }
+            return res.status(200).json(data)
+        })
+    }
+    // tao moi
     createScoreFileDetail(req, res) {
         console.log(req.body)
         ScoreFileDetailModel.create(req.body, (err, result) => {
@@ -26,25 +40,6 @@ class ScoreFileDetailController {
             })
         })
     }
-    // updateScoreFileDetail(req, res) {
-    //     const id = req.params.id
-    //     if (id) {
-    //         ScoreFileDetailModel.update(id, req.body, (err, ListScoreFileDetail) => {
-    //             if (err) {
-    //                 return res.status(500).json({
-    //                     message: "Lỗi truy vấn"
-    //                 })
-    //             }
-    //             return res.status(200).json({
-    //                 message: "Cập nhật thành công"
-    //             })
-    //         })
-    //     } else {
-    //         return res.status(200).json({
-    //             message: "Không tìm thấy phiếu chấm"
-    //         })
-    //     }
-    // }
     updateScoreById(req, res) {
         const id = req.params.id
         if (id) {

@@ -35,6 +35,11 @@ const ScoreDetailModel = {
         const query = `UPDATE scorefile_detail SET Score = ? WHERE _id = ${id}`
         const VALUES = [ScoreFileDetail.Score]
         connection.query(query, VALUES, callback)
+    },
+    // lay ra scorefileDetail da cham diem
+    getScoreFileDetailScoreByScoreFile: (id, callback) => {
+        const query = `SELECT * FROM scorefile_detail WHERE Score IS NOT NULL AND ScoreFile_id = ?`
+        connection.query(query, [id], callback)
     }
 }
 

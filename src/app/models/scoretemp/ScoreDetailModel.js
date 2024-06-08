@@ -43,6 +43,24 @@ const ScoreTempDetail = {
         const query = `DELETE FROM scoretemp_detail WHERE _id = ?`
         connection.query(query, [id], callback)
     },
+    // lay productDetail theo scorefile
+    getScoreTempDetailByScoreFile: (scorefileId, callback) => {
+        const query = `SELECT scoretemp_detail.* 
+        FROM
+            scorefile 
+        JOIN 
+            scorefile_detail 
+        ON 
+            scorefile_detail._id = scorefile_detail._id 
+        JOIN 
+            scoreTemp_detail 
+        ON  
+            scorefile_detail.ScoreTempDetail_id = scoreTemp_detail._id
+        WHERE 
+            scorefile._id =${scorefileId} AND scoreTemp_detail.ValidatedRank > 0 ;
+        `
+        connection.query(query, callback)
+    }
 }
 
 module.exports = ScoreTempDetail

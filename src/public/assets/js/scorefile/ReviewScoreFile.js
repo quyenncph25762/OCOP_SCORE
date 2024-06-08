@@ -33,7 +33,11 @@ async function handleGetScoreFileDetail(ScoreFile_id, product_id) {
                         ${listScoreFileDetail[i].scoreTempDetail_name}
                     </td>` :
                 `<td style="font-weight: 300; color: #ccc; max-width: 500px; text-wrap: wrap; word-wrap: break-word; overflow-wrap: break-word;">
-                        ${listScoreFileDetail[i].scoreTempDetail_name} ${listScoreFileDetail[i].scoreTempDetail_validateRank ? repeatStarUpdate(listScoreFileDetail[i].scoreTempDetail_validateRank) : ""}
+                        ${listScoreFileDetail[i].scoreTempDetail_name} ${listScoreFileDetail[i].scoreTempDetail_validateRank
+                    ?
+                    `<span style="color:yellow">${repeatStarUpdate(listScoreFileDetail[i].scoreTempDetail_validateRank)}</span>`
+                    :
+                    ""}
                     </td>`
             }
     

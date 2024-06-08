@@ -10,9 +10,13 @@ router.patch("/removeToTrash/:id", ScoreTempDetailController.removeToTrash)
 // get phieu cham chi tieu theo phieu cham
 router.get("/scoreTemp/:id", ScoreTempDetailController.getScoreTempDetailFilter)
 // getOne ScoreTempDetail by id
-router.get("/:id", ScoreTempDetailController.getOne)
+router.get("/getOne/:id", ScoreTempDetailController.getOne)
+// get by scorefile
+router.get("/byScoreFile/:id", ScoreTempDetailController.getScoreDetailByScoreFile)
 // them
 router.post("/add", ScoreTempDetailController.addScoreTempDetail)
 // updae
 router.put("/update/:id", ScoreTempDetailController.updateScoreTempDetail)
+
+
 module.exports = router;

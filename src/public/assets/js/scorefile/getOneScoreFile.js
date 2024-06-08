@@ -94,7 +94,11 @@ async function getOneScoreTemp(code, productId, productgroupId) {
                         :
                         `<td style="font-weight: 300; color: #ccc; max-width: 500px; text-wrap: wrap; word-wrap: break-word; overflow-wrap: break-word;">
                         
-                    ${ListScoreTempDetail[i].Name} ${ListScoreTempDetail[i].ValidatedRank ? repeatStar(ListScoreTempDetail[i].ValidatedRank) : ""}
+                    ${ListScoreTempDetail[i].Name} ${ListScoreTempDetail[i].ValidatedRank
+                            ?
+                            `<span style="color:yellow">${repeatStar(ListScoreTempDetail[i].ValidatedRank)}</span>`
+                            :
+                            ""}
                                 </td > `
                     }
                             
