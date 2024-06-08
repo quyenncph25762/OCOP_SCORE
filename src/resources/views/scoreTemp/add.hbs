@@ -50,7 +50,8 @@
                                 <!-- group product -->
                                 <div class="custom-control custom-switch col-md-10">
                                     <label for="ProductGroup_id">Nhóm sản phẩm</label>
-                                    <select name="ProductGroup_id" class="custom-select my-1 form-control"
+                                    <select name="ProductGroup_id state"
+                                        class="custom-select my-1 form-control js-example-basic-single"
                                         id="ProductGroup_id">
                                         <option selected>Choose...</option>
                                         {{#each productGroup}}
@@ -113,7 +114,6 @@
 
 <script>
     window.dataLayer = window.dataLayer || [];
-
     function gtag() {
         dataLayer.push(arguments);
     }
@@ -157,7 +157,7 @@
                                   </td>
                         <td>
                             <div class="form-group">
-                            <select id="ProductDetailIdDetail" name="ProductDetailId" class="form-control"
+                            <select id="ProductDetailIdDetail" name="ProductDetailId state" class="form-control js-example-basic-single"
                                         style="transform: translateY(10px);max-width: 200px;max-height: 200px;overflow-y: hidden;"
                                         data-target="#navbar-example2" data-offset="0">
                                         <option selected></option>
@@ -177,6 +177,7 @@
         }
         divtest.innerHTML = tableBody();
         objTo.appendChild(divtest)
+
     }
     function remove_education_fields(rid) {
         console.log(rid)
@@ -184,9 +185,7 @@
         $('.removeclass' + rid).remove();
     }
 </script>
-
 {{!-- random --}}
-
 <script>
     const codeValue = document.querySelector("#Code")
 
@@ -201,5 +200,4 @@
     const codeRandom = generateRandomCode(8)
     codeValue.value = codeRandom
 </script>
-
 <script src="/assets/js/ScoreTempAdd.js"></script>

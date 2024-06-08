@@ -11,8 +11,11 @@ const filterProduct = require("./filterProduct.routes")
 const scoreTempRouter = require("./scoreTemp.routes")
 const citationRouter = require("./citation.routes")
 const authRouter = require("./auth.routes")
+// address
 const citiesRouter = require("./city.routes")
 const districtRouter = require("./districts")
+const wardRouter = require("./wards.routes")
+
 const productDetailRouter = require("./productDetail.routes")
 const galleryRouter = require("./gallery.routes")
 const clientRouter = require("./client/welcome.routes")
@@ -38,8 +41,11 @@ function route(app) {
     app.use("/gallery", galleryRouter)
     // productDetail
     app.use("/productDetail", productDetailRouter)
+    // xa
+    app.use("/wards", wardRouter)
     // Huyen
     app.use("/districs", districtRouter)
+    // thanh pho
     app.use("/cities", citiesRouter)
     // user
     app.use("/auth", authRouter)

@@ -31,13 +31,13 @@ const CustomerManageController = {
     },
     // tim khach hang
     findCustomerAdd: (Customer, callback) => {
-        const query = 'SELECT * FROM customer WHERE Name = ? OR Phone = ?  OR SubName = ? OR Email = ? ';
-        const values = [Customer.Name, Customer.Phone, Customer.SubName, Customer.Email];
+        const query = 'SELECT * FROM customer WHERE Name = ?';
+        const values = [Customer.Name];
         connection.query(query, values, callback);
     },
     findCustomerUpdate: (id, Customer, callback) => {
-        const query = `SELECT * FROM customer WHERE (Name = ? OR Phone = ? OR SubName = ? OR Email = ?) AND _id != ${id} `;
-        const values = [Customer.Name, Customer.Phone, Customer.SubName, Customer.Email];
+        const query = `SELECT * FROM customer WHERE Name = ? AND _id != ${id} `;
+        const values = [Customer.Name];
         connection.query(query, values, callback);
     },
 

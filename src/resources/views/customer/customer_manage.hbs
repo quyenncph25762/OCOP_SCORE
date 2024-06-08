@@ -8,7 +8,7 @@
         <button class="btn btn-danger btnDeleteAll btnDisabled" style="float: left;">Xóa mục đã chọn</button>
         <div class="import_customer_button"
           style="list-style: none; display:flex; justify-content: space-between; align-items: center;">
-          <button class="btn btn-success" data-toggle="modal" data-target="#exampleModal">Thêm mới</button>
+          <button class="btn btn-success" data-toggle="modal" data-target="#modalCustomerAdd">Thêm mới</button>
         </div>
         {{> modalCustomer}}
       </ul>
@@ -127,7 +127,9 @@
                             </div>
                             <div class="col-md-4 mb-3">
                               <label for="customer_email">Tỉnh/Thành phố</label>
-                              <select name="City_id" id="City_id{{this._id}}" class="form-control">
+                              <select name="City_id state" id="City_id{{this._id}}"
+                                onchange="handleChooseUpdateCity(this.value,'{{this.City_id}}','{{this._id}}')"
+                                class="form-control js-example-basic-single">
                                 <option value="" selected>--</option>
                                 {{#each ../Province}}
                                 <option value="{{this._id}}" {{#ifCond ../this.City_id this._id}}selected{{/ifCond}}>
@@ -138,7 +140,9 @@
                             </div>
                             <div class="col-md-4 mb-3">
                               <label for="customer_email">Quận / Huyện</label>
-                              <select name="District_id" id="District_id{{this._id}}" class="form-control">
+                              <select name="District_id state" id="District_id{{this._id}}"
+                                class="form-control js-example-basic-single"
+                                onchange="handleChooseUpdateDistrict(this.value,'{{this.District_id}}','{{this._id}}')">
                                 <option value="" selected>--</option>
                                 {{#each ../District}}
                                 <option value="{{this._id}}" {{#ifCond ../this.District_id
@@ -149,7 +153,8 @@
                             </div>
                             <div class="col-md-4 mb-3">
                               <label for="customer_email">Xã / Phường</label>
-                              <select name="Ward_id" id="Ward_id{{this._id}}" class="form-control">
+                              <select name="Ward_id state" id="Ward_id{{this._id}}"
+                                class="form-control js-example-basic-single">
                                 <option value="" selected>--</option>
                                 {{#each ../Ward}}
                                 <option value="{{this._id}}" {{#ifCond ../this.Ward_id this._id}}selected{{/ifCond}}>
@@ -187,11 +192,12 @@
       </div>
     </div><!--End Row-->
   </div>
+
   {{> footer}}
-
-
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
   <script src="/assets/js/custom.js"></script>
+  <script src="/assets/js/customer/Address.js"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag() {
@@ -205,7 +211,6 @@
     });
   </script>
   <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
-
   {{!-- action delete --}}
   <script>
     document.addEventListener("DOMContentLoaded", () => {
@@ -323,7 +328,6 @@
       })
     })
   </script>
-
   {{!-- update actions --}}
   <script>
     async function handleUpdate(id) {
@@ -378,4 +382,14 @@
         console.error("Response was not ok:", res.status);
       }
     }
+  </script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      $('#modalCustomerAdd').one('shown.bs.modal', function () {
+        $(".modalCustomerAdd").select2({
+          dropdownParent: $('#modalCustomerAdd')
+        });
+      });
+    })
   </script>

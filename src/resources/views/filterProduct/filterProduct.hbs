@@ -31,7 +31,7 @@
                                 <div class="row">
                                     <div class="col-sm-3">
                                         <label for="">Năm đánh giá</label>
-                                        <select name="" id="YearFilter" class="form-control">
+                                        <select name="" id="YearFilter" class="form-control js-example-basic-single">
                                             <option value="" style="color: white;">Tất cả</option>
                                             {{#each Review}}
                                             <option value="{{this._id}}" style="color: white;" {{#ifCond this.status
@@ -41,7 +41,8 @@
                                     </div>
                                     <div class="col-sm-3">
                                         <label for="">Nhóm sản phẩm</label>
-                                        <select name="" id="productGroupFilter" class="form-control">
+                                        <select name="" id="productGroupFilter"
+                                            class="form-control js-example-basic-single">
                                             <option value="" style="color: white;">Tất cả</option>
                                             {{#each ProductGroup}}
                                             <option value="{{this._id}}" style="color: white;" {{#ifCond this.IsActive

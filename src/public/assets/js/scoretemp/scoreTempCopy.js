@@ -1,11 +1,6 @@
 async function handleCoppy(idScoreTemp, userId) {
-    const response = await fetch(`/scoreTemp/getOne/${idScoreTemp}`, {
-        method: "GET"
-    })
-    if (!response.ok) {
-        console.log("Lỗi khi getOne scoreTemp")
-    }
-    const scoreTemp = await response.json()
+
+    const scoreTemp = await getOneScoreTemp(idScoreTemp)
     const { Code, Name, Note, IsActive, ProductGroup_id } = scoreTemp
     const newScoreTemp = {
         Code: Code,
@@ -27,13 +22,8 @@ async function handleCoppy(idScoreTemp, userId) {
     }
     const responseJson = await resAddScoreTemp.json()
     const ScoreTempId = responseJson?.data?._id
-    const responseListScoreDetail = await fetch(`/scoreTempDetail/scoreTemp/${idScoreTemp}`, {
-        method: "GET"
-    })
-    if (!responseListScoreDetail.ok) {
-        console.log(`Lỗi khi gọi danh sách scoreTempDetail`)
-    }
-    const listScoreDetail = await responseListScoreDetail.json()
+
+    const listScoreDetail = await listScoreDetailByScoreTempId(idScoreTemp)
     const arrRes = []
     for (const scoreDetail of listScoreDetail) {
         const { Name, IsScore, MaxScore, ValidatedRank, ProductDetailId, Note } = scoreDetail
@@ -68,4 +58,26 @@ async function handleCoppy(idScoreTemp, userId) {
         stack: 4
     }));
     window.location.reload()
+}
+
+
+
+async function getOneScoreTemp(idScoreTemp) {
+    const response = await fetch(`/scoreTemp/getOne/${idScoreTemp}`, {
+        method: "GET"
+    })
+    if (!response.ok) {
+        console.log("Lỗi khi getOne scoreTemp")
+    }
+    return await response.json()
+}
+
+async function listScoreDetailByScoreTempId(idScoreTemp) {
+    const responseListScoreDetail = await fetch(`/scoreTempDetail/scoreTemp/${idScoreTemp}`, {
+        method: "GET"
+    })
+    if (!responseListScoreDetail.ok) {
+        console.log(`Lỗi khi gọi danh sách scoreTempDetail`)
+    }
+    return await responseListScoreDetail.json()
 }

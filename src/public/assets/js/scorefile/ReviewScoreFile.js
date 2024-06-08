@@ -3,21 +3,20 @@ const params = new URLSearchParams(url.searchParams)
 var arrIdOld = []
 // lay gia tri tren thanh url
 if (params.has("ScoreFile_id") && params.has("productId")) {
+    let tbodyScoreFileUpdate = document.getElementById("tbodyScoreFileUpdate")
     // lay id scorefile tren thanh url
     const product_id = params.get("productId")
     const ScoreFile_id = params.get("ScoreFile_id")
-    handleGetScoreFileDetail(ScoreFile_id, product_id)
+    handleGetScoreFileDetail(ScoreFile_id, product_id, tbodyScoreFileUpdate)
 } else {
     console.log("error")
 }
 // lay ra scoreFile
-async function handleGetScoreFileDetail(ScoreFile_id, product_id) {
+async function handleGetScoreFileDetail(ScoreFile_id, product_id, tbodyScoreFileUpdate) {
     // tao ten checkbox mac dinh
-    const listScoreFileDetail = await FuncListScoreFileDetail(ScoreFile_id)
-    let tbodyScoreFileUpdate = document.getElementById("tbodyScoreFileUpdate")
+    const listScoreFileDetail = await FuncListScoreFileDetail(ScoreFile_id, tbodyScoreFileUpdate)
     let checkBoxScoreName = "Score1"
     let checkboxScore = 1
-    tbodyScoreFileUpdate.innerHTML = ""
     for (let i = 0; i < listScoreFileDetail.length; i++) {
         if (listScoreFileDetail[i].scoreTempDetail_productDetailId) {
             checkBoxScoreName = "Score" + checkboxScore;
@@ -239,6 +238,7 @@ async function handleAddScoreFile(userId, scoreFileId, ScoreCommitee_id, product
 
 // danh sach scorefile detail
 async function FuncListScoreFileDetail(scoreFileId) {
+    tbodyScoreFileUpdate.innerHTML = ""
     const response = await fetch(`/scoreFileDetail/byScoreFile/${scoreFileId}`, {
         method: "GET"
     })

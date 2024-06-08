@@ -191,7 +191,8 @@
                             {{!-- Customer --}}
                             <div class="col-md-6 mb-3 mt-3">
                                 <label for="Customer_id">Chủ thể</label>
-                                <select id="Customer_id" name="Customer_id" class="form-control">
+                                <select id="Customer_id" name="Customer_id"
+                                    class="form-control js-example-basic-single">
                                     {{#each Customer}}
                                     <option value="{{this._id}}">{{this.Name}}</option>
                                     {{/each}}
@@ -200,7 +201,8 @@
                             {{!-- Product- group --}}
                             <div class="col-md-6 mb-3 mt-3">
                                 <label for="note">Nhóm sản phẩm</label>
-                                <select id="ProductGroup_id" name="ProductGroup_id" class="form-control">
+                                <select id="ProductGroup_id" name="ProductGroup_id"
+                                    class="form-control js-example-basic-single">
                                     {{#each ProductGroup}}
                                     <option value="{{this._id}}" {{#ifCond this.IsActive 0}}disabled{{/ifCond}}>
                                         {{this.Name}}</option>
@@ -210,7 +212,8 @@
                             {{!-- Year Review --}}
                             <div class="col-md-3 mb-3 mt-3">
                                 <label for="ProductYearId">Năm đánh giá</label>
-                                <select id="ProductYearId" name="ProductYearId" class="form-control">
+                                <select id="ProductYearId" name="ProductYearId"
+                                    class="form-control js-example-basic-single">
                                     {{#each Review}}
                                     <option value="{{this._id}}" {{#ifCond this.status 0}}disabled{{/ifCond}}>
                                         {{this.yearName}}

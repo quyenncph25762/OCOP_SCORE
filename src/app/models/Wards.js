@@ -5,8 +5,8 @@ const WardModel = {
         const query = `SELECT * FROM ward`
         connection.query(query, callback)
     },
-    getWardByProvince: (id, callback) => {
-        const query = `SELECT * FROM ward where District_id = ?`
+    getWardByDistrict: (id, callback) => {
+        const query = `SELECT * FROM ward WHERE District_id = ${id}`
         connection.query(query, id, callback)
     }
 }

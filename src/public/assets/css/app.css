@@ -524,8 +524,72 @@ input.form-control.input-headerTable.w-100 {
     white-space: normal;
 }
 
+.select2-container .select2-selection--single {
+    height: calc(1.5em + .75rem + 2px) !important;
+    padding: .375rem .75rem !important;
+}
 
+.select2-container {
+    display: block !important;
+    min-width: 100%;
+}
+
+.select2-results__options .select2-hidden-accessible {
+    position: static !important;
+}
+
+.select2-results__option {
+    color: #000;
+}
+
+.select2-selection__rendered {
+    padding: 0 !important;
+}
 
 /* customer checkbox */
 
-/* <div class="checkbox-wrapper-13"><input id="c1-13" type="checkbox"><label for="c1-13">Checkbox</label></div> */
+.loading-skeleton {
+    z-index: 99;
+    color: transparent;
+    appearance: none;
+    -webkit-appearance: none;
+    background-color: rgba(0, 0, 0, .2);
+    border-color: #eee;
+
+    &::placeholder {
+        color: transparent;
+    }
+}
+
+@keyframes loading-skeleton {
+    from {
+        opacity: .4;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.loading-skeleton {
+    pointer-events: none;
+    animation: loading-skeleton 1s infinite alternate;
+
+    img {
+        filter: grayscale(100) contrast(0%) brightness(1.8);
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    p,
+    li,
+    .btn,
+    label,
+    .form-control {
+        @extend %loading-skeleton;
+    }
+}

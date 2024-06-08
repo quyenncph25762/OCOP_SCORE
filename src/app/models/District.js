@@ -6,7 +6,7 @@ const DistrictModel = {
         connection.query(query, callback)
     },
     getDistrictByProvince: (id, callback) => {
-        const query = `SELECT * FROM district where City_id = ?`
+        const query = `SELECT * FROM district WHERE City_id = ${id}`
         connection.query(query, id, callback)
     }
 }

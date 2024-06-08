@@ -1,5 +1,5 @@
 {{!-- post --}}
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+<div class="modal fade" id="modalCustomerAdd" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content" style="width: 800px;">
@@ -44,7 +44,8 @@
                         </div>
                         <div class="col-md-4 mb-3">
                             <label for="customer_email">Tỉnh/Thành phố</label>
-                            <select name="City_id" id="City_id" class="form-control">
+                            <select name="City_id" id="City_id" class="form-control modalCustomerAdd"
+                                onchange="handleChooseCity(this.value)">
                                 <option value="" selected>--</option>
                                 {{#each Province}}
                                 <option value="{{this._id}}">{{this.Name}}
@@ -54,22 +55,15 @@
                         </div>
                         <div class="col-md-4 mb-3">
                             <label for="customer_email">Quận / Huyện</label>
-                            <select name="District_id" id="District_id" class="form-control">
+                            <select name="District_id" id="District_id" class="form-control modalCustomerAdd"
+                                onchange="handleChooseDistrict(this.value)">
                                 <option value="" selected>--</option>
-                                {{#each District}}
-                                <option value="{{this._id}}">{{this.Name}}
-                                </option>
-                                {{/each}}
                             </select>
                         </div>
                         <div class="col-md-4 mb-3">
                             <label for="customer_email">Xã / Phường</label>
-                            <select name="Ward_id" id="Ward_id" class="form-control">
+                            <select name="Ward_id" id="Ward_id" class="form-control modalCustomerAdd">
                                 <option value="" selected>--</option>
-                                {{#each Ward}}
-                                <option value="{{this._id}}">{{this.Name}}
-                                </option>
-                                {{/each}}
                             </select>
                         </div>
                         <div class="col-md-12 mb-3">
@@ -157,5 +151,6 @@
         }
     }
     //update
-
 </script>
+
+<script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>

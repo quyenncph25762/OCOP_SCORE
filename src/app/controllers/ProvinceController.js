@@ -7,9 +7,8 @@ class ProvinceController {
                 return res.status(500).json({
                     message: "loi truy van"
                 })
-            } else {
-                res.send(data)
             }
+            return res.status(200).json(data)
         })
     }
 }

@@ -1,8 +1,8 @@
-const DistrictModel = require("../models/District")
+const WardModel = require("../models/Wards")
 
-class DistrictController {
+class WardController {
     getAll(req, res) {
-        DistrictModel.getAllDistrict((err, data) => {
+        WardModel.getAllWard((err, data) => {
             if (err) {
                 return res.status(500).json({
                     message: "loi truy van"
@@ -11,9 +11,10 @@ class DistrictController {
             return res.status(200).json(data)
         })
     }
-    getByProvinceId(req, res) {
-        const idProvince = req.params.id
-        DistrictModel.getDistrictByProvince(idProvince, (err, data) => {
+    getByDistrictId(req, res) {
+        const idDistrict = req.params.id
+        console.log(idDistrict)
+        WardModel.getWardByDistrict(idDistrict, (err, data) => {
             if (err) {
                 console.log(err)
                 return res.status(500).json({
@@ -25,4 +26,4 @@ class DistrictController {
     }
 }
 
-module.exports = new DistrictController
+module.exports = new WardController

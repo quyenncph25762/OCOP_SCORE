@@ -40,6 +40,8 @@
   <!--leaflet draw js-->
   <script src="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.4/jquery-confirm.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
+
 
   <style>
     #map {
@@ -186,7 +188,6 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <!-- Bootstrap core JavaScript-->
   <script src="/assets/js/jquery.min.js"></script>
-
   <script src="/assets/js/pace.min.js"></script>
   <script src="/assets/js/popper.min.js"></script>
   <script src="/assets/js/bootstrap.min.js"></script>
@@ -200,13 +201,7 @@
   <!-- Chart js -->
 
   <script src="/assets/plugins/Chart.js/Chart.min.js"></script>
-
-  <!-- Index js -->
-  {{!--
-  <script src="/assets/js/index.js"></script> --}}
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.4/jquery-confirm.min.js"></script>
-
-
   <script>
     function toggleMenu() {
       var submenu = document.getElementById("submenu");
@@ -232,6 +227,17 @@
   <script src="/assets/js/datatables.min.js"></script>
   <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
   <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+
+  <script>
+    $(document).ready(function () {
+      $('.js-example-basic-single').select2();
+    });
+  </script>
+  <!-- Index js -->
+  {{!--
+  <script src="/assets/js/index.js"></script> --}}
 </body>
 
 </html>
