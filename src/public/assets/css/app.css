@@ -354,6 +354,11 @@ ion-icon[name="lock-closed-outline"] {
     cursor: pointer;
 }
 
+ion-icon[name="lock-open-outline"] {
+    font-size: 20px;
+    cursor: pointer;
+}
+
 ion-icon[name="list-outline"] {
     font-size: 20px;
     cursor: pointer;

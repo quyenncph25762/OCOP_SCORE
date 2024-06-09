@@ -126,6 +126,22 @@ class UserPageController {
             }
         })
     }
+    // Khoa tai khoan
+    lock(req, res) {
+        const id = req.params.id
+        console.log(req.body)
+        AccountModel.lockUser(id, req.body, (err, result) => {
+            if (err) {
+                console.log(err)
+                return res.status(500).json({
+                    message: "Loi truy van"
+                })
+            }
+            return res.status(203).json({
+                message: "Đã khóa tài khoản người dùng"
+            })
+        })
+    }
 }
 
 module.exports = new UserPageController

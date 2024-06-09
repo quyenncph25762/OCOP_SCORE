@@ -79,6 +79,12 @@ const AccountModel = {
         const values = [employee.FullName, employee.UserName, employee.Email, employee.Phone, employee.RoleId, employee.Password, employee.IsActive]
         connection.query(query, values, callback)
     },
+    // lock User
+    lockUser: (id, user, callback) => {
+        const query = `UPDATE employee SET isLock = ? WHERE _id = ${id}`
+        const VALUES = [user.isLock]
+        connection.query(query, VALUES, callback)
+    }
 }
 
 module.exports = AccountModel

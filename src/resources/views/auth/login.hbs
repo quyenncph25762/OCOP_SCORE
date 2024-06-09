@@ -149,7 +149,8 @@
                 Password: CryptoJS.SHA256(password).toString()
             },
             success: function (data) {
-                if (data.User.role_title.toLowerCase() === "admin") {
+                console.log(data)
+                if (data.User.RoleId === 1) {
                     localStorage.setItem('toast', JSON.stringify({
                         position: "top-right",
                         heading: 'Đăng nhập thành công',
@@ -179,6 +180,17 @@
                 localStorage.setItem('User', JSON.stringify(dataUser));
             },
             error: function (err) {
+                if (err.status === 403) {
+                    $.toast({
+                        position: "top-right",
+                        heading: 'ERROR!',
+                        icon: "error",
+                        loader: true,
+                        text: 'Tài khoản người dùng này đã bị khóa hãy đăng nhập vào tài khoản khác',
+                        allowToastClose: true
+                    });
+                    return
+                }
                 $.toast({
                     position: "top-right",
                     heading: 'Tài khoản hoặc mật khẩu không chính xác',

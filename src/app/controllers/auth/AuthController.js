@@ -27,6 +27,11 @@ class AuthController {
                 })
             }
             const account = data[0]
+            if (account && account.isLock === 1) {
+                return res.status(403).json({
+                    message: "Tài khoản của bạn đã bị khóa"
+                })
+            }
             const token = jwt.sign({ _id: account._id }, SECRET_CODE, { expiresIn: "1d" })
             return res.json({
                 message: "Đăng nhập hành công",
