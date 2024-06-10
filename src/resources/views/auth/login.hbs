@@ -50,7 +50,7 @@
                             <div class="position-relative has-icon-right">
                                 <select name="District" class="form-control input-shadow js-example-basic-single"
                                     id="District">
-                                    <option selected>Hệ thống</option>
+                                    <option value="{{null}}" selected>Hệ thống</option>
                                     {{#each District}}
                                     <option value="{{this._id}}">{{this.Name}}</option>
                                     {{/each}}
@@ -150,7 +150,7 @@
                 UserName: UserName,
                 // Mã hóa mật khẩu trước khi gửi qua ajax
                 Password: CryptoJS.SHA256(password).toString(),
-                District: typeof (District) === Number ? District : null
+                District: District === 0 ? null : District
             },
             success: function (data) {
                 if (data.User.RoleId === 1) {

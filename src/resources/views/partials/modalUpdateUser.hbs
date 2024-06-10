@@ -171,7 +171,7 @@
                 Email: Email,
                 IsActive: IsActive === true ? 1 : 0,
                 Phone: Phone,
-                Password: Password.trim() === "" ? CryptoJS.SHA256(PasswordOld).toString() : CryptoJS.SHA256(Password).toString()
+                Password: Password.trim() === "" ? PasswordOld : CryptoJS.SHA256(Password).toString()
             }
             const response = await fetch(`/users/update/${idUser}`, {
                 method: "PATCH",

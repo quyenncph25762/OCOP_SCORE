@@ -24,12 +24,14 @@ class AuthController {
         const UserName = req.body.UserName
         const Password = req.body.Password
         const District = req.body.District
+        console.log(District)
         if (District) {
             AccountModel.loginAccount(UserName, Password, District, (err, data) => {
                 if (err) {
                     res.status(500).json({ error: 'Internal Server Error' });
                     return;
                 }
+
                 if (data.length === 0) {
                     return res.status(400).json({
                         message: "Tài khoản mật khẩu không chính xác"
