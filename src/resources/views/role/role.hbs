@@ -34,8 +34,9 @@
                             <thead>
                                 <tr>
                                     <th {{#ifCond Role.length 0}}hidden{{/ifCond}}>
-                                        <div class="checkbox">
-                                            <input type="checkbox" class="check" id="checkAll">
+                                        <div class="checkbox-wrapper-42 checkbox">
+                                            <input id="checkAll" type="checkbox" class="check" />
+                                            <label class="cbx" for="checkAll"></label>
                                         </div>
                                     </th>
                                     <th hidden>#</th>
@@ -49,10 +50,10 @@
                                 {{#each Role}}
                                 <tr>
                                     <td>
-                                        <div class="">
-                                            <div class="checkbox">
-                                                <input type="checkbox" class="check" data-idCheckBox="{{this._id}}">
-                                            </div>
+                                        <div class="checkbox-wrapper-42 checkbox">
+                                            <input id="cbx-42{{this._id}}" type="checkbox" class="check"
+                                                data-idCheckBox="{{this._id}}" />
+                                            <label class="cbx" for="cbx-42{{this._id}}"></label>
                                         </div>
                                     </td>
                                     <td hidden>{{@index}}</td>

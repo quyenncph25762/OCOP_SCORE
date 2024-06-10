@@ -95,7 +95,7 @@ const ProductmanageController = {
         connection.query(query, id, callback)
     },
     //getAllTrash
-    getAllProductFromtTrash: (callback) => {
+    getAllProductFromtTrash: (DistrictId, callback) => {
         const query = `SELECT 
         product.*,
         customer.Name AS customer_name,
@@ -113,7 +113,29 @@ const ProductmanageController = {
     JOIN
         yearreview ON yearreview._id = product.ProductYearId
     WHERE 
-        product.DistrictId = ? AND product.IsDeleted = 1;
+        product.DistrictId = ${DistrictId} AND product.IsDeleted = 1;
+        `
+        connection.query(query, callback)
+    },
+    getAllProductFromtTrashIsNull: (callback) => {
+        const query = `SELECT 
+        product.*,
+        customer.Name AS customer_name,
+        productgroup.Name AS productGroup_name,
+        yearreview.yearName AS yearName,
+        customer.IsDeleted AS customer_IsDeleted,
+        productgroup.IsDeleted AS productgroup_IsDeleted,
+        yearreview.isDeleted AS yearreview_IsDeleted
+    FROM 
+        product
+    JOIN 
+        customer ON customer._id = product.Customer_id
+    JOIN 
+        productgroup ON productgroup._id = product.ProductGroup_id
+    JOIN
+        yearreview ON yearreview._id = product.ProductYearId
+    WHERE 
+        product.DistrictId IS NULL AND product.IsDeleted = 1;
         `
         connection.query(query, callback)
     },

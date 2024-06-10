@@ -34,8 +34,9 @@
                             <thead>
                                 <tr>
                                     <th {{#ifCond ProductGroup.length 0}}hidden{{/ifCond}}>
-                                        <div class="checkbox">
-                                            <input type="checkbox" class="check" id="checkAll">
+                                        <div class="checkbox-wrapper-42 checkbox">
+                                            <input id="checkAll" type="checkbox" class="check" />
+                                            <label class="cbx" for="checkAll"></label>
                                         </div>
                                     </th>
                                     <th hidden>#</th>
@@ -50,10 +51,10 @@
                                 {{#each ProductGroup}}
                                 <tr>
                                     <td>
-                                        <div class="">
-                                            <div class="checkbox">
-                                                <input type="checkbox" class="check" data-idCheckBox="{{this._id}}">
-                                            </div>
+                                        <div class="checkbox-wrapper-42 checkbox">
+                                            <input id="cbx-42{{this._id}}" type="checkbox" class="check"
+                                                data-idCheckBox="{{this._id}}" />
+                                            <label class="cbx" for="cbx-42{{this._id}}"></label>
                                         </div>
                                     </td>
                                     <td hidden>{{@index}}</td>
@@ -208,7 +209,6 @@
                                                 loaderBg: '#9EC600',
                                                 showHideTransition: 'slide',
                                             }));
-
                                             window.location.reload()
 
                                         } else {
@@ -263,14 +263,17 @@
                             btnClass: 'btn-red',
                             action: async function () {
                                 const id = event.target.dataset.id;
+                                const arrRes = []
                                 for (let btnCheck of btnsCheck) {
                                     if (btnCheck.checked) {
                                         const id = btnCheck.dataset.idcheckbox
                                         const res = await fetch(`/product-group/remove/${id}`, {
                                             method: "DELETE"
                                         })
+                                        arrRes.push(res)
                                     }
                                 }
+                                await Promise.all(arrRes)
                                 localStorage.setItem('toast', JSON.stringify({
                                     position: "top-right",
                                     heading: 'Xóa thành công',

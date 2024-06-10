@@ -85,6 +85,25 @@ const EmployeeModel = {
         `
         connection.query(query, callback)
     },
+    fetchAllEmployeeFromTrashIsNull: (callback) => {
+        const query = `SELECT employee.*,
+        workdepartment.title AS workdepartment_name,
+        workposition.Name AS workposition_name,
+        role.title AS role_name,
+        workdepartment.isDeleted AS workdepartment_IsDeleted,
+        workposition.IsDeleted AS workposition_IsDeleted
+            FROM
+        employee
+        LEFT JOIN
+            workdepartment ON workdepartment._id = employee.WorkDepartment_id
+        LEFT JOIN
+            workposition ON workposition._id = employee.WorkPosition_id
+        LEFT JOIN
+            role ON role._id = employee.RoleId
+        WHERE  employee.IsDeleted = 1 AND employee.DistrictId IS NULL;
+        `
+        connection.query(query, callback)
+    },
     // them
     AddEmployee: (employee, callback) => {
         const query = `INSERT INTO employee (Code,FullName,UserName,Email,Avatar,Gender,DoB,Phone,Address,WorkDepartment_id,WorkPosition_id,roleId,CreatorUser_id,Password,DistrictId) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`

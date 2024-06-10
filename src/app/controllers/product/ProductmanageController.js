@@ -166,65 +166,127 @@ class ProductmanageController {
                         message: err
                     })
                 }
-                ProductmanageModel.getAllProductFromtTrash(User[0]?.DistrictId, (err, data) => {
-                    if (err) {
-                        console.log('Lỗi truy vấn', err)
-                    } else {
-                        const totalPages = Math.ceil(data.length / pageSize);
-                        const pages = Array.from({ length: totalPages }, (_, index) => {
-                            return {
-                                number: index + 1,
-                                active: index + 1 === page,
-                                isDots: index + 1 > 5
+                if (User[0]?.DistrictId) {
+                    ProductmanageModel.getAllProductFromtTrash(User[0]?.DistrictId, (err, data) => {
+                        if (err) {
+                            console.log('Lỗi truy vấn', err)
+                        } else {
+                            const totalPages = Math.ceil(data.length / pageSize);
+                            const pages = Array.from({ length: totalPages }, (_, index) => {
+                                return {
+                                    number: index + 1,
+                                    active: index + 1 === page,
+                                    isDots: index + 1 > 5
+                                };
+                            });
+                            const paginatedData = data.slice(startIndex, endIndex);
+                            // Chuẩn bị dữ liệu để truyền vào template
+                            const viewData = {
+                                data: paginatedData,
+                                pagination: {
+                                    prev: page > 1 ? page - 1 : null,
+                                    next: endIndex < data.length ? page + 1 : null,
+                                    pages: pages,
+                                },
                             };
-                        });
-                        const paginatedData = data.slice(startIndex, endIndex);
-                        // Chuẩn bị dữ liệu để truyền vào template
-                        const viewData = {
-                            data: paginatedData,
-                            pagination: {
-                                prev: page > 1 ? page - 1 : null,
-                                next: endIndex < data.length ? page + 1 : null,
-                                pages: pages,
-                            },
-                        };
-                        // lay ten chu the
-                        CustomerModel.getAllCustomer((err, Customer) => {
-                            if (err) {
-                                return res.status(400).json({
-                                    message: `${err}: ProductControllers => CustomerModel`
-                                })
-                            } else {
-                                ProductGroupModel.fetchAllProductGroup((err, ProductGroup) => {
-                                    if (err) {
-                                        return res.status(400).json({
-                                            message: `${err}: ProductControllers => ProductGroupModel`
-                                        })
-                                    }
-                                    ReviewModel.fetchAllReviewYear((err, Review) => {
+                            // lay ten chu the
+                            CustomerModel.getAllCustomer((err, Customer) => {
+                                if (err) {
+                                    return res.status(400).json({
+                                        message: `${err}: ProductControllers => CustomerModel`
+                                    })
+                                } else {
+                                    ProductGroupModel.fetchAllProductGroup((err, ProductGroup) => {
                                         if (err) {
                                             return res.status(400).json({
-                                                message: `${err}: ProductControllers => ReviewModel`
+                                                message: `${err}: ProductControllers => ProductGroupModel`
                                             })
                                         }
-                                        ProductDetail.getAllProductDetailLimit((err, ProductDetail) => {
+                                        ReviewModel.fetchAllReviewYear((err, Review) => {
                                             if (err) {
                                                 return res.status(400).json({
-                                                    message: `${err}: ProductControllers => productDetail`
+                                                    message: `${err}: ProductControllers => ReviewModel`
                                                 })
                                             }
-                                            if (!User?.[0]) {
-                                                res.redirect("/auth/loginPage")
-                                            } else {
-                                                res.render('product_trash', { viewData: viewData, Customer: Customer, ProductGroup: ProductGroup, Review: Review, User: User[0], ProductDetail: ProductDetail });
-                                            }
+                                            ProductDetail.getAllProductDetailLimit((err, ProductDetail) => {
+                                                if (err) {
+                                                    return res.status(400).json({
+                                                        message: `${err}: ProductControllers => productDetail`
+                                                    })
+                                                }
+                                                if (!User?.[0]) {
+                                                    res.redirect("/auth/loginPage")
+                                                } else {
+                                                    res.render('product_trash', { viewData: viewData, Customer: Customer, ProductGroup: ProductGroup, Review: Review, User: User[0], ProductDetail: ProductDetail });
+                                                }
+                                            })
                                         })
                                     })
-                                })
-                            }
-                        })
-                    }
-                })
+                                }
+                            })
+                        }
+                    })
+                } else {
+                    ProductmanageModel.getAllProductFromtTrashIsNull((err, data) => {
+                        if (err) {
+                            console.log('Lỗi truy vấn', err)
+                        } else {
+                            const totalPages = Math.ceil(data.length / pageSize);
+                            const pages = Array.from({ length: totalPages }, (_, index) => {
+                                return {
+                                    number: index + 1,
+                                    active: index + 1 === page,
+                                    isDots: index + 1 > 5
+                                };
+                            });
+                            const paginatedData = data.slice(startIndex, endIndex);
+                            // Chuẩn bị dữ liệu để truyền vào template
+                            const viewData = {
+                                data: paginatedData,
+                                pagination: {
+                                    prev: page > 1 ? page - 1 : null,
+                                    next: endIndex < data.length ? page + 1 : null,
+                                    pages: pages,
+                                },
+                            };
+                            // lay ten chu the
+                            CustomerModel.getAllCustomer((err, Customer) => {
+                                if (err) {
+                                    return res.status(400).json({
+                                        message: `${err}: ProductControllers => CustomerModel`
+                                    })
+                                } else {
+                                    ProductGroupModel.fetchAllProductGroup((err, ProductGroup) => {
+                                        if (err) {
+                                            return res.status(400).json({
+                                                message: `${err}: ProductControllers => ProductGroupModel`
+                                            })
+                                        }
+                                        ReviewModel.fetchAllReviewYear((err, Review) => {
+                                            if (err) {
+                                                return res.status(400).json({
+                                                    message: `${err}: ProductControllers => ReviewModel`
+                                                })
+                                            }
+                                            ProductDetail.getAllProductDetailLimit((err, ProductDetail) => {
+                                                if (err) {
+                                                    return res.status(400).json({
+                                                        message: `${err}: ProductControllers => productDetail`
+                                                    })
+                                                }
+                                                if (!User?.[0]) {
+                                                    res.redirect("/auth/loginPage")
+                                                } else {
+                                                    res.render('product_trash', { viewData: viewData, Customer: Customer, ProductGroup: ProductGroup, Review: Review, User: User[0], ProductDetail: ProductDetail });
+                                                }
+                                            })
+                                        })
+                                    })
+                                }
+                            })
+                        }
+                    })
+                }
             })
         }
 

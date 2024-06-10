@@ -156,19 +156,35 @@ class EmployeeControllers {
                         message: err
                     })
                 }
-                EmployeeModel.fetchAllEmployeeFromTrash(User[0], (err, Employee) => {
-                    if (err) {
-                        return res.status(400).json({
-                            message: err
-                        })
-                    }
-                    if (!Employee) {
-                        return res.status(400).json({
-                            message: "Lỗi"
-                        })
-                    }
-                    res.render("employee/trash", { Employee: Employee, User: User[0] })
-                })
+                if (User[0]?.DistrictId) {
+                    EmployeeModel.fetchAllEmployeeFromTrash(User[0].DistrictId, (err, Employee) => {
+                        if (err) {
+                            return res.status(400).json({
+                                message: err
+                            })
+                        }
+                        if (!Employee) {
+                            return res.status(400).json({
+                                message: "Lỗi"
+                            })
+                        }
+                        res.render("employee/trash", { Employee: Employee, User: User[0] })
+                    })
+                } else {
+                    EmployeeModel.fetchAllEmployeeFromTrashIsNull((err, Employee) => {
+                        if (err) {
+                            return res.status(400).json({
+                                message: err
+                            })
+                        }
+                        if (!Employee) {
+                            return res.status(400).json({
+                                message: "Lỗi"
+                            })
+                        }
+                        res.render("employee/trash", { Employee: Employee, User: User[0] })
+                    })
+                }
             })
         } else {
             res.redirect("/auth/loginPage")
