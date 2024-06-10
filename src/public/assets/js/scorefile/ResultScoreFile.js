@@ -1,7 +1,7 @@
 // tinh diem trung binh
 var AverageScore = 0
 // tinh so sao ocop trung bình
-var totalRankOcop = 0
+var AverageRankOcop = 0
 async function handleResultScoreFiles(idScoreCommittee, productId) {
     const ArrSecUserId = await FuncListSecUserId(idScoreCommittee)
     const listScoreFile = await FuncListScoreFileByScoreCommittee(idScoreCommittee)
@@ -16,11 +16,12 @@ async function handleResultScoreFiles(idScoreCommittee, productId) {
     if (filterScoreFile.length > 0) {
         let i = 0
         let totalScore = 0
-
+        let totalRankOcop = 0
         for (const scorefile of filterScoreFile) {
             i += 1
             // tinh diem trung binh
             AverageScore = ((totalScore += scorefile.ScoreTotal) / filterScoreFile.length)
+            AverageRankOcop = ((totalRankOcop += scorefile.RankOcop) / filterScoreFile.length)
             // hien thi ra html
             tbodyResultsScoreFile.innerHTML += `
                 <tr>
@@ -64,7 +65,7 @@ async function handleResultScoreFiles(idScoreCommittee, productId) {
                 </td>
                 <td id="AverageRankOcop" >
                 <p style="font-size:14px">
-                ${totalRankOcop ? repeatStar(totalRankOcop) : 0}
+                ${AverageRankOcop ? repeatStar(Number(Math.floor(AverageRankOcop))) : 0}
                 </p>
                 </td>
                 <td></td>
@@ -82,7 +83,7 @@ function repeatStar(number) {
 // ham cap nhat tong diem va rank ocop
 async function handleResult(idProduct) {
     try {
-        rankOcop()
+        // rankOcop()
         $.confirm({
             title: '<ion-icon name="help-circle-outline"></ion-icon>',
             content: 'Bạn muốn cập nhật phiếu chấm ?',
@@ -93,7 +94,7 @@ async function handleResult(idProduct) {
                     action: async function () {
 
                         const formProduct = {
-                            RankOcop: Number(totalRankOcop),
+                            RankOcop: Number(Math.floor(AverageRankOcop)),
                             ScoreTotal: Number(AverageScore.toFixed(1))
                         }
                         const response = await fetch(`/product-manage/updateRankOcop/${idProduct}`, {

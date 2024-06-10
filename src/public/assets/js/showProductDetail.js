@@ -1,12 +1,7 @@
 async function handleProductDetail(id) {
-    const body = document.getElementById(`bodyProductDetail${id}`)
-
-    const res = await fetch(`/productDetail/productDetailByProduct/${id}`, {
-        method: "GET"
-    })
-    if (res.ok) {
-        const data = await res.json();
-
+    try {
+        const body = document.getElementById(`bodyProductDetail${id}`)
+        const data = await listProductDetail(id)
         // Xóa nội dung cũ trước khi thêm nội dung mới
         body.innerHTML = '';
         let i = 0
@@ -38,5 +33,19 @@ async function handleProductDetail(id) {
                 `;
             }
         }
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+async function listProductDetail(id) {
+    try {
+        const res = await fetch(`/productDetail/productDetailByProduct/${id}`, {
+            method: "GET"
+        })
+        const data = await res.json();
+        return data
+    } catch (error) {
+        console.log(error)
     }
 }

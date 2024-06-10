@@ -1,11 +1,10 @@
 async function handleclickDetail(id) {
     const tbody = document.getElementById(`tbodyScoreTemp${id}`);
-
     try {
+        showLoading()
         const response = await fetch(`/scoreTempDetail/scoreTemp/${id}`, {
             method: "GET"
         });
-
         if (!response.ok) {
             throw new Error("Lỗi truy vấn");
         }
@@ -42,6 +41,7 @@ async function handleclickDetail(id) {
                 }
         `;
         }
+        hideLoading()
     } catch (error) {
         console.error(error);
         alert("Có lỗi xảy ra trong quá trình xử lý.");

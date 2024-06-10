@@ -1,5 +1,5 @@
 async function handleAdd() {
-
+    showLoading()
     const Name = document.getElementById("Name").value
     const Description = document.getElementById("Description").value
     const Customer_id = document.getElementById("Customer_id").value
@@ -75,6 +75,7 @@ async function handleAdd() {
             }
         }
         await Promise.all(reqGallery)
+        hideLoading()
         localStorage.setItem('toast', JSON.stringify({
             position: "top-right",
             heading: 'Thêm thành công',

@@ -1,5 +1,6 @@
 const handleAddScoreFile = async () => {
     if (params.has("_id")) {
+        showLoading()
         const scoreFileId = params.get("_id")
         const Product_id = document.getElementById("Product_id").value
         const Customer_id = document.getElementById("Customer_id").value
@@ -154,6 +155,7 @@ const handleAddScoreFile = async () => {
                 arrResponse.push(response)
             }
             await Promise.all(arrResponse)
+            hideLoading()
             localStorage.setItem('toast', JSON.stringify({
                 position: "top-right",
                 heading: 'SUCCESS',

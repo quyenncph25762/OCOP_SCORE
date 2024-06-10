@@ -1,5 +1,5 @@
 async function handleCoppy(idScoreTemp, userId) {
-
+    showLoading()
     const scoreTemp = await getOneScoreTemp(idScoreTemp)
     const { Code, Name, Note, IsActive, ProductGroup_id } = scoreTemp
     const newScoreTemp = {
@@ -48,6 +48,7 @@ async function handleCoppy(idScoreTemp, userId) {
         }
     }
     await Promise.all(arrRes)
+    hideLoading();
     localStorage.setItem('toast', JSON.stringify({
         position: "top-right",
         heading: 'SUCCESS',

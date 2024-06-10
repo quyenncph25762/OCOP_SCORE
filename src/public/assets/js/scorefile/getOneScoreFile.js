@@ -1,7 +1,6 @@
 const url = new URL(location.href)
 const params = new URLSearchParams(url.searchParams)
 
-
 if (params.has("productId") || params.has("code") && params.has("productgroupId")) {
     const productId = params.get("productId")
     const code = params.get("code")

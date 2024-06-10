@@ -40,20 +40,12 @@ const handleCheckBoxUpdateListEmployee = (id) => {
 const handleGetOneScoreCommittee = async (id) => {
     handleCheckBoxUpdateListEmployee(id)
     const tbodyScoreCommittDetail = document.querySelector(`#tbodyScoreCommitteeDetail${id}`)
-    // list scoreCommittee detail theo ScoreCommittee id
-    const actions = await fetch(`/scoreCommitteeDetail/getByScoreCommittee/${id}`, {
-        method: "GET"
-    })
-    if (!actions.ok) {
-        alert("Loi khi goi danh sach hoi dong")
-    }
     // list employee
-    const employees = await actions.json()
+    const employees = await scoreCommitteeDetailByScoreCommittee(id)
     // lay ra list employee trong dtb
-    const actionsListEmployee = await fetch(`/employee/getAll`, {
-        method: "GET"
-    })
-    const SecEmployee = await actionsListEmployee.json()
+    const SecEmployee = await getAllEmployee()
+
+
     const employeeUserIds = employees.map(emp => Number(emp.UserId));
     const filteredSecEmployee = SecEmployee.filter(emp => !employeeUserIds.includes(emp._id));
     tbodyScoreCommittDetail.innerHTML = ""
@@ -181,4 +173,33 @@ const handleUpdateIsDefault = (id) => {
             }
         }
     });
+}
+
+// lay scorecommit detail theo scorecommit
+async function scoreCommitteeDetailByScoreCommittee(id) {
+    try {
+        // list scoreCommittee detail theo ScoreCommittee id
+        const actions = await fetch(`/scoreCommitteeDetail/getByScoreCommittee/${id}`, {
+            method: "GET"
+        })
+        if (!actions.ok) {
+            alert("Loi khi goi danh sach hoi dong")
+        }
+        return await actions.json()
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+// lay tat ca employee
+
+async function getAllEmployee() {
+    try {
+        const actionsListEmployee = await fetch(`/employee/getAll`, {
+            method: "GET"
+        })
+        return await actionsListEmployee.json()
+    } catch (error) {
+        console.log(error)
+    }
 }
