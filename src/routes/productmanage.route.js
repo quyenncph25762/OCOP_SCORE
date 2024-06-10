@@ -19,7 +19,7 @@ router.get("/trash", productmanageController.productTrash)
 // trash
 router.post('/create', upload.single("Avatar"), productmanageController.create);
 router.delete('/remove/:id', productmanageController.delete);
-router.post('/:id/update', upload.single("Avatar"), productmanageController.update);
+router.patch('/:id/update', upload.single("Avatar"), productmanageController.update);
 router.get('/:id/edit', productmanageController.getbyId);
 router.use('/', productmanageController.index);
 module.exports = router;

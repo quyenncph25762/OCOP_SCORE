@@ -26,7 +26,6 @@ class ScoreFileController {
                             message: "Lỗi truy vấn"
                         })
                     }
-                    console.log(ScoreFile)
                     res.render("scoreFile/scoreFile", { User: User[0], ScoreFile: ScoreFile })
                 })
             })
@@ -107,31 +106,73 @@ class ScoreFileController {
     }
     // tao scoreFile
     createScoreFile(req, res) {
-        EmployeeModel.fetchAllEmployee(async (err, employees) => {
-            if (err) {
-                console.log(err)
-                return res.status(500).json({
-                    message: "Lỗi truy vấn"
-                })
-            }
-            await employees.forEach(async (employee) => {
-                ScoreFileModel.create({
-                    forEmployeeId: employee._id,
-                    IsActive: 0,
-                    Status: 0,
-                    ...req.body
-                }, (err, results) => {
-                    if (err) {
-                        return res.status(500).json({
-                            message: "Lỗi truy vấn"
+        const cookie = req.cookies
+        if (cookie?.User) {
+            const UserDataCookie = jwt.verify(cookie.User, SECRET_CODE)
+            AccountModel.fetchOneUser(UserDataCookie?._id, (err, User) => {
+                if (err) {
+                    return res.status(500).json({
+                        message: err
+                    })
+                }
+                if (User[0]?.DistrictId) {
+                    EmployeeModel.fetchAllEmployeeByDistrict(User[0]?.DistrictId, async (err, employees) => {
+                        if (err) {
+                            console.log(err)
+                            return res.status(500).json({
+                                message: "Lỗi truy vấn"
+                            })
+                        }
+                        await employees.forEach(async (employee) => {
+                            ScoreFileModel.create({
+                                forEmployeeId: employee._id,
+                                IsActive: 0,
+                                Status: 0,
+                                DistrictId: User[0]?.DistrictId,
+                                ...req.body
+                            }, (err, results) => {
+                                if (err) {
+                                    return res.status(500).json({
+                                        message: "Lỗi truy vấn"
+                                    })
+                                }
+                            })
+                        });
+                        return res.status(200).json({
+                            message: "Them thanh cong"
                         })
-                    }
-                })
-            });
-            return res.status(200).json({
-                message: "Them thanh cong"
+                    })
+                } else {
+                    EmployeeModel.fetchAllEmployeeIsNull(async (err, employees) => {
+                        if (err) {
+                            console.log(err)
+                            return res.status(500).json({
+                                message: "Lỗi truy vấn"
+                            })
+                        }
+                        await employees.forEach(async (employee) => {
+                            ScoreFileModel.create({
+                                forEmployeeId: employee._id,
+                                IsActive: 0,
+                                Status: 0,
+                                DistrictId: User[0]?.DistrictId,
+                                ...req.body
+                            }, (err, results) => {
+                                if (err) {
+                                    return res.status(500).json({
+                                        message: "Lỗi truy vấn"
+                                    })
+                                }
+                            })
+                        });
+                        return res.status(200).json({
+                            message: "Them thanh cong"
+                        })
+                    })
+                }
             })
-        })
+        }
+
 
     }
     // page tao moi

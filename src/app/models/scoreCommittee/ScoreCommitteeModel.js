@@ -2,7 +2,7 @@ const connection = require("../../../config/db")
 
 const ScoreCommitteeModel = {
     // hien tat ca
-    getAll: (callback) => {
+    getAllIsNull: (callback) => {
         const query = `SELECT
         scorecommittee.*,
         yearreview.yearName AS year_name,
@@ -12,8 +12,22 @@ const ScoreCommitteeModel = {
         yearreview ON yearreview._id = scorecommittee.yearReviewId
         LEFT JOIN
         employee ON employee._id = scorecommittee.Employee_id
-        WHERE scorecommittee.IsDeleted = 0 ORDER BY scorecommittee._id DESC`
+        WHERE scorecommittee.IsDeleted = 0 AND scorecommittee.DistrictId IS NULL  ORDER BY scorecommittee._id DESC`
         // const query = `SELECT * FROM scorecommittee WHERE IsDeleted = 0`
+        connection.query(query, callback)
+    },
+    // hien tat ca
+    getAllByDistrict: (DistrictId, callback) => {
+        const query = `SELECT
+        scorecommittee.*,
+        yearreview.yearName AS year_name,
+        employee.FullName AS employee_name
+        FROM scorecommittee
+        LEFT JOIN 
+        yearreview ON yearreview._id = scorecommittee.yearReviewId
+        LEFT JOIN
+        employee ON employee._id = scorecommittee.Employee_id
+        WHERE scorecommittee.IsDeleted = 0 AND scorecommittee.DistrictId = ${DistrictId} ORDER BY scorecommittee._id DESC`
         connection.query(query, callback)
     },
     getAllFromTrash: (callback) => {
@@ -33,8 +47,8 @@ const ScoreCommitteeModel = {
     },
     // tao moi
     create: (scoreCommittee, callback) => {
-        const query = `INSERT INTO scorecommittee (CreatorUser_id,Note,Name,IsActive,yearReviewId) VALUES (?,?,?,?,?)`
-        const VALUES = [scoreCommittee.CreatorUser_id, scoreCommittee.Note, scoreCommittee.Name, scoreCommittee.IsActive, scoreCommittee.yearReviewId]
+        const query = `INSERT INTO scorecommittee (CreatorUser_id,Note,Name,IsActive,yearReviewId,DistrictId) VALUES (?,?,?,?,?,?)`
+        const VALUES = [scoreCommittee.CreatorUser_id, scoreCommittee.Note, scoreCommittee.Name, scoreCommittee.IsActive, scoreCommittee.yearReviewId, scoreCommittee.DistrictId]
         connection.query(query, VALUES, callback)
     },
     // cap nhat

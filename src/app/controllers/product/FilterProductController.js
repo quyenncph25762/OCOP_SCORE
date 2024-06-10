@@ -22,8 +22,62 @@ class FilterProductController {
                     return res.status(400).json({
                         message: err
                     })
+                }
+                if (User[0].DistrictId) {
+                    ProductmanageModel.getAllProduct(User[0].DistrictId, (err, data) => {
+                        if (err) {
+                            console.log('Lỗi truy vấn', err)
+                        } else {
+                            const totalPages = Math.ceil(data.length / pageSize);
+                            const pages = Array.from({ length: totalPages }, (_, index) => {
+                                return {
+                                    number: index + 1,
+                                    active: index + 1 === page,
+                                    isDots: index + 1 > 5
+                                };
+                            });
+                            const paginatedData = data.slice(startIndex, endIndex);
+                            // Chuẩn bị dữ liệu để truyền vào template
+                            const viewData = {
+                                data: paginatedData,
+                                pagination: {
+                                    prev: page > 1 ? page - 1 : null,
+                                    next: endIndex < data.length ? page + 1 : null,
+                                    pages: pages,
+                                },
+                            };
+                            // lay ten chu the
+                            CustomerModel.getAllCustomer((err, Customer) => {
+                                if (err) {
+                                    return res.status(400).json({
+                                        message: `${err}: ProductControllers => CustomerModel`
+                                    })
+                                } else {
+                                    ProductGroupModel.fetchAllProductGroup((err, ProductGroup) => {
+                                        if (err) {
+                                            return res.status(400).json({
+                                                message: `${err}: ProductControllers => ProductGroupModel`
+                                            })
+                                        }
+                                        ReviewModel.fetchAllReviewYear((err, Review) => {
+                                            if (err) {
+                                                return res.status(400).json({
+                                                    message: `${err}: ProductControllers => ReviewModel`
+                                                })
+                                            }
+                                            if (!User?.[0]) {
+                                                res.redirect("/client")
+                                            } else {
+                                                res.render('filterProduct/filterProduct', { User: User[0], viewData: viewData, Customer: Customer, ProductGroup: ProductGroup, Review: Review });
+                                            }
+                                        })
+                                    })
+                                }
+                            })
+                        }
+                    })
                 } else {
-                    ProductmanageModel.getAllProduct((err, data) => {
+                    ProductmanageModel.getAllProductIsNull((err, data) => {
                         if (err) {
                             console.log('Lỗi truy vấn', err)
                         } else {

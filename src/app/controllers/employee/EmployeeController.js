@@ -5,12 +5,12 @@ const roleModel = require("../../models/role/RoleModel")
 const AccountModel = require("../../models/Account")
 const jwt = require("jsonwebtoken")
 const dotenv = require("dotenv")
+const DistrictModel = require("../../models/District")
 dotenv.config();
 const { SECRET_CODE } = process.env
 class EmployeeControllers {
     // fetchAll
     index(req, res, next) {
-
         const cookie = req.cookies
         if (cookie?.User) {
             const UserDataCookie = jwt.verify(cookie.User, SECRET_CODE)
@@ -20,40 +20,90 @@ class EmployeeControllers {
                         message: err
                     })
                 }
-                EmployeeModel.fetchAllEmployee((err, Employee) => {
-                    if (err) {
-                        return res.status(400).json({
-                            message: err
-                        })
-                    }
-                    if (!Employee) {
-                        return res.status(400).json({
-                            message: "Lỗi"
-                        })
-                    }
-                    workDepartmentModel.fetchAllWorkDepartment((err, WorkDepartMent) => {
+                User[0].DistrictId ?
+                    EmployeeModel.fetchAllEmployeeByDistrict(User[0].DistrictId, (err, Employee) => {
                         if (err) {
                             return res.status(400).json({
                                 message: err
                             })
                         }
-                        workPositionModel.fetchAllWorkPosition((err, WorkPosition) => {
+                        if (!Employee) {
+                            return res.status(400).json({
+                                message: "Lỗi"
+                            })
+                        }
+                        workDepartmentModel.fetchAllWorkDepartment((err, WorkDepartMent) => {
                             if (err) {
                                 return res.status(400).json({
                                     message: err
                                 })
                             }
-                            roleModel.fetchAllRole((err, Role) => {
+                            workPositionModel.fetchAllWorkPosition((err, WorkPosition) => {
                                 if (err) {
                                     return res.status(400).json({
                                         message: err
                                     })
                                 }
-                                res.render("employee/employee", { Employee: Employee, WorkDepartMent: WorkDepartMent, WorkPosition: WorkPosition, Role: Role, User: User[0] })
+                                roleModel.fetchAllRole((err, Role) => {
+                                    if (err) {
+                                        return res.status(400).json({
+                                            message: err
+                                        })
+                                    }
+                                    DistrictModel.getAllDistrict((err, district) => {
+                                        if (err) {
+                                            return res.status(400).json({
+                                                message: err
+                                            })
+                                        }
+                                        res.render("employee/employee", { Employee: Employee, WorkDepartMent: WorkDepartMent, WorkPosition: WorkPosition, Role: Role, User: User[0], District: district })
+                                    })
+                                })
                             })
                         })
                     })
-                })
+                    :
+                    EmployeeModel.fetchAllEmployeeIsNull((err, Employee) => {
+                        if (err) {
+                            return res.status(400).json({
+                                message: err
+                            })
+                        }
+                        if (!Employee) {
+                            return res.status(400).json({
+                                message: "Lỗi"
+                            })
+                        }
+                        workDepartmentModel.fetchAllWorkDepartment((err, WorkDepartMent) => {
+                            if (err) {
+                                return res.status(400).json({
+                                    message: err
+                                })
+                            }
+                            workPositionModel.fetchAllWorkPosition((err, WorkPosition) => {
+                                if (err) {
+                                    return res.status(400).json({
+                                        message: err
+                                    })
+                                }
+                                roleModel.fetchAllRole((err, Role) => {
+                                    if (err) {
+                                        return res.status(400).json({
+                                            message: err
+                                        })
+                                    }
+                                    DistrictModel.getAllDistrict((err, district) => {
+                                        if (err) {
+                                            return res.status(400).json({
+                                                message: err
+                                            })
+                                        }
+                                        res.render("employee/employee", { Employee: Employee, WorkDepartMent: WorkDepartMent, WorkPosition: WorkPosition, Role: Role, User: User[0], District: district })
+                                    })
+                                })
+                            })
+                        })
+                    })
             })
         } else {
             res.redirect("/auth/loginPage")
@@ -61,14 +111,39 @@ class EmployeeControllers {
     }
     // getAll 
     getAll(req, res) {
-        EmployeeModel.fetchAllEmployee((err, data) => {
-            if (err) {
-                return res.status(500).json({
-                    message: err
-                })
-            }
-            return res.status(200).json(data)
-        })
+        const cookie = req.cookies
+        if (cookie?.User) {
+            const UserDataCookie = jwt.verify(cookie.User, SECRET_CODE)
+            AccountModel.fetchOneUser(UserDataCookie?._id, (err, User) => {
+                if (err) {
+                    return res.status(400).json({
+                        message: err
+                    })
+                }
+                if (User.length > 0) {
+                    if (User[0].DistrictId) {
+                        EmployeeModel.fetchAllEmployeeByDistrict(User[0].DistrictId, (err, data) => {
+                            if (err) {
+                                return res.status(500).json({
+                                    message: err
+                                })
+                            }
+                            return res.status(200).json(data)
+                        })
+                    } else {
+                        EmployeeModel.fetchAllEmployeeIsNull((err, data) => {
+                            if (err) {
+                                return res.status(500).json({
+                                    message: err
+                                })
+                            }
+                            return res.status(200).json(data)
+                        })
+                    }
+                }
+            })
+        }
+
     }
     // hien thi trong thung rac
     getAllEmployeeFromTrash(req, res, next) {
@@ -81,7 +156,7 @@ class EmployeeControllers {
                         message: err
                     })
                 }
-                EmployeeModel.fetchAllEmployeeFromTrash((err, Employee) => {
+                EmployeeModel.fetchAllEmployeeFromTrash(User[0], (err, Employee) => {
                     if (err) {
                         return res.status(400).json({
                             message: err
@@ -102,48 +177,58 @@ class EmployeeControllers {
     // get ra nhung tai khoan co role la admin
     // them
     create = async (req, res, next) => {
-        console.log(req.body.Gender)
-        EmployeeModel.findEmployeeAdd(req.body, (err, data) => {
-            if (err) {
-                return res.status(500).json({
-                    message: "Loi truy van"
-                })
-            } else {
-                if (data.length === 0) {
-                    EmployeeModel.AddEmployee({
-                        Code: req.body.Code,
-                        Password: req.body.Password,
-                        FullName: req.body.FullName,
-                        UserName: req.body.UserName,
-                        Email: req.body.Email,
-                        Avatar: req.file ? req.file.path : req.body.Gender === "nam" ? "Uploads/user_boy.jpg" : "Uploads/user_girl.png",
-                        Gender: req.body.Gender,
-                        DoB: req.body.DoB,
-                        Phone: req.body.Phone,
-                        Address: req.body.Address,
-                        WorkDepartment_id: req.body.WorkDepartment_id,
-                        WorkPosition_id: req.body.WorkPosition_id,
-                        roleId: req.body.roleId,
-                        CreatorUser_id: req.body.CreatorUser_id,
-                    }, (err, data) => {
-                        if (err) {
-                            console.log(err)
-                            return res.status(500).json({
-                                message: err
-                            });
-                        } else {
-                            return res.status(201).json({
-                                message: 'Thêm mới thành công'
-                            });
-                        }
-                    })
-                } else {
+        const cookie = req.cookies
+        if (cookie?.User) {
+            const UserDataCookie = jwt.verify(cookie.User, SECRET_CODE)
+            AccountModel.fetchOneUser(UserDataCookie?._id, (err, User) => {
+                if (err) {
                     return res.status(400).json({
-                        message: "Tên đã tồn tại"
+                        message: err
                     })
                 }
-            }
-        })
+                EmployeeModel.findEmployeeAdd(req.body, (err, data) => {
+                    if (err) {
+                        return res.status(500).json({
+                            message: "Loi truy van"
+                        })
+                    } else {
+                        if (data.length === 0) {
+                            EmployeeModel.AddEmployee({
+                                Code: req.body.Code,
+                                Password: req.body.Password,
+                                FullName: req.body.FullName,
+                                UserName: req.body.UserName,
+                                Email: req.body.Email,
+                                Avatar: req.file ? req.file.path : req.body.Gender === "nam" ? "Uploads/user_boy.jpg" : "Uploads/user_girl.png",
+                                Gender: req.body.Gender,
+                                DoB: req.body.DoB,
+                                Phone: req.body.Phone,
+                                Address: req.body.Address,
+                                WorkDepartment_id: Number(req.body.WorkDepartment_id),
+                                WorkPosition_id: Number(req.body.WorkPosition_id),
+                                roleId: Number(req.body.roleId),
+                                CreatorUser_id: Number(req.body.CreatorUser_id),
+                                DistrictId: req.body.DistrictId === '0' ? null : Number(req.body.DistrictId)
+                            }, (err, data) => {
+                                if (err) {
+                                    return res.status(500).json({
+                                        message: err
+                                    });
+                                } else {
+                                    return res.status(201).json({
+                                        message: 'Thêm mới thành công'
+                                    });
+                                }
+                            })
+                        } else {
+                            return res.status(400).json({
+                                message: "Tên đã tồn tại"
+                            })
+                        }
+                    }
+                })
+            })
+        }
     }
     // xoa vao thung rac
     removeToTrash(req, res, next) {
@@ -195,42 +280,55 @@ class EmployeeControllers {
     // update
     update(req, res, next) {
         const id = req.params.id
-        EmployeeModel.findEmployeeUpdate(id, req.body, (err, data) => {
-            if (err) {
-                return res.status(500).json({
-                    message: "Loi truy van"
-                })
-            } else {
-                if (data.length === 0) {
-                    EmployeeModel.updateEmployee(id, ({
-                        Code: req.body.Code,
-                        FullName: req.body.FullName,
-                        Email: req.body.Email,
-                        Avatar: req.file ? req.file.path : req.body.Avatar,
-                        Gender: req.body.Gender,
-                        DoB: req.body.DoB,
-                        Phone: req.body.Phone,
-                        Address: req.body.Address,
-                        WorkDepartment_id: req.body.WorkDepartment_id,
-                        WorkPosition_id: req.body.WorkPosition_id,
-                        roleId: req.body.roleId
-                    }), (err, result) => {
-                        if (err) {
-                            return res.status(400).json({
-                                message: `${err}: Loi updateEmployee`
-                            })
-                        }
-                        return res.status(201).json({
-                            message: 'Cập nhật thành công'
-                        });
-                    })
-                } else {
+        const cookie = req.cookies
+        console.log(req.body.DistrictId)
+        if (cookie?.User) {
+            const UserDataCookie = jwt.verify(cookie.User, SECRET_CODE)
+            AccountModel.fetchOneUser(UserDataCookie?._id, (err, User) => {
+                if (err) {
                     return res.status(400).json({
-                        message: "Tên đã tồn tại"
+                        message: err
                     })
                 }
-            }
-        })
+                EmployeeModel.findEmployeeUpdate(id, req.body, (err, data) => {
+                    if (err) {
+                        return res.status(500).json({
+                            message: "Loi truy van"
+                        })
+                    } else {
+                        if (data.length === 0) {
+                            EmployeeModel.updateEmployee(id, ({
+                                Code: req.body.Code,
+                                FullName: req.body.FullName,
+                                Email: req.body.Email,
+                                Avatar: req.file ? req.file.path : req.body.Avatar,
+                                Gender: req.body.Gender,
+                                DoB: req.body.DoB,
+                                Phone: req.body.Phone,
+                                Address: req.body.Address,
+                                WorkDepartment_id: req.body.WorkDepartment_id,
+                                WorkPosition_id: req.body.WorkPosition_id,
+                                roleId: req.body.roleId,
+                                DistrictId: req.body.DistrictId === 'null' ? null : Number(req.body.DistrictId)
+                            }), (err, result) => {
+                                if (err) {
+                                    return res.status(400).json({
+                                        message: `${err}: Loi updateEmployee`
+                                    })
+                                }
+                                return res.status(201).json({
+                                    message: 'Cập nhật thành công'
+                                });
+                            })
+                        } else {
+                            return res.status(400).json({
+                                message: "Tên đã tồn tại"
+                            })
+                        }
+                    }
+                })
+            })
+        }
     }
 }
 

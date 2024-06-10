@@ -24,65 +24,127 @@ class ProductmanageController {
                         message: err
                     })
                 }
-                ProductmanageModel.getAllProduct((err, data) => {
-                    if (err) {
-                        console.log('Lỗi truy vấn', err)
-                    } else {
-                        const totalPages = Math.ceil(data.length / pageSize);
-                        const pages = Array.from({ length: totalPages }, (_, index) => {
-                            return {
-                                number: index + 1,
-                                active: index + 1 === page,
-                                isDots: index + 1 > 5
+                if (User[0]?.DistrictId) {
+                    ProductmanageModel.getAllProduct(User[0]?.DistrictId, (err, data) => {
+                        if (err) {
+                            console.log('Lỗi truy vấn', err)
+                        } else {
+                            const totalPages = Math.ceil(data.length / pageSize);
+                            const pages = Array.from({ length: totalPages }, (_, index) => {
+                                return {
+                                    number: index + 1,
+                                    active: index + 1 === page,
+                                    isDots: index + 1 > 5
+                                };
+                            });
+                            const paginatedData = data.slice(startIndex, endIndex);
+                            // Chuẩn bị dữ liệu để truyền vào template
+                            const viewData = {
+                                data: paginatedData,
+                                pagination: {
+                                    prev: page > 1 ? page - 1 : null,
+                                    next: endIndex < data.length ? page + 1 : null,
+                                    pages: pages,
+                                },
                             };
-                        });
-                        const paginatedData = data.slice(startIndex, endIndex);
-                        // Chuẩn bị dữ liệu để truyền vào template
-                        const viewData = {
-                            data: paginatedData,
-                            pagination: {
-                                prev: page > 1 ? page - 1 : null,
-                                next: endIndex < data.length ? page + 1 : null,
-                                pages: pages,
-                            },
-                        };
-                        // lay ten chu the
-                        CustomerModel.getAllCustomer((err, Customer) => {
-                            if (err) {
-                                return res.status(400).json({
-                                    message: `${err}: ProductControllers => CustomerModel`
-                                })
-                            } else {
-                                ProductGroupModel.fetchAllProductGroup((err, ProductGroup) => {
-                                    if (err) {
-                                        return res.status(400).json({
-                                            message: `${err}: ProductControllers => ProductGroupModel`
-                                        })
-                                    }
-                                    ReviewModel.fetchAllReviewYear((err, Review) => {
+                            // lay ten chu the
+                            CustomerModel.getAllCustomer((err, Customer) => {
+                                if (err) {
+                                    return res.status(400).json({
+                                        message: `${err}: ProductControllers => CustomerModel`
+                                    })
+                                } else {
+                                    ProductGroupModel.fetchAllProductGroup((err, ProductGroup) => {
                                         if (err) {
                                             return res.status(400).json({
-                                                message: `${err}: ProductControllers => ReviewModel`
+                                                message: `${err}: ProductControllers => ProductGroupModel`
                                             })
                                         }
-                                        ProductDetail.getAllProductDetailLimit((err, ProductDetail) => {
+                                        ReviewModel.fetchAllReviewYear((err, Review) => {
                                             if (err) {
                                                 return res.status(400).json({
-                                                    message: `${err}: ProductControllers => productDetail`
+                                                    message: `${err}: ProductControllers => ReviewModel`
                                                 })
                                             }
-                                            if (!User?.[0]) {
-                                                res.redirect("/auth/loginPage")
-                                            } else {
-                                                res.render('product_manage', { viewData: viewData, Customer: Customer, ProductGroup: ProductGroup, Review: Review, User: User[0], ProductDetail: ProductDetail });
-                                            }
+                                            ProductDetail.getAllProductDetailLimit((err, ProductDetail) => {
+                                                if (err) {
+                                                    return res.status(400).json({
+                                                        message: `${err}: ProductControllers => productDetail`
+                                                    })
+                                                }
+                                                if (!User?.[0]) {
+                                                    res.redirect("/auth/loginPage")
+                                                } else {
+                                                    res.render('product_manage', { viewData: viewData, Customer: Customer, ProductGroup: ProductGroup, Review: Review, User: User[0], ProductDetail: ProductDetail });
+                                                }
+                                            })
                                         })
                                     })
-                                })
-                            }
-                        })
-                    }
-                })
+                                }
+                            })
+                        }
+                    })
+                } else {
+                    ProductmanageModel.getAllProductIsNull((err, data) => {
+                        if (err) {
+                            console.log('Lỗi truy vấn', err)
+                        } else {
+                            const totalPages = Math.ceil(data.length / pageSize);
+                            const pages = Array.from({ length: totalPages }, (_, index) => {
+                                return {
+                                    number: index + 1,
+                                    active: index + 1 === page,
+                                    isDots: index + 1 > 5
+                                };
+                            });
+                            const paginatedData = data.slice(startIndex, endIndex);
+                            // Chuẩn bị dữ liệu để truyền vào template
+                            const viewData = {
+                                data: paginatedData,
+                                pagination: {
+                                    prev: page > 1 ? page - 1 : null,
+                                    next: endIndex < data.length ? page + 1 : null,
+                                    pages: pages,
+                                },
+                            };
+                            // lay ten chu the
+                            CustomerModel.getAllCustomer((err, Customer) => {
+                                if (err) {
+                                    return res.status(400).json({
+                                        message: `${err}: ProductControllers => CustomerModel`
+                                    })
+                                } else {
+                                    ProductGroupModel.fetchAllProductGroup((err, ProductGroup) => {
+                                        if (err) {
+                                            return res.status(400).json({
+                                                message: `${err}: ProductControllers => ProductGroupModel`
+                                            })
+                                        }
+                                        ReviewModel.fetchAllReviewYear((err, Review) => {
+                                            if (err) {
+                                                return res.status(400).json({
+                                                    message: `${err}: ProductControllers => ReviewModel`
+                                                })
+                                            }
+                                            ProductDetail.getAllProductDetailLimit((err, ProductDetail) => {
+                                                if (err) {
+                                                    return res.status(400).json({
+                                                        message: `${err}: ProductControllers => productDetail`
+                                                    })
+                                                }
+                                                if (!User?.[0]) {
+                                                    res.redirect("/auth/loginPage")
+                                                } else {
+                                                    res.render('product_manage', { viewData: viewData, Customer: Customer, ProductGroup: ProductGroup, Review: Review, User: User[0], ProductDetail: ProductDetail });
+                                                }
+                                            })
+                                        })
+                                    })
+                                }
+                            })
+                        }
+                    })
+                }
             })
         } else {
             res.redirect("/auth/loginPage")
@@ -104,7 +166,7 @@ class ProductmanageController {
                         message: err
                     })
                 }
-                ProductmanageModel.getAllProductFromtTrash((err, data) => {
+                ProductmanageModel.getAllProductFromtTrash(User[0]?.DistrictId, (err, data) => {
                     if (err) {
                         console.log('Lỗi truy vấn', err)
                     } else {
@@ -179,49 +241,62 @@ class ProductmanageController {
         })
     }
     create(req, res) {
-        const product = {
-            IsActive: req.body.IsActive === "true" ? 1 : 0,
-            Avatar: req?.file ? req.file.path : "/Uploads/productDefault.jpg",
-            CreatorUser_id: req.body.CreatorUser_id,
-            Code: req.body.Code,
-            Name: req.body.Name,
-            Description: req.body.Description,
-            Customer_id: req.body.Customer_id,
-            ProductGroup_id: req.body.ProductGroup_id,
-            ProductYearId: req.body.ProductYearId,
-            Note: req.body.Note
-        }
-        ProductmanageModel.findProductAdd(product, (err, results) => {
-            if (err) {
-                console.log('Lỗi truy vấn', err);
-                res.json({ success: false, message: 'Lỗi truy vấn' });
-            }
-            else {
-                if (results.length === 0) {
-                    ProductmanageModel.addProduct(product, (err, data) => {
-                        if (err) {
-                            console.log(err)
-                            return res.status(500).json({ success: false, message: 'Lỗi truy vấn' });
-                        } else {
-                            ProductmanageModel.getProductbyId(data.insertId, (err, data) => {
-                                if (err) {
-                                    return res.status(500).json({ success: false, message: 'Lỗi truy vấn' });
-                                }
-                                console.log(data)
-                                return res.status(201).json({
-                                    message: "Tao thanh cong",
-                                    data
-                                })
-                            })
-                        }
+        const cookie = req.cookies
+        if (cookie?.User) {
+            const UserDataCookie = jwt.verify(cookie.User, SECRET_CODE)
+            AccountModel.fetchOneUser(UserDataCookie?._id, (err, User) => {
+                if (err) {
+                    return res.status(400).json({
+                        message: err
                     })
                 }
-                else {
-                    return res.status(400).json({ success: false, message: 'Sản phẩm đã tồn tại trong cơ sở dữ liệu' });
+                const product = {
+                    IsActive: req.body.IsActive === "true" ? 1 : 0,
+                    Avatar: req?.file ? req.file.path : "/Uploads/productDefault.jpg",
+                    CreatorUser_id: req.body.CreatorUser_id,
+                    Code: req.body.Code,
+                    Name: req.body.Name,
+                    Description: req.body.Description,
+                    Customer_id: req.body.Customer_id,
+                    ProductGroup_id: req.body.ProductGroup_id,
+                    ProductYearId: req.body.ProductYearId,
+                    Note: req.body.Note,
+                    DistrictId: User[0]?.DistrictId
                 }
+                ProductmanageModel.findProductAdd(product, (err, results) => {
+                    if (err) {
+                        console.log('Lỗi truy vấn', err);
+                        res.json({ success: false, message: 'Lỗi truy vấn' });
+                    }
+                    else {
+                        if (results.length === 0) {
+                            ProductmanageModel.addProduct(product, (err, data) => {
+                                if (err) {
+                                    console.log(err)
+                                    return res.status(500).json({ success: false, message: 'Lỗi truy vấn' });
+                                } else {
+                                    ProductmanageModel.getProductbyId(data.insertId, (err, data) => {
+                                        if (err) {
+                                            return res.status(500).json({ success: false, message: 'Lỗi truy vấn' });
+                                        }
+                                        console.log(data)
+                                        return res.status(201).json({
+                                            message: "Tao thanh cong",
+                                            data
+                                        })
+                                    })
+                                }
+                            })
+                        }
+                        else {
+                            return res.status(400).json({ success: false, message: 'Sản phẩm đã tồn tại trong cơ sở dữ liệu' });
+                        }
 
-            }
-        })
+                    }
+                })
+            })
+        }
+
     }
     edit(req, res) {
         const Id = req.params.id;

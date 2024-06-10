@@ -218,7 +218,8 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Hủy bỏ</button>
-                <button type="button" class="btn btn-info" onclick="handleAdd()">Lưu thông tin</button>
+                <button type="button" class="btn btn-info" onclick="handleAdd()">Lưu thông
+                    tin</button>
             </div>
         </div>
     </div>
@@ -253,6 +254,7 @@
             alert("Có lỗi xảy ra!")
         }
         const employee = await response.json()
+        console.log(employee)
         if (employee.length > 0) {
             // loc nhung employee nao khac voi id trong scoreCommittDetail
             ListEmployee = employee.filter((item) => !employeeByIdNumber.includes(item._id));

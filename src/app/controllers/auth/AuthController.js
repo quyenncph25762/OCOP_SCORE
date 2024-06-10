@@ -5,40 +5,74 @@ const EmployeeModel = require("../../models/employee/EmployeeModel");
 const bcrypt = require("bcrypt")
 const mailer = require("../../../utils/mailer");
 const { token } = require("morgan");
+const DistrictModel = require("../../models/District");
 dotenv.config();
 const { SECRET_CODE } = process.env
 class AuthController {
     // trang dang nhap
     loginPage = (req, res) => {
-        res.render("auth/login")
+        DistrictModel.getAllDistrict((err, District) => {
+            if (err) {
+                res.status(500).json({ error: 'Internal Server Error' });
+                return;
+            }
+            res.render("auth/login", { District: District })
+        })
     }
     // dang nhap
     login = (req, res) => {
         const UserName = req.body.UserName
         const Password = req.body.Password
-        AccountModel.loginAccount(UserName, Password, (err, data) => {
-            if (err) {
-                res.status(500).json({ error: 'Internal Server Error' });
-                return;
-            }
-            if (data.length === 0) {
-                return res.status(400).json({
-                    message: "Tài khoản mật khẩu không chính xác"
+        const District = req.body.District
+        if (District) {
+            AccountModel.loginAccount(UserName, Password, District, (err, data) => {
+                if (err) {
+                    res.status(500).json({ error: 'Internal Server Error' });
+                    return;
+                }
+                if (data.length === 0) {
+                    return res.status(400).json({
+                        message: "Tài khoản mật khẩu không chính xác"
+                    })
+                }
+                const account = data[0]
+                if (account && account.isLock === 1) {
+                    return res.status(403).json({
+                        message: "Tài khoản của bạn đã bị khóa"
+                    })
+                }
+                const token = jwt.sign({ _id: account._id }, SECRET_CODE, { expiresIn: "1d" })
+                return res.json({
+                    message: "Đăng nhập hành công",
+                    token: token,
+                    User: account
                 })
-            }
-            const account = data[0]
-            if (account && account.isLock === 1) {
-                return res.status(403).json({
-                    message: "Tài khoản của bạn đã bị khóa"
-                })
-            }
-            const token = jwt.sign({ _id: account._id }, SECRET_CODE, { expiresIn: "1d" })
-            return res.json({
-                message: "Đăng nhập hành công",
-                token: token,
-                User: account
             })
-        })
+        } else {
+            AccountModel.loginAccountAdmin(UserName, Password, (err, data) => {
+                if (err) {
+                    res.status(500).json({ error: 'Internal Server Error' });
+                    return;
+                }
+                if (data.length === 0) {
+                    return res.status(400).json({
+                        message: "Tài khoản mật khẩu không chính xác"
+                    })
+                }
+                const account = data[0]
+                if (account && account.isLock === 1) {
+                    return res.status(403).json({
+                        message: "Tài khoản của bạn đã bị khóa"
+                    })
+                }
+                const token = jwt.sign({ _id: account._id }, SECRET_CODE, { expiresIn: "1d" })
+                return res.json({
+                    message: "Đăng nhập hành công",
+                    token: token,
+                    User: account
+                })
+            })
+        }
     }
     // dang ki
     register = (req, res) => {

@@ -13,7 +13,7 @@ const AccountModel = {
         connection.query(query, callBack)
     },
     // login
-    loginAccount: (UserName, Password, callback) => {
+    loginAccount: (UserName, Password, District, callback) => {
         const query = `SELECT 
         employee.*,
         role.title AS role_title
@@ -21,7 +21,20 @@ const AccountModel = {
             employee
         JOIN 
         role ON role._id = employee.RoleId
-        WHERE UserName = ? AND Password = ?
+        WHERE UserName = ? AND Password = ? AND DistrictId = ?
+        `
+        connection.query(query, [UserName, Password, District], callback)
+    },
+    // login admin
+    loginAccountAdmin: (UserName, Password, callback) => {
+        const query = `SELECT 
+        employee.*,
+        role.title AS role_title
+        FROM 
+            employee
+        JOIN 
+        role ON role._id = employee.RoleId
+        WHERE UserName = ? AND Password = ? 
         `
         connection.query(query, [UserName, Password], callback)
     },

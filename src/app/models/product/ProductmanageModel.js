@@ -1,6 +1,6 @@
 const connection = require('../../../config/db')
 const ProductmanageController = {
-    getAllProduct: (callback) => {
+    getAllProduct: (DistrictId, callback) => {
         const query = `SELECT 
         product.*,
         customer.Name AS customer_name,
@@ -18,7 +18,30 @@ const ProductmanageController = {
     JOIN
         yearreview ON yearreview._id = product.ProductYearId
     WHERE 
-        product.IsDeleted = 0 ORDER BY product._id DESC;
+        product.IsDeleted = 0 AND product.DistrictId = ? ORDER BY product._id DESC;
+        `;
+        connection.query(query, [DistrictId], callback);
+
+    },
+    getAllProductIsNull: (callback) => {
+        const query = `SELECT 
+        product.*,
+        customer.Name AS customer_name,
+        productgroup.Name AS productGroup_name,
+        yearreview.yearName AS yearName,
+        customer.IsDeleted AS customer_IsDeleted,
+        productgroup.IsDeleted AS productgroup_IsDeleted,
+        yearreview.isDeleted AS yearreview_IsDeleted
+    FROM 
+        product
+    JOIN 
+        customer ON customer._id = product.Customer_id
+    JOIN 
+        productgroup ON productgroup._id = product.ProductGroup_id
+    JOIN
+        yearreview ON yearreview._id = product.ProductYearId
+    WHERE 
+        product.IsDeleted = 0 AND product.DistrictId IS NULL ORDER BY product._id DESC;
         `;
         connection.query(query, callback);
 
@@ -41,13 +64,13 @@ const ProductmanageController = {
 
     },
     addProduct: (product, callback) => {
-        const query = 'INSERT INTO product (Name,Code,ProductGroup_id,Customer_id, ProductYearId, Note,Description,RankOcop,Avatar,TotalScore,IsActive) VALUES (?,?,?,?,?,?,?,?,?,?,?)';
-        const values = [product.Name, product.Code, product.ProductGroup_id, product.Customer_id, product.ProductYearId, product.Note, product.Description, product.RankOcop, product.Avatar, product.TotalScore, product.IsActive];
+        const query = 'INSERT INTO product (Name,Code,ProductGroup_id,Customer_id, ProductYearId, Note,Description,RankOcop,Avatar,TotalScore,IsActive,DistrictId) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)';
+        const values = [product.Name, product.Code, product.ProductGroup_id, product.Customer_id, product.ProductYearId, product.Note, product.Description, product.RankOcop, product.Avatar, product.TotalScore, product.IsActive, product.DistrictId];
         connection.query(query, values, callback);
     },
     findProductAdd: (product, callback) => {
-        const query = 'SELECT * FROM product WHERE Name = ?';
-        const values = [product.Name];
+        const query = 'SELECT * FROM product WHERE Name = ? AND DistrictId = ?';
+        const values = [product.Name, product.DistrictId];
         connection.query(query, values, callback);
     },
     findProductUpdate: (id, product, callback) => {
@@ -90,7 +113,7 @@ const ProductmanageController = {
     JOIN
         yearreview ON yearreview._id = product.ProductYearId
     WHERE 
-        product.IsDeleted = 1;
+        product.DistrictId = ? AND product.IsDeleted = 1;
         `
         connection.query(query, callback)
     },

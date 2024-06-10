@@ -30,7 +30,7 @@ const handleUpdate = async (id) => {
     form.append("ProductYearId", ProductYearId.value)
     form.append("Note", Note.value)
     const response = await fetch(`/product-manage/${id}/update`, {
-        method: "POST",
+        method: "PATCH",
         body: form,
     })
     if (!response.ok) {

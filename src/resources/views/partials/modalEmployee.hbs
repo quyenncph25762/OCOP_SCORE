@@ -78,7 +78,8 @@
                             {{!-- Customer --}}
                             <div class="col-md-6 mb-3 mt-3">
                                 <label for="WorkDepartment_id">Tổ / Phòng ban</label>
-                                <select id="WorkDepartment_id" name="WorkDepartment_id" class="form-control" required>
+                                <select id="WorkDepartment_id" name="WorkDepartment_id"
+                                    class="form-control js-example-basic-single" required>
                                     {{#each WorkDepartMent}}
                                     {{#ifCond this.isDeleted 0}}
                                     <option value="{{this._id}}">{{this.title}}</option>
@@ -89,7 +90,8 @@
                             {{!-- workPostitionId--}}
                             <div class="col-md-6 mb-3 mt-3">
                                 <label for="WorkPosition_id">Vị trí chức danh</label>
-                                <select id="WorkPosition_id" name="WorkPosition_id" class="form-control">
+                                <select id="WorkPosition_id" name="WorkPosition_id"
+                                    class="form-control js-example-basic-single">
                                     {{#each WorkPosition}}
                                     <option value="{{this._id}}" {{#ifCond this.IsActive 0}}disabled{{/ifCond}}>
                                         {{this.Name}}</option>
@@ -97,21 +99,37 @@
                                 </select>
                             </div>
                             {{!-- role --}}
-                            <div class="col-md-12 mb-3 mt-3">
+                            <div class="col-md-6 mb-3 mt-3">
                                 <label for="roleId">Vai trò</label>
-                                <select id="roleId" name="roleId" class="form-control">
+                                <select id="roleId" name="roleId" class="form-control js-example-basic-single">
                                     {{#each Role}}
                                     <option value="{{this._id}}" {{#ifCond this.status 0}}disabled{{/ifCond}}>
                                         {{this.title}}</option>
                                     {{/each}}
                                 </select>
                             </div>
+                            {{!-- Huyện --}}
+                            {{#if User.DistrictId}}
+                            <div class=""></div>
+                            {{else}}
+                            <div class="col-md-6 mb-3 mt-3">
+                                <label for="District">Huyện</label>
+                                <select id="District" name="District" class="form-control js-example-basic-single">
+                                    <option value="{{User.DistrictId}}" selected>Hệ thống</option>
+                                    {{#each District}}
+                                    <option value="{{this._id}}" {{#ifCond this.IsDeleted 0}}disabled{{/ifCond}}>
+                                        {{this.Name}}</option>
+                                    {{/each}}
+                                </select>
+                            </div>
+                            {{/if}}
                         </div>
                     </div>
                 </form>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                    <button onclick="handleAdd()" type="submit" class="btn btn-success">Thêm cán bộ</button>
+                    <button onclick="handleAdd('{{User.DistrictId}}')" type="submit" class="btn btn-success">Thêm cán
+                        bộ</button>
                 </div>
             </div>
         </div>
@@ -164,7 +182,7 @@
     UserNameValue.value = `USER${UserNameRandom}`
 </script>
 <script>
-    async function handleAdd() {
+    async function handleAdd(DistrictId) {
         const Avatar = document.getElementById("Avatar")
         const nu = document.getElementById("nu").checked
         const nam = document.getElementById("nam").checked
@@ -177,8 +195,9 @@
         const Address = document.getElementById("Address").value
         const WorkDepartment_id = document.getElementById("WorkDepartment_id").value
         const WorkPosition_id = document.getElementById("WorkPosition_id").value
-        const roleId = document.getElementById("roleId").value
+        const roleId = document.getElementById("roleId")?.value
         const CreatorUser_id = document.getElementById("CreatorUser_id").value
+        const District = document.getElementById("District")?.value
         const formData = new FormData()
         formData.append("Avatar", Avatar?.files[0] ? Avatar?.files[0] : null)
         formData.append("Gender", nu === true ? "nu" : "nam")
@@ -193,7 +212,8 @@
         formData.append("WorkPosition_id", WorkPosition_id)
         formData.append("roleId", roleId)
         formData.append("CreatorUser_id", CreatorUser_id)
-        formData.append("Password", CryptoJS.SHA256("123456").toString())
+        formData.append("DistrictId", District ? Number(District) : Number(DistrictId))
+        formData.append("Password", CryptoJS.SHA256("123456"))
         const res = await fetch(`/employee/add`, {
             method: "POST",
             body: formData

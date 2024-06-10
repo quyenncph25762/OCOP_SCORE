@@ -18,21 +18,39 @@ class UserPageController {
                         message: `Looi truy xuat ${err}`
                     })
                 }
-                EmployeeModal.fetchAllUser((err, Employee) => {
-                    if (err) {
-                        return res.status(500).json({
-                            message: `Loi truy xuat ${err}`
-                        })
-                    }
-                    RoleModal.fetchAllRole((err, Role) => {
+                if (User[0].DistrictId) {
+                    EmployeeModal.fetchAllEmployeeByDistrict(User[0].DistrictId, (err, Employee) => {
                         if (err) {
                             return res.status(500).json({
-                                message: `Looi truy xuat ${err}`
+                                message: `Loi truy xuat ${err}`
                             })
                         }
-                        res.render("userPage/userPage", { User: User[0], Employee: Employee, Role: Role })
+                        RoleModal.fetchAllRole((err, Role) => {
+                            if (err) {
+                                return res.status(500).json({
+                                    message: `Looi truy xuat ${err}`
+                                })
+                            }
+                            res.render("userPage/userPage", { User: User[0], Employee: Employee, Role: Role })
+                        })
                     })
-                })
+                } else {
+                    EmployeeModal.getAllAdmin((err, Employee) => {
+                        if (err) {
+                            return res.status(500).json({
+                                message: `Loi truy xuat ${err}`
+                            })
+                        }
+                        RoleModal.fetchAllRole((err, Role) => {
+                            if (err) {
+                                return res.status(500).json({
+                                    message: `Looi truy xuat ${err}`
+                                })
+                            }
+                            res.render("userPage/userPage", { User: User[0], Employee: Employee, Role: Role })
+                        })
+                    })
+                }
             })
         }
 

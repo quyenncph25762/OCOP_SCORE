@@ -48,10 +48,12 @@
                         </div>
                         <div class="form-group">
                             <div class="position-relative has-icon-right">
-                                <select name="Address" class="form-control input-shadow" name="" id="Address">
-                                    <option value="admin" selected>Hệ thống</option>
-                                    <option value="Bắc Ninh">Bắc Ninh</option>
-                                    <option value="Bắc Giang">Bắc Giang</option>
+                                <select name="District" class="form-control input-shadow js-example-basic-single"
+                                    id="District">
+                                    <option selected>Hệ thống</option>
+                                    {{#each District}}
+                                    <option value="{{this._id}}">{{this.Name}}</option>
+                                    {{/each}}
                                 </select>
                                 <div class="form-control-position">
                                     <i class="icon-lock"></i>
@@ -140,16 +142,17 @@
     function handleLogin() {
         const UserName = document.querySelector("#FullName").value
         const password = document.querySelector("#Password").value
+        const District = Number(document.querySelector("#District").value)
         $.ajax({
             url: '/auth/login',
             type: 'POST',
             data: {
                 UserName: UserName,
                 // Mã hóa mật khẩu trước khi gửi qua ajax
-                Password: CryptoJS.SHA256(password).toString()
+                Password: CryptoJS.SHA256(password).toString(),
+                District: typeof (District) === Number ? District : null
             },
             success: function (data) {
-                console.log(data)
                 if (data.User.RoleId === 1) {
                     localStorage.setItem('toast', JSON.stringify({
                         position: "top-right",

@@ -27,7 +27,7 @@ async function handleResultScoreFiles(idScoreCommittee, productId) {
                     <td>${i}</td>
                     <td>
                         <strong style="font-size: 16px;">${scorefile.employee_FullName}</strong>
-                        <p style="font-style: italic;">${scorefile.workposition_name} - ${scorefile.workdepartment_title}</p>
+                        <p style="font-style: italic;text-wrap:wrap">${scorefile.workposition_name} - ${scorefile.workdepartment_title}</p>
                     </td>
                     <td style="color: #F64E60; font-weight: 600;">${scorefile.ScoreTotal}</td>
                     <td>
@@ -45,7 +45,7 @@ async function handleResultScoreFiles(idScoreCommittee, productId) {
                             </span>
                             <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Phiếu chấm">
                                 <a href="">
-                                    <ion-icon name="link-outline"></ion-icon>
+                                    <ion-icon name="link-outline" onclick="generatePDF()"></ion-icon>
                                 </a>
                             </span>
                         </div>

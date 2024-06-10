@@ -1,5 +1,4 @@
 const handleAdd = async () => {
-    // add scoreCommittee
     const Name = document.getElementById("Name").value
     const IsActive = document.getElementById("IsActive").checked
     const yearReviewId = document.getElementById("yearReviewId").value
@@ -14,9 +13,9 @@ const handleAdd = async () => {
     const ScoreCommittee = {
         Name: Name,
         IsActive: IsActive === true ? 1 : 0,
-        yearReviewId: yearReviewId,
+        yearReviewId: Number(yearReviewId),
         Note: Note,
-        CreatorUser_id: CreatorUser_id,
+        CreatorUser_id: Number(CreatorUser_id)
     }
     const res = await fetch(`/scoreCommittee/add`, {
         method: "POST",
