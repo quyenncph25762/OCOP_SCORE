@@ -74,6 +74,7 @@
                             <td>
                                 <div class="">
                                     <div class="checkbox-wrapper-42 checkbox">
+                                        {{!-- <p>{{json this}}</p> --}}
                                         <input id="cbx-42Update{{this._id}}" type="checkbox"
                                             class="checkUpdate{{../id}}" data-employee="{{json this}}"
                                             data-id="{{../id}}" />
@@ -372,6 +373,7 @@
 
         // Cập nhật danh sách nhân viên
         updateEmployeeList();
+        console.log(arrEmployee)
         arrEmployee.forEach((item, index) => {
             const objTo = document.getElementById('education_fields');
             const divtest = document.createElement("tr");
@@ -564,10 +566,8 @@
         const memberData = Array.from(document.querySelectorAll(".memberCount.newMember,.memberData")).map(e => Number(e.getAttribute("data-id")));
         // Lọc ra các nhân viên chưa được chọn
         const filterEmployee = employees.filter(item => !memberData.includes(item._id));
-        console.log(filterEmployee)
         // Cập nhật các phần tử select với các tùy chọn mới
         const listEmployeeSelects = document.querySelectorAll('.listSecEmployee');
-        console.log(listEmployeeSelects)
         listEmployeeSelects.forEach(select => {
             const selectedId = selectedIds[select.id];
             updateSelectOptionsUpdate(select, filterEmployee, selectedId);
@@ -577,6 +577,7 @@
     async function handleChooseUpdate(id) {
         const arrEmployee = [];
         const btnsCheck = document.querySelectorAll(`.checkUpdate${id}`);
+        console.log(btnsCheck)
         // lay ra id cua scoreCommitteeDetail 
         const employeeById = Array.from(document.querySelectorAll(".memberCount.newMember,.memberData")).map(e => e.getAttribute("data-id"));
         const employeeByIdNumber = employeeById.map(Number);
@@ -610,6 +611,7 @@
             }
         }
         updateEmployeeListUpdate();
+
         arrEmployee.forEach((item, index) => {
             const objTo = document.getElementById(`tbodyScoreCommitteeDetail${id}`);
             const divtest = document.createElement("tr");

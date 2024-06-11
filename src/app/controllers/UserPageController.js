@@ -65,14 +65,25 @@ class UserPageController {
                         message: `Looi truy xuat ${err}`
                     })
                 }
-                EmployeeModal.fetchAllEmployeeFromTrash((err, Employee) => {
-                    if (err) {
-                        return res.status(500).json({
-                            message: `Looi truy xuat ${err}`
-                        })
-                    }
-                    res.render("userPage/trash", { User: User[0], Employee: Employee })
-                })
+                if (User[0].DistrictId) {
+                    EmployeeModal.fetchAllEmployeeFromTrash((err, Employee) => {
+                        if (err) {
+                            return res.status(500).json({
+                                message: `Looi truy xuat ${err}`
+                            })
+                        }
+                        res.render("userPage/trash", { User: User[0], Employee: Employee })
+                    })
+                } else {
+                    EmployeeModal.fetchAllEmployeeFromTrashIsNull((err, Employee) => {
+                        if (err) {
+                            return res.status(500).json({
+                                message: `Looi truy xuat ${err}`
+                            })
+                        }
+                        res.render("userPage/trash", { User: User[0], Employee: Employee })
+                    })
+                }
             })
         }
 
@@ -93,8 +104,9 @@ class UserPageController {
                         Email: req.body.Email,
                         Avatar: req.file ? req.file.path : 'Uploads/user.png',
                         Phone: req.body.Phone,
-                        roleId: req.body.roleId,
-                        CreatorUser_id: req.body.CreatorUser_id,
+                        RoleId: Number(req.body.RoleId),
+                        IsActive: Number(req.body.IsActive),
+                        CreatorUser_id: Number(req.body.CreatorUser_id)
                     }, (err, data) => {
                         if (err) {
                             console.log(err)
@@ -116,33 +128,44 @@ class UserPageController {
         })
     }
     update(req, res) {
-        const id = req.params.id
-        AccountModel.findUserUpdate(id, req.body, (err, data) => {
-            if (err) {
-                console.log(err)
-                return res.status(500).json({
-                    message: "Loi truy van"
-                })
-            } else {
-                if (data.length === 0) {
-                    AccountModel.updateUser(id, req.body, (err, data) => {
-                        if (err) {
-                            console.log(err)
-                            return res.status(500).json({
-                                message: err
-                            });
-                        }
-                        return res.status(201).json({
-                            message: 'Cập nhật thành công'
-                        });
-                    })
-                } else {
-                    return res.status(400).json({
-                        message: "Tên đã tồn tại"
+        const cookie = req.cookies
+        if (cookie?.User) {
+            const UserDataCookie = jwt.verify(cookie.User, SECRET_CODE)
+            AccountModel.fetchOneUser(UserDataCookie?._id, (err, User) => {
+                if (err) {
+                    return res.status(500).json({
+                        message: `Looi truy xuat ${err}`
                     })
                 }
-            }
-        })
+                const id = req.params.id
+                AccountModel.findUserUpdate(id, User[0].DistrictId, req.body, (err, data) => {
+                    if (err) {
+                        console.log(err)
+                        return res.status(500).json({
+                            message: "Loi truy van"
+                        })
+                    } else {
+                        if (data.length === 0) {
+                            AccountModel.updateUser(id, req.body, (err, data) => {
+                                if (err) {
+                                    console.log(err)
+                                    return res.status(500).json({
+                                        message: err
+                                    });
+                                }
+                                return res.status(201).json({
+                                    message: 'Cập nhật thành công'
+                                });
+                            })
+                        } else {
+                            return res.status(400).json({
+                                message: "Tên đã tồn tại"
+                            })
+                        }
+                    }
+                })
+            })
+        }
     }
     // Khoa tai khoan
     lock(req, res) {

@@ -14,7 +14,6 @@ class ScoreCommittDetailController {
         })
     }
     create(req, res) {
-        console.log(1)
         console.log(req.body)
         ScoreCommitteeDetailModel.create(req.body, (err, results) => {
             if (err) {

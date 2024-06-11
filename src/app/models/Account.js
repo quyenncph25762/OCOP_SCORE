@@ -21,7 +21,7 @@ const AccountModel = {
             employee
         JOIN 
         role ON role._id = employee.RoleId
-        WHERE UserName = ? AND Password = ? AND DistrictId = ?
+        WHERE UserName = ? AND Password = ? AND DistrictId ${District ? `= ${District}` : "IS NULL"}
         `
         connection.query(query, [UserName, Password, District], callback)
     },
@@ -68,20 +68,22 @@ const AccountModel = {
         connection.query(query, [password, Email], callback)
     },
     // tim ten user xem da ton tai chua
-    findUserAdd: (employee, callback) => {
-        const query = `SELECT * FROM employee WHERE FullName = ?`;
+    findUserAdd: (id, employee, callback) => {
+        const query = `SELECT * FROM employee WHERE FullName = ? AND _id != ${id}`;
         const values = [employee.FullName];
         connection.query(query, values, callback);
     },
     // tim ten user xem da ton tai chua
-    findUserUpdate: (id, employee, callback) => {
-        const query = `SELECT * FROM employee WHERE UserName = ? AND _id != ${id}`;
-        const values = [employee.UserName];
+    findUserUpdate: (id, DistrictId, employee, callback) => {
+        const query = `SELECT * FROM employee 
+            WHERE 
+        UserName = ? AND _id != ${id} AND DistrictId ${DistrictId ? `= ${DistrictId}` : "IS NULL"}`
+        const values = [employee.UserName]
         connection.query(query, values, callback);
     },
     // Them nguoi dung
     AddUser: (employee, callback) => {
-        const query = `INSERT INTO employee (Code,FullName,UserName,Email,Avatar,Phone,RoleId,CreatorUser_id,IsActive,Password) VALUES (?,?,?,?,?,?,?,?,?)`
+        const query = `INSERT INTO employee (Code,FullName,UserName,Email,Avatar,Phone,RoleId,CreatorUser_id,IsActive,Password) VALUES (?,?,?,?,?,?,?,?,?,?)`
         const values = [employee.Code, employee.FullName, employee.UserName, employee.Email, employee.Avatar, employee.Phone, employee.RoleId, employee.CreatorUser_id, employee.IsActive, employee.Password]
         connection.query(query, values, callback)
     },

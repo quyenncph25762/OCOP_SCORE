@@ -6,12 +6,13 @@ async function handleResultScoreFiles(idScoreCommittee, productId) {
     const ArrSecUserId = await FuncListSecUserId(idScoreCommittee)
     const listScoreFile = await FuncListScoreFileByScoreCommittee(idScoreCommittee)
     const tbodyResultsScoreFile = document.getElementById(`tbodyResultsScoreFile${productId}`)
-    // console.log(listScoreFile)
+    console.log(listScoreFile)
     // Lọc những employee đã chấm xong và k có secUserId
     const filterScoreFile = listScoreFile.filter(scorefile =>
         scorefile.Employee_id && scorefile.Product_id === Number(productId) &&
         !ArrSecUserId.includes(scorefile.Employee_id)
     );
+
     tbodyResultsScoreFile.innerHTML = ""
     if (filterScoreFile.length > 0) {
         let i = 0
@@ -24,7 +25,7 @@ async function handleResultScoreFiles(idScoreCommittee, productId) {
             AverageRankOcop = ((totalRankOcop += scorefile.RankOcop) / filterScoreFile.length)
             // hien thi ra html
             tbodyResultsScoreFile.innerHTML += `
-                <tr>
+                <tr class="tr">
                     <td>${i}</td>
                     <td>
                         <strong style="font-size: 16px;">${scorefile.employee_FullName}</strong>
@@ -54,6 +55,7 @@ async function handleResultScoreFiles(idScoreCommittee, productId) {
                 </tr>
                 
             `;
+
         }
         rankOcop()
         tbodyResultsScoreFile.innerHTML += `
@@ -154,6 +156,7 @@ async function FuncListSecUserId(idScoreCommittee) {
         return
     }
     const listUser = await response.json()
+
     const arrSecUserId = listUser.map((user) => Number(user.SecUserId)).filter(id => id !== undefined && id !== null)
     return arrSecUserId
 }

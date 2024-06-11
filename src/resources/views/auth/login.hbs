@@ -150,7 +150,7 @@
                 UserName: UserName,
                 // Mã hóa mật khẩu trước khi gửi qua ajax
                 Password: CryptoJS.SHA256(password).toString(),
-                District: District === 0 ? null : District
+                District: District ?? null
             },
             success: function (data) {
                 if (data.User.RoleId === 1) {

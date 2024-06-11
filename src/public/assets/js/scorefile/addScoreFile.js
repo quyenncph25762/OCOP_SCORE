@@ -5,6 +5,7 @@ const handleAddScoreFile = async () => {
         const Product_id = document.getElementById("Product_id").value
         const Customer_id = document.getElementById("Customer_id").value
         const CreatorUser_id = document.getElementById("CreatorUser_id").value
+        console.log(CreatorUser_id)
         const Note = document.getElementById("Note").value
         const ScoreTemp_id = Array.from(document.querySelectorAll(".ScoreTemp_id"))[0].value
         const Code = document.querySelector(".Code").value

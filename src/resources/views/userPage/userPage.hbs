@@ -145,31 +145,26 @@
                         confirm: {
                             text: 'Confirm',
                             btnClass: 'btn-red',
-                            action: function () {
+                            action: async function () {
                                 // Lấy ID của mục cần xóa từ thuộc tính data-id của nút
                                 const id = event.target.dataset.id;
                                 // Gọi API xóa mục
-                                fetch(`/employee/removeToTrash/${id}`, {
+                                const response = await fetch(`/employee/removeToTrash/${id}`, {
                                     method: 'DELETE'
-                                }).then(response => {
-                                    if (response.ok) {
-                                        localStorage.setItem('toast', JSON.stringify({
-                                            position: "top-right",
-                                            heading: 'Xóa thành công',
-                                            text: 'Đã xóa thành công thành công',
-                                            icon: 'success',
-                                            loader: true,
-                                            loaderBg: '#9EC600',
-                                            showHideTransition: 'slide',
-                                            stack: 4
-                                        }));
-                                        window.location.reload()
-                                    } else {
-                                        alert('Có lỗi xảy ra khi xóa mục');
-                                    }
-                                }).catch(error => {
-                                    $.alert('Đã hủy');
-                                });
+                                })
+                                if (response.ok) {
+                                    localStorage.setItem('toast', JSON.stringify({
+                                        position: "top-right",
+                                        heading: 'Xóa thành công',
+                                        text: 'Đã xóa thành công thành công',
+                                        icon: 'success',
+                                        loader: true,
+                                        loaderBg: '#9EC600',
+                                        showHideTransition: 'slide',
+                                        stack: 4
+                                    }));
+                                    window.location.reload()
+                                }
                             }
                         },
                         cancel: function () {
