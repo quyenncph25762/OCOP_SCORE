@@ -42,23 +42,23 @@
                         </thead>
                         <tbody>
                             {{#each ScoreFile}}
-                            {{!-- Chua cham --}}
                             <tr>
                                 <td>
                                     <div class="approved">
                                         <img src="{{this.product_avatar}}" alt=""
-                                            style="width: 50px;height: 50px;border-radius: 50%;object-fit: cover;">
+                                            style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;">
                                     </div>
                                 </td>
                                 <td>
-                                    <ul style="list-style-type: none;font-weight: 600;padding: 0;">
+                                    <ul style="list-style-type: none; font-weight: 600; padding: 0;">
                                         <!-- name product -->
-                                        <li style="font-size: 14px;color: rgb(236, 236, 118);" data-toggle="modal"
+                                        <li style="font-size: 14px; color: rgb(236, 236, 118);" data-toggle="modal"
                                             data-target="#exampleModal">
                                             {{this.product_name}}
                                         </li>
                                         <p class="text-overhidden"
-                                            style="color: #B5B5C3;font-size: 13px;text-wrap: wrap;" class="nameProduct">
+                                            style="color: #B5B5C3; font-size: 13px; text-wrap: wrap;"
+                                            class="nameProduct">
                                             Chủ thể: {{toUpperCase this.customer_name}}
                                         </p>
                                     </ul>
@@ -67,14 +67,14 @@
                                 <td style="text-wrap: wrap;">
                                     <p class="text-overhidden">Nhóm 19: {{this.productgroup_name}}</p>
                                 </td>
-                                {{!-- tong diem --}}
+                                <!-- tong diem -->
                                 <td>
                                     {{#ifCond this.ScoreTotal 0}}
                                     {{else}}
-                                    <p style="font-weight: 600;text-align: center;color: rgb(236, 236, 118)">
-                                        {{this.ScoreTotal}}</p>
+                                    <p style="font-weight: 600; text-align: center; color: rgb(236, 236, 118)">
+                                        {{this.ScoreTotal}}
+                                    </p>
                                     {{/ifCond}}
-
                                 </td>
                                 <!-- so sao -->
                                 <td>
@@ -82,13 +82,13 @@
                                     <ion-icon name="star"></ion-icon>
                                     {{/repeat}}
                                 </td>
-                                {{!-- Ngay cham --}}
+                                <!-- Ngay cham -->
                                 <td>
                                     {{#if this.formattedScoreDate}}
                                     {{this.formattedScoreDate}}
                                     {{/if}}
                                 </td>
-                                {{!-- Trang thai --}}
+                                <!-- Trang thai -->
                                 <td>
                                     {{#ifCond this.Status 0}}
                                     <p class="statusLabelDanger">Chưa chấm</p>
@@ -99,15 +99,14 @@
                                     {{#ifCond this.Status 2}}
                                     <p class="statusLabelSuccess">Đã nộp phiếu</p>
                                     {{/ifCond}}
-                                    {{!-- <p>{{User.RoleId}}</p> --}}
+                                </td>
                                 <td>
-                                    {{!-- Toán tử or nếu user là admin và user._id === với charman thì cho xem kết quả
-                                    hội đồng --}}
+                                    <!-- Toán tử or nếu user là admin và user._id === với charman thì cho xem kết quả hội đồng -->
                                     {{#ifCondOr ../User.RoleId 1 ../User._id this.scorecommittee_employeeId}}
-                                    {{!-- icon xem ket qua hoi dong --}}
+                                    <!-- icon xem ket qua hoi dong -->
                                     <button
                                         onclick="handleResultScoreFiles('{{this.ScoreCommitee_id}}','{{this.Product_id}}')"
-                                        style="background: transparent;border: none;" class="d-inline-block"
+                                        style="background: transparent; border: none;" class="d-inline-block"
                                         tabindex="0" data-toggle="tooltip" title="Xem kết quả hội đồng">
                                         <ion-icon name="receipt-outline" data-toggle="modal"
                                             data-target="#modalResultsScoreFile{{this._id}}"></ion-icon>
@@ -115,8 +114,8 @@
                                     {{> modalResultScoreFile id=this._id}}
                                     {{/ifCondOr}}
                                     {{#ifCondNot ../User.RoleId 1}}
-                                    {{!-- Neu User ma co trong hoi dong thi moi cho cham diem --}}
-                                    {{!-- icon cham diem --}}
+                                    <!-- Neu User ma co trong hoi dong thi moi cho cham diem -->
+                                    <!-- icon cham diem -->
                                     {{#ifCondAnd this.Status 0 this.IsActive 1}}
                                     <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Chấm điểm">
                                         <div class="box_icon-isCommittee">
@@ -128,15 +127,15 @@
                                     </span>
                                     {{/ifCondAnd}}
 
-                                    {{!-- Neu da cham thi hien icon xac nhan va chinh sua--}}
+                                    <!-- Neu da cham thi hien icon xac nhan va chinh sua-->
                                     {{#ifCond this.Status 1}}
-                                    {{!-- icon xac nhan--}}
-                                    <button style="background: transparent;border: none;" class="d-inline-block"
+                                    <!-- icon xac nhan-->
+                                    <button style="background: transparent; border: none;" class="d-inline-block"
                                         tabindex="0" data-toggle="tooltip" title="Xác nhận"
                                         onclick="handleUpdateStatus('{{this._id}}')">
                                         <ion-icon name="checkbox-outline"></ion-icon>
                                     </button>
-                                    {{!-- icon chinh sua --}}
+                                    <!-- icon chinh sua -->
                                     <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Chỉnh sửa">
                                         <a style="text-decoration: none;"
                                             href="/scoreFile/updateScoreFile?productId={{this.Product_id}}&productgroupId={{this.productgroup_id}}&ScoreFile_id={{this._id}}">
@@ -145,7 +144,7 @@
                                     </span>
                                     {{/ifCond}}
 
-                                    {{!-- Nếu status = 2 thì có thể xem phiếu chấm của họ --}}
+                                    <!-- Nếu status = 2 thì có thể xem phiếu chấm của họ -->
                                     {{#ifCond this.Status 2}}
                                     <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
                                         title="Xem chi tiết">
@@ -156,21 +155,20 @@
                                     </span>
                                     {{/ifCond}}
 
-
                                     {{#ifCond this.Status 1}}
-                                    {{!-- icon xoa--}}
+                                    <!-- icon xoa-->
                                     <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
                                         title="Chuyển vào thùng rác">
-                                        <ion-icon style="" class="icon_moveToTrash" name="trash-outline" data-id="{{this._id}}>
-                                        </ion-icon>
+                                        <ion-icon style="" class="icon_moveToTrash" name="trash-outline"
+                                            data-id="{{this._id}}"></ion-icon>
                                     </span>
                                     {{/ifCond}}
                                     {{/ifCondNot}}
-                                    {{!-- admin moi co quyen xem ket qua hoi dong --}}
                                 </td>
                             </tr>
                             {{/each}}
                         </tbody>
+
                     </table>
                     <!-- table -->
                     {{!-- {{> modalMarkPage}} --}}
@@ -182,119 +180,119 @@
 </div><!--End content-wrapper-->
 {{> footer}}
 <script src=" https://code.jquery.com/jquery-3.6.0.min.js"></script>
-                                            <script src="/assets/js/custom.js"></script>
-                                            <script src="/assets/js/scorefile/checkisCommittee.js"></script>
-                                            <script src="/assets/js/scorefile/ResultScoreFile.js"></script>
-                                            {{!-- actions xoa --}}
-                                            <script>
-                                                document.addEventListener("DOMContentLoaded", () => {
-                                                    const toastData = localStorage.getItem('toast');
-                                                    if (toastData) {
-                                                        const toast = JSON.parse(toastData);
-                                                        $.toast(toast);
-                                                        localStorage.removeItem('toast');
-                                                    }
-                                                    const btnTrash = document.querySelectorAll('.icon_moveToTrash');
-                                                    for (let btn of btnTrash) {
-                                                        btn.addEventListener("click", (event) => {
-                                                            event.preventDefault();
-                                                            $.confirm({
-                                                                title: '<ion-icon name="trash-bin-outline"></ion-icon>',
-                                                                content: 'Bạn có chắc chắn muốn xóa ?',
-                                                                buttons: {
-                                                                    confirm: {
-                                                                        text: 'Confirm',
-                                                                        btnClass: 'btn-red',
-                                                                        action: function () {
-                                                                            // Lấy ID của mục cần xóa từ thuộc tính data-id của nút
-                                                                            const id = event.target.dataset.id;
+<script src="/assets/js/custom.js"></script>
+<script src="/assets/js/scorefile/checkisCommittee.js"></script>
+<script src="/assets/js/scorefile/ResultScoreFile.js"></script>
+{{!-- actions xoa --}}
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const toastData = localStorage.getItem('toast');
+        if (toastData) {
+            const toast = JSON.parse(toastData);
+            $.toast(toast);
+            localStorage.removeItem('toast');
+        }
+        const btnTrash = document.querySelectorAll('.icon_moveToTrash');
+        for (let btn of btnTrash) {
+            btn.addEventListener("click", (event) => {
+                event.preventDefault();
+                $.confirm({
+                    title: '<ion-icon name="trash-bin-outline"></ion-icon>',
+                    content: 'Bạn có chắc chắn muốn xóa ?',
+                    buttons: {
+                        confirm: {
+                            text: 'Confirm',
+                            btnClass: 'btn-red',
+                            action: function () {
+                                // Lấy ID của mục cần xóa từ thuộc tính data-id của nút
+                                const id = event.target.dataset.id;
 
-                                                                            // Gọi API xóa mục
-                                                                            fetch(`/scoreFile/removeToTrash/${id}`, {
-                                                                                method: 'PATCH'
-                                                                            }).then(response => {
-                                                                                if (response.ok) {
-                                                                                    localStorage.setItem('toast', JSON.stringify({
-                                                                                        position: "top-right",
-                                                                                        heading: 'Xóa thành công',
-                                                                                        text: 'Đã xóa thành công thành công',
-                                                                                        icon: 'success',
-                                                                                        loader: true,
-                                                                                        loaderBg: '#9EC600',
-                                                                                        showHideTransition: 'slide',
-                                                                                        stack: 4
-                                                                                    }));
-                                                                                    window.location.reload()
-                                                                                } else {
-                                                                                    localStorage.setItem('toast', JSON.stringify({
-                                                                                        position: "top-right",
-                                                                                        heading: 'Xóa không thành công',
-                                                                                        text: 'Đã xảy ra lỗi khi xóa mục',
-                                                                                        icon: 'error',
-                                                                                        loader: true,
-                                                                                        loaderBg: '#9EC600',
-                                                                                        showHideTransition: 'slide'
-                                                                                    }));
-                                                                                }
-                                                                            }).catch(error => {
-                                                                                $.alert('Đã hủy');
-                                                                            });
-                                                                        }
-                                                                    },
-                                                                    cancel: function () {
-                                                                        $.alert('Đã hủy!');
-                                                                    }
-                                                                }
-                                                            });
-                                                        });
-                                                    }
-                                                })
-                                            </script>
-                                            {{!-- xac nhan phieu --}}
-                                            <script>
-                                                async function handleUpdateStatus(idScoreFile) {
+                                // Gọi API xóa mục
+                                fetch(`/scoreFile/removeToTrash/${id}`, {
+                                    method: 'PATCH'
+                                }).then(response => {
+                                    if (response.ok) {
+                                        localStorage.setItem('toast', JSON.stringify({
+                                            position: "top-right",
+                                            heading: 'Xóa thành công',
+                                            text: 'Đã xóa thành công thành công',
+                                            icon: 'success',
+                                            loader: true,
+                                            loaderBg: '#9EC600',
+                                            showHideTransition: 'slide',
+                                            stack: 4
+                                        }));
+                                        window.location.reload()
+                                    } else {
+                                        localStorage.setItem('toast', JSON.stringify({
+                                            position: "top-right",
+                                            heading: 'Xóa không thành công',
+                                            text: 'Đã xảy ra lỗi khi xóa mục',
+                                            icon: 'error',
+                                            loader: true,
+                                            loaderBg: '#9EC600',
+                                            showHideTransition: 'slide'
+                                        }));
+                                    }
+                                }).catch(error => {
+                                    $.alert('Đã hủy');
+                                });
+                            }
+                        },
+                        cancel: function () {
+                            $.alert('Đã hủy!');
+                        }
+                    }
+                });
+            });
+        }
+    })
+</script>
+{{!-- xac nhan phieu --}}
+<script>
+    async function handleUpdateStatus(idScoreFile) {
 
-                                                    $.confirm({
-                                                        title: '<ion-icon name="help-circle-outline"></ion-icon>',
-                                                        content: 'Xác nhận nộp phiếu?',
-                                                        buttons: {
-                                                            confirm: {
-                                                                text: 'Confirm',
-                                                                btnClass: 'btn-blue',
-                                                                action: async function () {
-                                                                    const formScoreFile = {
-                                                                        Status: 2
-                                                                    }
-                                                                    const response = await fetch(`/scorefile/updateStatus/${idScoreFile}`, {
-                                                                        method: "PATCH",
-                                                                        body: JSON.stringify(formScoreFile),
-                                                                        headers: {
-                                                                            "Content-Type": "application/json"
-                                                                        }
-                                                                    })
-                                                                    if (!response.ok) {
-                                                                        console.log("Lỗi khi cập nhật status scorefile")
-                                                                        return
-                                                                    }
-                                                                    localStorage.setItem('toast', JSON.stringify({
-                                                                        position: "top-right",
-                                                                        heading: 'SUCCESS!',
-                                                                        text: 'Đã nộp phiếu chấm.',
-                                                                        icon: 'success',
-                                                                        loader: true,
-                                                                        loaderBg: '#9EC600',
-                                                                        showHideTransition: 'slide',
-                                                                        stack: 4
-                                                                    }));
-                                                                    window.location.reload()
-                                                                }
-                                                            },
-                                                            cancel: function () {
-                                                                $.alert('Đã hủy!');
-                                                            }
-                                                        }
-                                                    });
-                                                }
+        $.confirm({
+            title: '<ion-icon name="help-circle-outline"></ion-icon>',
+            content: 'Xác nhận nộp phiếu?',
+            buttons: {
+                confirm: {
+                    text: 'Confirm',
+                    btnClass: 'btn-blue',
+                    action: async function () {
+                        const formScoreFile = {
+                            Status: 2
+                        }
+                        const response = await fetch(`/scorefile/updateStatus/${idScoreFile}`, {
+                            method: "PATCH",
+                            body: JSON.stringify(formScoreFile),
+                            headers: {
+                                "Content-Type": "application/json"
+                            }
+                        })
+                        if (!response.ok) {
+                            console.log("Lỗi khi cập nhật status scorefile")
+                            return
+                        }
+                        localStorage.setItem('toast', JSON.stringify({
+                            position: "top-right",
+                            heading: 'SUCCESS!',
+                            text: 'Đã nộp phiếu chấm.',
+                            icon: 'success',
+                            loader: true,
+                            loaderBg: '#9EC600',
+                            showHideTransition: 'slide',
+                            stack: 4
+                        }));
+                        window.location.reload()
+                    }
+                },
+                cancel: function () {
+                    $.alert('Đã hủy!');
+                }
+            }
+        });
+    }
 
 
-                                            </script>
+</script>

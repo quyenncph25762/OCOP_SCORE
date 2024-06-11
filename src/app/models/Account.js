@@ -68,8 +68,8 @@ const AccountModel = {
         connection.query(query, [password, Email], callback)
     },
     // tim ten user xem da ton tai chua
-    findUserAdd: (id, employee, callback) => {
-        const query = `SELECT * FROM employee WHERE FullName = ? AND _id != ${id}`;
+    findUserAdd: (employee, callback) => {
+        const query = `SELECT * FROM employee WHERE FullName = ?`;
         const values = [employee.FullName];
         connection.query(query, values, callback);
     },

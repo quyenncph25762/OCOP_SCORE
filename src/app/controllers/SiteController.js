@@ -39,7 +39,7 @@ class SiteController {
                 // Tính tổng số product theo huyện
                 const productByDistrict = await StatisticalProductByDistrictModel.countAllProduct()
                 console.log(productByDistrict)
-                res.render('home', { User: User[0], CountCustomer: CountCustomer, countAllProduct: countAllProduct, countRankOcop3sao: countRankOcop3sao, countRankOcop4sao: countRankOcop4sao, countRankOcop5sao: countRankOcop5sao, RankOcop3SaoPercent: RankOcop3SaoPercent, RankOcop4SaoPercent: RankOcop4SaoPercent, RankOcop5SaoPercent: RankOcop5SaoPercent });
+                res.render('home', { User: User[0], CountCustomer: CountCustomer, countAllProduct: countAllProduct, countRankOcop3sao: countRankOcop3sao, countRankOcop4sao: countRankOcop4sao, countRankOcop5sao: countRankOcop5sao, RankOcop3SaoPercent: RankOcop3SaoPercent, RankOcop4SaoPercent: RankOcop4SaoPercent, RankOcop5SaoPercent: RankOcop5SaoPercent, productByDistrict: productByDistrict });
             })
 
         } else {

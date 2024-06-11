@@ -23,9 +23,7 @@ class AuthController {
     login = (req, res) => {
         const UserName = req.body.UserName
         const Password = req.body.Password
-        console.log(`req body: `, req.body.District)
-        const District = req.body.District ? req.body.District : null
-        console.log(District)
+        const District = req.body.District
         AccountModel.loginAccount(UserName, Password, District, (err, data) => {
             if (err) {
                 res.status(500).json({ error: 'Internal Server Error' });

@@ -107,41 +107,14 @@
           <div class="table-responsive" style="max-height: 187px; overflow-y: auto;">
             <table class="table align-items-center">
               <tbody>
+                {{#each productByDistrict}}
                 <tr>
-                  <td><i class="fa fa-circle text-white mr-2"></i> Thành phố Thái Bình</td>
-                  <td>$5856</td>
+                  <td><i class="fa fa-circle text-white mr-2"></i>{{this.Name}}</td>
+                  <td>{{this.DistrictCount}}</td>
                 </tr>
-                <tr>
-                  <td><i class="fa fa-circle text-light-1 mr-2"></i>Huyện Vũ Thư</td>
-                  <td>$2602</td>
-                </tr>
-                <tr>
-                  <td><i class="fa fa-circle text-light-2 mr-2"></i>Huyện Quỳnh Phụ</td>
-                  <td>$1802</td>
-                </tr>
-                <tr>
-                  <td><i class="fa fa-circle text-light-3 mr-2"></i>Huyện Hưng Hà</td>
-                  <td>$1105</td>
-                </tr>
-                <tr>
-                  <td><i class="fa fa-circle text-center mr-2"></i>Huyện Đông Hưng</td>
-                  <td>$1105</td>
-                </tr>
-                <tr>
-                  <td><i class="fa fa-circle text-info mr-2"></i>Huyện Thái Thuỵ</td>
-                  <td>$1105</td>
-                </tr>
-                <tr>
-                  <td><i class="fa fa-circle text-danger mr-2"></i>Huyện Tiền Hải</td>
-                  <td>$1105</td>
-                </tr>
-                <tr>
-                  <td><i class="fa fa-circle text-success mr-2"></i>Huyện Kiến Xương</td>
-                  <td>$1105</td>
-                </tr>
+                {{/each}}
               </tbody>
             </table>
-
           </div>
         </div>
       </div>
@@ -165,78 +138,26 @@
                 </tr>
               </thead>
               <tbody>
+                {{#each productByDistrict}}
                 <tr>
-                  <td>Thành phố Thái Bình</td>
-                  <td>0</td>
-                  <td>0</td>
-                  <td>15</td>
-                  <td>5</td>
-                  <td>1</td>
+                  <td>{{this.Name}}</td>
+                  <td>
+                    <strong>{{this.RankOcop_1}}</strong>
+                  </td>
+                  <td>
+                    <strong>{{this.RankOcop_2}}</strong>
+                  </td>
+                  <td>
+                    <strong>{{this.RankOcop_3}}</strong>
+                  </td>
+                  <td>
+                    <strong>{{this.RankOcop_4}}</strong>
+                  </td>
+                  <td>
+                    <strong>{{this.RankOcop_5}}</strong>
+                  </td>
                 </tr>
-
-                <tr>
-                  <td>Huyện Vũ Thư</td>
-                  <td>0</td>
-                  <td>0</td>
-                  <td>15</td>
-                  <td>5</td>
-                  <td>1</td>
-                </tr>
-
-                <tr>
-                  <td>Huyện Quỳnh Phụ</td>
-                  <td>0</td>
-                  <td>0</td>
-                  <td>15</td>
-                  <td>5</td>
-                  <td>1</td>
-                </tr>
-
-                <tr>
-                  <td>Huyện Hưng Hà</td>
-                  <td>0</td>
-                  <td>0</td>
-                  <td>15</td>
-                  <td>5</td>
-                  <td>1</td>
-                </tr>
-
-                <tr>
-                  <td>Huyện Đông Hưng</td>
-                  <td>0</td>
-                  <td>0</td>
-                  <td>15</td>
-                  <td>5</td>
-                  <td>1</td>
-                </tr>
-
-                <tr>
-                  <td>Huyện Thái Thuỵ</td>
-                  <td>0</td>
-                  <td>0</td>
-                  <td>15</td>
-                  <td>5</td>
-                  <td>1</td>
-                </tr>
-
-                <tr>
-                  <td>Huyện Tiền Hải</td>
-                  <td>0</td>
-                  <td>0</td>
-                  <td>15</td>
-                  <td>5</td>
-                  <td>1</td>
-                </tr>
-
-                <tr>
-                  <td>Huyện Kiến Xương</td>
-                  <td>0</td>
-                  <td>0</td>
-                  <td>15</td>
-                  <td>5</td>
-                  <td>1</td>
-                </tr>
-
+                {{/each}}
               </tbody>
             </table>
           </div>

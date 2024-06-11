@@ -90,7 +90,9 @@ class UserPageController {
     }
     create(req, res) {
         AccountModel.findUserAdd(req.body, (err, data) => {
+            console.log(err)
             if (err) {
+                console.log(err)
                 return res.status(500).json({
                     message: "Loi truy van"
                 })
