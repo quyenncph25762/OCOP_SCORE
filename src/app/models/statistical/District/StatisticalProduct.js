@@ -50,7 +50,7 @@ const StatisticalProductByDistrictModel = {
         })
     },
 
-    // Thong ke theo quan huyen
+    // Thong ke san pham theo quan huyen
     countAllProduct() {
         return new Promise((resolve, reject) => {
             const query = `SELECT 
@@ -77,6 +77,43 @@ GROUP BY
             })
         })
 
+    },
+    // Bieu do ty le san pham ocop theo vùng
+    // COALESCE: khi giá tri = null thì có thể cài bằng 1 giá trị mặc định khác 
+    getProductOcopByDistrict() {
+        return new Promise((resolve, reject) => {
+            const query = `
+                SELECT 
+                    d._id AS DistrictId,
+                    d.Name AS DistrictName,
+                    COALESCE(COUNT(p._id), 0) AS ProductOcop,
+                    COALESCE(total.TotalCount, 0) AS TotalProduct
+                FROM 
+                    district d
+                LEFT JOIN 
+                    product p ON p.DistrictId = d._id AND p.RankOcop >= 3
+                LEFT JOIN (
+                    SELECT 
+                        DistrictId, 
+                        COUNT(_id) AS TotalCount
+                    FROM 
+                        product p_all
+                    WHERE
+                        p_all.RankOcop > 0
+                    GROUP BY 
+                        DistrictId
+                ) total ON total.DistrictId = d._id 
+                GROUP BY 
+                    d._id, d.Name, total.TotalCount
+            `;
+
+            connection.query(query, (err, result) => {
+                if (err) {
+                    return reject(err);
+                }
+                return resolve(result);
+            });
+        });
     }
 }
 module.exports = StatisticalProductByDistrictModel

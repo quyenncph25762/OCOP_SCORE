@@ -10,8 +10,13 @@ class SiteController {
 
     home(req, res) {
         // Hàm tính phần trăm của product
-        const percentProduct = (countRankOcop3sao, countAllProduct) => {
-            return ((countRankOcop3sao / countAllProduct) * 100).toFixed(1)
+        const percentProduct = (countRankOcop, countAllProduct) => {
+            const percentNumber = ((countRankOcop / countAllProduct) * 100)
+            if (percentNumber > 0) {
+                return percentNumber.toFixed(1)
+            } else {
+                return 0
+            }
         }
         const cookie = req.cookies
         if (cookie?.User) {
@@ -38,15 +43,54 @@ class SiteController {
                 const RankOcop5SaoPercent = percentProduct(countRankOcop5sao, countAllProduct)
                 // Tính tổng số product theo huyện
                 const productByDistrict = await StatisticalProductByDistrictModel.countAllProduct()
-                console.log(productByDistrict)
-                res.render('home', { User: User[0], CountCustomer: CountCustomer, countAllProduct: countAllProduct, countRankOcop3sao: countRankOcop3sao, countRankOcop4sao: countRankOcop4sao, countRankOcop5sao: countRankOcop5sao, RankOcop3SaoPercent: RankOcop3SaoPercent, RankOcop4SaoPercent: RankOcop4SaoPercent, RankOcop5SaoPercent: RankOcop5SaoPercent, productByDistrict: productByDistrict });
+                const getProductOcopByDistrict = await StatisticalProductByDistrictModel.getProductOcopByDistrict()
+
+                // Tính tỉ lê sản phẩm ocop theo vùng
+                const rateProductOcopByDistrict = []
+                getProductOcopByDistrict.forEach((element) => {
+                    const { DistrictId, DistrictName, ProductOcop, TotalProduct } = element
+                    const percentProductByDistrict = percentProduct(ProductOcop, TotalProduct)
+                    const newObject = {
+                        DistrictId: DistrictId,
+                        DistrictName: DistrictName,
+                        ProductOcop: ProductOcop,
+                        TotalProduct: TotalProduct,
+                        percentProductByDistrict: Number(percentProductByDistrict)
+                    }
+                    rateProductOcopByDistrict.push(newObject)
+                });
+                res.render('home', { User: User[0], CountCustomer: CountCustomer, countAllProduct: countAllProduct, countRankOcop3sao: countRankOcop3sao, countRankOcop4sao: countRankOcop4sao, countRankOcop5sao: countRankOcop5sao, RankOcop3SaoPercent: RankOcop3SaoPercent, RankOcop4SaoPercent: RankOcop4SaoPercent, RankOcop5SaoPercent: RankOcop5SaoPercent, productByDistrict: productByDistrict, rateProductOcopByDistrict: rateProductOcopByDistrict });
             })
 
         } else {
             res.redirect("/auth/loginPage")
         }
     }
-
+    percentProductByDistrict = async (req, res) => {
+        const percentProduct = (countRankOcop, countAllProduct) => {
+            const percentNumber = ((countRankOcop / countAllProduct) * 100)
+            if (percentNumber > 0) {
+                return percentNumber.toFixed(1)
+            } else {
+                return 0
+            }
+        }
+        const rateProductOcopByDistrict = []
+        const getProductOcopByDistrict = await StatisticalProductByDistrictModel.getProductOcopByDistrict()
+        getProductOcopByDistrict.forEach((element) => {
+            const { DistrictId, DistrictName, ProductOcop, TotalProduct } = element
+            const percentProductByDistrict = percentProduct(ProductOcop, TotalProduct)
+            const newObject = {
+                DistrictId: DistrictId,
+                DistrictName: DistrictName,
+                ProductOcop: ProductOcop,
+                TotalProduct: TotalProduct,
+                percentProductByDistrict: Number(percentProductByDistrict)
+            }
+            rateProductOcopByDistrict.push(newObject)
+        });
+        return res.status(200).json(rateProductOcopByDistrict ? rateProductOcopByDistrict : [])
+    }
     // [GET] /search
     // search(req, res) {
     //     res.render('search');

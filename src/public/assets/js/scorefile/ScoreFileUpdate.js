@@ -342,7 +342,7 @@ async function updateScoreTotal() {
 // hàm tính điểm câu hỏi liệt
 async function checkingRankOcop(RankOcop, ScoreFile_id) {
     try {
-        const listScoreDetail = await FuncListScoreDetailByScoreFile(ScoreFile_id)
+
         if (RankOcop == 1) {
             return RankOcop = 1
         }
@@ -409,6 +409,8 @@ async function checkRank(RankOcop, listScoreChecked, scoreFileId) {
         }
     } else if (RankOcop === 3) {
         const list3sao = await listScoreFileDetail3sao(scoreFileId)
+        console.log(list3sao)
+        console.log(listScoreChecked)
         for (const id of list3sao) {
             const results = listScoreChecked.includes(id)
             console.log(results)

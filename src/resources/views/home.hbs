@@ -24,8 +24,8 @@
               <div class="progress my-3" style="height:3px;">
                 <div class="progress-bar" style="width:{{RankOcop3SaoPercent}}%"></div>
               </div>
-              <p class="mb-0 text-white small-font">Sản phẩm 3 sao <span class="float-right">+{{RankOcop3SaoPercent}}%
-                  <i class="zmdi zmdi-long-arrow-up"></i></span>
+              <p class="mb-0 text-white small-font">Sản phẩm 3 sao <span class="float-right">{{RankOcop3SaoPercent}}%
+                </span>
               </p>
             </div>
           </div>
@@ -36,8 +36,8 @@
               <div class="progress my-3" style="height:3px;">
                 <div class="progress-bar" style="width:{{RankOcop4SaoPercent}}%"></div>
               </div>
-              <p class="mb-0 text-white small-font">Sản phẩm 4 sao <span class="float-right">+{{RankOcop4SaoPercent}}%
-                  <i class="zmdi zmdi-long-arrow-up"></i></span></p>
+              <p class="mb-0 text-white small-font">Sản phẩm 4 sao <span class="float-right">{{RankOcop4SaoPercent}}%
+              </p>
             </div>
           </div>
           <div class="col-12 col-lg-6 col-xl-3 border-light">
@@ -47,8 +47,8 @@
               <div class="progress my-3" style="height:3px;">
                 <div class="progress-bar" style="width:{{RankOcop5SaoPercent}}%"></div>
               </div>
-              <p class="mb-0 text-white small-font">Sản phẩm 5 sao <span class="float-right">+{{RankOcop5SaoPercent}}%
-                  <i class="zmdi zmdi-long-arrow-up"></i></span></p>
+              <p class="mb-0 text-white small-font">Sản phẩm 5 sao <span
+                  class="float-right">{{RankOcop5SaoPercent}}%</span></p>
             </div>
           </div>
         </div>
@@ -107,10 +107,10 @@
           <div class="table-responsive" style="max-height: 187px; overflow-y: auto;">
             <table class="table align-items-center">
               <tbody>
-                {{#each productByDistrict}}
+                {{#each rateProductOcopByDistrict}}
                 <tr>
-                  <td><i class="fa fa-circle text-white mr-2"></i>{{this.Name}}</td>
-                  <td>{{this.DistrictCount}}</td>
+                  <td><i class="fa fa-circle text-white mr-2"></i>{{this.DistrictName}}</td>
+                  <td>{{this.percentProductByDistrict}}%</td>
                 </tr>
                 {{/each}}
               </tbody>

@@ -1,4 +1,4 @@
-$(function () {
+$(async function () {
 	"use strict";
 
 	// chart 1
@@ -76,14 +76,21 @@ $(function () {
 		}
 	});
 
-
+	const response = await fetch(`/percentProductByDistrict`, {
+		method: "GET"
+	})
+	if (!response.ok) {
+		console.log("Lỗi khi call api")
+		return
+	}
+	const percentProductByDistrict = await response.json()
+	console.log(percentProductByDistrict)
 	// chart 2
-
 	var ctx = document.getElementById("chart2").getContext('2d');
 	var myChart = new Chart(ctx, {
 		type: 'doughnut',
 		data: {
-			labels: ["Thành phố Thái Bình", "Huyện Vũ Thư", "Huyện Quỳnh Phụ", "Huyện Hưng Hà", "Huyện Đông Hưng", "Huyện Thái Thuỵ", "Huyện Tiền Hải", "Huyện Kiến Xương"],
+			labels: percentProductByDistrict.map((item) => item.DistrictName),
 			datasets: [{
 				backgroundColor: [
 					"#ffffff", //thành phố
@@ -95,7 +102,7 @@ $(function () {
 					"rgba(255, 0, 40, 0.6)", //tiền hải
 					"rgba(44, 214, 153, 0.8)", //kiến xương
 				],
-				data: [5856, 2602, 1802, 1105, 1105, 1105, 1105, 1105],
+				data: percentProductByDistrict.map((item) => item.percentProductByDistrict ? `${item.percentProductByDistrict}` : 0),
 				borderWidth: [0, 0, 0, 0]
 			}]
 		},
