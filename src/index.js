@@ -19,7 +19,7 @@ app.use(bodyParser.json())
 //Connect to DB
 db.connection;
 
-//static file
+//static file chú đại
 app.use(express.static(path.join(__dirname, 'public'))); //tự load các file tĩnh trong thư mục public
 
 //Template engine
