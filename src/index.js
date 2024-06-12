@@ -16,10 +16,10 @@ app.use(cookieParser())
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json())
 
-//Connect to DB
+//Connect to DB quyennc
 db.connection;
 
-//static file test 
+//static file
 app.use(express.static(path.join(__dirname, 'public'))); //tự load các file tĩnh trong thư mục public
 
 //Template engine
