@@ -16,7 +16,7 @@ app.use(cookieParser())
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json())
 
-//Connect to DB
+//Connect to DB quyennc
 db.connection;
 
 //static file chú đại
