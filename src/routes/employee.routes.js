@@ -5,20 +5,20 @@ const uploadCloud = require("../config/cloudinary/cloudinary")
 const upload = require("../app/Middleware/uploadMiddle")
 const CheckController = require("../app/Middleware/checkoutToken")
 
-router.get("/", CheckController.checkout, EmployeeController.index)
-router.get("/getAll", EmployeeController.getAll)
+router.get("/", CheckController.checkout('Employee'), EmployeeController.index)
+router.get("/getAll", CheckController.checkout('Employee'), EmployeeController.getAll)
 // getAll
-router.post("/add", upload.single("Avatar"), EmployeeController.create)
+router.post("/add", CheckController.checkout('Employee'), upload.single("Avatar"), EmployeeController.create)
 // fetchAll trash
-router.get("/trash", EmployeeController.getAllEmployeeFromTrash)
+router.get("/trash", CheckController.checkout('Employee'), EmployeeController.getAllEmployeeFromTrash)
 // remove to trash
-router.delete("/removeToTrash/:id", EmployeeController.removeToTrash)
+router.delete("/removeToTrash/:id", CheckController.checkout('Employee'), EmployeeController.removeToTrash)
 // delete
-router.delete("/remove/:id", EmployeeController.remove)
+router.delete("/remove/:id", CheckController.checkout('Employee'), EmployeeController.remove)
 // revert
-router.patch("/revert/:id", EmployeeController.revert)
+router.patch("/revert/:id", CheckController.checkout('Employee'), EmployeeController.revert)
 // update
-router.post("/update/:id", upload.single("Avatar"), EmployeeController.update)
+router.post("/update/:id", CheckController.checkout('Employee'), upload.single("Avatar"), EmployeeController.update)
 // filter employee
 
 module.exports = router;

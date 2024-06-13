@@ -34,6 +34,15 @@ app.use('/Uploads', express.static('Uploads'))
 
 
 //helps HandleBars
+// check permission
+Handlebars.registerHelper('hasPermission', function (permission, permissions, options) {
+    if (permissions.includes(permission)) {
+        return options.fn(this);
+    } else {
+        return options.inverse(this);
+    }
+});
+
 // helpers
 Handlebars.registerHelper('ifCond', function (v1, v2, options) {
     if (v1 === v2) {

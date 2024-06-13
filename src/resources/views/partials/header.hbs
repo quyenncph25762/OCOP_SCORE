@@ -11,13 +11,15 @@
     </a>
   </div>
   <ul class="sidebar-menu do-nicescrol">
-    <li class="sidebar-header">MAIN NAVIGATION</li>
-    {{#ifCond User.RoleId 1}}
+    <li class="sidebar-header"></li>
+    {{#hasPermission 'Dashboard' permission}}
     <li>
       <a href="/">
         <i class="zmdi zmdi-view-dashboard"></i> <span>Trang chủ</span>
       </a>
     </li>
+    {{/hasPermission}}
+    {{#hasPermission 'Structure' permission}}
     {{!-- co cau to chuc --}}
     <li>
       <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -29,30 +31,39 @@
         <li><a href="/workPosition"><span>Vị trí, chức danh</span></a></li>
       </ul>
     </li>
+    {{/hasPermission}}
+    {{#hasPermission 'Employee' permission}}
     {{!-- quan ly can bo --}}
     <li>
       <a href="/employee">
         <ion-icon name="people-outline"></ion-icon> <span class="ml-2">Quản lý cán bộ</span>
       </a>
     </li>
+    {{/hasPermission}}
+    {{#hasPermission 'Year' permission}}
     {{!-- quan ly nam danh gia --}}
     <li>
       <a href="/year-review"><ion-icon name="calendar-clear-outline"></ion-icon> <span class="ml-2">Quản lí năm đánh
           giá</span></a>
     </li>
+    {{/hasPermission}}
+    {{#hasPermission 'Customer' permission}}
     {{!-- quan li chu the --}}
     <li>
       <a href="/customer-manage">
         <ion-icon name="accessibility-outline"></ion-icon> <span class="ml-2">Quản lý chủ thể</span>
       </a>
     </li>
-    {{/ifCond}}
+    {{/hasPermission}}
+    {{#hasPermission 'Product' permission}}
     {{!-- quan li san pham --}}
     <li>
       <a href="/product-manage">
         <ion-icon name="grid-outline"></ion-icon> <span class="ml-2">Quản lý sản phẩm</span>
       </a>
     </li>
+    {{/hasPermission}}
+    {{#hasPermission 'Search' permission}}
     {{!-- tra cuu ho so --}}
     <li>
       <a href="/filterProduct">
@@ -60,26 +71,29 @@
           OCOP</span>
       </a>
     </li>
-    {{#ifCond User.RoleId 1}}
+    {{/hasPermission}}
+    {{#hasPermission 'Committee' permission}}
     <li>
       <a href="/scoreCommittee">
         <ion-icon name="brush-outline"></ion-icon> <span class="ml-2">Hội đồng chấm</span>
       </a>
     </li>
-    {{/ifCond}}
+    {{/hasPermission}}
+    {{#hasPermission 'Score' permission}}
     {{!-- cham diem OCOP --}}
     <li>
       <a href="/scoreFile">
         <ion-icon name="ribbon-outline"></ion-icon> <span class="ml-2">Chấm điểm OCOP</span>
       </a>
     </li>
+    {{/hasPermission}}
     {{!-- <li>
       <a href="ocop_score_province.html">
         <ion-icon name="ribbon-outline"></ion-icon> <span class="ml-2">Chấm điểm OCOP tỉnh</span>
       </a>
     </li> --}}
     {{!-- Danh muc --}}
-    {{#ifCond User.RoleId 1}}
+    {{#hasPermission 'Category' permission}}
     <li>
       <a href="#" class="dropdown-toggle" data-toggle="dropdown">
         <ion-icon name="list-outline"></ion-icon> <span class="ml-2">Danh mục</span>
@@ -90,6 +104,8 @@
         <li><a href="/scoreTemp"> <span>Phiếu chấm</span></a></li>
       </ul>
     </li>
+    {{/hasPermission}}
+    {{#hasPermission 'Manage' permission}}
     {{!-- quan tri --}}
     <li>
       <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -101,7 +117,8 @@
         <li><a href="/users"> <span>Quản lí người dùng</span></a></li>
       </ul>
     </li>
-    {{/ifCond}}
+    {{/hasPermission}}
+
 
 
     {{!-- <li>

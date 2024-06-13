@@ -3,21 +3,21 @@ const ScoreCommitteeController = require("../app/controllers/scorecommittee/Scor
 const CheckController = require("../app/Middleware/checkoutToken")
 const router = express.Router();
 
-router.get("/", CheckController.checkout, ScoreCommitteeController.index)
+router.get("/", CheckController.checkout('Committee'), ScoreCommitteeController.index)
 // add
-router.post("/add", ScoreCommitteeController.create)
+router.post("/add", CheckController.checkout('Committee'), ScoreCommitteeController.create)
 // update
-router.patch("/update/:id", ScoreCommitteeController.update)
+router.patch("/update/:id", CheckController.checkout('Committee'), ScoreCommitteeController.update)
 // update charName
-router.patch("/updateCharMan/:id", ScoreCommitteeController.updateCharman)
+router.patch("/updateCharMan/:id", CheckController.checkout('Committee'), ScoreCommitteeController.updateCharman)
 // update isDefault
-router.patch("/updateIsDefault/:id", ScoreCommitteeController.updateIsDefault)
+router.patch("/updateIsDefault/:id", CheckController.checkout('Committee'), ScoreCommitteeController.updateIsDefault)
 // trang thung rac
-router.get("/trashPage", CheckController.checkout, ScoreCommitteeController.trashPage)
+router.get("/trashPage", CheckController.checkout('Committee'), ScoreCommitteeController.trashPage)
 // remove vao thung rac
-router.patch("/removeTrash/:id", ScoreCommitteeController.removeToTrash)
+router.patch("/removeTrash/:id", CheckController.checkout('Committee'), ScoreCommitteeController.removeToTrash)
 // Khoi phuc
-router.patch("/revert/:id", ScoreCommitteeController.revert)
+router.patch("/revert/:id", CheckController.checkout('Committee'), ScoreCommitteeController.revert)
 
 
 module.exports = router;

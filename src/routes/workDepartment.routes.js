@@ -3,17 +3,17 @@ const WorkDepartmentController = require('../app/controllers/workdepartment/Work
 const router = express.Router();
 const upload = require("../app/Middleware/uploadMiddle")
 const CheckController = require("../app/Middleware/checkoutToken")
-router.get("/", CheckController.checkout, WorkDepartmentController.index)
-router.post("/add", upload.single(), WorkDepartmentController.create)
+router.get("/", CheckController.checkout('Structure'), WorkDepartmentController.index)
+router.post("/add", CheckController.checkout('Structure'), upload.single(), WorkDepartmentController.create)
 // fetchAll trash
-router.get("/trash", CheckController.checkout, WorkDepartmentController.getAllWorkDepartmentFromTrash)
+router.get("/trash", CheckController.checkout('Structure'), WorkDepartmentController.getAllWorkDepartmentFromTrash)
 // remove to trash
-router.delete("/removeToTrash/:id", WorkDepartmentController.removeToTrash)
+router.delete("/removeToTrash/:id", CheckController.checkout('Structure'), WorkDepartmentController.removeToTrash)
 // delete
-router.delete("/remove/:id", WorkDepartmentController.remove)
+router.delete("/remove/:id", CheckController.checkout('Structure'), WorkDepartmentController.remove)
 // revert
-router.patch("/revert/:id", WorkDepartmentController.revert)
+router.patch("/revert/:id", CheckController.checkout('Structure'), WorkDepartmentController.revert)
 // update
-router.post("/update/:id", upload.single(), WorkDepartmentController.update)
+router.post("/update/:id", CheckController.checkout('Structure'), upload.single(), WorkDepartmentController.update)
 
 module.exports = router

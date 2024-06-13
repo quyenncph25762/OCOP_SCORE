@@ -18,7 +18,7 @@ const RoleModel = {
     },
     // tim role 
     findRoleUpdate: (id, title, callback) => {
-        const query = `SELECT * FROM role WHERE title = ? AND _id !=${id}`;
+        const query = `SELECT * FROM role WHERE title = ? AND _id !=${id} AND IsDeleted = 0`;
         const values = [title];
         connection.query(query, values, callback);
     },
@@ -53,6 +53,8 @@ const RoleModel = {
         const values = [role.title, role.status, role.note, id]
         connection.query(query, values, callback)
     },
+
+
 }
 
 module.exports = RoleModel
