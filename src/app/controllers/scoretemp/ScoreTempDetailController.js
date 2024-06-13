@@ -37,19 +37,18 @@ class ScoreTempDetailController {
         }
 
     }
-    updateScoreTempDetail(req, res) {
-        const id = req.params.id
-        ScoreTempDetailModel.update(id, req.body, (err, data) => {
-            if (err) {
-                console.log(err)
-                return res.status(500).json({
-                    message: "Lỗi truy vấn"
-                })
+    updateScoreTempDetail = async (req, res) => {
+        try {
+            for (const item of req.body) {
+                const { ScoreTempDetailId, ...data } = item
+                await ScoreTempDetailModel.update(ScoreTempDetailId, data)
             }
             return res.status(201).json({
                 message: "Cập nhật thành công"
             })
-        })
+        } catch (error) {
+            console.log(error)
+        }
     }
     // xoa vao thung rac
     removeToTrash(req, res) {

@@ -74,7 +74,8 @@
                                                 <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
                                                     title="Chỉnh sửa">
                                                     <ion-icon name="create-outline" data-toggle="modal"
-                                                        data-target="#exampleModal{{this._id}}"></ion-icon>
+                                                        data-target="#exampleModal{{this._id}}"
+                                                        id="permission_{{this._id}} " data="{{this._id}}"></ion-icon>
                                                 </span>
                                             </button>
                                             {{> modalRole}}
@@ -105,8 +106,89 @@
 </div><!--End content-wrapper-->
 {{> footer}}
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+{{!--
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> --}}
 <script src="/assets/js/custom.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
+<script>
+
+    // thêm permission
+    $(function () {
+        var data = [
+            { "id": "Dashboard", "parent": "#", "text": "Dashbroad" },
+            { "id": "Structure", "parent": "#", "text": "Cơ cấu tổ chức" },
+            { "id": "Employee", "parent": "#", "text": "Quản lý cán bộ" },
+            { "id": "Year", "parent": "#", "text": "Năm đánh giá" },
+            { "id": "Customer", "parent": "#", "text": "Quản lý chủ thể" },
+            { "id": "Product", "parent": "#", "text": "Quản lý sản phẩm" },
+            { "id": "Search", "parent": "#", "text": "Tra cứu hồ sơ OCOP" },
+            { "id": "Committee", "parent": "#", "text": "Hội đồng chấm" },
+            { "id": "Score", "parent": "#", "text": "Chấm điểm OCOP" },
+            { "id": "Category", "parent": "#", "text": "Danh mục" },
+            { "id": "Manage", "parent": "#", "text": "Quản trị*" },
+        ];
+
+        $('#tree').jstree({
+
+            'core': {
+                'data': data,
+                
+            },
+            'plugins': ['checkbox']
+        });
+
+    });
+
+    const getAllIdPermission = document.querySelectorAll("[id^=permission_]")
+    getAllIdPermission.forEach(id => {
+        var Id = id.getAttribute('data')
+
+        id.addEventListener('click', function () {
+            $.ajax({
+                url: `/role/${Id}/permission`,
+                type: 'GET'
+            })
+                .then(results => {
+                    // update permission
+                    $(function () {
+                        var data = [
+                            { "id": "Dashboard", "parent": "#", "text": "Dashbroad" },
+                            { "id": "Structure", "parent": "#", "text": "Cơ cấu tổ chức" },
+                            { "id": "Employee", "parent": "#", "text": "Quản lý cán bộ" },
+                            { "id": "Year", "parent": "#", "text": "Năm đánh giá" },
+                            { "id": "Customer", "parent": "#", "text": "Quản lý chủ thể" },
+                            { "id": "Product", "parent": "#", "text": "Quản lý sản phẩm" },
+                            { "id": "Search", "parent": "#", "text": "Tra cứu hồ sơ OCOP" },
+                            { "id": "Committee", "parent": "#", "text": "Hội đồng chấm" },
+                            { "id": "Score", "parent": "#", "text": "Chấm điểm OCOP" },
+                            { "id": "Category", "parent": "#", "text": "Danh mục" },
+                            { "id": "Manage", "parent": "#", "text": "Quản trị*" },
+                        ];
+
+                        $(`#tree${Id}`).jstree({
+                            'plugins': ['checkbox'],
+                            'core': {
+                                'data': data,
+                                'check_callback': true // allow new nodes to be added
+                            }
+                        }).bind('loaded.jstree', function () {
+                            results.forEach(function (item) {
+
+                                $(`#tree${Id}`).jstree('select_node', item.NamePermission);
+                            });
+
+                        });
+                    })
+                        .catch(err => {
+                            console.log('Error', err)
+                        })
+                })
+        })
+
+    })
+
+</script>
+
 <script>
     window.dataLayer = window.dataLayer || [];
     function gtag() {

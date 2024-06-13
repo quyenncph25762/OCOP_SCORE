@@ -4,15 +4,15 @@ const CustomermanageController = require('../app/controllers/customer/Customerma
 const upload = require("../app/Middleware/uploadMiddle")
 const CheckController = require("../app/Middleware/checkoutToken")
 //route phải khớp từ trên xuống nên route gốc phải để dưới cùng
-router.get('/trash', CheckController.checkout, CustomermanageController.getAllTrash);
+router.get('/trash', CheckController.checkout('Customer'), CustomermanageController.getAllTrash);
 // xoa vinh vien
-router.delete('/trash/:id', CustomermanageController.deleteForever);
+router.delete('/trash/:id', CheckController.checkout('Customer'), CustomermanageController.deleteForever);
 // khoi phuc
-router.patch('/trash/:id/update', CustomermanageController.revertCustomer);
+router.patch('/trash/:id/update', CheckController.checkout('Customer'), CustomermanageController.revertCustomer);
 // trash
-router.post('/create', upload.single(), CustomermanageController.create);
-router.delete('/:id', CustomermanageController.delete);
-router.post('/:id/update', upload.single(), CustomermanageController.update);
-router.get('/:id/edit', CustomermanageController.getbyId);
-router.use('/', CheckController.checkout, CustomermanageController.index);
+router.post('/create', CheckController.checkout('Customer'), upload.single(), CustomermanageController.create);
+router.delete('/:id', CheckController.checkout('Customer'), CustomermanageController.delete);
+router.post('/:id/update', CheckController.checkout('Customer'), upload.single(), CustomermanageController.update);
+router.get('/:id/edit', CheckController.checkout('Customer'), CustomermanageController.getbyId);
+router.use('/', CheckController.checkout('Customer'), CustomermanageController.index);
 module.exports = router;

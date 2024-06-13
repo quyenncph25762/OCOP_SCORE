@@ -151,17 +151,21 @@ function rankOcop() {
 }
 // ham goi ra danh sach thu ki
 async function FuncListSecUserId(idScoreCommittee) {
-    const response = await fetch(`/scoreCommitteeDetail/getByScoreCommittee/${idScoreCommittee}`, {
-        method: "GET"
-    })
-    if (!response.ok) {
-        console.log("Lỗi khi lấy ra danh sách scoreCommitteeDetail")
-        return
-    }
-    const listUser = await response.json()
+    try {
+        const response = await fetch(`/scoreCommitteeDetail/getByScoreCommittee/${idScoreCommittee}`, {
+            method: "GET"
+        })
+        if (!response.ok) {
+            console.log("Lỗi khi lấy ra danh sách scoreCommitteeDetail")
+            return
+        }
+        const listUser = await response.json()
 
-    const arrSecUserId = listUser.map((user) => Number(user.SecUserId)).filter(id => id !== undefined && id !== null)
-    return arrSecUserId
+        const arrSecUserId = listUser.map((user) => Number(user.SecUserId)).filter(id => id !== undefined && id !== null)
+        return arrSecUserId
+    } catch (error) {
+        console.log(error)
+    }
 }
 // ham cham lai
 async function handleRevertScoreFile(idScoreFile) {
@@ -209,11 +213,15 @@ async function handleRevertScoreFile(idScoreFile) {
 
 //list ScoreFile theo scoreCommittee
 async function FuncListScoreFileByScoreCommittee(idScoreCommittee) {
-    const response = await fetch(`/scorefile/byIdScoreCommittee/${idScoreCommittee}`, {
-        method: "GET"
-    })
-    if (!response.ok) {
-        console.log("Lỗi khi gọi ResultScoreFiles")
+    try {
+        const response = await fetch(`/scorefile/byIdScoreCommittee/${idScoreCommittee}`, {
+            method: "GET"
+        })
+        if (!response.ok) {
+            console.log("Lỗi khi gọi ResultScoreFiles")
+        }
+        return await response.json()
+    } catch (error) {
+        console.log(error)
     }
-    return await response.json()
 } 

@@ -34,10 +34,23 @@ const ScoreTempDetail = {
             });
         })
     },
-    update: (_id, ScoreTempDetail, callback) => {
-        const query = `UPDATE scoretemp_detail SET Name = ? , ScoreTemp_id = ? , MaxScore = ? , ProductDetailId = ? , IsScore = ? , ValidatedRank = ? WHERE _id = ?`
-        const VALUES = [ScoreTempDetail.Name, ScoreTempDetail.ScoreTemp_id, ScoreTempDetail.MaxScore, ScoreTempDetail.ProductDetailId, ScoreTempDetail.IsScore, ScoreTempDetail.ValidatedRank, _id]
-        connection.query(query, VALUES, callback)
+    update: (_id, ScoreTempDetail) => {
+        return new Promise((resolve, reject) => {
+            const query = `UPDATE scoretemp_detail SET Name = ? , ScoreTemp_id = ? , MaxScore = ? , ProductDetailId = ? , IsScore = ? , ValidatedRank = ? , Note = ? WHERE _id = ?`
+            const VALUES = [ScoreTempDetail.Name, ScoreTempDetail.ScoreTemp_id, ScoreTempDetail.MaxScore, ScoreTempDetail.ProductDetailId, ScoreTempDetail.IsScore, ScoreTempDetail.ValidatedRank, ScoreTempDetail.Note, _id]
+            if (!connection) {
+                if (!connection) {
+                    return reject(new Error("Database connection is not established"));
+                }
+            }
+            connection.query(query, VALUES, (err, result) => {
+                if (err) {
+                    return reject(err)
+                }
+                return resolve(result)
+            })
+
+        })
     },
     // khoi phuc
     revertScoreTempDetail: (id, callback) => {

@@ -21,86 +21,44 @@ class ScoreCommitteController {
                         message: err
                     })
                 }
-                if (User[0]?.DistrictId) {
-                    ScoreCommitteeModel.getAllByDistrict(User[0]?.DistrictId, (err, ScoreCommittee) => {
+                ScoreCommitteeModel.getAllByDistrict(User[0]?.DistrictId, (err, ScoreCommittee) => {
+                    if (err) {
+                        return res.status(500).json({
+                            message: err
+                        })
+                    }
+                    YearReivewModel.fetchAllReviewYear((err, YearReview) => {
                         if (err) {
                             return res.status(500).json({
                                 message: err
                             })
                         }
-                        YearReivewModel.fetchAllReviewYear((err, YearReview) => {
+                        EmployeeModel.fetchAllEmployeeByDistrict(User[0]?.DistrictId, (err, Employee) => {
                             if (err) {
                                 return res.status(500).json({
                                     message: err
                                 })
                             }
-                            EmployeeModel.fetchAllEmployeeByDistrict(User[0]?.DistrictId, (err, Employee) => {
+                            WorkDepartmentModal.fetchAllWorkDepartment((err, WorkDepartment) => {
                                 if (err) {
                                     return res.status(500).json({
                                         message: err
                                     })
                                 }
-                                WorkDepartmentModal.fetchAllWorkDepartment((err, WorkDepartment) => {
+                                workPositionModal.fetchAllWorkPosition((err, WorkPosition) => {
                                     if (err) {
                                         return res.status(500).json({
                                             message: err
                                         })
                                     }
-                                    workPositionModal.fetchAllWorkPosition((err, WorkPosition) => {
-                                        if (err) {
-                                            return res.status(500).json({
-                                                message: err
-                                            })
-                                        }
-                                        res.render("scoreCommittee/scoreCommittee", { User: User[0], ScoreCommittee: ScoreCommittee, YearReview: YearReview, Employee: Employee, WorkDepartment: WorkDepartment, WorkPosition: WorkPosition })
-                                    })
+                                    res.render("scoreCommittee/scoreCommittee", { User: User[0], ScoreCommittee: ScoreCommittee, YearReview: YearReview, Employee: Employee, WorkDepartment: WorkDepartment, WorkPosition: WorkPosition })
                                 })
                             })
-
-
                         })
-                    })
-                    return
-                } else {
-                    ScoreCommitteeModel.getAllIsNull((err, ScoreCommittee) => {
-                        if (err) {
-                            return res.status(500).json({
-                                message: err
-                            })
-                        }
-                        YearReivewModel.fetchAllReviewYear((err, YearReview) => {
-                            if (err) {
-                                return res.status(500).json({
-                                    message: err
-                                })
-                            }
-                            EmployeeModel.fetchAllEmployeeIsNull((err, Employee) => {
-                                if (err) {
-                                    return res.status(500).json({
-                                        message: err
-                                    })
-                                }
-                                WorkDepartmentModal.fetchAllWorkDepartment((err, WorkDepartment) => {
-                                    if (err) {
-                                        return res.status(500).json({
-                                            message: err
-                                        })
-                                    }
-                                    workPositionModal.fetchAllWorkPosition((err, WorkPosition) => {
-                                        if (err) {
-                                            return res.status(500).json({
-                                                message: err
-                                            })
-                                        }
-                                        res.render("scoreCommittee/scoreCommittee", { User: User[0], ScoreCommittee: ScoreCommittee, YearReview: YearReview, Employee: Employee, WorkDepartment: WorkDepartment, WorkPosition: WorkPosition })
-                                    })
-                                })
-                            })
 
 
-                        })
                     })
-                }
+                })
             })
         }
     }

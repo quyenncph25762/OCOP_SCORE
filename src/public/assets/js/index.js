@@ -103,9 +103,6 @@ $(async function () {
 	"use strict";
 	// await HandleClick()
 	// chart 1
-
-
-
 	const response = await fetch(`/percentProductByDistrict`, {
 		method: "GET"
 	})
@@ -116,7 +113,7 @@ $(async function () {
 	const percentProductByDistrict = await response.json()
 	// chart 2
 	var ctx = document.getElementById("chart2").getContext('2d');
-	var myChart = new Chart(ctx, {
+	new Chart(ctx, {
 		type: 'doughnut',
 		data: {
 			labels: percentProductByDistrict.map((item) => item.DistrictName),

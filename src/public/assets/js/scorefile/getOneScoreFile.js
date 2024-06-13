@@ -42,6 +42,8 @@ async function getOneProduct(productId) {
 }
 async function getOneScoreTemp(code, productId, productgroupId) {
     try {
+        console.log(`productId:`, productId)
+        console.log(`productgroupId:`, productgroupId)
         // goi vien dan theo productDetail
         const responseProductDetailByProduct = await fetch(`/productDetail/${productId}`, {
             method: "GET"

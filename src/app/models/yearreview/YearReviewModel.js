@@ -2,7 +2,7 @@ const connection = require("../../../config/db")
 
 const YearReviewModel = {
     fetchAllReviewYear: (callback) => {
-        const query = `SELECT * FROM yearreview WHERE isDeleted = 0 ORDER BY yearreview.yearName DESC`
+        const query = `SELECT * FROM yearreview WHERE isDeleted = 0 `
         connection.query(query, callback)
     },
     // lay tat ca trong thung rac

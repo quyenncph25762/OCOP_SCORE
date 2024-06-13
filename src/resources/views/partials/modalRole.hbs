@@ -41,6 +41,8 @@
                             <input value="{{this.note}}" name="note" type="text" class="form-control"
                                 id="note{{this._id}}">
                         </div>
+                        <label for="">Phân quyền cho role</label><br>
+                        <div id="tree{{this._id}}"></div>
                     </div>
                 </form>
                 <div class="modal-footer">
@@ -88,6 +90,8 @@
                                 chú</label>
                             <input name="note" type="text" class="form-control" id="noteRole">
                         </div>
+                        <label for="">Phân quyền cho role</label><br>
+                        <div id="tree"></div>
                     </div>
                 </form>
                 <div class="modal-footer">
@@ -103,7 +107,8 @@
 <script>
 
     async function handleAdd() {
-
+        var checkedPermissioin = $('#tree').jstree().get_checked();
+        permission = JSON.stringify(checkedPermissioin)
         const titleRole = document.getElementById("titleRole").value
         const statusRole = document.getElementById("statusRole").checked
         const noteRole = document.getElementById("noteRole").value
@@ -113,6 +118,7 @@
         formData.append("status", statusRole)
         formData.append("note", noteRole)
         formData.append("creatorUser_id", creatorUser_id)
+        formData.append("permission", permission)
         const res = await fetch("/role/add", {
             method: "POST",
             body: formData
@@ -146,6 +152,8 @@
     }
 
     async function handleUpdate(id) {
+        const checkedPermissioin = $(`#tree${id}`).jstree().get_checked();
+        permission = JSON.stringify(checkedPermissioin)
         const title = document.getElementById(`title${id}`).value
         const status = document.getElementById(`status${id}`).checked
         const note = document.getElementById(`note${id}`).value
@@ -153,7 +161,7 @@
         formData.append("title", title)
         formData.append("status", status)
         formData.append("note", note)
-
+        formData.append("permission", permission)
         const res = await fetch(`/role/update/${id}`, {
             method: "POST",
             body: formData

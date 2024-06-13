@@ -222,7 +222,7 @@
             const data = await res.json()
             localStorage.setItem('toast', JSON.stringify({
                 position: "top-right",
-                heading: 'Đã thêm thành viên',
+                heading: 'SUCCESS',
                 text: 'Thêm thành viên thành công',
                 icon: 'success',
                 loader: true,
@@ -235,8 +235,8 @@
             const data = await res.json()
             $.toast({
                 position: "top-right",
-                heading: 'Thêm thất bại',
-                text: data.message || 'Đã có lỗi xảy ra',
+                heading: 'WARNING!',
+                text: data.message,
                 icon: 'error',
                 loader: true,
                 loaderBg: '#f2a654',

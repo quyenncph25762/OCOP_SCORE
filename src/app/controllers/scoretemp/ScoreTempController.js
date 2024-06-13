@@ -49,7 +49,6 @@ class ScoreTempController {
     // lay scoretemp theo productgroupId
     getScoreTempByProductGroupId(req, res) {
         const idProductGroup = req.params.id
-
         ScoreTempModel.getScoreTempByProductGroupId(idProductGroup, (err, scoretemp) => {
             if (err) {
                 return res.status(500).json({

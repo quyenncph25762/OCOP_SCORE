@@ -88,6 +88,7 @@
                                                     data-target="#modalUpdateUser{{this._id}}"></ion-icon>
                                             </span>
                                             {{> modalUpdateUser Role=../Role}}
+                                            {{#ifCondAndNot ../User._id this._id this.RoleId 1}}
                                             {{#ifCond this.isLock 0}}
                                             <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
                                                 title="Khóa tài khoản">
@@ -101,11 +102,13 @@
                                                     onclick="handleOpenUser('{{this._id}}')"></ion-icon>
                                             </span>
                                             {{/ifCond}}
+
                                             <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Xóa">
                                                 <ion-icon id="icon_moveToTrash" data-userName="{{this.UserName}}"
                                                     name="trash-outline" data-id="{{this._id}}">
                                                 </ion-icon>
                                             </span>
+                                            {{/ifCondAndNot}}
                                         </div>
                                     </td>
                                 </tr>

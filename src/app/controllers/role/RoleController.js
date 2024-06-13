@@ -1,5 +1,6 @@
 const RoleModel = require("../../models/role/RoleModel")
 const AccountModel = require("../../models/Account")
+const Permission = require("../../models/permission/permissionModle")
 const jwt = require("jsonwebtoken")
 const dotenv = require("dotenv")
 dotenv.config();
@@ -75,6 +76,7 @@ class ProductGroupControllers {
     }
     // them
     create(req, res, next) {
+        const permission = JSON.parse(req.body.permission)
         RoleModel.findRoleAdd(req.body.title, (err, data) => {
             if (err) {
                 console.log('Lỗi truy vấn', err);
@@ -93,6 +95,34 @@ class ProductGroupControllers {
                                 message: "Internal Server Error"
                             });
                         } else {
+                            if (permission) {
+                                const getPermission = permission.map(per => {
+                                    const forms = {
+                                        Role_id: data.insertId,
+                                        NamePermission: per
+                                    }
+
+                                    return new Promise((resolve, reject) => {
+                                        Permission.creatPermission(forms, (err, data) => {
+                                            if (err) {
+                                                reject(err)
+                                            }
+                                            else {
+                                                resolve(data)
+                                            }
+                                        })
+                                    })
+                                })
+                                Promise.all(getPermission)
+                                    .then(() => {
+                                        return res.status(201).json({
+                                            message: "Theem thanh cong"
+                                        });
+                                    })
+                                    .catch(err => {
+                                        console.log('Error', err)
+                                    })
+                            }
                             return res.status(201).json({
                                 message: "Theem thanh cong"
                             });
@@ -157,6 +187,7 @@ class ProductGroupControllers {
     // update
     update(req, res, next) {
         const id = req.params.id
+        const permission = JSON.parse(req.body.permission)
         RoleModel.findRoleUpdate(id, req.body.title, (err, data) => {
             if (err) {
                 return res.json({ success: false, message: 'loi truy xuat' })
@@ -172,17 +203,66 @@ class ProductGroupControllers {
                                 message: `${err}: Loi updateRole`
                             })
                         }
-                        return res.status(202).json({
-                            message: "Sửa thành công"
-                        })
+                        else {
+                            Permission.deletePermission(id, (err, result) => {
+                                if (err) {
+                                    console.log('Error', err)
+                                }
+                                else {
+                                    if (permission) {
+                                        const getPermission = permission.map(per => {
+                                            const forms = {
+                                                Role_id: id,
+                                                NamePermission: per
+                                            }
+
+                                            return new Promise((resolve, reject) => {
+                                                Permission.creatPermission(forms, (err, data) => {
+                                                    if (err) {
+                                                        reject(err)
+                                                    }
+                                                    else {
+                                                        resolve(data)
+                                                    }
+                                                })
+                                            })
+                                        })
+                                        Promise.all(getPermission)
+                                            .then(() => {
+                                                return res.status(201).json({
+                                                    message: "Sửa thành công"
+                                                });
+                                            })
+                                            .catch(err => {
+                                                console.log('Error', err)
+                                            })
+                                    }
+                                    return res.status(202).json({
+                                        message: "Sửa thành công"
+                                    })
+                                }
+
+                            })
+                        }
                     })
                 } else {
                     return res.status(400).json({ success: false, message: 'Ten da ton tai' })
                 }
             }
         })
+    }
+    permission(req, res) {
+        const id = req.params.id
 
+        Permission.getAllPermissionBy_Role(id, (err, data) => {
+            if (err) {
+                console.log('Error', err)
+            }
+            else {
 
+                res.json(data)
+            }
+        })
     }
 }
 

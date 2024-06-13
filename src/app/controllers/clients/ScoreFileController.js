@@ -115,61 +115,32 @@ class ScoreFileController {
                         message: err
                     })
                 }
-                if (User[0]?.DistrictId) {
-                    EmployeeModel.fetchAllEmployeeByDistrict(User[0]?.DistrictId, async (err, employees) => {
-                        if (err) {
-                            console.log(err)
-                            return res.status(500).json({
-                                message: "Lỗi truy vấn"
-                            })
-                        }
-                        await employees.forEach(async (employee) => {
-                            ScoreFileModel.create({
-                                forEmployeeId: employee._id,
-                                IsActive: 0,
-                                Status: 0,
-                                DistrictId: User[0]?.DistrictId,
-                                ...req.body
-                            }, (err, results) => {
-                                if (err) {
-                                    return res.status(500).json({
-                                        message: "Lỗi truy vấn"
-                                    })
-                                }
-                            })
-                        });
-                        return res.status(200).json({
-                            message: "Them thanh cong"
+                EmployeeModel.fetchAllEmployeeByDistrict(User[0]?.DistrictId, async (err, employees) => {
+                    if (err) {
+                        console.log(err)
+                        return res.status(500).json({
+                            message: "Lỗi truy vấn"
                         })
-                    })
-                } else {
-                    EmployeeModel.fetchAllEmployeeIsNull(async (err, employees) => {
-                        if (err) {
-                            console.log(err)
-                            return res.status(500).json({
-                                message: "Lỗi truy vấn"
-                            })
-                        }
-                        await employees.forEach(async (employee) => {
-                            ScoreFileModel.create({
-                                forEmployeeId: employee._id,
-                                IsActive: 0,
-                                Status: 0,
-                                DistrictId: User[0]?.DistrictId,
-                                ...req.body
-                            }, (err, results) => {
-                                if (err) {
-                                    return res.status(500).json({
-                                        message: "Lỗi truy vấn"
-                                    })
-                                }
-                            })
-                        });
-                        return res.status(200).json({
-                            message: "Them thanh cong"
+                    }
+                    await employees.forEach(async (employee) => {
+                        ScoreFileModel.create({
+                            forEmployeeId: employee._id,
+                            IsActive: 0,
+                            Status: 0,
+                            DistrictId: User[0]?.DistrictId,
+                            ...req.body
+                        }, (err, results) => {
+                            if (err) {
+                                return res.status(500).json({
+                                    message: "Lỗi truy vấn"
+                                })
+                            }
                         })
+                    });
+                    return res.status(200).json({
+                        message: "Them thanh cong"
                     })
-                }
+                })
             })
         }
 
@@ -210,7 +181,7 @@ class ScoreFileController {
                                 })
                             }
                             // tim ra scorefile cua secUserId
-                            const scoreFileSecUserId = listScoreFile?.filter((employee) => employee.Employee_id === scoreCommitteeDetailFilter[0].SecUserId)
+                            const scoreFileSecUserId = listScoreFile?.filter((employee) => employee.Employee_id === scoreCommitteeDetailFilter[0]?.SecUserId)
                             // sau khi tim dc thi thuc hien truyen vao handlebars
                             res.render("scoreFile/createScoreFile", { User: User[0], scoreCommitteeDetail: scoreCommitteeDetailFilter ? scoreCommitteeDetailFilter[0] : [], productId: productId, scorefileId: scoreFileSecUserId ? scoreFileSecUserId[0] : [] })
                         })

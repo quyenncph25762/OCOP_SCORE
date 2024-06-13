@@ -823,3 +823,13 @@ input.form-control.input-headerTable.w-100 {
         min-width: 600px !important;
     } */
 }
+
+.jstree-default .jstree-clicked {
+    background: transparent !important;
+    border-radius: 2px;
+    box-shadow: none !important;
+}
+
+.jstree-default .jstree-leaf>.jstree-ocl {
+    background-position: none;
+}

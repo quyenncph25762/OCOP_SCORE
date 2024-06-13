@@ -20,90 +20,44 @@ class EmployeeControllers {
                         message: err
                     })
                 }
-                User[0].DistrictId ?
-                    EmployeeModel.fetchAllEmployeeByDistrict(User[0].DistrictId, (err, Employee) => {
+                EmployeeModel.fetchAllEmployeeByDistrict(User[0].DistrictId, (err, Employee) => {
+                    if (err) {
+                        return res.status(500).json({
+                            message: err
+                        })
+                    }
+
+                    workDepartmentModel.fetchAllWorkDepartment((err, WorkDepartMent) => {
                         if (err) {
                             return res.status(400).json({
                                 message: err
                             })
                         }
-                        if (!Employee) {
-                            return res.status(400).json({
-                                message: "Lỗi"
-                            })
-                        }
-                        workDepartmentModel.fetchAllWorkDepartment((err, WorkDepartMent) => {
+                        workPositionModel.fetchAllWorkPosition((err, WorkPosition) => {
                             if (err) {
                                 return res.status(400).json({
                                     message: err
                                 })
                             }
-                            workPositionModel.fetchAllWorkPosition((err, WorkPosition) => {
+                            roleModel.fetchAllRole((err, Role) => {
                                 if (err) {
                                     return res.status(400).json({
                                         message: err
                                     })
                                 }
-                                roleModel.fetchAllRole((err, Role) => {
+                                DistrictModel.getAllDistrict((err, district) => {
                                     if (err) {
                                         return res.status(400).json({
                                             message: err
                                         })
                                     }
-                                    DistrictModel.getAllDistrict((err, district) => {
-                                        if (err) {
-                                            return res.status(400).json({
-                                                message: err
-                                            })
-                                        }
-                                        res.render("employee/employee", { Employee: Employee, WorkDepartMent: WorkDepartMent, WorkPosition: WorkPosition, Role: Role, User: User[0], District: district })
-                                    })
+                                    res.render("employee/employee", { Employee: Employee, WorkDepartMent: WorkDepartMent, WorkPosition: WorkPosition, Role: Role, User: User[0], District: district })
                                 })
                             })
                         })
                     })
-                    :
-                    EmployeeModel.fetchAllEmployeeIsNull((err, Employee) => {
-                        if (err) {
-                            return res.status(400).json({
-                                message: err
-                            })
-                        }
-                        if (!Employee) {
-                            return res.status(400).json({
-                                message: "Lỗi"
-                            })
-                        }
-                        workDepartmentModel.fetchAllWorkDepartment((err, WorkDepartMent) => {
-                            if (err) {
-                                return res.status(400).json({
-                                    message: err
-                                })
-                            }
-                            workPositionModel.fetchAllWorkPosition((err, WorkPosition) => {
-                                if (err) {
-                                    return res.status(400).json({
-                                        message: err
-                                    })
-                                }
-                                roleModel.fetchAllRole((err, Role) => {
-                                    if (err) {
-                                        return res.status(400).json({
-                                            message: err
-                                        })
-                                    }
-                                    DistrictModel.getAllDistrict((err, district) => {
-                                        if (err) {
-                                            return res.status(400).json({
-                                                message: err
-                                            })
-                                        }
-                                        res.render("employee/employee", { Employee: Employee, WorkDepartMent: WorkDepartMent, WorkPosition: WorkPosition, Role: Role, User: User[0], District: district })
-                                    })
-                                })
-                            })
-                        })
-                    })
+                })
+
             })
         } else {
             res.redirect("/auth/loginPage")
@@ -121,25 +75,14 @@ class EmployeeControllers {
                     })
                 }
                 if (User.length > 0) {
-                    if (User[0].DistrictId) {
-                        EmployeeModel.fetchAllEmployeeByDistrict(User[0].DistrictId, (err, data) => {
-                            if (err) {
-                                return res.status(500).json({
-                                    message: err
-                                })
-                            }
-                            return res.status(200).json(data)
-                        })
-                    } else {
-                        EmployeeModel.fetchAllEmployeeIsNull((err, data) => {
-                            if (err) {
-                                return res.status(500).json({
-                                    message: err
-                                })
-                            }
-                            return res.status(200).json(data)
-                        })
-                    }
+                    EmployeeModel.fetchAllEmployeeByDistrict(User[0].DistrictId, (err, data) => {
+                        if (err) {
+                            return res.status(500).json({
+                                message: err
+                            })
+                        }
+                        return res.status(200).json(data)
+                    })
                 }
             })
         }
@@ -156,35 +99,19 @@ class EmployeeControllers {
                         message: err
                     })
                 }
-                if (User[0]?.DistrictId) {
-                    EmployeeModel.fetchAllEmployeeFromTrash(User[0].DistrictId, (err, Employee) => {
-                        if (err) {
-                            return res.status(400).json({
-                                message: err
-                            })
-                        }
-                        if (!Employee) {
-                            return res.status(400).json({
-                                message: "Lỗi"
-                            })
-                        }
-                        res.render("employee/trash", { Employee: Employee, User: User[0] })
-                    })
-                } else {
-                    EmployeeModel.fetchAllEmployeeFromTrashIsNull((err, Employee) => {
-                        if (err) {
-                            return res.status(400).json({
-                                message: err
-                            })
-                        }
-                        if (!Employee) {
-                            return res.status(400).json({
-                                message: "Lỗi"
-                            })
-                        }
-                        res.render("employee/trash", { Employee: Employee, User: User[0] })
-                    })
-                }
+                EmployeeModel.fetchAllEmployeeFromTrash(User[0].DistrictId, (err, Employee) => {
+                    if (err) {
+                        return res.status(400).json({
+                            message: err
+                        })
+                    }
+                    if (!Employee) {
+                        return res.status(400).json({
+                            message: "Lỗi"
+                        })
+                    }
+                    res.render("employee/trash", { Employee: Employee, User: User[0] })
+                })
             })
         } else {
             res.redirect("/auth/loginPage")
@@ -202,7 +129,7 @@ class EmployeeControllers {
                         message: err
                     })
                 }
-                EmployeeModel.findEmployeeAdd(req.body, (err, data) => {
+                EmployeeModel.findEmployeeAdd(User[0].DistrictId, req.body, (err, data) => {
                     if (err) {
                         return res.status(500).json({
                             message: "Loi truy van"
@@ -237,9 +164,10 @@ class EmployeeControllers {
                                 }
                             })
                         } else {
+                            const conflictFields = data.map(row => row.conflictField).join(', ');
                             return res.status(400).json({
-                                message: "Tên đã tồn tại"
-                            })
+                                message: `${conflictFields} đã tồn tại`
+                            });
                         }
                     }
                 })
@@ -305,7 +233,7 @@ class EmployeeControllers {
                         message: err
                     })
                 }
-                EmployeeModel.findEmployeeUpdate(id, req.body, (err, data) => {
+                EmployeeModel.findEmployeeUpdate(id, req.body, User[0].DistrictId, (err, data) => {
                     if (err) {
                         return res.status(500).json({
                             message: "Loi truy van"
@@ -336,9 +264,10 @@ class EmployeeControllers {
                                 });
                             })
                         } else {
+                            const conflictFields = data.map(row => row.conflictField).join(', ');
                             return res.status(400).json({
-                                message: "Tên đã tồn tại"
-                            })
+                                message: `${conflictFields} đã tồn tại`
+                            });
                         }
                     }
                 })

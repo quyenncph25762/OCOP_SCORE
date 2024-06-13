@@ -1,15 +1,23 @@
 const connection = require("../../config/db")
 
 const AccountModel = {
-    fetchAlluser: (callBack) => {
-        const query = `SELECT employee.*,
-        role.title as role_title,
-        role.status as role_status
-        work
-        FROM employee
-        JOIN 
-        role ON role._id = employee.RoleId
-        WHERE IsDeleted = 0`
+    fetchAllUser: (districtId, callBack) => {
+        const query = `
+        SELECT employee.*,
+        workdepartment.title AS workdepartment_name,
+        workposition.Name AS workposition_name,
+        role.title AS role_name,
+        DATE_FORMAT(employee.DoB, '%Y-%m-%d') AS formattedDoB
+            FROM
+        employee
+        LEFT JOIN
+            workdepartment ON workdepartment._id = employee.WorkDepartment_id
+        LEFT JOIN
+            workposition ON workposition._id = employee.WorkPosition_id
+        LEFT JOIN
+            role ON role._id = employee.RoleId
+        WHERE employee.IsDeleted = 0 AND employee.IsActive = 1 AND employee.DistrictId ${districtId ? `= ${districtId}` : `IS NULL`} ORDER BY employee._id DESC;
+        `
         connection.query(query, callBack)
     },
     // login
@@ -83,8 +91,8 @@ const AccountModel = {
     },
     // Them nguoi dung
     AddUser: (employee, callback) => {
-        const query = `INSERT INTO employee (Code,FullName,UserName,Email,Avatar,Phone,RoleId,CreatorUser_id,IsActive,Password) VALUES (?,?,?,?,?,?,?,?,?,?)`
-        const values = [employee.Code, employee.FullName, employee.UserName, employee.Email, employee.Avatar, employee.Phone, employee.RoleId, employee.CreatorUser_id, employee.IsActive, employee.Password]
+        const query = `INSERT INTO employee (Code,FullName,UserName,Email,Avatar,Phone,RoleId,CreatorUser_id,IsActive,Password,DistrictId) VALUES (?,?,?,?,?,?,?,?,?,?,?)`
+        const values = [employee.Code, employee.FullName, employee.UserName, employee.Email, employee.Avatar, employee.Phone, employee.RoleId, employee.CreatorUser_id, employee.IsActive, employee.Password, employee.DistrictId]
         connection.query(query, values, callback)
     },
     // update nguoi dung

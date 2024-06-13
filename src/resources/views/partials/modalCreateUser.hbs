@@ -31,6 +31,7 @@
                             <p style="font-size: 16px;margin-bottom: 18px;">Thông tin người dùng</p>
                             <div class="row">
                                 <input type="text" hidden id="CreatorUser_idCreate" value="{{User._id}}">
+                                <input type="text" hidden id="DistrictId" value="{{User.DistrictId}}">
                                 <div class="col-sm-3 mb-3" style="position: relative;">
                                     <div data-toggle="tooltip" data-html="true" title="Xóa ảnh" onclick="removeUpload()"
                                         style="position: absolute;top: 0;right: 0;">
@@ -160,6 +161,7 @@
         const Password = document.getElementById("PasswordNewCreate").value
         const ConfirmPassword = document.getElementById("ConfirmPasswordCreate").value
         const CreatorUser_id = document.getElementById("CreatorUser_idCreate").value
+        const DistrictId = document.getElementById("DistrictId").value
         const IsActive = document.getElementById("IsActiveCreate").checked
         const Avatar = document.getElementById("AvatarCreate")
         if (Password.length < 6 || ConfirmPassword.length < 6) {
@@ -200,6 +202,7 @@
         formData.append("Phone", Phone)
         formData.append("Password", CryptoJS.SHA256(Password).toString())
         formData.append("Avatar", Avatar.files[0])
+        formData.append("DistrictId", DistrictId)
 
         const response = await fetch(`/users/add`, {
             method: "POST",
@@ -222,7 +225,7 @@
             $.toast({
                 position: "top-right",
                 heading: 'Thêm thất bại',
-                text: data.message || 'Đã có lỗi xảy ra',
+                text: data.message,
                 icon: 'error',
                 loader: true,
                 loaderBg: '#f2a654',

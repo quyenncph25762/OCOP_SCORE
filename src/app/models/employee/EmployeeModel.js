@@ -1,27 +1,6 @@
 const connection = require("../../../config/db")
 const EmployeeModel = {
     // fetch tat ca
-    fetchAllEmployeeIsNull: (callback) => {
-        const query = `SELECT employee.*,
-        workdepartment.title AS workdepartment_name,
-        workposition.Name AS workposition_name,
-        role.title AS role_name,
-        workdepartment.isDeleted AS workdepartment_IsDeleted,
-        workposition.IsDeleted AS workposition_IsDeleted,
-        DATE_FORMAT(employee.DoB, '%Y-%m-%d') AS formattedDoB
-            FROM
-        employee
-        JOIN
-            workdepartment ON workdepartment._id = employee.WorkDepartment_id
-        JOIN
-            workposition ON workposition._id = employee.WorkPosition_id
-        JOIN
-            role ON role._id = employee.RoleId
-        WHERE employee.IsDeleted = 0 AND employee.IsActive = 1 AND employee.DistrictId IS NULL ORDER BY employee._id DESC;
-        `
-        connection.query(query, callback)
-    },
-    // fetch tat ca
     fetchAllEmployeeByDistrict: (districtId, callback) => {
         const query = `SELECT employee.*,
         workdepartment.title AS workdepartment_name,
@@ -38,21 +17,11 @@ const EmployeeModel = {
             workposition ON workposition._id = employee.WorkPosition_id
         JOIN
             role ON role._id = employee.RoleId
-        WHERE employee.IsDeleted = 0 AND employee.IsActive = 1 AND employee.DistrictId = ${districtId} ORDER BY employee._id DESC;
+        WHERE employee.IsDeleted = 0 AND employee.IsActive = 1 AND employee.DistrictId ${districtId ? `= ${districtId}` : `IS NULL`} ORDER BY employee._id DESC;
         `
         connection.query(query, callback)
     },
-    // fetchAllUser: (callback) => {
-    //     const query = `SELECT employee.*,
-    //     role.title AS role_name
-    //     FROM
-    //         employee
-    //     JOIN
-    //         role ON role._id = employee.RoleId
-    //     WHERE employee.IsDeleted = 0  ORDER BY employee._id DESC;
-    //     `
-    //     connection.query(query, callback)
-    // },
+
     // get ra tat ca tai khoan admin
     getAllAdmin(callback) {
         const query = `SELECT employee.*,
@@ -81,29 +50,11 @@ const EmployeeModel = {
             workposition ON workposition._id = employee.WorkPosition_id
         LEFT JOIN
             role ON role._id = employee.RoleId
-        WHERE  employee.IsDeleted = 1 AND employee.DistrictId = ${DistrictId};
+        WHERE  employee.IsDeleted = 1 AND employee.DistrictId ${DistrictId ? `= ${DistrictId}` : "IS NULL"};
         `
         connection.query(query, callback)
     },
-    fetchAllEmployeeFromTrashIsNull: (callback) => {
-        const query = `SELECT employee.*,
-        workdepartment.title AS workdepartment_name,
-        workposition.Name AS workposition_name,
-        role.title AS role_name,
-        workdepartment.isDeleted AS workdepartment_IsDeleted,
-        workposition.IsDeleted AS workposition_IsDeleted
-            FROM
-        employee
-        LEFT JOIN
-            workdepartment ON workdepartment._id = employee.WorkDepartment_id
-        LEFT JOIN
-            workposition ON workposition._id = employee.WorkPosition_id
-        LEFT JOIN
-            role ON role._id = employee.RoleId
-        WHERE  employee.IsDeleted = 1 AND employee.DistrictId IS NULL;
-        `
-        connection.query(query, callback)
-    },
+
     // them
     AddEmployee: (employee, callback) => {
         const query = `INSERT INTO employee (Code,FullName,UserName,Email,Avatar,Gender,DoB,Phone,Address,WorkDepartment_id,WorkPosition_id,roleId,CreatorUser_id,Password,DistrictId) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`
@@ -111,14 +62,35 @@ const EmployeeModel = {
         connection.query(query, values, callback)
     },
     // tim can bo
-    findEmployeeUpdate: (id, employee, callback) => {
-        const query = `SELECT * FROM employee WHERE FullName = ? AND _id != ${id}`;
-        const values = [employee.FullName, id];
+    findEmployeeUpdate: (id, employee, districtId, callback) => {
+        const query = `
+            SELECT 
+                CASE 
+                    WHEN UserName = ? THEN 'UserName'
+                    WHEN Email = ? THEN 'Email'
+                    WHEN Phone = ? THEN 'Phone'
+                END as conflictField
+            FROM employee 
+            WHERE (_id != ?)
+            AND (UserName = ? OR Email = ? OR Phone = ?)
+            AND (DistrictId ${districtId ? `= ?` : `IS NULL`})
+        `;
+        const values = districtId ? [employee.UserName, employee.Email, employee.Phone, id, employee.UserName, employee.Email, employee.Phone, districtId] : [employee.UserName, employee.Email, employee.Phone, id, employee.UserName, employee.Email, employee.Phone];
         connection.query(query, values, callback);
     },
-    findEmployeeAdd: (employee, callback) => {
-        const query = `SELECT * FROM employee WHERE FullName = ?`;
-        const values = [employee.FullName];
+    findEmployeeAdd: (employee, districtId, callback) => {
+        const query = `
+            SELECT 
+                CASE 
+                    WHEN UserName = ? THEN 'UserName'
+                    WHEN Email = ? THEN 'Email'
+                    WHEN Phone = ? THEN 'Phone'
+                END as conflictField
+            FROM employee 
+            WHERE (UserName = ? OR Email = ? OR Phone = ?)
+            AND (DistrictId ${districtId ? `= ?` : `IS NULL`})
+        `;
+        const values = districtId ? [employee.UserName, employee.Email, employee.Phone, employee.UserName, employee.Email, employee.Phone, districtId] : [employee.UserName, employee.Email, employee.Phone, employee.UserName, employee.Email, employee.Phone];
         connection.query(query, values, callback);
     },
     // xoa vao thung rac

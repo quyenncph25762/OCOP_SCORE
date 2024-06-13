@@ -27,7 +27,7 @@ const ScoreCommitteeModel = {
         yearreview ON yearreview._id = scorecommittee.yearReviewId
         LEFT JOIN
         employee ON employee._id = scorecommittee.Employee_id
-        WHERE scorecommittee.IsDeleted = 0 AND scorecommittee.DistrictId = ${DistrictId} ORDER BY scorecommittee._id DESC`
+        WHERE scorecommittee.IsDeleted = 0 AND scorecommittee.DistrictId ${DistrictId ? `= ${DistrictId}` : 'IS NULL'} ORDER BY scorecommittee._id DESC`
         connection.query(query, callback)
     },
     getAllFromTrash: (callback) => {
