@@ -5,17 +5,17 @@ const upload = require("../app/Middleware/uploadMiddle")
 const CheckController = require("../app/Middleware/checkoutToken")
 
 router.get("/", CheckController.checkout('Manage'), RoleController.index)
-router.post("/add", upload.single(), RoleController.create)
+router.post("/add", CheckController.checkout('Manage'), upload.single(), RoleController.create)
 // fetchAll trash
-router.get("/trash", RoleController.getAllRoleFromTrash)
+router.get("/trash", CheckController.checkout('Manage'), RoleController.getAllRoleFromTrash)
 // remove to trash
-router.delete("/removeToTrash/:id", RoleController.removeToTrash)
+router.delete("/removeToTrash/:id", CheckController.checkout('Manage'), RoleController.removeToTrash)
 // delete
-router.delete("/remove/:id", RoleController.remove)
+router.delete("/remove/:id", CheckController.checkout('Manage'), RoleController.remove)
 // revert
-router.patch("/revert/:id", RoleController.revert)
+router.patch("/revert/:id", CheckController.checkout('Manage'), RoleController.revert)
 // update
-router.post("/update/:id", upload.single(), RoleController.update)
+router.post("/update/:id", CheckController.checkout('Manage'), upload.single(), RoleController.update)
 
-router.get("/:id/permission", RoleController.permission)
+router.get("/:id/permission", CheckController.checkout('Manage'), RoleController.permission)
 module.exports = router;

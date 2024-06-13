@@ -4,23 +4,23 @@ const ScoreTempController = require('../app/controllers/scoretemp/ScoreTempContr
 const CheckController = require("../app/Middleware/checkoutToken")
 // delete
 // revert
-router.patch("/revert/:id", CheckController.checkout('Score'), ScoreTempController.revert)
+router.patch("/revert/:id", CheckController.checkout('Category'), ScoreTempController.revert)
 // removeToTrash
-router.patch("/removeToTrash/:id", CheckController.checkout('Score'), ScoreTempController.removeToTrash)
+router.patch("/removeToTrash/:id", CheckController.checkout('Category'), ScoreTempController.removeToTrash)
 // pageTrash
-router.get("/trashPage", CheckController.checkout('Score'), ScoreTempController.pageTrash)
+router.get("/trashPage", CheckController.checkout('Category'), ScoreTempController.pageTrash)
 // add
-router.get("/addPage", CheckController.checkout('Score'), ScoreTempController.addPage)
-router.post("/add", CheckController.checkout('Score'), ScoreTempController.add)
+router.get("/addPage", CheckController.checkout('Category'), ScoreTempController.addPage)
+router.post("/add", CheckController.checkout('Category'), ScoreTempController.add)
 // update
-router.get("/updatePage/:id", CheckController.checkout('Score'), ScoreTempController.getOne)
-router.put("/update/:id", CheckController.checkout('Score'), ScoreTempController.update)
+router.get("/updatePage/:id", CheckController.checkout('Category'), ScoreTempController.getOne)
+router.put("/update/:id", CheckController.checkout('Category'), ScoreTempController.update)
 // getByProductGroupCode
-router.get("/byProductGroup/:code", CheckController.checkout('Score'), ScoreTempController.getScoreTempByProductGroup)
+router.get("/byProductGroup/:code", CheckController.checkout('Category'), ScoreTempController.getScoreTempByProductGroup)
 // getByProductGroupId
-router.get("/byProductGroupId/:id", CheckController.checkout('Score'), ScoreTempController.getScoreTempByProductGroupId)
+router.get("/byProductGroupId/:id", CheckController.checkout('Category'), ScoreTempController.getScoreTempByProductGroupId)
 // get
-router.get("/", CheckController.checkout('Score'), ScoreTempController.index)
+router.get("/", CheckController.checkout('Category'), ScoreTempController.index)
 // getOne
-router.get("/getOne/:id", CheckController.checkout('Score'), ScoreTempController.getOneAction)
+router.get("/getOne/:id", CheckController.checkout('Category'), ScoreTempController.getOneAction)
 module.exports = router;
