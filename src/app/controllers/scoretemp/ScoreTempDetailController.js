@@ -24,18 +24,18 @@ class ScoreTempDetailController {
             return res.status(200).json(ScoreTempDetail?.[0])
         })
     }
-    addScoreTempDetail(req, res) {
-        ScoreTempDetailModel.create(req.body, (err, data) => {
-            if (err) {
-                console.log(err)
-                return res.status(500).json({
-                    message: "Lỗi truy vấn"
-                })
+    addScoreTempDetail = async (req, res) => {
+        try {
+            for (const item of req.body) {
+                await ScoreTempDetailModel.create(item)
             }
             return res.status(201).json({
                 message: "Thêm thành công"
             })
-        })
+        } catch (error) {
+            console.log(error)
+        }
+
     }
     updateScoreTempDetail(req, res) {
         const id = req.params.id

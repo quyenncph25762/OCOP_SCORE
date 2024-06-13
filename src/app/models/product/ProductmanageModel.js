@@ -154,8 +154,8 @@ const ProductmanageController = {
     },
     // updateRankOcopProuct
     updateRankOcopProduct: (id, product, callback) => {
-        const query = 'UPDATE product SET RankOcop = ? , TotalScore = ?  WHERE _id = ?';
-        const values = [product.RankOcop, product.ScoreTotal, id];
+        const query = 'UPDATE product SET RankOcop = ? , TotalScore = ?, IsPassed = ?  WHERE _id = ?';
+        const values = [product.RankOcop, product.ScoreTotal, product.IsPassed, id];
         connection.query(query, values, callback);
     }
 

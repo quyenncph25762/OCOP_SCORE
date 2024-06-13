@@ -99,9 +99,19 @@
         margin-top: 100px;
     }
 
-    @media screen and (min-width: 350px) and (max-width: 765px) {
+
+
+    @media screen and (min-width: 768px) and (max-width: 1024px) {
         .modal-product {
             min-width: 100% !important;
+        }
+
+        #myTable {
+            font-size: 12px !important;
+        }
+
+        #myTable {
+            width: 100%;
         }
 
         .row-content {
@@ -114,6 +124,10 @@
 
         .file-upload {
             margin-bottom: 40px;
+        }
+
+        .modal-content {
+            width: 800px !important;
         }
     }
 </style>
@@ -131,7 +145,7 @@
             <div class="modal-body" class="width: 100%">
                 <form enctype="multipart/form-data">
                     <div class="row row-content">
-                        <div class="form-row col-sm-3"
+                        <div class="form-row col-xl-3 col-sm-12 col-md-12"
                             style="display: flex;flex-direction: column; text-align: center;">
                             <h1 style="font-size: 16px; text-align: center;font-weight: 600;">Ảnh sản phẩm</h1>
                             <div>
@@ -163,7 +177,7 @@
                         {{!-- creation_userId --}}
                         <input type="text" id="CreatorUser_id" name="CreatorUser_id" value="{{User._id}}" hidden>
                         {{!-- form Product --}}
-                        <div class="form-row col-sm-9 form_product">
+                        <div class="form-row col-xl-9 col-sm-12 col-md-12 form_product">
                             {{!-- code --}}
                             <div class="col-md-2 mb-3">
                                 <label for="Code">Mã</label>
@@ -229,7 +243,7 @@
                             </div>
                         </div>
                         {{!-- bảng viễn dẫn --}}
-                        <div class="col-sm-9 list_citation displayNone"
+                        <div class="col-xl-9 col-sm-12 col-md-12 list_citation displayNone"
                             style="overflow-y: auto;height: 100%;font-size: 12px">
                             <table border="1" class="table table-hover table-border table-striped">
                                 <thead>
@@ -248,7 +262,7 @@
                                         <td>
                                             <input type="text" hidden id="ProductDetail_Name{{this._id}}"
                                                 name="ProductDetail_Name">
-                                            {{this.ProductDetail_Name}}
+                                            <p style="text-wrap: wrap;">{{this.ProductDetail_Name}}</p>
                                         </td>
                                         <td style="color: red;">
                                             <p>(*)</p>

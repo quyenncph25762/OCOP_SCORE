@@ -27,18 +27,17 @@ class ScoreFileDetailController {
         })
     }
     // tao moi
-    createScoreFileDetail(req, res) {
-        console.log(req.body)
-        ScoreFileDetailModel.create(req.body, (err, result) => {
-            if (err) {
-                return res.status(500).json({
-                    message: "Lỗi truy vấn"
-                })
+    createScoreFileDetail = async (req, res) => {
+        try {
+            for (const item of req.body) {
+                await ScoreFileDetailModel.create(item);
             }
-            return res.status(201).json({
-                message: "Thêm thành công"
-            })
-        })
+            return res.status(201).json({ message: "ScoreFileDetail created successfully" });
+        } catch (error) {
+            console.error('Error creating ScoreFileDetail:', error);
+            return res.status(500).json({ message: "Error creating ScoreFileDetail", error: error.message });
+        }
+
     }
     updateScoreById(req, res) {
         const id = req.params.id

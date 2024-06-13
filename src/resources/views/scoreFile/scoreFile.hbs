@@ -1,25 +1,56 @@
 {{> header}}
+<style>
+    @media only screen and (max-width: 767px) {
+        #myTable {
+            min-width: 100%;
+        }
+
+        .col-dateScore,
+        .col-Status {
+            display: none;
+        }
+
+        .totalScoreStyle {
+            max-width: 50px;
+        }
+    }
+
+    /* For tablets */
+
+
+    /* For laptops and larger screens */
+    @media only screen and (min-width: 1024px) {
+        #myTable {
+            min-width: 100%;
+        }
+
+        .dropDownResults {
+            display: none;
+        }
+
+        .totalScoreStyle {
+            max-width: 105px;
+        }
+    }
+</style>
 <div class="content-wrapper">
     <div class="container-fluid">
         <div class="row" style="max-width: 100%; display: contents;">
             <ul class="search-customer"
-                style="list-style: none; display:flex; justify-content: space-between; align-items: center;padding: 0;">
-            </ul>
-            </li>
+                style="list-style: none; display:flex; justify-content: space-between; align-items: center; padding: 0;">
             </ul>
         </div>
     </div>
 
     <div class="row" style="display: contents;">
-        <div class="col-lg-6" style="max-width: 100%;">
+        <div class="col-lg-12" style="max-width: 100%;">
             <div class="card">
                 <div class="card-body">
                     <div class="d-flex align-items">
                         <h5 class="card-title">Danh sách sản phẩm</h5>
                         <span class="d-inline-block ml-3" tabindex="0" data-toggle="tooltip" title="Thùng rác của bạn">
                             <a href="/scorefile/trash">
-                                <ion-icon name="trash-outline">
-                                </ion-icon>
+                                <ion-icon name="trash-outline"></ion-icon>
                             </a>
                         </span>
                     </div>
@@ -27,48 +58,42 @@
                         style="font-size: 13px">
                         <thead>
                             <tr>
-                                <th>Ảnh</th>
-                                <th>
-
-                                    Sản phẩm</th>
-                                <th>Nhóm sản phẩm</th>
-                                <th>Tổng điểm</th>
-                                <th>Xếp hạng</th>
-                                <th>Ngày chấm</th>
-                                <th>Trạng thái</th>
-                                <th>Actions</th>
+                                <th scope="col" class="col-image">Ảnh</th>
+                                <th scope="col">Sản phẩm</th>
+                                <th scope="col" class="col-productGroup" style="text-wrap: wrap;">Nhóm sản phẩm</th>
+                                <th scope="col" class="totalScoreStyle" style="text-wrap: wrap;">Tổng điểm</th>
+                                <th scope="col">Xếp hạng</th>
+                                <th scope="col" class="col-dateScore">Ngày chấm</th>
+                                <th scope="col" class="col-Status">Trạng thái</th>
+                                <th scope="col" class="dropDownResults"></th>
+                                <th scope="col" class="actions" style="text-wrap: wrap;">Actions</th>
                             </tr>
-
                         </thead>
                         <tbody>
                             {{#each ScoreFile}}
-                            <tr>
-                                <td>
+                            <tr class="tr-{{this._id}}">
+                                <th scope="row" class="col-image">
                                     <div class="approved">
                                         <img src="{{this.product_avatar}}" alt=""
                                             style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;">
                                     </div>
-                                </td>
+                                </th>
                                 <td>
                                     <ul style="list-style-type: none; font-weight: 600; padding: 0;">
-                                        <!-- name product -->
-                                        <li style="font-size: 14px; color: rgb(236, 236, 118);" data-toggle="modal"
-                                            data-target="#exampleModal">
+                                        <li style="font-size: 13px; color: rgb(236, 236, 118);text-wrap: wrap;"
+                                            data-toggle="modal" data-target="#exampleModal">
                                             {{this.product_name}}
                                         </li>
-                                        <p class="text-overhidden"
-                                            style="color: #B5B5C3; font-size: 13px; text-wrap: wrap;"
+                                        <p style="color: #B5B5C3; font-size: 13px; text-wrap: wrap;"
                                             class="nameProduct">
                                             Chủ thể: {{toUpperCase this.customer_name}}
                                         </p>
                                     </ul>
                                 </td>
-                                <!-- product group -->
-                                <td style="text-wrap: wrap;">
-                                    <p class="text-overhidden">Nhóm 19: {{this.productgroup_name}}</p>
+                                <td style="text-wrap: wrap;" class="col-productGroup">
+                                    <p class="">Nhóm 19: {{this.productgroup_name}}</p>
                                 </td>
-                                <!-- tong diem -->
-                                <td>
+                                <td class="totalScoreStyle">
                                     {{#ifCond this.ScoreTotal 0}}
                                     {{else}}
                                     <p style="font-weight: 600; text-align: center; color: rgb(236, 236, 118)">
@@ -76,108 +101,101 @@
                                     </p>
                                     {{/ifCond}}
                                 </td>
-                                <!-- so sao -->
-                                <td>
+                                <td class="text-center">
                                     {{#repeat this.RankOcop}}
                                     <ion-icon name="star"></ion-icon>
                                     {{/repeat}}
+                                    {{#if RankOcop}}
+                                    <p style="color: #B5B5C3;font-weight: 600px;">{{this.RankOcop}} sao</p>
+                                    {{/if}}
                                 </td>
-                                <!-- Ngay cham -->
-                                <td>
+                                <td class="col-dateScore text-center">
                                     {{#if this.formattedScoreDate}}
                                     {{this.formattedScoreDate}}
                                     {{/if}}
                                 </td>
-                                <!-- Trang thai -->
-                                <td>
+                                <td class="col-Status">
                                     {{#ifCond this.Status 0}}
                                     <p class="statusLabelDanger">Chưa chấm</p>
                                     {{/ifCond}}
                                     {{#ifCond this.Status 1}}
-                                    <p class="statusLabelSuccess">Đã chấm</p>
+                                    <p class="statusLabelWarning">Đã chấm</p>
                                     {{/ifCond}}
                                     {{#ifCond this.Status 2}}
                                     <p class="statusLabelSuccess">Đã nộp phiếu</p>
                                     {{/ifCond}}
                                 </td>
+                                <td class="dropDownResults">
+                                    <ion-icon name="add-circle-outline"
+                                        onclick="handleDropDownResults('{{this._id}}','{{this.formattedScoreDate}}','{{this.Status}}')"></ion-icon>
+                                </td>
+                                {{!-- box icons --}}
                                 <td>
-                                    <!-- Toán tử or nếu user là admin và user._id === với charman thì cho xem kết quả hội đồng -->
-                                    {{#ifCondOr ../User.RoleId 1 ../User._id this.scorecommittee_employeeId}}
-                                    <!-- icon xem ket qua hoi dong -->
-                                    <button
-                                        onclick="handleResultScoreFiles('{{this.ScoreCommitee_id}}','{{this.Product_id}}')"
-                                        style="background: transparent; border: none;" class="d-inline-block"
-                                        tabindex="0" data-toggle="tooltip" title="Xem kết quả hội đồng">
-                                        <ion-icon name="receipt-outline" data-toggle="modal"
-                                            data-target="#modalResultsScoreFile{{this._id}}"></ion-icon>
-                                    </button>
-                                    {{> modalResultScoreFile id=this._id}}
-                                    {{/ifCondOr}}
-                                    {{#ifCondNot ../User.RoleId 1}}
-                                    <!-- Neu User ma co trong hoi dong thi moi cho cham diem -->
-                                    <!-- icon cham diem -->
-                                    {{#ifCondAnd this.Status 0 this.IsActive 1}}
-                                    <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Chấm điểm">
-                                        <div class="box_icon-isCommittee">
+                                    <div class="box-icons">
+                                        {{#ifCondOr ../User.RoleId 1 ../User._id this.scorecommittee_employeeId}}
+                                        <button
+                                            onclick="handleResultScoreFiles('{{this.ScoreCommitee_id}}','{{this.Product_id}}')"
+                                            style="background: transparent; border: none;" class="d-inline-block"
+                                            tabindex="0" data-toggle="tooltip" title="Xem kết quả hội đồng">
+                                            <ion-icon name="receipt-outline" data-toggle="modal"
+                                                data-target="#modalResultsScoreFile{{this._id}}"></ion-icon>
+                                        </button>
+                                        {{> modalResultScoreFile id=this._id}}
+                                        {{/ifCondOr}}
+                                        {{#ifCondNot ../User.RoleId 1}}
+                                        {{#ifCondAnd this.Status 0 this.IsActive 1}}
+                                        <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
+                                            title="Chấm điểm">
+                                            <div class="box_icon-isCommittee">
+                                                <a style="text-decoration: none;"
+                                                    href="/scoreFile/createScoreFile?productId={{this.Product_id}}&productgroupId={{this.productgroup_id}}&scoreCommitteeId={{this.ScoreCommitee_id}}&_id={{this._id}}">
+                                                    <ion-icon name="ribbon-outline"></ion-icon>
+                                                </a>
+                                            </div>
+                                        </span>
+                                        {{/ifCondAnd}}
+                                        {{#ifCond this.Status 1}}
+                                        <button style="background: transparent; border: none;" class="d-inline-block"
+                                            tabindex="0" data-toggle="tooltip" title="Xác nhận"
+                                            onclick="handleUpdateStatus('{{this._id}}')">
+                                            <ion-icon name="checkbox-outline"></ion-icon>
+                                        </button>
+                                        <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
+                                            title="Chỉnh sửa">
                                             <a style="text-decoration: none;"
-                                                href="/scoreFile/createScoreFile?productId={{this.Product_id}}&productgroupId={{this.productgroup_id}}&scoreCommitteeId={{this.ScoreCommitee_id}}&_id={{this._id}}">
-                                                <ion-icon name="ribbon-outline"></ion-icon>
+                                                href="/scoreFile/updateScoreFile?productId={{this.Product_id}}&productgroupId={{this.productgroup_id}}&ScoreFile_id={{this._id}}">
+                                                <ion-icon name="create-outline"></ion-icon>
                                             </a>
-                                        </div>
-                                    </span>
-                                    {{/ifCondAnd}}
-
-                                    <!-- Neu da cham thi hien icon xac nhan va chinh sua-->
-                                    {{#ifCond this.Status 1}}
-                                    <!-- icon xac nhan-->
-                                    <button style="background: transparent; border: none;" class="d-inline-block"
-                                        tabindex="0" data-toggle="tooltip" title="Xác nhận"
-                                        onclick="handleUpdateStatus('{{this._id}}')">
-                                        <ion-icon name="checkbox-outline"></ion-icon>
-                                    </button>
-                                    <!-- icon chinh sua -->
-                                    <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Chỉnh sửa">
-                                        <a style="text-decoration: none;"
-                                            href="/scoreFile/updateScoreFile?productId={{this.Product_id}}&productgroupId={{this.productgroup_id}}&ScoreFile_id={{this._id}}">
-                                            <ion-icon name="create-outline"></ion-icon>
-                                        </a>
-                                    </span>
-                                    {{/ifCond}}
-
-                                    <!-- Nếu status = 2 thì có thể xem phiếu chấm của họ -->
-                                    {{#ifCond this.Status 2}}
-                                    <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
-                                        title="Xem chi tiết">
-                                        <a
-                                            href="/scoreFile/reviewPage?productId={{this.Product_id}}&ScoreFile_id={{this._id}}">
-                                            <ion-icon name="eye-outline"></ion-icon>
-                                        </a>
-                                    </span>
-                                    {{/ifCond}}
-
-                                    {{#ifCond this.Status 1}}
-                                    <!-- icon xoa-->
-                                    <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
-                                        title="Chuyển vào thùng rác">
-                                        <ion-icon style="" class="icon_moveToTrash" name="trash-outline"
-                                            data-id="{{this._id}}"></ion-icon>
-                                    </span>
-                                    {{/ifCond}}
-                                    {{/ifCondNot}}
+                                        </span>
+                                        {{/ifCond}}
+                                        {{#ifCond this.Status 2}}
+                                        <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
+                                            title="Xem chi tiết">
+                                            <a
+                                                href="/scoreFile/reviewPage?productId={{this.Product_id}}&ScoreFile_id={{this._id}}">
+                                                <ion-icon name="eye-outline"></ion-icon>
+                                            </a>
+                                        </span>
+                                        {{/ifCond}}
+                                        {{#ifCond this.Status 1}}
+                                        <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
+                                            title="Chuyển vào thùng rác">
+                                            <ion-icon style="" class="icon_moveToTrash" name="trash-outline"
+                                                data-id="{{this._id}}"></ion-icon>
+                                        </span>
+                                        {{/ifCond}}
+                                        {{/ifCondNot}}
+                                    </div>
                                 </td>
                             </tr>
                             {{/each}}
                         </tbody>
-
                     </table>
-                    <!-- table -->
-                    {{!-- {{> modalMarkPage}} --}}
-                    <!-- table -->
                 </div>
             </div>
-        </div><!--End Row-->
+        </div>
     </div>
-</div><!--End content-wrapper-->
+</div>
 {{> footer}}
 <script src=" https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="/assets/js/custom.js"></script>
@@ -295,4 +313,11 @@
     }
 
 
+</script>
+{{!-- dropdown --}}
+<script>
+    const dropDownResults = document.querySelector(".dropDownResults")
+    function handleDropDownResults(idScoreFile, data, status) {
+
+    }
 </script>

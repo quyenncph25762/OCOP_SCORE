@@ -7,9 +7,29 @@ $(function () {
   $.sidebarMenu($('.sidebar-menu'));
 
   // === toggle-menu js
-  $(".toggle-menu").on("click", function (e) {
-    e.preventDefault();
-    $("#wrapper").toggleClass("toggled");
+  $(document).ready(function () {
+    function checkScreenSize() {
+      var windowWidth = $(window).width();
+      if (windowWidth >= 768 && windowWidth <= 1180) {
+        $("#wrapper").addClass("toggled");
+      } else {
+        $("#wrapper").removeClass("toggled");
+      }
+    }
+
+    // Check screen size on page load
+    checkScreenSize();
+
+    // Check screen size on window resize
+    $(window).resize(function () {
+      checkScreenSize();
+    });
+
+    // Toggle the toggled class on button click
+    $(".toggle-menu").on("click", function (e) {
+      e.preventDefault();
+      $("#wrapper").toggleClass("toggled");
+    });
   });
 
   // === sidebar menu activation js

@@ -56,9 +56,20 @@
     </div>
 
     <div class="row">
-      <div class="col-12 col-lg-8 col-xl-8">
+      <div class="col-6 col-lg-8 col-xl-8">
         <div class="card">
-          <div class="card-header">Biểu đồ tổng lượng sản phẩm ocop theo hạng sao
+          {{!-- <div class="d-flex align-items-center card-header">
+            <div class="">Biểu đồ tổng lượng sản phẩm ocop theo hạng sao
+            </div>
+            <label class="col-form-label text-right col-lg-3 col-sm-12">Năm:</label>
+            <div class="col-lg-4 col-md-9 col-sm-12">
+              <select class="form-control js-example-basic-single" id="selectYear" onchange="HandleClick()"
+                data-DistrictId="{{User.DistrictId}}">
+                {{#each YearReview}}
+                <option value="{{this._id}}" data-YearId="{{this._id}}">{{this.yearName}}</option>
+                {{/each}}
+              </select>
+            </div>
           </div>
           <div class="card-body">
             <ul class="list-inline">
@@ -69,7 +80,7 @@
             <div class="chart-container-1">
               <canvas id="chart1"></canvas>
             </div>
-          </div>
+          </div> --}}
 
           <div class="row m-0 row-group text-center border-top border-light-3">
             <div class="col-12 col-lg-6">
@@ -91,11 +102,54 @@
               </div>
             </div>
           </div>
-
         </div>
+        <div class="row">
+          <div class="col-12 col-lg-12">
+            <div class="card">
+              <div class="card-header">Số liệu theo Quận/Huyện
+              </div>
+              <div class="table-responsive">
+                <table class="table align-items-center table-flush table-borderless">
+                  <thead>
+                    <tr>
+                      <th>Quận/Huyện</th>
+                      <th>1 sao</th>
+                      <th>2 sao</th>
+                      <th>3 sao</th>
+                      <th>4 sao</th>
+                      <th>5 sao</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {{#each productByDistrict}}
+                    <tr>
+                      <td>{{this.Name}}</td>
+                      <td>
+                        <strong>{{this.RankOcop_1}}</strong>
+                      </td>
+                      <td>
+                        <strong>{{this.RankOcop_2}}</strong>
+                      </td>
+                      <td>
+                        <strong>{{this.RankOcop_3}}</strong>
+                      </td>
+                      <td>
+                        <strong>{{this.RankOcop_4}}</strong>
+                      </td>
+                      <td>
+                        <strong>{{this.RankOcop_5}}</strong>
+                      </td>
+                    </tr>
+                    {{/each}}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div><!--End Row-->
       </div>
 
-      <div class="col-12 col-lg-4 col-xl-4">
+      <div class="col-6 col-lg-4 col-xl-4">
         <div class="card">
           <div class="card-header">Biểu đồ tỷ lệ sản phẩm ocop theo vùng
           </div>
@@ -104,7 +158,7 @@
               <canvas id="chart2"></canvas>
             </div>
           </div>
-          <div class="table-responsive" style="max-height: 187px; overflow-y: auto;">
+          <div class="table-responsive" style="max-height: 295px; overflow-y: auto;">
             <table class="table align-items-center">
               <tbody>
                 {{#each rateProductOcopByDistrict}}
@@ -120,50 +174,7 @@
       </div>
     </div><!--End Row-->
 
-    <div class="row">
-      <div class="col-12 col-lg-12">
-        <div class="card">
-          <div class="card-header">Số liệu theo Quận/Huyện
-          </div>
-          <div class="table-responsive">
-            <table class="table align-items-center table-flush table-borderless">
-              <thead>
-                <tr>
-                  <th>Quận/Huyện</th>
-                  <th>1 sao</th>
-                  <th>2 sao</th>
-                  <th>3 sao</th>
-                  <th>4 sao</th>
-                  <th>5 sao</th>
-                </tr>
-              </thead>
-              <tbody>
-                {{#each productByDistrict}}
-                <tr>
-                  <td>{{this.Name}}</td>
-                  <td>
-                    <strong>{{this.RankOcop_1}}</strong>
-                  </td>
-                  <td>
-                    <strong>{{this.RankOcop_2}}</strong>
-                  </td>
-                  <td>
-                    <strong>{{this.RankOcop_3}}</strong>
-                  </td>
-                  <td>
-                    <strong>{{this.RankOcop_4}}</strong>
-                  </td>
-                  <td>
-                    <strong>{{this.RankOcop_5}}</strong>
-                  </td>
-                </tr>
-                {{/each}}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </div><!--End Row-->
+
   </div>
   <!-- End container-fluid-->
 </div>

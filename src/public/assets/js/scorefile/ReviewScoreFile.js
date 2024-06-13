@@ -197,7 +197,7 @@ async function handleAddScoreFile(userId, scoreFileId, ScoreCommitee_id, product
     }
     // sau khi update scorefile xong thực hiện thếm scorefile detail
     if (listScoreFile.length > 0) {
-        const arrResponse = []
+        const items = []
         for (const scorefile of listScoreFile) {
             const { ScoreTempDetail_id, Score } = scorefile
             const formScoreFile = {
@@ -206,22 +206,22 @@ async function handleAddScoreFile(userId, scoreFileId, ScoreCommitee_id, product
                 Score: Score,
                 CreatorUser_id: userId
             }
-            const response = await fetch(`/scoreFileDetail/add`, {
-                method: "POST",
-                body: JSON.stringify(formScoreFile),
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            })
-            if (!response.ok) {
-                console.log("Lỗi khi thêm scoreFileDetail")
-                return
-            }
-            arrResponse.push(response)
-        }
+            items.push(formScoreFile)
 
-        if (arrResponse.length > 0) {
-            await Promise.all(arrResponse)
+        }
+        console.log(items)
+        const response = await fetch(`/scoreFileDetail/add`, {
+            method: "POST",
+            body: JSON.stringify(items),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+        if (!response.ok) {
+            console.log("Lỗi khi thêm scoreFileDetail")
+            return
+        }
+        if (response.ok) {
             localStorage.setItem('toast', JSON.stringify({
                 position: "top-right",
                 heading: 'SUCCESS',

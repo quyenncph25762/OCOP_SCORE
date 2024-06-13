@@ -114,6 +114,41 @@ GROUP BY
                 return resolve(result);
             });
         });
+    },
+
+    // getProductOcopByYear
+    getProductOcopByYear(yearId, DistrictId) {
+        return new Promise((resolve, reject) => {
+            const query = `
+                SELECT 
+    p._id AS productId,
+    y.yearName AS yearProduct,
+    DATE_FORMAT(s.CreationTime, '%m') AS monthOcop,
+    SUM(CASE WHEN p.RankOcop = 1 THEN 1 ELSE 0 END) AS RankOcop_1,
+    SUM(CASE WHEN p.RankOcop = 2 THEN 1 ELSE 0 END) AS RankOcop_2,
+    SUM(CASE WHEN p.RankOcop = 3 THEN 1 ELSE 0 END) AS RankOcop_3,
+    SUM(CASE WHEN p.RankOcop = 4 THEN 1 ELSE 0 END) AS RankOcop_4,
+    SUM(CASE WHEN p.RankOcop = 5 THEN 1 ELSE 0 END) AS RankOcop_5
+FROM 
+    product p 
+LEFT JOIN 
+    yearreview y ON y._id = p.ProductYearId 
+LEFT JOIN
+    scorefile s ON s.Product_id = p._id
+WHERE 
+    p.RankOcop > 2 
+    AND p.DistrictId = ${DistrictId} AND p.ProductYearId = ${yearId}
+GROUP BY
+    p._id , p.ProductYearId , DATE_FORMAT(s.CreationTime, '%m')
+
+            `
+            connection.query(query, (err, data) => {
+                if (err) {
+                    return reject(err)
+                }
+                return resolve(data)
+            })
+        })
     }
 }
 module.exports = StatisticalProductByDistrictModel

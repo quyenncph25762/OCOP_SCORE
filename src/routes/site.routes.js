@@ -6,5 +6,6 @@ const checkoutToken = require('../app/Middleware/checkoutToken');
 // router.use('/search', siteController.search);
 router.get('/', siteController.home);
 router.get("/percentProductByDistrict", siteController.percentProductByDistrict)
+router.get("/productOcopByYearAndDistrictId/:year/:districtId", siteController.productOcopByYearAndDistrictId)
 
 module.exports = router;

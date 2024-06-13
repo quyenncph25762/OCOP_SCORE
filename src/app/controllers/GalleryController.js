@@ -12,7 +12,6 @@ class GalleryController {
         })
     }
     create(req, res) {
-        console.log(req.file)
         GalleryModel.createGallery({
             productDetail_id: req.body.productDetail_id,
             imgUrl: req.file.path,

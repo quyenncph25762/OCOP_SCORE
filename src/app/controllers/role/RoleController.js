@@ -75,7 +75,6 @@ class ProductGroupControllers {
     }
     // them
     create(req, res, next) {
-        console.log(req.body)
         RoleModel.findRoleAdd(req.body.title, (err, data) => {
             if (err) {
                 console.log('Lỗi truy vấn', err);

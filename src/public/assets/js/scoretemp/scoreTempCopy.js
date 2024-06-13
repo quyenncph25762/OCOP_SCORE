@@ -24,7 +24,7 @@ async function handleCoppy(idScoreTemp, userId) {
     const ScoreTempId = responseJson?.data?._id
 
     const listScoreDetail = await listScoreDetailByScoreTempId(idScoreTemp)
-    const arrRes = []
+    const items = []
     for (const scoreDetail of listScoreDetail) {
         const { Name, IsScore, MaxScore, ValidatedRank, ProductDetailId, Note } = scoreDetail
         const formScoreDetail = {
@@ -36,18 +36,19 @@ async function handleCoppy(idScoreTemp, userId) {
             ProductDetailId: ProductDetailId,
             Note: Note
         }
-        const response = await fetch("/scoreTempDetail/add", {
-            method: "POST",
-            body: JSON.stringify(formScoreDetail),
-            headers: {
-                "Content-Type": "application/json"
-            }
-        })
-        if (response.ok) {
-            arrRes.push(response)
-        }
+        items.push(formScoreDetail)
     }
-    await Promise.all(arrRes)
+    const response = await fetch("/scoreTempDetail/add", {
+        method: "POST",
+        body: JSON.stringify(items),
+        headers: {
+            "Content-Type": "application/json"
+        }
+    })
+    if (!response.ok) {
+        console.log("Có lỗi xảy ra khi thêm scoretempDetail")
+        return
+    }
     hideLoading();
     localStorage.setItem('toast', JSON.stringify({
         position: "top-right",

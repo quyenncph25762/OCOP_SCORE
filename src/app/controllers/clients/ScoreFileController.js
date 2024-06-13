@@ -276,19 +276,14 @@ class ScoreFileController {
     // action cap nhat
     update(req, res) {
         const id = req.params.id
-        const { RankOcop, ScoreTotal, Product_id } = req.body
-        const product = { RankOcop, ScoreTotal, Product_id }
-        // update RankOcop Product
-        ProductModel.updateRankOcopProduct(product.Product_id, product, (err, result) => {
-            ScoreFileModel.update(id, req.body, (err, results) => {
-                if (err) {
-                    return res.status(500).json({
-                        message: err
-                    })
-                }
-                return res.status(203).json({
-                    message: "Cập nhật thành công"
+        ScoreFileModel.update(id, req.body, (err, results) => {
+            if (err) {
+                return res.status(500).json({
+                    message: err
                 })
+            }
+            return res.status(203).json({
+                message: "Cập nhật thành công"
             })
         })
     }

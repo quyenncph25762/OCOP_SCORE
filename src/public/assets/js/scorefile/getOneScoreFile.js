@@ -48,41 +48,31 @@ async function getOneScoreTemp(code, productId, productgroupId) {
         })
         const listProductDetail = await responseProductDetailByProduct.json()
         // goi scoretemp theo nhom san pham
-        const response = await fetch(`/scoretemp/byProductGroupId/${productgroupId}`, {
-            method: "GET"
-        })
-        if (!response.ok) {
-            alert("Có lỗi không mong muốn , xin vui lòng thử lại")
-            return
-        }
-        const getOneScoreTemp = await response.json()
+
+        const getOneScoreTemp = await getScoreTempByProductGroup(productgroupId)
         if (getOneScoreTemp) {
             // lay ra id cua scoreTemp
             const scoreTempId = getOneScoreTemp._id
-            // hien thi nhung scoreTempDetail theo scoreTempId
-            const responseScoreDetail = await fetch(`/scoreTempDetail/scoreTemp/${scoreTempId}`, {
-                method: "GET"
-            })
-            if (!responseScoreDetail.ok) {
-                alert("Có lỗi không mong muốn!")
-            }
-            const ListScoreTempDetail = await responseScoreDetail.json()
+
+            const ListScoreTempDetail = await FuncGetScoreDetailByScoreTempId(scoreTempId)
             // tim den tbody cua scoreFile
             let tbodyScoreFile = document.getElementById("tbodyScoreFile")
             tbodyScoreFile.innerHTML = ""
             // tao ten checkbox mac dinh
             let checkBoxScoreName = "Score1"
             let checkboxScore = 1
+
             for (let i = 0; i < ListScoreTempDetail.length; i++) {
                 // kiem tra neu ma co attachFile thi name checkbox thay doi
                 if (ListScoreTempDetail[i].ProductDetailId) {
                     checkBoxScoreName = "Score" + checkboxScore
                     checkboxScore += 1
                 }
+                getList = JSON.stringify(ListScoreTempDetail[i])
                 tbodyScoreFile.innerHTML += `
                 <tr>
                 <input type="hidden" class="ScoreTemp_id" value=${getOneScoreTemp._id}>
-                <input type="hidden" class="ScoreTempDetail_id" value="${ListScoreTempDetail[i]._id}">
+                <input type="hidden" id="ScoreTempDetail${i}" value='${getList}'>
                 <input type="hidden" class="Score"></input>
                             ${ListScoreTempDetail[i].Name && !ListScoreTempDetail[i].IsScore ?
                         `
@@ -143,4 +133,30 @@ function repeatStar(number) {
     }
 
     return star
+}
+
+async function getScoreTempByProductGroup(idProductGroup) {
+    try {
+        const response = await fetch(`/scoretemp/byProductGroupId/${idProductGroup}`, {
+            method: "GET"
+        })
+        if (!response.ok) {
+            alert("Có lỗi không mong muốn , xin vui lòng thử lại")
+            return
+        }
+        return await response.json()
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+async function FuncGetScoreDetailByScoreTempId(scoreTempId) {
+    // hien thi nhung scoreTempDetail theo scoreTempId
+    const responseScoreDetail = await fetch(`/scoreTempDetail/scoreTemp/${scoreTempId}`, {
+        method: "GET"
+    })
+    if (!responseScoreDetail.ok) {
+        alert("Có lỗi không mong muốn!")
+    }
+    return await responseScoreDetail.json()
 }

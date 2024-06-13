@@ -30,10 +30,20 @@ const ProductDetailModel = {
         connection.query(query, [id], callback)
     },
     // 
-    createProductDetail: (productDetail, callback) => {
-        const query = `INSERT INTO product_detail (ProductDetail_Name,Code,Product_id) VALUES (?,?,?)`
-        const VALUES = [productDetail.ProductDetail_Name, productDetail.Code, productDetail.Product_id]
-        connection.query(query, VALUES, callback)
+    createProductDetail: (productDetail) => {
+        return new Promise((resolve, reject) => {
+            const query = `INSERT INTO product_detail (ProductDetail_Name,Code,Product_id) VALUES (?,?,?)`
+            const VALUES = [productDetail.ProductDetail_Name, productDetail.Code, productDetail.Product_id]
+            if (!connection) {
+                return reject(new Error("Database connection is not established"));
+            }
+            connection.query(query, VALUES, ((err, result) => {
+                if (err) {
+                    return reject(err)
+                }
+                return resolve(result)
+            }))
+        })
     },
 
 }

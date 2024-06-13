@@ -70,7 +70,9 @@ async function handleResultScoreFiles(idScoreCommittee, productId) {
                 ${AverageRankOcop ? repeatStar(Number(Math.floor(AverageRankOcop))) : 0}
                 </p>
                 </td>
-                <td></td>
+                <td>
+                <p style="text-align:center;font-weight: 600">${Number(Math.floor(AverageRankOcop)) > 2 ? "Đạt" : "Không đạt"}</p>
+                </td>
             </tr>
         `;
     }
@@ -97,7 +99,8 @@ async function handleResult(idProduct) {
 
                         const formProduct = {
                             RankOcop: Number(Math.floor(AverageRankOcop)),
-                            ScoreTotal: Number(AverageScore.toFixed(1))
+                            ScoreTotal: Number(AverageScore.toFixed(1)),
+                            IsPassed: 1
                         }
                         const response = await fetch(`/product-manage/updateRankOcop/${idProduct}`, {
                             method: "PATCH",

@@ -534,6 +534,7 @@ class ProductmanageController {
     }
     updateRankOcop(req, res) {
         const productId = req.params.id
+        console.log(req.body)
         ProductmanageModel.updateRankOcopProduct(productId, req.body, (err, result) => {
             if (err) {
                 console.log(err)
