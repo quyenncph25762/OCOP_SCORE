@@ -39,9 +39,7 @@ const ScoreTempDetail = {
             const query = `UPDATE scoretemp_detail SET Name = ? , ScoreTemp_id = ? , MaxScore = ? , ProductDetailId = ? , IsScore = ? , ValidatedRank = ? , Note = ? WHERE _id = ?`
             const VALUES = [ScoreTempDetail.Name, ScoreTempDetail.ScoreTemp_id, ScoreTempDetail.MaxScore, ScoreTempDetail.ProductDetailId, ScoreTempDetail.IsScore, ScoreTempDetail.ValidatedRank, ScoreTempDetail.Note, _id]
             if (!connection) {
-                if (!connection) {
-                    return reject(new Error("Database connection is not established"));
-                }
+                return reject(new Error("Database connection is not established"));
             }
             connection.query(query, VALUES, (err, result) => {
                 if (err) {

@@ -50,10 +50,20 @@ const ScoreDetailModel = {
     //     const VALUES = [scoreFileDetail.CreatorUser_id, scoreFileDetail.ScoreTempDetail_id, scoreFileDetail.ScoreTempDetail_id, scoreFileDetail.ScoreFile_id, id]
     //     connection.query(query, VALUES, callback)
     // },
-    updateScoreFileDetailById: (id, ScoreFileDetail, callback) => {
-        const query = `UPDATE scorefile_detail SET Score = ? WHERE _id = ${id}`
-        const VALUES = [ScoreFileDetail.Score]
-        connection.query(query, VALUES, callback)
+    updateScoreFileDetailById: (ScoreFileDetail) => {
+        return new Promise((resolve, reject) => {
+            const query = `UPDATE scorefile_detail SET Score = ? WHERE _id = ${ScoreFileDetail.id}`
+            const VALUES = [ScoreFileDetail.Score]
+            if (!connection) {
+                return reject(new Error("Database connection is not established"));
+            }
+            connection.query(query, VALUES, (err, result) => {
+                if (err) {
+                    return reject(err)
+                }
+                return resolve(result)
+            })
+        })
     },
     // lay ra scorefileDetail da cham diem
     getScoreFileDetailScoreByScoreFile: (id, callback) => {
