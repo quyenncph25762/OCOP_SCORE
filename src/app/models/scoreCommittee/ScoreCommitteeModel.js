@@ -41,9 +41,20 @@ const ScoreCommitteeModel = {
         // const query = `SELECT * FROM scorecommittee WHERE IsDeleted = 0`
         connection.query(query, callback)
     },
-    getOne: (id, callback) => {
-        const query = `SELECT * FROM scorecommittee WHERE _id = ${id}`
-        connection.query(query, callback)
+    // lay 1 scorecommitt
+    getOneById: (id) => {
+        return new Promise((resolve, reject) => {
+            const query = `SELECT * FROM scorecommittee WHERE _id = ${id}`
+            if (!connection) {
+                return reject(new Error("Database connection is not established"));
+            }
+            connection.query(query, (err, result) => {
+                if (err) {
+                    return reject(err)
+                }
+                return resolve(result)
+            })
+        })
     },
     // tao moi
     create: (scoreCommittee, callback) => {
@@ -69,6 +80,21 @@ const ScoreCommitteeModel = {
         const VALUES = [scoreCommittee.IsDefault]
         connection.query(query, VALUES, callback)
     },
+    // cap nhat Active
+    updateIsActive: (id, scoreCommittee) => {
+        return new Promise((resolve, reject) => {
+            const query = `UPDATE scoreCommittee SET IsActive = ${scoreCommittee.IsActive} WHERE _id = ${id}`
+            if (!connection) {
+                return reject(new Error("Database connection is not established"));
+            }
+            connection.query(query, (err, result) => {
+                if (err) {
+                    return reject(err)
+                }
+                return resolve(result)
+            })
+        })
+    },
     findScoreCommitteeUpdate(id, scoreCommittee, callback) {
         const query = `SELECT * FROM scorecommittee WHERE Name = ? AND _id !=${id}`
         const VALUES = [scoreCommittee.Name]
@@ -89,6 +115,7 @@ const ScoreCommitteeModel = {
         const query = `UPDATE scorecommittee SET IsDeleted = 0 WHERE _id = ${id}`
         connection.query(query, callback)
     },
+
 }
 
 module.exports = ScoreCommitteeModel

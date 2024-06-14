@@ -39,7 +39,7 @@ const ScoreFileModel = {
     `;
         connection.query(query, [idScoreCommitee], callback);
     },
-    // get scoreFileByScoreCommitee
+    // get scoreFileByScoreCommitee status = 2
     getScoreFileByScoreCommittee: (idScoreCommitee, callback) => {
         const query = `
         SELECT 
@@ -91,7 +91,8 @@ const ScoreFileModel = {
         DATE_FORMAT(scorefile.ScoreDate, '%Y-%m-%d') AS formattedScoreDate,
         scorecommittee._id AS scorecommitee_id,
         scorecommittee.Employee_id AS scorecommittee_employeeId,
-        scorecommittee.Name AS scorecommittee_name
+        scorecommittee.Name AS scorecommittee_name,
+        scorecommittee.IsActive AS scorecommittee_active
     FROM 
         scorefile
     LEFT JOIN 
@@ -204,9 +205,16 @@ const ScoreFileModel = {
         connection.query(query, callback)
     },
     // Xoa vinh vien
-    remove: (id, callback) => {
-        const query = `DELETE FROM scorefile WHERE _id = ${id}`
-        connection.query(query, callback)
+    remove: (id) => {
+        return new Promise((resolve, reject) => {
+            const query = `DELETE FROM scorefile WHERE _id = ${id}`
+            connection.query(query, (err, result) => {
+                if (err) {
+                    return reject(err)
+                }
+                return resolve(result)
+            })
+        })
     },
     // Khoi phuc
     revert: (id, callback) => {

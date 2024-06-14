@@ -62,6 +62,17 @@ class ScoreCommitteController {
             })
         }
     }
+    // getOneScoreCommitt
+    getOne = async (req, res) => {
+        const idSocreCommitte = req.params.id
+        const ScoreCommittee = await ScoreCommitteeModel.getOneById(idSocreCommitte)
+        if (!ScoreCommittee) {
+            return res.status(204).json({
+                message: "Khong co scoreCommittee nao"
+            })
+        }
+        return res.status(200).json(ScoreCommittee[0])
+    }
     trashPage(req, res) {
         const cookie = req.cookies
         if (cookie?.User) {
@@ -134,29 +145,20 @@ class ScoreCommitteController {
                 ScoreCommitteeModel.create({
                     DistrictId: User[0]?.DistrictId,
                     ...req.body
-                }, (err, results) => {
+                }, async (err, results) => {
                     if (err) {
                         console.log(err)
                         return res.status(500).json({
                             message: err
                         })
                     }
-                    ScoreCommitteeModel.getOne(results.insertId, (err, data) => {
-                        if (err) {
-                            return res.status(500).json({
-                                message: err
-                            })
+                    const data = await ScoreCommitteeModel.getOneById(results.insertId)
+                    return res.status(201).json(
+                        {
+                            message: "Thêm thành công",
+                            ScoreCommittee: data[0]
                         }
-                        if (data.length > 0) {
-                            return res.status(201).json(
-                                {
-                                    message: "Thêm thành công",
-                                    ScoreCommittee: data[0]
-                                }
-                            )
-                        }
-                    })
-
+                    )
                 })
             })
         }
@@ -232,10 +234,10 @@ class ScoreCommitteController {
                             })
                         }
                         // lay ra listEmployee Id roi push vao mang listEmployeeId
-                        const employeesAdminId = employeesAdmin.map((employee) => employee._id)
-                        if (employeesAdminId.length > 0) {
-                            employeesAdminId.forEach((employeeId) => listEmployeeId.push(employeeId))
-                        }
+                        // const employeesAdminId = employeesAdmin.map((employee) => employee._id)
+                        // if (employeesAdminId.length > 0) {
+                        //     employeesAdminId.forEach((employeeId) => listEmployeeId.push(employeeId))
+                        // }
                         // loc scorefile nhung employee nao dang o trong scorecommitteeDetail
                         const dataFilter = Array.from(new Set(data.filter((item) => listEmployeeId.includes(item.forEmployeeId))))
                         // nhung scorefile nao k co trong scoreCommittee thi them scoreCommittee tranh truong hop get all scorefile status = 0
@@ -280,6 +282,44 @@ class ScoreCommitteController {
             })
         })
     }
+    // update IsActive
+    updateIsActive = async (req, res) => {
+        try {
+            const id = req.params.id
+            const cookie = req.cookies
+            if (cookie?.User) {
+                const UserDataCookie = jwt.verify(cookie.User, SECRET_CODE)
+                AccountModel.fetchOneUser(UserDataCookie?._id, (err, User) => {
+                    if (err) {
+                        return res.status(500).json({
+                            message: err
+                        })
+                    }
+                    ScoreFileModel.getScoreFileByScoreCommitteeAll(id, async (err, listScoreFile) => {
+                        if (err) {
+                            return console.log(err)
+                        }
+                        console.log(`listScoreFile:`, listScoreFile)
+                        // loc nhung employee = null va khac voi id cua nguoi tao ra hoi dong de xoa
+                        const listEmployeeFilter = listScoreFile.filter((scorefile) => !scorefile.Employee_id && scorefile.forEmployeeId != User[0]._id)
+                        console.log(`listEmployeeFilter:`, listEmployeeFilter)
+                        await listEmployeeFilter.forEach(async (scorefile) => {
+                            await ScoreFileModel.remove(scorefile._id)
+                        })
+                        // Cap nhat IsActive
+                        await ScoreCommitteeModel.updateIsActive(id, req.body)
+                        return res.status(203).json({
+                            message: "Cập nhật thành công"
+                        })
+                    })
+                })
+            }
+
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
 }
 
 module.exports = new ScoreCommitteController

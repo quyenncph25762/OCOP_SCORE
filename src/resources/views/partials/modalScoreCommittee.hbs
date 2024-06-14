@@ -120,7 +120,8 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Hủy bỏ</button>
-                <button type="button" onclick="handleUpdateScoreCommittee('{{this._id}}')" class="btn btn-warning">Lưu
+                <button type="button" onclick="handleUpdateScoreCommittee('{{this._id}}')" class="btn btn-warning"
+                    {{#ifCond IsActive 0}}disabled{{/ifCond}}>Lưu
                     thông
                     tin</button>
             </div>
@@ -460,7 +461,6 @@
         // SecEmployeeId
         let listSecEmployee_newMember = Array.from(document.querySelectorAll(".listSecEmployee_newMember")).map(e => e.value)
         listSecEmployee_newMember = listSecEmployee_newMember.map(Number)
-        console.log(listSecEmployee_newMember)
         const arrScoreCommitteeDetailAdd = []
         for (let i = 0; i < newMember.length; i++) {
             const form = {
@@ -471,17 +471,20 @@
                 UserId: newMember[i] === 0 ? null : newMember[i],
                 SecUserId: listSecEmployee_newMember[i] === null ? 0 : listSecEmployee_newMember[i]
             }
-            console.log(form)
-            const response = await fetch(`/scoreCommitteeDetail/add`, {
-                method: "POST",
-                body: JSON.stringify(form),
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            })
-            arrScoreCommitteeDetailAdd.push(response)
-        }
 
+            arrScoreCommitteeDetailAdd.push(form)
+        }
+        const response = await fetch(`/scoreCommitteeDetail/add`, {
+            method: "POST",
+            body: JSON.stringify(arrScoreCommitteeDetailAdd),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+        if (!response.ok) {
+            console.log("Lỗi khi thêm scorecommitteeDetail")
+            return
+        }
         //Chức năng lấy ra charMan
 
         // lay ra nhng scoreCommitteeDetail vua them

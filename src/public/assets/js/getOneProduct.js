@@ -40,7 +40,7 @@ const handleShowListCitationUpdate = async (id) => {
                 tbody.innerHTML += `
                 <tr>
                     <td style="">${i += 1}</td>
-                    <td style="padding: 12px">
+                    <td style="padding: 12px;text-wrap:wrap">
                         ${ProductDetail.ProductDetail_Name}
                     </td>
                     <td style="color: red;">

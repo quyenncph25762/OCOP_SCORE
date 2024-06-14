@@ -9,7 +9,7 @@ router.post("/add", CheckController.checkout('Category'), upload.single(), Produ
 router.get("/trash", CheckController.checkout('Category'), ProductGroupController.getAllProductGroupFromTrash)
 // remove to trash
 router.delete("/removeToTrash/:id", CheckController.checkout('Category'), ProductGroupController.removeToTrash)
-// delete
+// deleten
 router.delete("/remove/:id", CheckController.checkout('Category'), ProductGroupController.remove)
 // revert
 router.patch("/revert/:id", CheckController.checkout('Category'), ProductGroupController.revert)

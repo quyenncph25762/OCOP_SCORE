@@ -22,12 +22,7 @@ class WorkDepartmentController {
                     })
                 }
                 AccountModel.fetchOneUser(UserDataCookie?._id, (err, User) => {
-                    if (User?.[0].role_title.toLowerCase() !== "admin") {
-
-                        res.redirect("/client")
-                    } else {
-                        res.render("workDepartment/workDepartment", { workDepartment: workDepartment, User: User[0] })
-                    }
+                    res.render("workDepartment/workDepartment", { workDepartment: workDepartment, User: User[0] })
                 })
             })
         } else {
@@ -51,12 +46,7 @@ class WorkDepartmentController {
                     })
                 }
                 AccountModel.fetchOneUser(UserDataCookie?._id, (err, User) => {
-                    if (User?.[0].role_title.toLowerCase() !== "admin") {
-
-                        res.redirect("/client")
-                    } else {
-                        res.render("workDepartment/trash", { workDepartment: workDepartment, User: User[0] })
-                    }
+                    res.render("workDepartment/trash", { workDepartment: workDepartment, User: User[0] })
                 })
             })
         } else {

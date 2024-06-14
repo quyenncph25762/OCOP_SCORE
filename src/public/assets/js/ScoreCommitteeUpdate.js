@@ -130,35 +130,56 @@ const handleUpdateIsDefault = (id) => {
                     } catch (error) {
                         console.log(error)
                     }
+
+                    localStorage.setItem('toast', JSON.stringify({
+                        position: "top-right",
+                        heading: 'SUCCESS',
+                        text: 'Hôi đồng đã bắt đầu chấm điểm',
+                        icon: 'success',
+                        loader: true,
+                        loaderBg: '#9EC600',
+                        showHideTransition: 'slide',
+                        stack: 4
+                    }));
+                    window.location.reload()
+                }
+            },
+            cancel: function () {
+                $.alert('Đã hủy!');
+            }
+        }
+    });
+}
+const handleUpdateIsActive = (id) => {
+    $.confirm({
+        title: '<ion-icon name="help-circle-outline"></ion-icon>',
+        content: 'Hội đồng ngừng chấm vĩnh viễn ?',
+        buttons: {
+            confirm: {
+                text: 'Confirm',
+                btnClass: 'btn-blue',
+                action: async function () {
+                    // Gọi API cập nhật chấm điểm hội đồng isDefault = 1
                     try {
-                        // Lấy tất cả scoreCommitteeDetail theo scoreCommiteeId
-                        // const responseScoreDetail = await fetch(`/scoreCommitteeDetail/getByScoreCommittee/${id}`, {
-                        //     method: "GET"
-                        // })
-                        // if (!resScoreDetail.ok) {
-                        //     console.log("Loi xay ra khi get scoreCommitteeDetail")
-                        // }
-                        // const dataScoreDetail = await resScoreDetail.json()
-                        // Lấy scorefile chưa chấm điểm status = 0
-                        // const resScoreFile = await fetch(`/scoreFile/getScoreByStatus`, {
-                        //     method: "GET"
-                        // })
-                        // if (!resScoreFile.ok) {
-                        //     console.log("Loi xay ra khi get scorefile")
-                        // }
-                        // // thuc hien updateScoreFile
-                        // const listScoreFile = await resScoreFile.json()
-                        // for (const scoreFile of listScoreFile) {
-
-                        // }
-
+                        const res = await fetch(`/scoreCommittee/updateIsActive/${id}`, {
+                            method: 'PATCH',
+                            body: JSON.stringify({
+                                IsActive: 0
+                            }),
+                            headers: {
+                                "Content-Type": "application/json"
+                            }
+                        })
+                        if (!res.ok) {
+                            console.log("Cos loi xa ra khi cap nhat isActive committee")
+                        }
                     } catch (error) {
                         console.log(error)
                     }
                     localStorage.setItem('toast', JSON.stringify({
                         position: "top-right",
                         heading: 'SUCCESS',
-                        text: 'Hôi đồng đã bắt đầu chấm điểm',
+                        text: 'Đã ngừng chấm hội đồng',
                         icon: 'success',
                         loader: true,
                         loaderBg: '#9EC600',

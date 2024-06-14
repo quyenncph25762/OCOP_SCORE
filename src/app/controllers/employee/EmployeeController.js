@@ -51,6 +51,7 @@ class EmployeeControllers {
                                             message: err
                                         })
                                     }
+                                    // console.log(object)
                                     res.render("employee/employee", { Employee: Employee, WorkDepartMent: WorkDepartMent, WorkPosition: WorkPosition, Role: Role, User: User[0], District: district })
                                 })
                             })
@@ -129,7 +130,7 @@ class EmployeeControllers {
                         message: err
                     })
                 }
-                EmployeeModel.findEmployeeAdd(User[0].DistrictId, req.body, (err, data) => {
+                EmployeeModel.findEmployeeAdd(req.body, (err, data) => {
                     if (err) {
                         return res.status(500).json({
                             message: "Loi truy van"
@@ -233,7 +234,7 @@ class EmployeeControllers {
                         message: err
                     })
                 }
-                EmployeeModel.findEmployeeUpdate(id, req.body, User[0].DistrictId, (err, data) => {
+                EmployeeModel.findEmployeeUpdate(id, req.body, (err, data) => {
                     if (err) {
                         return res.status(500).json({
                             message: "Loi truy van"

@@ -27,12 +27,7 @@ class WorkPositionControllers {
                             message: "Lỗi"
                         })
                     }
-                    if (User?.[0].role_title.toLowerCase() !== "admin") {
-
-                        res.redirect("/client/welcome")
-                    } else {
-                        res.render("workPosition/workPosition", { workPosition: workPosition, User: User[0] })
-                    }
+                    res.render("workPosition/workPosition", { workPosition: workPosition, User: User[0] })
                 })
             })
         } else {
@@ -61,12 +56,7 @@ class WorkPositionControllers {
                             message: "Lỗi"
                         })
                     }
-                    if (User?.[0].role_title.toLowerCase() !== "admin") {
-
-                        res.redirect("/client/welcome")
-                    } else {
-                        res.render("workPosition/trash", { workPosition: workPosition, User: User[0] })
-                    }
+                    res.render("workPosition/trash", { workPosition: workPosition, User: User[0] })
                 })
             })
         } else {

@@ -10,7 +10,7 @@ $(function () {
   $(document).ready(function () {
     function checkScreenSize() {
       var windowWidth = $(window).width();
-      if (windowWidth >= 768 && windowWidth <= 1180) {
+      if (windowWidth >= 1 && windowWidth <= 1400) {
         $("#wrapper").addClass("toggled");
       } else {
         $("#wrapper").removeClass("toggled");

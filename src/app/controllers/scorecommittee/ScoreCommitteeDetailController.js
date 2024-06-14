@@ -13,23 +13,20 @@ class ScoreCommittDetailController {
             return res.status(200).json(data)
         })
     }
-    create(req, res) {
-        console.log(req.body)
-        ScoreCommitteeDetailModel.create(req.body, (err, results) => {
-            if (err) {
-                console.log(err)
-                return res.status(500).json({
-                    message: err
-                })
+    create = async (req, res) => {
+        try {
+            for (const data of req.body) {
+                await ScoreCommitteeDetailModel.create(data)
             }
             return res.status(201).json({
                 message: "Tạo mới thành công"
             })
-        })
+        } catch (error) {
+            console.log(error)
+        }
     }
     update(req, res) {
         const id = req.params.id
-        console.log(id)
         ScoreCommitteeDetailModel.update(id, req.body, (err, results) => {
             if (err) {
                 return res.status(500).json({

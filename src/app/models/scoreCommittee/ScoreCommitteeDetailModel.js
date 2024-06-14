@@ -26,10 +26,20 @@ const ScoreCommitteeDetailModel = {
         `;
         connection.query(query, [id], callback)
     },
-    create: (data, callback) => {
-        const query = `INSERT INTO scorecommittee_detail (ScoreCommittee_id,Employee_id,SecEmployee_id,UserId,SecUserId,CommitteeRole) VALUES (?,?,?,?,?,?)`
-        const VALUES = [data.ScoreCommittee_id, data.Employee_id, data.SecEmployee_id, data.UserId, data.SecUserId, data.CommitteeRole]
-        connection.query(query, VALUES, callback)
+    create: (data) => {
+        return new Promise((resolve, reject) => {
+            const query = `INSERT INTO scorecommittee_detail (ScoreCommittee_id,Employee_id,SecEmployee_id,UserId,SecUserId,CommitteeRole) VALUES (?,?,?,?,?,?)`
+            const VALUES = [data.ScoreCommittee_id, data.Employee_id, data.SecEmployee_id, data.UserId, data.SecUserId, data.CommitteeRole]
+            if (!connection) {
+                return reject(new Error("Database connection is not established"));
+            }
+            connection.query(query, VALUES, (err, result) => {
+                if (err) {
+                    return reject(err)
+                }
+                return resolve(result)
+            })
+        })
     },
     update: (id, data, callback) => {
         const query = `UPDATE scorecommittee_detail SET ScoreCommittee_id = ? , Employee_id = ? , SecEmployee_id = ? , UserId = ? , SecUserId = ? , CommitteeRole = ? WHERE _id = ?`
