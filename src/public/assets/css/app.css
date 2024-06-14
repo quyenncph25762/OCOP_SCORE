@@ -260,8 +260,14 @@ ion-icon[name="checkbox-outline"] {
     cursor: pointer;
 }
 
-ion-icon[name="newspaper-outline"] {
+ion-icon[name="bookmark-outline"] {
     color: rgb(48, 190, 150);
+    font-size: 20px;
+    cursor: pointer;
+}
+
+ion-icon[name="stop-circle-outline"] {
+    color: #fff;
     font-size: 20px;
     cursor: pointer;
 }

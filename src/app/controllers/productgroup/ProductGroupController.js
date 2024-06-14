@@ -34,11 +34,7 @@ class ProductGroupControllers {
                                 message: err
                             })
                         }
-                        if (User?.[0].role_title.toLowerCase() !== "admin") {
-                            res.redirect("/client")
-                        } else {
-                            res.render("productGroup/productGroup", { params: "Nhóm sản phẩm", subParams: "danh sách nhóm sản phẩm", ProductGroup: ProductGroup, Customer: Customer, User: User[0] })
-                        }
+                        res.render("productGroup/productGroup", { params: "Nhóm sản phẩm", subParams: "danh sách nhóm sản phẩm", ProductGroup: ProductGroup, Customer: Customer, User: User[0] })
                     })
                 })
             })
@@ -67,11 +63,7 @@ class ProductGroupControllers {
                             message: "Lỗi"
                         })
                     }
-                    if (User?.[0].role_title.toLowerCase() !== "admin") {
-                        res.redirect("/client")
-                    } else {
-                        res.render("productGroup/trash", { params: "Nhóm sản phẩm", subParams: "khôi phục nhóm sản phẩm", ProductGroup: ProductGroup, User: User[0] })
-                    }
+                    res.render("productGroup/trash", { params: "Nhóm sản phẩm", subParams: "khôi phục nhóm sản phẩm", ProductGroup: ProductGroup, User: User[0] })
                 })
             })
         }

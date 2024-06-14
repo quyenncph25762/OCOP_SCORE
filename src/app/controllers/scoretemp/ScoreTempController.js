@@ -18,18 +18,14 @@ class ScoreTempController {
                         message: "Lỗi truy vấn"
                     })
                 }
-                if (User?.[0].role_title.toLowerCase() !== "admin") {
-                    res.redirect("/client")
-                } else {
-                    ScoreTempModel.getAllScoreTemp((err, ScoreTemp) => {
-                        if (err) {
-                            return res.status(500).json({
-                                message: "Lỗi truy vấn"
-                            })
-                        }
-                        res.render("scoreTemp/scoreTemp", { User: User[0], ScoreTemp: ScoreTemp })
-                    })
-                }
+                ScoreTempModel.getAllScoreTemp((err, ScoreTemp) => {
+                    if (err) {
+                        return res.status(500).json({
+                            message: "Lỗi truy vấn"
+                        })
+                    }
+                    res.render("scoreTemp/scoreTemp", { User: User[0], ScoreTemp: ScoreTemp })
+                })
             })
         }
 
@@ -69,26 +65,21 @@ class ScoreTempController {
                         message: "Lỗi truy xuất"
                     })
                 }
-                if (User?.[0].role_title.toLowerCase() !== "admin") {
-
-                    res.redirect("/client")
-                } else {
-                    ProductGroupModel.fetchAllProductGroup((err, productGroup) => {
+                ProductGroupModel.fetchAllProductGroup((err, productGroup) => {
+                    if (err) {
+                        return res.status(400).json({
+                            message: err
+                        })
+                    }
+                    ProductDetailModel.getAllProductDetailLimit((err, ProductDetail) => {
                         if (err) {
-                            return res.status(400).json({
-                                message: err
+                            return res.status(500).json({
+                                message: "Lỗi truy vấn"
                             })
                         }
-                        ProductDetailModel.getAllProductDetailLimit((err, ProductDetail) => {
-                            if (err) {
-                                return res.status(500).json({
-                                    message: "Lỗi truy vấn"
-                                })
-                            }
-                            res.render("scoreTemp/add", { productGroup: productGroup, ProductDetail: ProductDetail, User: User[0] })
-                        })
+                        res.render("scoreTemp/add", { productGroup: productGroup, ProductDetail: ProductDetail, User: User[0] })
                     })
-                }
+                })
             })
         }
     }
@@ -171,7 +162,6 @@ class ScoreTempController {
                                             message: "Lỗi truy vấn"
                                         })
                                     }
-                                    console.log(ScoreTempDetail)
                                     res.render("scoreTemp/update", { ScoreTemp: data[0], productGroup: productGroup, ProductDetail: ProductDetail, ScoreTempDetail: ScoreTempDetail, ScoreTempTrash: ScoreTempTrash, User: User[0] })
                                 })
                             })
