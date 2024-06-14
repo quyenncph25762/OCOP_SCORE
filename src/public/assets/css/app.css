@@ -769,3 +769,6 @@ input.form-control.input-headerTable.w-100 {
         transform: scale(1, 1);
     }
 }
+.jstree-default .jstree-clicked{
+    background-color: transparent !important;
+}

@@ -171,7 +171,7 @@
                                 'data': data,
                                 'check_callback': true // allow new nodes to be added
                             }
-                        }).bind('loaded.jstree', function () {
+                        }).on('loaded.jstree', function () {
                             results.forEach(function (item) {
 
                                 $(`#tree${Id}`).jstree('select_node', item.NamePermission);
