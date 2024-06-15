@@ -183,7 +183,7 @@
                     buttons: {
                         confirm: {
                             text: 'Confirm',
-                            btnClass: 'btn-red',
+                            btnClass: 'btn-blue',
                             action: function () {
                                 // Lấy ID của mục cần xóa từ thuộc tính data-id của nút
                                 const id = event.target.dataset.id;
@@ -246,7 +246,7 @@
         //removeAll
         btnDeleteAll.addEventListener("click", async (e) => {
             $.confirm({
-                title: '<ion-icon name="help-circle-outline"></ion-icon>',
+                title: '<ion-icon name="trash-bin-outline"></ion-icon>',
                 content: 'Bạn muốn xóa mục đã chọn ?',
                 buttons: {
                     confirm: {
@@ -288,7 +288,7 @@
                 buttons: {
                     confirm: {
                         text: 'Confirm',
-                        btnClass: 'btn-red',
+                        btnClass: 'btn-blue',
                         action: async function () {
                             for (let btnCheck of btnsCheck) {
                                 if (btnCheck.checked) {
