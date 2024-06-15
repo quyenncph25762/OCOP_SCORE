@@ -16,13 +16,35 @@ const GalleryModel = {
         connection.query(query, [productDetailId], callback)
     },
     createGallery: (gallery, callback) => {
-        const query = `INSERT INTO gallerydetail (productDetail_id,imgUrl,imgName) VALUES (?,?,?)`
-        const VALUES = [gallery.productDetail_id, gallery.imgUrl, gallery.imgName]
+        return new Promise((resolve, reject) => {
+            const query = `INSERT INTO gallerydetail (productDetail_id,imgUrl,imgName) VALUES (?,?,?)`
+            const VALUES = [gallery.productDetail_id, gallery.imgUrl, gallery.imgName]
+            if (!connection) {
+                return reject(new Error("Database connection is not established"));
+            }
+            connection.query(query, VALUES, ((err, result) => {
+                if (err) {
+                    return reject(err)
+                }
+                return resolve(result)
+            }))
+        })
         connection.query(query, VALUES, callback)
     },
-    deleteProductDetail: (productDetailId, callback) => {
-        const query = `DELETE FROM gallerydetail WHERE _id = ?`
-        connection.query(query, productDetailId, callback)
+    deleteProductDetail: (productDetailId) => {
+        return new Promise((resolve, reject) => {
+            const query = `DELETE FROM gallerydetail WHERE _id = ${productDetailId}`
+            if (!connection) {
+                return reject(new Error("Database connection is not established"));
+            }
+            connection.query(query, ((err, result) => {
+                if (err) {
+                    return reject(err)
+                }
+                return resolve(result)
+            }))
+
+        })
     },
 
 }

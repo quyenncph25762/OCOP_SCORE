@@ -7,6 +7,7 @@ const storage = multer.diskStorage({
         cb(null, 'Uploads/'); // Thư mục lưu trữ tệp tạm thời
     },
     filename: function (req, file, cb) {
+        console.log(file)
         cb(null, file.fieldname + '-' + file.originalname);
     }
 });

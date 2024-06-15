@@ -80,19 +80,50 @@ const ProductmanageController = {
     },
 
     // delete to trash
-    deleteToTrashProduct: (product_id, userId, callback) => {
-        const query = `UPDATE product SET IsDeleted = 1 , DeleterUser_id = ${userId} , DeletionTime = CURRENT_TIMESTAMP  WHERE _id = ? `;
-        connection.query(query, [product_id], callback);
+    deleteToTrashProduct: (product_id, userId) => {
+        return new Promise((resolve, reject) => {
+            const query = `UPDATE product SET IsDeleted = 1 , DeleterUser_id = ${userId} , DeletionTime = CURRENT_TIMESTAMP  WHERE _id = ${product_id} `;
+            if (!connection) {
+                return reject(new Error("Database connection is not established"));
+            }
+            connection.query(query, ((err, result) => {
+                if (err) {
+                    return reject(err)
+                }
+                return resolve(result)
+            }))
+        })
     },
     // khoi phuc
-    revertProduct: (product_id, callback) => {
-        const query = 'UPDATE product SET IsDeleted = 0 WHERE _id = ?';
-        connection.query(query, [product_id], callback);
+    revertProduct: (product_id) => {
+        return new Promise((resolve, reject) => {
+            const query = `UPDATE product SET IsDeleted = 0 WHERE _id = ${product_id}`;
+            if (!connection) {
+                return reject(new Error("Database connection is not established"));
+            }
+            connection.query(query, ((err, result) => {
+                if (err) {
+                    return reject(err)
+                }
+                return resolve(result)
+            }))
+        })
     },
     // delete forever
-    destroyProduct: (id, callback) => {
-        const query = `DELETE FROM product WHERE _id = ?`
-        connection.query(query, id, callback)
+    destroyProduct: (id) => {
+        return new Promise((resolve, reject) => {
+            const query = `DELETE FROM product WHERE _id = ${id}`
+            if (!connection) {
+                return reject(new Error("Database connection is not established"));
+            }
+            connection.query(query, ((err, result) => {
+                if (err) {
+                    return reject(err)
+                }
+                return resolve(result)
+            }))
+        })
+
     },
     //getAllTrash
     getAllProductFromtTrash: (DistrictId, callback) => {

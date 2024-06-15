@@ -385,67 +385,126 @@ class ProductmanageController {
         })
     }
     // xoa vao thung rac
-    deleteToTrash(req, res, next) {
-        const product_id = req.params.id
-        const cookie = req.cookies
-        if (cookie?.User) {
-            const UserDataCookie = jwt.verify(cookie.User, SECRET_CODE)
-            AccountModel.fetchOneUser(UserDataCookie?._id, (err, User) => {
-                if (err) {
-                    return res.status(400).json({
-                        message: err
-                    })
-                }
-                ProductmanageModel.deleteToTrashProduct(product_id, User[0]._id, (err, results) => {
+    deleteToTrash = async (req, res, next) => {
+        try {
+            const product_id = req.params.id
+            const cookie = req.cookies
+            if (cookie?.User) {
+                const UserDataCookie = jwt.verify(cookie.User, SECRET_CODE)
+                AccountModel.fetchOneUser(UserDataCookie?._id, async (err, User) => {
                     if (err) {
-                        console.log('Lỗi truy vấn:', err);
-                        return res.status(500).send('Internal Server Error');
-                    } else {
-                        return res.status(204).send('Xoa thanh cong!');
+                        return res.status(400).json({
+                            message: err
+                        })
                     }
-                })
-            })
-        } else {
-            res.redirect("/auth/loginPage")
-        }
-
-    }
-    // khoi phuc
-    revert(req, res, next) {
-        const product_id = req.params.id
-        ProductmanageModel.revertProduct(product_id, (err, results) => {
-            if (err) {
-                console.error('Lỗi truy vấn:', err);
-                res.status(500).send('Internal Server Error');
-            } else {
-                if (results.affectedRows === 0) {
-                    res.status(404).send(' not found');
-                } else {
-                    res.redirect('back')
-                }
-            }
-        })
-    }
-    // xoa vinh vien
-    delete(req, res, next) {
-        const product_id = req.params.id
-        ProductmanageModel.destroyProduct(product_id, (err, results) => {
-            if (err) {
-                console.error('Lỗi truy vấn:', err);
-                return res.status(500).send('Internal Server Error');
-            } else {
-                if (results.affectedRows === 0) {
-                    return res.status(404).send(' not found');
-                } else {
+                    await ProductmanageModel.deleteToTrashProduct(product_id, User[0]._id)
                     return res.status(203).json({
                         message: "Xóa thành công"
                     })
-                }
+                })
+            } else {
+                res.redirect("/auth/loginPage")
             }
-        })
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
+    // 
+    deleteToTrashAll = async (req, res) => {
+        try {
+            if (req.body.length > 0) {
+
+                const cookie = req.cookies
+                if (cookie?.User) {
+                    const UserDataCookie = jwt.verify(cookie.User, SECRET_CODE)
+                    AccountModel.fetchOneUser(UserDataCookie?._id, async (err, User) => {
+                        if (err) {
+                            return res.status(400).json({
+                                message: err
+                            })
+                        }
+                        for (const id of req.body) {
+                            await ProductmanageModel.deleteToTrashProduct(id, User[0]._id)
+                        }
+                        return res.status(203).json({
+                            message: "Xóa thành công"
+                        })
+                    })
+                }
+            } else {
+                return res.status(500).json({
+                    message: "Khong co id nao"
+                })
+            }
+        } catch (error) {
+            console.log(error)
+        }
     }
 
+    // xoa vinh vien
+    delete = async (req, res) => {
+        try {
+            const product_id = req.params.id
+            await ProductmanageModel.destroyProduct(product_id)
+            return res.status(203).json({
+                message: "Xoa thanh cong"
+            })
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    // xoa nhieu
+    deleteAll = async (req, res) => {
+        try {
+            if (req.body.length > 0) {
+                for (const id of req.body) {
+                    await ProductmanageModel.destroyProduct(id)
+                }
+                return res.status(500).json({
+                    message: "Xóa thành công"
+                })
+            } else {
+                return res.status(500).json({
+                    message: "Khong co id nao"
+                })
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
+    // khoi phuc
+    revert = async (req, res, next) => {
+        try {
+            const product_id = req.params.id
+            await ProductmanageModel.revertProduct(product_id)
+            return res.status(205).json({
+                message: "Đã khôi phục lại dữ liệu"
+            })
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    // Khoi phuc nhieu
+    revertAll = async (req, res, next) => {
+        try {
+            if (req.body.length > 0) {
+                for (const id of req.body) {
+                    await ProductmanageModel.revertProduct(id)
+                }
+                return res.status(205).json({
+                    message: "Đã khôi phục lại dữ liệu"
+                })
+            } else {
+                return res.status(500).json({
+                    message: "Khong co id nao"
+                })
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
     // update product
     update(req, res) {
         const product_id = req.params.id

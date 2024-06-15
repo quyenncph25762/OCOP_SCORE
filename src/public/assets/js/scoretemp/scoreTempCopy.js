@@ -38,17 +38,9 @@ async function handleCoppy(idScoreTemp, userId) {
         }
         items.push(formScoreDetail)
     }
-    const response = await fetch("/scoreTempDetail/add", {
-        method: "POST",
-        body: JSON.stringify(items),
-        headers: {
-            "Content-Type": "application/json"
-        }
-    })
-    if (!response.ok) {
-        console.log("Có lỗi xảy ra khi thêm scoretempDetail")
-        return
-    }
+    // Thuc hien them scoredetail
+    await funcScoreDetailAdd(items)
+
     hideLoading();
     localStorage.setItem('toast', JSON.stringify({
         position: "top-right",
@@ -60,6 +52,24 @@ async function handleCoppy(idScoreTemp, userId) {
         stack: 4
     }));
     window.location.reload()
+}
+
+async function funcScoreDetailAdd(items) {
+    try {
+        const response = await fetch("/scoreTempDetail/add", {
+            method: "POST",
+            body: JSON.stringify(items),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+        if (!response.ok) {
+            console.log("Có lỗi xảy ra khi thêm scoretempDetail")
+            return
+        }
+    } catch (error) {
+        console.log(error)
+    }
 }
 
 
