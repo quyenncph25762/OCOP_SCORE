@@ -41,14 +41,34 @@ const ScoreCommitteeDetailModel = {
             })
         })
     },
-    update: (id, data, callback) => {
-        const query = `UPDATE scorecommittee_detail SET ScoreCommittee_id = ? , Employee_id = ? , SecEmployee_id = ? , UserId = ? , SecUserId = ? , CommitteeRole = ? WHERE _id = ?`
-        const VALUES = [data.ScoreCommittee_id, data.Employee_id, data.SecEmployee_id, data.UserId, data.SecUserId, data.CommitteeRole, id]
-        connection.query(query, VALUES, callback)
+    update: (data) => {
+        return new Promise((resolve, reject) => {
+            const query = `UPDATE scorecommittee_detail SET ScoreCommittee_id = ? , Employee_id = ? , SecEmployee_id = ? , UserId = ? , SecUserId = ? , CommitteeRole = ? WHERE _id = ${data.idScoreCommitteeDetail}`
+            const VALUES = [data.ScoreCommittee_id, data.Employee_id, data.SecEmployee_id, data.UserId, data.SecUserId, data.CommitteeRole]
+            if (!connection) {
+                return reject(new Error("Database connection is not established"));
+            }
+            connection.query(query, VALUES, (err, result) => {
+                if (err) {
+                    return reject(err)
+                }
+                return resolve(result)
+            })
+        })
     },
-    delete: (id, callback) => {
-        const query = `DELETE FROM scorecommittee_detail WHERE _id = ${id} `
-        connection.query(query, callback)
+    delete: (id) => {
+        return new Promise((resolve, reject) => {
+            const query = `DELETE FROM scorecommittee_detail WHERE _id = ${id} `
+            if (!connection) {
+                return reject(new Error("Database connection is not established"));
+            }
+            connection.query(query, (err, result) => {
+                if (err) {
+                    return reject(err)
+                }
+                return resolve(result)
+            })
+        })
     },
 
 }

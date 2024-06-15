@@ -228,6 +228,7 @@
 {{/if}}
 
 <script src="/assets/js/scoreCommitteeAdd.js"></script>
+<script src="/assets/js/scoreCommittee/scoreCommitteeDetailUpdate.js"></script>
 {{!-- script toast --}}
 <script>
     document.addEventListener("DOMContentLoaded", () => {
@@ -308,12 +309,6 @@
 
 {{!-- id truyen tu nut xoa --}}
 <script>
-    var arrIdScoreCommittDetail = []
-    const FuncArrIdScoreCommittDetaill = (id) => {
-        if (id) {
-            arrIdScoreCommittDetail.push(Number(id))
-        }
-    }
 </script>
 {{!-- sscript update secEmployee --}}
 <script>
@@ -379,176 +374,7 @@
         objTo.appendChild(divtest)
     }
     // update
-    const handleUpdateScoreCommittee = async (id) => {
-        // scoreCommittee
-        const Name = document.getElementById(`Name${id}`).value
-        const IsActive = document.getElementById(`IsActive${id}`).checked
-        const yearReviewId = document.getElementById(`yearReviewId${id}`).value
-        const Note = document.getElementById(`Note${id}`).value
-        const scoreCommitee = {
-            Name: Name,
-            IsActive: IsActive === true ? 1 : 0,
-            yearReviewId: yearReviewId,
-            Note: Note
 
-        }
-        const actionUpdate = await fetch(`/scoreCommittee/update/${id}`, {
-            method: "PATCH",
-            body: JSON.stringify(scoreCommitee),
-            headers: {
-                "Content-Type": "application/json"
-            }
-        })
-        if (!actionUpdate.ok) {
-            alert("co lỗi xay ra khi cap nhat scorecommittee")
-            return
-        }
-
-
-        //kiem tra neu mang id da xoa ma co thi thuc hien for xoa tung phan tu 1
-        if (arrIdScoreCommittDetail.length > 0) {
-            const arrResDelete = []
-            for (const id of arrIdScoreCommittDetail) {
-                const actionsDetail = await fetch(`/scoreCommitteeDetail/delete/${id}`, {
-                    method: "DELETE"
-                })
-                arrResDelete.push(actionsDetail)
-            }
-            await Promise.all(arrResDelete)
-        }
-        // update scoreTempDetail
-        // idScoreTempDetail
-        let idScoreTempDetail = Array.from(document.querySelectorAll(`.idScoreTempDetail${id}`)).map(e => e.getAttribute("data-id"))
-        idScoreTempDetail = idScoreTempDetail.map(Number)
-        // scorecommitte_detail
-        let CommitteeRole = Array.from(document.querySelectorAll(`.CommitteeRole${id}`)).map(e => e.value)
-        CommitteeRole = CommitteeRole.map(Number)
-        // Lay id employeeId
-        let listEmployee = Array.from(document.querySelectorAll(`.memberData`)).map(e => e.getAttribute("data-id"))
-        listEmployee = listEmployee.map(Number)
-        // SecEmployeeId
-        let listSecEmployee = Array.from(document.querySelectorAll(`.listEmployee${id}`)).map(e => e.value)
-        listSecEmployee = listSecEmployee.map(Number)
-        const arrResponse = []
-        for (let i = 0; i < listEmployee.length; i++) {
-            const form = {
-                ScoreCommittee_id: Number(id),
-                CommitteeRole: CommitteeRole[i],
-                Employee_id: listEmployee[i],
-                SecEmployee_id: listSecEmployee[i],
-                UserId: listEmployee[i],
-                SecUserId: listSecEmployee[i]
-            }
-            const response = await fetch(`/scoreCommitteeDetail/update/${idScoreTempDetail[i]}`, {
-                method: "PUT",
-                body: JSON.stringify(form),
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            })
-            arrResponse.push(response)
-        }
-        await Promise.all(arrResponse)
-
-        // doi update xong thi them nhung scoreTempDetail nao chua co
-
-        // vai tro cua hoi dong
-        let CommitteeRole_newMember = Array.from(document.querySelectorAll(".CommitteeRole_newMember")).map(e => e.value)
-        CommitteeRole_newMember = CommitteeRole_newMember.map(Number)
-        // Lay id employeeId
-        let newMember = Array.from(document.querySelectorAll(".newMember")).map(e => e.getAttribute("data-id"))
-        newMember = newMember.map(Number)
-        // SecEmployeeId
-        let listSecEmployee_newMember = Array.from(document.querySelectorAll(".listSecEmployee_newMember")).map(e => e.value)
-        listSecEmployee_newMember = listSecEmployee_newMember.map(Number)
-        const arrScoreCommitteeDetailAdd = []
-        for (let i = 0; i < newMember.length; i++) {
-            const form = {
-                ScoreCommittee_id: id,
-                CommitteeRole: CommitteeRole_newMember[i],
-                Employee_id: newMember[i] === 0 ? null : newMember[i],
-                SecEmployee_id: listSecEmployee_newMember[i] === 0 ? null : listSecEmployee_newMember[i],
-                UserId: newMember[i] === 0 ? null : newMember[i],
-                SecUserId: listSecEmployee_newMember[i] === null ? 0 : listSecEmployee_newMember[i]
-            }
-
-            arrScoreCommitteeDetailAdd.push(form)
-        }
-        const response = await fetch(`/scoreCommitteeDetail/add`, {
-            method: "POST",
-            body: JSON.stringify(arrScoreCommitteeDetailAdd),
-            headers: {
-                "Content-Type": "application/json"
-            }
-        })
-        if (!response.ok) {
-            console.log("Lỗi khi thêm scorecommitteeDetail")
-            return
-        }
-        //Chức năng lấy ra charMan
-
-        // lay ra nhng scoreCommitteeDetail vua them
-        const responseScoreDetail = await fetch(`/scoreCommitteeDetail/getByScoreCommittee/${id}`, {
-            method: "GET"
-        })
-        if (!responseScoreDetail.ok) {
-            alert("Đã xảy ra lỗi không mong muốn")
-            return
-        }
-        const listScoreCommittDetail = await responseScoreDetail.json()
-        const charMan = listScoreCommittDetail.find((item) => item.CommitteeRole === 1)
-        if (charMan) {
-            const formUpdate = {
-                Employee_id: charMan.UserId ? charMan.UserId : charMan.SecUserId
-            }
-            const updateCharMan = await fetch(`/scoreCommittee/updateCharMan/${id}`, {
-                method: "PATCH",
-                body: JSON.stringify(formUpdate),
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            })
-            if (!updateCharMan.ok) {
-                alert("Lỗi update charMan")
-            }
-            localStorage.setItem('toast', JSON.stringify({
-                position: "top-right",
-                heading: 'SUCCESS',
-                text: 'Đã thêm thành công!',
-                icon: 'success',
-                loader: true,
-                loaderBg: '#9EC600',
-                showHideTransition: 'slide',
-                stack: 4
-            }));
-        } else {
-            const updateCharMan = await fetch(`/scoreCommittee/updateCharMan/${id}`, {
-                method: "PATCH",
-                body: JSON.stringify({
-                    Employee_id: null
-                }),
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            })
-            if (!updateCharMan.ok) {
-                alert("Lỗi update charMan")
-            }
-            localStorage.setItem('toast', JSON.stringify({
-                position: "top-right",
-                heading: 'WARNING',
-                text: 'Hiện hội đồng chấm không có chủ tịch!',
-                icon: 'warning',
-                loader: true,
-                loaderBg: '#9EC600',
-                showHideTransition: 'slide',
-                stack: 4
-            }));
-        }
-        // xoa xong set lai mang arrId rong
-        arrIdScoreCommitteeDetail = []
-        window.location.reload()
-    }
 </script>
 
 {{!-- xu li neu modal dong thi set tbody = "" --}}

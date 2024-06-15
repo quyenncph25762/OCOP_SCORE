@@ -71,7 +71,7 @@ const ScoreFileModel = {
         LEFT JOIN 
             workposition ON workposition._id = employee.WorkPosition_id
         WHERE 
-            scorefile.IsDeleted = 0 AND scorefile.Status = 2 AND scorefile.Product_id IS NOT NULL AND scorefile.ScoreCommitee_id = ?
+            scorefile.IsDeleted = 0 AND scorefile.Status = 2 AND scorefile.IsActive = 1 AND scorefile.Product_id IS NOT NULL AND scorefile.ScoreCommitee_id = ?
          ORDER BY 
         scorefile._id DESC
     `;

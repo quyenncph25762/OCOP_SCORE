@@ -40,14 +40,16 @@ class ScoreFileDetailController {
 
     }
     updateScoreById = async (req, res) => {
-        if (req.body) {
+        try {
             for (const ScoreDetail of req.body) {
                 await ScoreFileDetailModel.updateScoreFileDetailById(ScoreDetail)
             }
+            return res.status(200).json({
+                message: "Cập nhật thành công"
+            })
+        } catch (error) {
+            console.log(error)
         }
-        return res.status(200).json({
-            message: "Cập nhật thành công"
-        })
     }
 }
 

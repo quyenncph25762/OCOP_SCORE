@@ -25,31 +25,30 @@ class ScoreCommittDetailController {
             console.log(error)
         }
     }
-    update(req, res) {
-        const id = req.params.id
-        ScoreCommitteeDetailModel.update(id, req.body, (err, results) => {
-            if (err) {
-                return res.status(500).json({
-                    message: err
-                })
+    update = async (req, res) => {
+        try {
+            for (const item of req.body) {
+                await ScoreCommitteeDetailModel.update(item)
             }
             return res.status(203).json({
                 message: "Cập nhật thành công"
             })
-        })
+        } catch (error) {
+            console.log(error)
+        }
+
     }
-    delete(req, res) {
-        const id = req.params.id
-        ScoreCommitteeDetailModel.delete(id, (err, results) => {
-            if (err) {
-                return res.status(500).json({
-                    message: err
-                })
+    delete = async (req, res) => {
+        try {
+            for (const item of req.body) {
+                await ScoreCommitteeDetailModel.delete(item)
             }
             return res.status(203).json({
                 message: "Xóa thành công"
             })
-        })
+        } catch (error) {
+            console.log(error)
+        }
     }
 }
 

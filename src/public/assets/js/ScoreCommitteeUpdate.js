@@ -213,7 +213,6 @@ async function scoreCommitteeDetailByScoreCommittee(id) {
 }
 
 // lay tat ca employee
-
 async function getAllEmployee() {
     try {
         const actionsListEmployee = await fetch(`/employee/getAll`, {
