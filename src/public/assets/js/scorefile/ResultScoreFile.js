@@ -289,7 +289,7 @@ async function getOneScoreCommittee(idScoreCommittee) {
 function caculatorScoreEmployee(filterScoreFile) {
     if (filterScoreFile.length > 1) {
         for (i = 0; i < filterScoreFile.length; i++) {
-            for (j = 1; j < filterScoreFile.length; j++) {
+            for (j = i + 1; j < filterScoreFile.length; j++) {
                 // Tính giá trị tuyệt dối của 1 số
                 if (Math.abs(filterScoreFile[i].ScoreTotal - filterScoreFile[j].ScoreTotal) > 10) {
                     return true
