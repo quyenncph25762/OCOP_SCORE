@@ -58,7 +58,43 @@
 <script src="https://unpkg.com/jspdf-invoice-template@1.4.0/dist/index.js"></script>
 {{!-- file pdf --}}
 <script>
-    async function generatePDF() {
-
+    async function generatePDF(scorefileId) {
+        try {
+            showLoading()
+            const ScoreFile = await getOneScoreFile(scorefileId)
+            const response = await fetch(`/pdf/generate/${scorefileId}`, {
+                method: 'GET',
+            });
+            console.log(`response:`, response)
+            if (!response.ok) {
+                hideLoading()
+                throw new Error('Network response was not ok');
+            }
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `phieu-cham-${ScoreFile ? ScoreFile.employee_FullName : ""}`;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            hideLoading()
+        } catch (error) {
+            hideLoading()
+            console.error('There was a problem with the fetch operation:', error);
+        }
     }
+
+    async function getOneScoreFile(scorefileId) {
+        try {
+            const response = await fetch(`/scorefile/getOne/${scorefileId}`, {
+                method: "GET"
+            })
+            return await response.json()
+        } catch (err) {
+            hideLoading()
+            console.log(err)
+        }
+    }
+
 </script>

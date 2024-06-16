@@ -75,9 +75,7 @@ async function handleResultScoreFiles(idScoreCommittee, productId) {
                 }
                            
                             <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Phiếu chấm">
-                                <a href="">
-                                    <ion-icon name="link-outline" onclick="generatePDF()"></ion-icon>
-                                </a>
+                                <ion-icon name="link-outline" onclick="generatePDF(${scorefile._id})"></ion-icon>
                             </span>
                         </div>
                     </td>
