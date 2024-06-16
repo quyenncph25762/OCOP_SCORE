@@ -65,7 +65,7 @@
                         {{!-- {{#ifCondNot User.RoleId 1}} --}}
                         {{!-- Tài khoản người dùng mà khác với scorefile người đang xem thì hiện --}}
                         {{#ifCondNot User._id ScoreFile.Employee_id}}
-                        <button class="btn btn-light"
+                        <button class="btn btn-light" type="button"
                             onclick="handleAddScoreFile('{{User._id}}','{{ScoreFile._id}}','{{ScoreFile.ScoreCommitee_id}}','{{Product_id}}','{{this.productgroup_id}}')">Chấm
                             điểm theo thư
                             kí</button>
@@ -73,7 +73,6 @@
                             title="Phiếu của bạn lập tức chấm theo thư kí">
                             <ion-icon name="alert-circle-outline" style="font-weight: 600;"></ion-icon>
                         </span>
-                        {{!-- {{/ifCondNot}} --}}
                         {{/ifCondNot}}
                     </div>
                 </div>
@@ -195,17 +194,27 @@
 {{> footer}}
 <script src="/assets/js/scorefile/ReviewScoreFile.js"></script>
 <script>
-    (function () {
-        let codeValueProductGroup = document.querySelector(".Code");
-        function generateRandomCode(length) {
-            let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789';
-            let code = '';
-            for (let i = 0; i < length; i++) {
-                code += characters.charAt(Math.floor(Math.random() * characters.length));
-            }
-            return code;
+    document.addEventListener("DOMContentLoaded", () => {
+        const toastData = localStorage.getItem('toast');
+        if (toastData) {
+            const toast = JSON.parse(toastData);
+            $.toast(toast);
+            localStorage.removeItem('toast');
         }
-        let codeRandom = generateRandomCode(8);
-        codeValueProductGroup.value = codeRandom;
-    })();
+    })
+</script>
+<script>
+        (function () {
+            let codeValueProductGroup = document.querySelector(".Code");
+            function generateRandomCode(length) {
+                let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789';
+                let code = '';
+                for (let i = 0; i < length; i++) {
+                    code += characters.charAt(Math.floor(Math.random() * characters.length));
+                }
+                return code;
+            }
+            let codeRandom = generateRandomCode(8);
+            codeValueProductGroup.value = codeRandom;
+        })();
 </script>
