@@ -113,7 +113,7 @@
                                                             <span aria-hidden="true">&times;</span>
                                                         </button>
                                                     </div>
-                                                    <div class="modal-body" style="overflow-y: auto;height: 100vh;">
+                                                    <div class="modal-body" style="max-height: 80vh;">
                                                         <form method="POST" action="/employee/update/{{this._id}}"
                                                             enctype="multipart/form-data" class="row">
                                                             <div class="col-md-4">
@@ -130,7 +130,7 @@
                                                                             name="Avatar" hidden>
                                                                         <div class="drag-text"
                                                                             onclick="onclickImage(`{{this._id}}`)">
-                                                                            <img style="width: 100%; height: 100%;object-fit: cover;"
+                                                                            <img style="width: 250px;height: 250px;object-fit: cover;"
                                                                                 id="avatarPreview{{this._id}}"
                                                                                 class="file-upload-image"
                                                                                 src="{{this.Avatar}}" />
@@ -160,10 +160,10 @@
                                                                 <div class="form-row">
                                                                     {{!-- code --}}
                                                                     <div class="col-md-6 mb-3">
-                                                                        <label for="code">Mã</label>
-                                                                        <input value="{{this.Code}}" name="Code"
+                                                                        <label for="UserName">Tên đăng nhập</label>
+                                                                        <input value="{{this.UserName}}" name="UserName"
                                                                             type="text" class="form-control"
-                                                                            id="code{{this._id}}" required>
+                                                                            id="UserName{{this._id}}" required>
                                                                     </div>
                                                                     {{!-- Email --}}
                                                                     <div class="col-md-6 mb-3">
@@ -470,7 +470,6 @@
         const imagePreview = document.getElementById(`avatarPreview${id}`);
         const nu = document.getElementById(`nu${id}`).check
         const nam = document.getElementById(`nam${id}`).check
-        const Code = document.getElementById(`code${id}`).value
         const Email = document.getElementById(`Email${id}`).value
         const FullName = document.getElementById(`FullName${id}`).value
         const DoB = document.getElementById(`DoB${id}`).value
@@ -478,6 +477,7 @@
         const Address = document.getElementById(`Address${id}`).value
         const WorkDepartment_id = document.getElementById(`WorkDepartment_id${id}`).value
         const WorkPosition_id = document.getElementById(`WorkPosition_id${id}`).value
+        const UserName = document.getElementById(`UserName${id}`).value
         const roleId = document.getElementById(`roleId${id}`).value
         const District = document.getElementById(`District${id}`).value
         //cat url
@@ -494,7 +494,7 @@
             formData.append("Avatar", relativePath)
         }
         formData.append("Gender", nu ? "nu" : "nam")
-        formData.append("Code", Code)
+        formData.append("UserName", UserName)
         formData.append("Email", Email)
         formData.append("DoB", DoB)
         formData.append("FullName", FullName)
@@ -527,7 +527,7 @@
                 position: "top-right",
                 heading: 'WARNING!',
                 text: data.message,
-                icon: 'error',
+                icon: 'warning',
                 loader: true,
                 loaderBg: '#f2a654',
                 showHideTransition: 'slide',

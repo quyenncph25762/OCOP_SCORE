@@ -56,8 +56,8 @@ async function handleResultScoreFiles(idScoreCommittee, productId) {
                         <strong style="font-size: 16px;">${scorefile.employee_FullName}</strong>
                         <p style="font-style: italic;text-wrap:wrap">${scorefile.workposition_name} - ${scorefile.workdepartment_title}</p>
                     </td>
-                    <td style="color: #F64E60; font-weight: 600;">${scorefile.ScoreTotal}</td>
-                    <td>
+                    <td style="color: #F64E60; font-weight: 600;" class="text-center">${scorefile.ScoreTotal}</td>
+                    <td class="text-center">
                     ${repeatStar(scorefile.RankOcop)}
                     </td>
                     <td>
@@ -87,12 +87,11 @@ async function handleResultScoreFiles(idScoreCommittee, productId) {
         rankOcop()
         tbodyResultsScoreFile.innerHTML += `
             <tr>
-                <td></td>
-                <td></td>
+                <td  colspan="2"></td>
                 <td id="AverageScore" >
-                <p style="font-weight:700; font-size:14px">${AverageScore ? Number(AverageScore.toFixed(1)) : 0}</p>
+                <p style="font-weight:700; font-size:14px" class="text-center">${AverageScore ? Number(AverageScore.toFixed(1)) : 0}</p>
                 </td>
-                <td id="AverageRankOcop" >
+                <td id="AverageRankOcop" class="text-center">
                 <p style="font-size:14px">
                 ${AverageRankOcop ? repeatStar(Number(Math.floor(AverageRankOcop))) : 0}
                 </p>
@@ -127,7 +126,8 @@ async function handleResult(idProduct) {
                         const formProduct = {
                             RankOcop: Number(Math.floor(AverageRankOcop)),
                             ScoreTotal: Number(AverageScore.toFixed(1)),
-                            IsPassed: 1
+                            // Neu rank ocop ma lớn hơn hoặc bằng 3 sao thi sản phẩm passed
+                            IsPassed: Number(Math.floor(AverageRankOcop)) >= 3 ? 1 : 0
                         }
                         const response = await fetch(`/product-manage/updateRankOcop/${idProduct}`, {
                             method: "PATCH",

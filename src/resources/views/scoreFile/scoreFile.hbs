@@ -5,9 +5,33 @@
             min-width: 100%;
         }
 
+        table.dataTable>tbody>tr>th,
+        table.dataTable>tbody>tr>td {
+            padding: 8px 10px !important;
+        }
+
+        .box-icons {
+            display: flex;
+            flex-direction: column;
+            justify-content: baseline;
+            align-items: center;
+            width: 50px;
+        }
+
+        #myTable tbody tr td li,
+        #myTable tbody tr td p {
+            font-size: 12px !important
+        }
+
+        .rankOcopStyle,
+        .totalScoreStyle,
         .col-dateScore,
         .col-Status {
             display: none;
+        }
+
+        .dropDownResults {
+            display: table-cell !important;
         }
 
         .totalScoreStyle {
@@ -59,13 +83,13 @@
                         <thead>
                             <tr>
                                 <th scope="col" class="col-image">Ảnh</th>
-                                <th scope="col">Sản phẩm</th>
+                                <th scope="col" style="text-wrap: wrap;">Sản phẩm</th>
                                 <th scope="col" class="col-productGroup" style="text-wrap: wrap;">Nhóm sản phẩm</th>
                                 <th scope="col" class="totalScoreStyle" style="text-wrap: wrap;">Tổng điểm</th>
-                                <th scope="col">Xếp hạng</th>
+                                <th scope="col" class="rankOcopStyle">Xếp hạng</th>
                                 <th scope="col" class="col-dateScore">Ngày chấm</th>
                                 <th scope="col" class="col-Status">Trạng thái</th>
-                                <th scope="col" class="dropDownResults"></th>
+                                <th scope="col" class="dropDownResults">quyen</th>
                                 <th scope="col" class="actions" style="text-wrap: wrap;">Actions</th>
                             </tr>
                         </thead>
@@ -101,7 +125,7 @@
                                     </p>
                                     {{/ifCond}}
                                 </td>
-                                <td class="text-center">
+                                <td class="text-center rankOcopStyle">
                                     {{#repeat this.RankOcop}}
                                     <ion-icon name="star"></ion-icon>
                                     {{/repeat}}

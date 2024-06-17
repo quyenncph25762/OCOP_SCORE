@@ -111,18 +111,19 @@
             <div class="modal-body" class="width: 100%">
                 <form enctype="multipart/form-data">
                     <div class="row row-content">
-                        <div class="form-row col-xl-3 col-sm-12 col-md-12"
+                        <div class="form-row col-xl-3 col-sm-12 col-md-12 col-lg-12"
                             style="display: flex;flex-direction: column; text-align: center;">
                             <h1 style="font-size: 16px; text-align: center;font-weight: 600;">Ảnh sản phẩm</h1>
-                            <div>
-                                <div class="col-sm-12" style="position: relative;">
+                            <div class="text-center">
+                                <div class="text-center"
+                                    style="position: relative; width: 200px;height: 200px;margin-left: 50%;transform: translateX(-50%);">
                                     <div data-toggle="tooltip" data-html="true" title="Xóa ảnh" onclick="removeUpload()"
                                         style="position: absolute;top: 0;right: 0;">
                                         <ion-icon name="close-outline"></ion-icon>
                                     </div>
                                     <input type="file" id="Avatar" accept="image/*" hidden>
                                     <img id="AvatarPreview" onclick="document.getElementById('Avatar').click()"
-                                        style="width: 200px;height: 200px;object-fit: cover;border-radius:50%"
+                                        style="width: 100%;height: 100%;object-fit: cover;border-radius:50%"
                                         src="/Uploads/productDefault.jpg" alt="">
 
                                 </div>
@@ -143,7 +144,7 @@
                         {{!-- creation_userId --}}
                         <input type="text" id="CreatorUser_id" name="CreatorUser_id" value="{{User._id}}" hidden>
                         {{!-- form Product --}}
-                        <div class="form-row col-xl-9 col-sm-12 col-md-12 form_product">
+                        <div class="form-row col-xl-9 col-sm-12 col-md-12 col-lg-12 form_product">
                             {{!-- code --}}
                             <div class="col-md-2 mb-3">
                                 <label for="Code">Mã</label>

@@ -13,6 +13,16 @@
         background: #04b962;
         animation: jelly-42 0.6s ease;
     }
+
+    @media screen and (max-width:1025px) {
+        .textEmail {
+            display: inline-block !important;
+            word-wrap: break-word !important;
+            white-space: normal !important;
+            max-width: 140px !important;
+            color: red !important
+        }
+    }
 </style>
 
 
@@ -134,7 +144,7 @@
                 <h5 class="modal-title" id="exampleModalLabel">Danh sách thành viên</h5>
             </div>
             <div class="modal-body">
-                <table id="myTableEmployee" class="table table-hover">
+                <table id="myTableEmployee" class="table datatables table-bordered table-hover table-striped">
                     <thead>
                         <div class="row" style="margin: 20px 0;font-size: 13px;">
                             <div class="col-sm-3" style="padding: 0;">
@@ -384,18 +394,16 @@
             <th scope="row">${room - 1}</th>
             <input hidden data-id="${item._id}" id="listEmployee"></input>
              <td>
-                <div style="display: flex;flex-direction: column">
-           <p style="font-weight:600;font-size:13px;text-wrap:wrap">${item.FullName ? item.FullName : ""}</p>
-           <p style="color:#ccc">${item.Email ? item.Email : ""}</p>
-           </div>
+                <p style="font-weight:600; font-size:13px;">${item.FullName ? item.FullName : ""}</p>
+                <span class="textEmail" style="color:#ccc;">${item.Email ? item.Email : ""}</span>
             </td>
-           <td style="max-width:200px">
+           <td>
             <div style="display: flex;flex-direction: column">
-            <p style="font-weight:600;font-size:13px;text-wrap:wrap;">${item.workdepartment_name ? item.workdepartment_name : ""}</p>
+            <p style="font-weight:600;font-size:12px;text-wrap:wrap;">${item.workdepartment_name ? item.workdepartment_name : ""}</p>
            <p style="color:#ccc">${item.workposition_name ? item.workposition_name : ""}</p>
             </div>
             </td>
-            <td style="max-width: 130px;">
+            <td style="">
                 <div class="form-group">
                     <select id="ValidatedRankDetail_${room}" name="validateRank" class="form-control CommitteeRole"
                             style="transform: translateY(10px); max-width: 200px; max-height: 200px; overflow-y: hidden; font-size:12px"
@@ -406,16 +414,16 @@
                     </select>
                 </div>
             </td>
-            <td style="max-width: 250px; font-size:12px">
+            <td style="font-size:12px">
                 <div class="form-group">
                     <select id="Employee_id_${room}" name="validateRank" class="form-control listEmployee"
-                            style="transform: translateY(10px); max-width: 200px; max-height: 200px; overflow-y: hidden; font-size:12px"
+                            style="transform: translateY(10px); max-height: 200px; overflow-y: hidden; font-size:12px"
                             data-target="#navbar-example2" data-offset="0">
                         <option selected>Không xác định</option>
                     </select>
                 </div>
             </td>
-            <td>
+            <td style="max-width:50px">
                 <div style="text-align:center">
                     <ion-icon onclick="remove_education_fields(${room});" class="icon__scoreTempDetail" name="trash-outline"></ion-icon>
                 </div>
@@ -572,7 +580,7 @@
             updateSelectOptionsUpdate(select, filterEmployee, selectedId);
         });
     };
-
+    //Hàm chọn listEmployee update
     async function handleChooseUpdate(id) {
         const arrEmployee = [];
         const btnsCheck = document.querySelectorAll(`.checkUpdate${id}`);
