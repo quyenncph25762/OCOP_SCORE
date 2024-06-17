@@ -51,31 +51,27 @@ class ProductDetailController {
             }
         })
     }
-    create(req, res) {
-        console.log(req.body.Code)
-        ProductDetailModel.createProductDetail({
-            ProductDetail_Name: req.body.ProductDetail_Name,
-            Code: req.body.Code,
-            Product_id: req.body.Product_id
-        }, (err, data) => {
-            if (err) {
-                return res.status(500).json({
-                    message: "Loi truy van"
-                })
-            } else {
-                ProductDetailModel.getProductDetailById(data.insertId, (err, data) => {
-                    if (err) {
-                        return res.status(500).json({
-                            message: "Loi truy van"
-                        })
-                    }
-                    return res.status(201).json({
-                        message: "Tao thanh cong",
-                        data
-                    })
-                })
+    create = async (req, res) => {
+        const resultsArray = [];
+        if (req.body) {
+            for (const productDetail of req.body) {
+                const results = await ProductDetailModel.createProductDetail(productDetail)
+                const resultData = await new Promise((resolve, reject) => {
+                    ProductDetailModel.getProductDetailById(results.insertId, (err, data) => {
+                        if (err) {
+                            reject(err);
+                        } else {
+                            resolve(data[0]);
+                        }
+                    });
+                });
+                resultsArray.push(resultData);
             }
-        })
+            return res.status(201).json({
+                message: "Tao thanh cong",
+                resultsArray
+            })
+        }
     }
     getProductDetailByProductId(req, res) {
         const productId = req.params.id

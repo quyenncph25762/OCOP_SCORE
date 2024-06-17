@@ -36,7 +36,7 @@ app.use('/Uploads', express.static('Uploads'))
 //helps HandleBars
 // check permission
 Handlebars.registerHelper('hasPermission', function (permission, permissions, options) {
-    if (permissions.includes(permission)) {
+    if (permissions?.includes(permission)) {
         return options.fn(this);
     } else {
         return options.inverse(this);
@@ -60,6 +60,19 @@ Handlebars.registerHelper('ifCondNot', function (v1, v2, options) {
 
 Handlebars.registerHelper('ifCondOr', function (v1, v2, v3, v4, options) {
     if (v1 === v2 || v3 === v4) {
+        return options.fn(this);
+    }
+    return options.inverse(this);
+});
+Handlebars.registerHelper('ifCondAndNot', function (v1, v2, v3, v4, options) {
+    if (v1 !== v2 && v3 !== v4) {
+        return options.fn(this);
+    }
+    return options.inverse(this);
+});
+
+Handlebars.registerHelper('ifCondOrNot', function (v1, v2, v3, v4, options) {
+    if (v1 !== v2 || v3 !== v4) {
         return options.fn(this);
     }
     return options.inverse(this);

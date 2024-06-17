@@ -5,7 +5,10 @@ const PermissionModel = {
         connection.query(query, Role_id, callback)
     },
     getAllPermissionBy_Role_And_Name: (Role_id, Name, callback) => {
-        const query = `SELECT * FROM role_permission WHERE Role_id =  ? AND NamePermission = ? AND IsDeleted = 0`
+        const query = `SELECT role_permission.*
+        FROM role_permission
+        JOIN role ON role_permission.Role_id = role._id
+        WHERE role_permission.Role_id =  ? AND role_permission.NamePermission = ? AND role_permission.IsDeleted = 0 AND role.IsDeleted =0`
         connection.query(query, [Role_id, Name], callback)
     },
     creatPermission: (permission, callback) => {

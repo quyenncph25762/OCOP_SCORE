@@ -19,6 +19,12 @@
   .file-item a {
     font-size: 12px;
   }
+
+  @media screen and (min-width: 768px) and (max-width:1024px) {
+    .codeColumn {
+      display: none !important;
+    }
+  }
 </style>
 {{> header}}
 <div class="content-wrapper">
@@ -65,7 +71,7 @@
                       </div>
                     </div>
                   </th>
-                  <th scope="col">Mã sản phẩm</th>
+                  <th scope="col" style="display: none;">Mã sản phẩm</th>
                   <th scope="col">Tên sản phẩm</th>
                   <th scope="col">Nhóm sản phẩm</th>
                   <th scope="col">Năm đánh giá</th>
@@ -82,9 +88,8 @@
                       <label class="cbx" for="cbx-42{{this._id}}"></label>
                     </div>
                   </td>
-                  <td>{{this.Code}}</td>
+                  <td class="codeColumn" style="display: none;">{{this.Code}}</td>
                   <td>
-
                     <div style="display: flex;flex-direction: column;">
                       <p style="color: rgb(236, 236, 118); font-size: 14px;font-weight: 600;">{{this.Name}}</p>
                       {{#ifCond customer_IsDeleted 0}}
@@ -95,7 +100,7 @@
                     </div>
                   </td>
                   {{#ifCond productgroup_IsDeleted 0}}
-                  <td style="width: 150px;">
+                  <td>
                     <p class="text-overhidden">
                       {{this.productGroup_name}}
                     </p>
@@ -141,7 +146,7 @@
                             <div class="modal-body" class="width: 100%">
                               <form enctype="multipart/form-data">
                                 <div class="row row-content">
-                                  <div class="form-row col-sm-3"
+                                  <div class="form-row col-sm-12 col-md-12 col-xl-3"
                                     style="display: flex;flex-direction: column; text-align: center;">
                                     <h1 style="font-size: 16px; text-align: center;font-weight: 600;">Ảnh sản phẩm</h1>
                                     <div class="file-upload" style="cursor: pointer;">
@@ -170,7 +175,7 @@
                                     </div>
                                   </div>
                                   {{!-- form Product --}}
-                                  <div class="form-row col-sm-9 form_productUpdate{{this._id}}">
+                                  <div class="form-row col-sm-12 col-md-12 col-xl-9 form_productUpdate{{this._id}}">
                                     {{!-- code --}}
                                     <div class="col-md-2 mb-3">
                                       <label for="Code">Mã</label>
@@ -249,7 +254,7 @@
                                     </div>
                                   </div>
                                   {{!-- bảng viễn dẫn --}}
-                                  <div class="col-sm-9 list_citationUpdate{{this._id}} displayNone"
+                                  <div class="col-sm-9 col-md-12 col-xl-9 list_citationUpdate{{this._id}} displayNone"
                                     style="overflow-y: auto;height: 100%;font-size: 12px;">
                                     <table border="1" class="table table-hover table-border table-striped">
                                       <thead>

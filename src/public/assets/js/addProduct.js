@@ -47,25 +47,37 @@ async function handleAdd() {
     const resGetAllProductDetail = await fetch("/productDetail/limit", {
         method: "GET"
     })
+
+    // Them product
     if (resGetAllProductDetail.ok) {
         const data = await resGetAllProductDetail.json();
-        const reqGallery = []
+        const arrProductDetail = []
         for (const productDetail of data) {
-            const ProductDetail_Name = document.querySelector(`#ProductDetail_Name${productDetail._id}`).value;
-            const AttachFile = document.querySelector(`#AttachFile${productDetail._id}`);
             const Code = document.querySelector(`#Code${productDetail._id}`).value;
-            const form = new FormData();
-            form.append('ProductDetail_Name', productDetail.ProductDetail_Name);
-            form.append('Product_id', productId);
-            form.append('Code', Code);
-            const resProductDetail = await fetch("/productDetail/create", {
-                method: "POST",
-                body: form
-            });
-            const dataProductDetail = await resProductDetail.json()
+            const formProductDetail = {
+                ProductDetail_Name: productDetail.ProductDetail_Name,
+                Product_id: productId,
+                Code: Code
+            }
+            arrProductDetail.push(formProductDetail)
+        }
+        const resProductDetail = await fetch("/productDetail/create", {
+            method: "POST",
+            body: JSON.stringify(arrProductDetail),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        });
+        const dataProductDetail = await resProductDetail.json()
+        // them anh
+        const reqGallery = []
+        for (i = 0; i < data.length; i++) {
+            const AttachFile = document.querySelector(`#AttachFile${data[i]._id}`);
+            console.log(AttachFile)
             for (const file of AttachFile.files) {
                 const formGallery = new FormData()
-                formGallery.append("productDetail_id", dataProductDetail?.data[0]?._id)
+                formGallery.append("productDetail_id", dataProductDetail?.resultsArray
+                [i]?._id)
                 formGallery.append("imgUrl", file)
                 const res = await fetch("/gallery/add", {
                     method: "POST",
@@ -96,15 +108,19 @@ const list_citation = document.querySelector(".list_citation")
 const boxFormProduct = document.querySelector(".boxFormProduct")
 const boxListCitation = document.querySelector(".boxListCitation")
 const handleShowFormProduct = () => {
-    form_product.classList.remove("displayNone")
     list_citation.classList.add("displayNone")
-    boxListCitation.classList.remove("active")
     boxFormProduct.classList.add("active")
+    boxFormProduct.classList.add("activeTabs")
+    form_product.classList.remove("displayNone")
+    boxListCitation.classList.remove("active")
+    boxListCitation.classList.remove("activeTabs")
 }
 
 const handleShowListCitation = () => {
-    form_product.classList.add("displayNone")
-    list_citation.classList.remove("displayNone")
-    boxFormProduct.classList.remove("active")
     boxListCitation.classList.add("active")
+    form_product.classList.add("displayNone")
+    boxListCitation.classList.add("activeTabs")
+    boxFormProduct.classList.remove("active")
+    list_citation.classList.remove("displayNone")
+    boxFormProduct.classList.remove("activeTabs")
 }

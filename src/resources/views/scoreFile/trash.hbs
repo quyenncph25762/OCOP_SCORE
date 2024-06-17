@@ -1,4 +1,39 @@
 {{> header}}
+{{> header}}
+<style>
+    @media only screen and (max-width: 767px) {
+        #myTable {
+            min-width: 100%;
+        }
+
+        .col-dateScore,
+        .col-Status {
+            display: none;
+        }
+
+        .totalScoreStyle {
+            max-width: 50px;
+        }
+    }
+
+    /* For tablets */
+
+
+    /* For laptops and larger screens */
+    @media only screen and (min-width: 1024px) {
+        #myTable {
+            min-width: 100%;
+        }
+
+        .dropDownResults {
+            display: none;
+        }
+
+        .totalScoreStyle {
+            max-width: 105px;
+        }
+    }
+</style>
 <div class="content-wrapper">
     <div class="container-fluid">
         <div class="row" style="max-width: 100%; display: contents;">
@@ -35,15 +70,14 @@
                                         <input type="checkbox" class="check" id="checkAll">
                                     </div>
                                 </th>
-                                <th>Ảnh</th>
-                                <th style="min-width: 300px;">
-                                    Sản phẩm</th>
-                                <th>Nhóm sản phẩm</th>
-                                <th>Tổng điểm</th>
-                                <th>Xếp hạng</th>
-                                <th>Ngày chấm</th>
-                                <th>Trạng thái</th>
-                                <th>Actions</th>
+                                <th scope="col" class="col-image">Ảnh</th>
+                                <th scope="col">Sản phẩm</th>
+                                <th scope="col" class="col-productGroup" style="text-wrap: wrap;">Nhóm sản phẩm</th>
+                                <th scope="col" class="totalScoreStyle" style="text-wrap: wrap;">Tổng điểm</th>
+                                <th scope="col">Xếp hạng</th>
+                                <th scope="col" class="col-dateScore">Ngày chấm</th>
+                                <th scope="col" class="col-Status">Trạng thái</th>
+                                <th scope="col" class="actions" style="text-wrap: wrap;">Actions</th>
                             </tr>
 
                         </thead>
@@ -51,14 +85,12 @@
                             {{#each ScoreFile}}
                             {{!-- Chua cham --}}
                             <tr>
-                                <td>
-                                    <div class="">
-                                        <div class="checkbox">
-                                            <input type="checkbox" class="check" data-idCheckBox="{{this._id}}">
-                                        </div>
+                                <td class="text-center">
+                                    <div class="checkbox">
+                                        <input type="checkbox" class="check" data-idCheckBox="{{this._id}}">
                                     </div>
                                 </td>
-                                <td>
+                                <td class="text-center">
                                     <div class="approved">
                                         <img src="{{this.product_avatar}}" alt=""
                                             style="width: 50px;height: 50px;border-radius: 50%;object-fit: cover;">
@@ -77,10 +109,10 @@
                                     </ul>
                                 </td>
                                 <!-- product group -->
-                                <td style="text-wrap: wrap;">Nhóm 19: {{this.productgroup_name}}
+                                <td class="text-center" style="text-wrap: wrap;">Nhóm 19: {{this.productgroup_name}}
                                 </td>
                                 {{!-- tong diem --}}
-                                <td>
+                                <td class="text-center">
                                     {{#ifCond this.ScoreTotal 0}}
                                     {{else}}
                                     <p style="font-weight: 600;text-align: center;color: rgb(236, 236, 118)">
@@ -89,10 +121,13 @@
 
                                 </td>
                                 <!-- so sao -->
-                                <td>
+                                <td class="text-center">
                                     {{#repeat this.RankOcop}}
                                     <ion-icon name="star"></ion-icon>
                                     {{/repeat}}
+                                    {{#if RankOcop}}
+                                    <p style="color: #B5B5C3;font-weight: 600px;">{{this.RankOcop}} sao</p>
+                                    {{/if}}
                                 </td>
                                 {{!-- Ngay cham --}}
                                 <td>
@@ -109,24 +144,26 @@
                                     <p class="statusLabelSuccess">Đã chấm</p>
                                     {{/ifCond}}
 
-                                <td class="icons">
-                                    <div class="action_center">
-                                        <button data-toggle="modal" data-target="#exampleModal{{this._id}}"
-                                            style="background-color: transparent;border: none;cursor: pointer;">
+                                <td>
+                                    <div class="box-icons">
+                                        <div class="action_center">
+                                            <button data-toggle="modal" data-target="#exampleModal{{this._id}}"
+                                                style="background-color: transparent;border: none;cursor: pointer;">
+                                                <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
+                                                    title="Khôi phục">
+                                                    <ion-icon name="sync-outline" style="color: white; font-size: 18px;"
+                                                        class="icon_revert" data-id="{{this._id}}"></ion-icon>
+                                                </span>
+                                            </button>
+                                        </div>
+                                        <div class="delete_action">
                                             <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
-                                                title="Khôi phục">
-                                                <ion-icon name="sync-outline" style="color: white; font-size: 18px;"
-                                                    class="icon_revert" data-id="{{this._id}}"></ion-icon>
+                                                title="Xóa chủ thể">
+                                                <ion-icon class="icon_moveToTrash" name="trash-outline"
+                                                    data-id="{{this._id}}">
+                                                </ion-icon>
                                             </span>
-                                        </button>
-                                    </div>
-                                    <div class="delete_action">
-                                        <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
-                                            title="Xóa chủ thể">
-                                            <ion-icon class="icon_moveToTrash" name="trash-outline"
-                                                data-id="{{this._id}}">
-                                            </ion-icon>
-                                        </span>
+                                        </div>
                                     </div>
                                 </td>
                             </tr>

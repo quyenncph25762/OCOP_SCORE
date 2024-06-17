@@ -17,7 +17,7 @@ router.get("/byScoreFile/:id", CheckController.checkout('Score'), ScoreTempDetai
 // them
 router.post("/add", CheckController.checkout('Score'), ScoreTempDetailController.addScoreTempDetail)
 // updae
-router.put("/update/:id", CheckController.checkout('Score'), ScoreTempDetailController.updateScoreTempDetail)
+router.put("/update", CheckController.checkout('Score'), ScoreTempDetailController.updateScoreTempDetail)
 
 
 module.exports = router;

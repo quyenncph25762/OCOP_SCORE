@@ -135,6 +135,7 @@ const ScoreFileModel = {
         const query = `SELECT * FROM scorefile WHERE Status = 0 AND	IsDeleted = 0`
         connection.query(query, callback)
     },
+
     // getOne
     getOne: (id, callback) => {
         const query = `

@@ -60,18 +60,15 @@ const checkout = (NamePermission) => {
     return (req, res, next) => {
         const token = req.cookies.User;
         const payload = jwt.verify(token, SECRET_CODE);
-
         Employee.getOneEmployee(payload._id, (err, data) => {
             if (err) {
                 console.log('Error', err)
             } else {
-
-                Permission.getAllPermissionBy_Role_And_Name(data[0].RoleId, NamePermission, (err, results) => {
+                Permission.getAllPermissionBy_Role_And_Name(data[0]?.RoleId, NamePermission, (err, results) => {
                     if (err) {
                         console.log('Error', err)
                     }
                     else {
-
                         if (results.length > 0) {
                             Permission.getAllPermissionBy_Role(data[0].RoleId, (err, result) => {
                                 if (err) {

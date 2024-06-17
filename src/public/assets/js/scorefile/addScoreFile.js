@@ -10,7 +10,12 @@ const handleAddScoreFile = async () => {
         const Code = document.querySelector(".Code").value
         // const response = await fetch(`/scoreTemp/add`)
 
-        const ScoreTempDetail_id = Array.from(document.querySelectorAll(".ScoreTempDetail_id")).map(e => (e.value))
+        const ScoreTempDetail = document.querySelectorAll("[id^=ScoreTempDetail]")
+        const arrScoreTempDetail = []
+        for (const item of ScoreTempDetail) {
+            arrScoreTempDetail.push(JSON.parse(item.value))
+        }
+        console.log(arrScoreTempDetail)
         const btnsRadio = Array.from(document.querySelectorAll(".btnsRadio"))
         // lọc ra những scoreTempDetail nào đã checked
         const scoreValues = {};
@@ -21,19 +26,8 @@ const handleAddScoreFile = async () => {
             }
         }
 
-        // dùng for chạy qua các id để lấy phiếu chi tiết rồi push vào mảng 
-        const arrScoreTempDetail = []
-        for (const id of ScoreTempDetail_id) {
-            const response = await fetch(`/scoreTempDetail/getOne/${id}`, {
-                method: "GET"
-            })
-            if (!response.ok) {
-                console.log("Lỗi khi fetch danh sách scoretempdetail")
-                return
-            }
-            const data = await response.json()
-            arrScoreTempDetail.push(data)
-        }
+
+
         // 
         // Phan A
         let totalPartA = 0;
@@ -92,7 +86,7 @@ const handleAddScoreFile = async () => {
         //ADD scoreFileDetail
         // Sau khi co nhung phieu chi tiet thuc hien them vao scoreFileDetail
         if (arrScoreTempDetail.length > 0) {
-            const arrResponse = []
+            const items = []
             for (const item of arrScoreTempDetail) {
                 const form = {
                     ScoreFile_id: Number(scoreFileId),
@@ -100,20 +94,19 @@ const handleAddScoreFile = async () => {
                     ScoreTempDetail_id: item._id,
                     Score: (scoreValues[item._id] !== undefined && scoreValues[item._id] !== null) ? scoreValues[item._id] : null
                 }
-                const response = await fetch(`/scoreFileDetail/add`, {
-                    method: "POST",
-                    body: JSON.stringify(form),
-                    headers: {
-                        "Content-Type": "application/json"
-                    }
-                })
-                if (!response.ok) {
-                    console.log("Lỗi khi thêm scoreFileDetail")
-                    return
-                }
-                arrResponse.push(response)
+                items.push(form)
             }
-            await Promise.all(arrResponse)
+            const res = await fetch(`/scoreFileDetail/add`, {
+                method: "POST",
+                body: JSON.stringify(items),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            })
+            if (!res.ok) {
+                console.log("Lỗi khi thêm scoreFileDetail")
+                return
+            }
             let RankOcop = 0
             if (TotalAfter >= 90) {
                 RankOcop = 5

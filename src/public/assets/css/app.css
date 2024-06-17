@@ -237,6 +237,11 @@ ion-icon[name="trash-outline"] {
     cursor: pointer;
 }
 
+ion-icon[name="add-circle-outline"] {
+    font-size: 24px;
+    cursor: pointer;
+}
+
 ion-icon[name="close-outline"] {
     color: #6593E8;
     font-size: 20px;
@@ -255,8 +260,14 @@ ion-icon[name="checkbox-outline"] {
     cursor: pointer;
 }
 
-ion-icon[name="newspaper-outline"] {
+ion-icon[name="bookmark-outline"] {
     color: rgb(48, 190, 150);
+    font-size: 20px;
+    cursor: pointer;
+}
+
+ion-icon[name="stop-circle-outline"] {
+    color: #fff;
     font-size: 20px;
     cursor: pointer;
 }
@@ -375,6 +386,10 @@ ion-icon[name="star"] {
     color: yellow;
 }
 
+.text-center {
+    text-align: center;
+}
+
 ion-icon[name="checkmark-circle-outline"] {
     font-size: 36px;
     cursor: pointer;
@@ -431,16 +446,25 @@ input.form-control.input-headerTable.w-100 {
 
 .statusLabelSuccess {
     background: #04b962;
-    padding: 2px;
+    padding: 3px 8px;
     border-radius: 8px;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
+.statusLabelWarning {
+    background: #e3a922;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3px 8px;
+}
+
 .statusLabelDanger {
     background: #F64E60;
-    padding: 2px;
+    padding: 3px 8px;
     border-radius: 8px;
     display: flex;
     align-items: center;
@@ -524,7 +548,6 @@ input.form-control.input-headerTable.w-100 {
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
-    overflow: hidden;
     text-overflow: ellipsis;
     white-space: normal;
 }
@@ -768,6 +791,53 @@ input.form-control.input-headerTable.w-100 {
     to {
         transform: scale(1, 1);
     }
+}
+
+.dropDownResults {
+    display: none;
+}
+
+@media only screen and (min-width: 768px) and (max-width: 1180px) {
+    .box-icons {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .nameProduct {
+        font-size: 12px !important;
+        text-wrap: wrap;
+    }
+
+    table tbody {
+        font-size: 12px;
+    }
+
+    ion-icon[name="star"] {
+        font-size: 12px;
+        cursor: pointer;
+        color: yellow;
+    }
+
+    .card .table td,
+    .card .table th {
+        padding: 12px !important;
+    }
+
+    /* .modal-content {
+        min-width: 600px !important;
+    } */
+}
+
+.jstree-default .jstree-clicked {
+    background: transparent !important;
+    border-radius: 2px;
+    box-shadow: none !important;
+}
+
+.jstree-default .jstree-leaf>.jstree-ocl {
+    background-position: none;
 }
 .jstree-default .jstree-clicked{
     background-color: transparent !important;

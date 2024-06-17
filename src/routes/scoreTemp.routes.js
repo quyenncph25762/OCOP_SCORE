@@ -18,7 +18,7 @@ router.put("/update/:id", CheckController.checkout('Category'), ScoreTempControl
 // getByProductGroupCode
 router.get("/byProductGroup/:code", CheckController.checkout('Category'), ScoreTempController.getScoreTempByProductGroup)
 // getByProductGroupId
-router.get("/byProductGroupId/:id", CheckController.checkout('Category'), ScoreTempController.getScoreTempByProductGroupId)
+router.get("/byProductGroupId/:id", ScoreTempController.getScoreTempByProductGroupId)
 // get
 router.get("/", CheckController.checkout('Category'), ScoreTempController.index)
 // getOne

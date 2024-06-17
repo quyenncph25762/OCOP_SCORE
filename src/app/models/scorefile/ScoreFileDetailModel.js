@@ -17,24 +17,53 @@ const ScoreDetailModel = {
         LEFT JOIN 
             product_detail ON product_detail._id = scoretemp_detail.ProductDetailId
         WHERE 
-            ScoreFile_id = ?
+            ScoreFile_id = ? ORDER BY scorefile_detail.ScoreTempDetail_id ASC
     `;
         connection.query(query, id, callback)
     },
-    create: (scoreFileDetail, callback) => {
-        const query = `INSERT INTO scorefile_detail (CreatorUser_id,ScoreTempDetail_id,Score,ScoreFile_id) VALUES (?,?,?,?)`
-        const VALUES = [scoreFileDetail.CreatorUser_id, scoreFileDetail.ScoreTempDetail_id, scoreFileDetail.Score, scoreFileDetail.ScoreFile_id]
-        connection.query(query, VALUES, callback)
+    create: (scoreFileDetail) => {
+        return new Promise((resolve, reject) => {
+            const query = `
+                INSERT INTO scorefile_detail (CreatorUser_id, ScoreTempDetail_id, Score, ScoreFile_id) VALUES (?,?,?,?)
+            `;
+            const values = [
+                scoreFileDetail.CreatorUser_id,
+                scoreFileDetail.ScoreTempDetail_id,
+                scoreFileDetail.Score,
+                scoreFileDetail.ScoreFile_id
+            ];
+            // Kiểm tra kết nối cơ sở dữ liệu trước khi thực hiện truy vấn
+            if (!connection) {
+                return reject(new Error("Database connection is not established"));
+            }
+            connection.query(query, values, (err, result) => {
+                if (err) {
+                    console.error('Database query error:', err);
+                    return reject(err);
+                }
+                return resolve(result);
+            });
+        });
     },
     // update: (id, scoreFileDetail, callback) => {
     //     const query = `UPDATE scorefile_detail SET CreatorUser_id = ? ,ScoreTempDetail_id = ? , ScoreFile_id = ? WHERE _id = ?`
     //     const VALUES = [scoreFileDetail.CreatorUser_id, scoreFileDetail.ScoreTempDetail_id, scoreFileDetail.ScoreTempDetail_id, scoreFileDetail.ScoreFile_id, id]
     //     connection.query(query, VALUES, callback)
     // },
-    updateScoreFileDetailById: (id, ScoreFileDetail, callback) => {
-        const query = `UPDATE scorefile_detail SET Score = ? WHERE _id = ${id}`
-        const VALUES = [ScoreFileDetail.Score]
-        connection.query(query, VALUES, callback)
+    updateScoreFileDetailById: (ScoreFileDetail) => {
+        return new Promise((resolve, reject) => {
+            const query = `UPDATE scorefile_detail SET Score = ? WHERE _id = ${ScoreFileDetail.id}`
+            const VALUES = [ScoreFileDetail.Score]
+            if (!connection) {
+                return reject(new Error("Database connection is not established"));
+            }
+            connection.query(query, VALUES, (err, result) => {
+                if (err) {
+                    return reject(err)
+                }
+                return resolve(result)
+            })
+        })
     },
     // lay ra scorefileDetail da cham diem
     getScoreFileDetailScoreByScoreFile: (id, callback) => {

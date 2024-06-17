@@ -179,18 +179,23 @@ async function handleUpdate() {
     const arrResponseRemoveScore = []
     for (const idScoreFileDetail of arrIdActionRemoveScore) {
         if (idScoreFileDetail) {
-            const res = await fetch(`/scoreFileDetail/updateScoreById/${idScoreFileDetail.id}`, {
-                method: "PATCH",
-                body: JSON.stringify({
-                    id: idScoreFileDetail.id,
-                    Score: null
-                }),
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            })
-            arrResponseRemoveScore.push(res)
+            const formScoreFileScoreNull = {
+                id: idScoreFileDetail.id,
+                Score: null
+            }
+            arrResponseRemoveScore.push(formScoreFileScoreNull)
         }
+    }
+    const res = await fetch(`/scoreFileDetail/updateScore`, {
+        method: "PATCH",
+        body: JSON.stringify(arrResponseRemoveScore),
+        headers: {
+            "Content-Type": "application/json"
+        }
+    })
+    if (!res.ok) {
+        console.log(`Lỗi khi remove điểm`)
+        return
     }
     await Promise.all(arrResponseRemoveScore)
     // mang id update Score = 1
@@ -198,21 +203,20 @@ async function handleUpdate() {
     const arrResponseUpdateScore = []
     for (const idScoreFileDetail of arrIdActionUpdateScore) {
         if (idScoreFileDetail) {
-            const res = await fetch(`/scoreFileDetail/updateScoreById/${idScoreFileDetail.id}`, {
-                method: "PATCH",
-                body: JSON.stringify({
-                    id: idScoreFileDetail.id,
-                    Score: idScoreFileDetail.Score
-                }),
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            })
-            arrResponseUpdateScore.push(res)
+            const formScoreFileScoreNull = {
+                id: idScoreFileDetail.id,
+                Score: idScoreFileDetail.Score
+            }
+            arrResponseUpdateScore.push(formScoreFileScoreNull)
         }
     }
-    await Promise.all(arrResponseUpdateScore)
-
+    await fetch(`/scoreFileDetail/updateScore`, {
+        method: "PATCH",
+        body: JSON.stringify(arrResponseUpdateScore),
+        headers: {
+            "Content-Type": "application/json"
+        }
+    })
     // func cap nhat ScoreTotal in scoreFile 
     await updateScoreTotal()
     // cap nhat tong diem

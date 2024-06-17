@@ -42,18 +42,19 @@ async function handleUpdate(id) {
                     ProductDetailId: NewProductDetailIdDetail[i] === "" ? null : NewProductDetailIdDetail[i],
                     Note: NewNoteDetail[i]
                 }
-                const response = await fetch("/scoreTempDetail/add", {
-                    method: "POST",
-                    body: JSON.stringify(ProductDetail),
-                    headers: {
-                        "Content-Type": "application/json"
-                    }
-                })
-                if (response.ok) {
-                    arrAdd.push(response)
-                }
+                arrAdd.push(ProductDetail)
             }
-            await Promise.all(arrAdd)
+            const response = await fetch("/scoreTempDetail/add", {
+                method: "POST",
+                body: JSON.stringify(arrAdd),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            })
+            if (!response.ok) {
+                console.log("lỗi khi thêm scoretempdetail")
+                return
+            }
         }
         // Sửa phiếu chi tiết
         const NameDetail = Array.from(document.querySelectorAll(`.NameDetail${id}`))?.map(e => e.value)
@@ -62,11 +63,12 @@ async function handleUpdate(id) {
         const MaxScoreDetail = Array.from(document.querySelectorAll(`.MaxScoreDetail${id}`))?.map(e => e.value)
         const ValidatedRankDetail = Array.from(document.querySelectorAll(`.ValidatedRankDetail${id}`)).map(e => e.value)
         const ProductDetailIdDetail = Array.from(document.querySelectorAll(`.ProductDetailIdDetail${id}`))?.map(e => e.value)
-        const NoteDetail = Array.from(document.querySelectorAll(`#NoteDetail${id}`))?.map(e => e.value)
-        const arrRes = []
+        const NoteDetail = Array.from(document.querySelectorAll(`.NoteDetail${id}`))?.map(e => e.value)
+        const arrResUpdate = []
         for (let i = 0; i < NameDetail.length; i++) {
             const ProductDetail = {
                 ScoreTemp_id: id,
+                ScoreTempDetailId: NameDataId[i],
                 Name: NameDetail[i],
                 IsScore: IsMark[i],
                 MaxScore: MaxScoreDetail[i],
@@ -74,18 +76,19 @@ async function handleUpdate(id) {
                 ProductDetailId: ProductDetailIdDetail[i] === "" ? null : ProductDetailIdDetail[i],
                 Note: NoteDetail[i]
             }
-            const response = await fetch(`/scoreTempDetail/update/${NameDataId[i]}`, {
-                method: "PUT",
-                body: JSON.stringify(ProductDetail),
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            })
-            if (response.ok) {
-                arrRes.push(response)
-            }
+            arrResUpdate.push(ProductDetail)
         }
-        await Promise.all(arrRes)
+        const responseUpdate = await fetch(`/scoreTempDetail/update`, {
+            method: "PUT",
+            body: JSON.stringify(arrResUpdate),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+        if (!responseUpdate.ok) {
+            console.log("Lỗi khi cập nhật")
+            return
+        }
         hideLoading()
         localStorage.setItem('toast', JSON.stringify({
             position: "top-right",

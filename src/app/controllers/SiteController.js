@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken")
 const dotenv = require("dotenv");
 const StatisticalCustomerModel = require("../models/statistical/District/StatisticalCustomer");
 const StatisticalProductByDistrictModel = require("../models/statistical/District/StatisticalProduct");
+const YearReviewModel = require("../models/yearreview/YearReviewModel")
 dotenv.config();
 const { SECRET_CODE } = process.env
 class SiteController {
@@ -59,7 +60,14 @@ class SiteController {
                     }
                     rateProductOcopByDistrict.push(newObject)
                 });
-                res.render('home', { User: User[0], CountCustomer: CountCustomer, countAllProduct: countAllProduct, countRankOcop3sao: countRankOcop3sao, countRankOcop4sao: countRankOcop4sao, countRankOcop5sao: countRankOcop5sao, RankOcop3SaoPercent: RankOcop3SaoPercent, RankOcop4SaoPercent: RankOcop4SaoPercent, RankOcop5SaoPercent: RankOcop5SaoPercent, productByDistrict: productByDistrict, rateProductOcopByDistrict: rateProductOcopByDistrict });
+                YearReviewModel.fetchAllReviewYear((err, YearReview) => {
+                    if (err) {
+                        return res.status(500).json({
+                            message: err
+                        })
+                    }
+                    res.render('home', { User: User[0], CountCustomer: CountCustomer, countAllProduct: countAllProduct, countRankOcop3sao: countRankOcop3sao, countRankOcop4sao: countRankOcop4sao, countRankOcop5sao: countRankOcop5sao, RankOcop3SaoPercent: RankOcop3SaoPercent, RankOcop4SaoPercent: RankOcop4SaoPercent, RankOcop5SaoPercent: RankOcop5SaoPercent, productByDistrict: productByDistrict, rateProductOcopByDistrict: rateProductOcopByDistrict, YearReview: YearReview });
+                })
             })
 
         } else {
@@ -91,6 +99,13 @@ class SiteController {
         });
         return res.status(200).json(rateProductOcopByDistrict ? rateProductOcopByDistrict : [])
     }
+    productOcopByYearAndDistrictId = async (req, res) => {
+        const idYear = req.params.year
+        const idDistrict = req.params.districtId
+        const listProductOcopByYear = await StatisticalProductByDistrictModel.getProductOcopByYear(idYear, idDistrict)
+        return res.status(200).json(listProductOcopByYear)
+    }
+
     // [GET] /search
     // search(req, res) {
     //     res.render('search');

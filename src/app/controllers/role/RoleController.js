@@ -28,11 +28,7 @@ class ProductGroupControllers {
                             message: "Lỗi"
                         })
                     }
-                    if (User?.[0].role_title.toLowerCase() !== "admin") {
-                        res.redirect("/client")
-                    } else {
-                        res.render("role/role", { Role: Role, User: User[0] })
-                    }
+                    res.render("role/role", { Role: Role, User: User[0] })
                 })
             })
         } else {
@@ -62,11 +58,7 @@ class ProductGroupControllers {
                             message: "Lỗi"
                         })
                     }
-                    if (User?.[0].role_title.toLowerCase() !== "admin") {
-                        res.redirect("/client")
-                    } else {
-                        res.render("role/trash", { Role: Role, User: User[0] })
-                    }
+                    res.render("role/trash", { Role: Role, User: User[0] })
                 })
             })
         } else {
@@ -259,7 +251,6 @@ class ProductGroupControllers {
                 console.log('Error', err)
             }
             else {
-
                 res.json(data)
             }
         })
