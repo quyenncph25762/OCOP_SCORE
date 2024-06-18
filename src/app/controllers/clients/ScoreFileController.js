@@ -126,7 +126,9 @@ class ScoreFileController {
                             message: "Lỗi truy vấn"
                         })
                     }
-                    await employees.forEach(async (employee) => {
+                    // loc ra nhung employee khong bi khoa
+                    const employeeFilter = employees.filter((employee) => employee.isLock === 0)
+                    await employeeFilter.forEach(async (employee) => {
                         ScoreFileModel.create({
                             forEmployeeId: employee._id,
                             IsActive: 0,
