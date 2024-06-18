@@ -227,6 +227,19 @@ class ScoreTempController {
             })
         })
     }
+    // Xoa nhieu
+    removeToTrashAll = async (req, res) => {
+        try {
+            for (const id of req.body) {
+                await ScoreTempModel.removeToTrashScoreTempAll(id)
+            }
+            return res.status(204).json({
+                message: "Xóa thành công"
+            })
+        } catch (error) {
+            console.log(error)
+        }
+    }
     // khoi phuc
     revert(req, res) {
         const id = req.params.id
@@ -243,6 +256,19 @@ class ScoreTempController {
                 message: "Khôi phục thành công"
             })
         })
+    }
+    // khoi phuc nhieu
+    revertAll = async (req, res) => {
+        try {
+            for (const id of req.body) {
+                await ScoreTempModel.revertScoreTempAll(id)
+            }
+            return res.status(204).json({
+                message: "Khoi phuc thành công"
+            })
+        } catch (error) {
+            console.log(error)
+        }
     }
     // trang chua cac scoretemp isDeleted = 1
     pageTrash(req, res) {

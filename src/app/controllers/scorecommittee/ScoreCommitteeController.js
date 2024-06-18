@@ -39,13 +39,13 @@ class ScoreCommitteController {
                                     message: err
                                 })
                             }
-                            WorkDepartmentModal.fetchAllWorkDepartment((err, WorkDepartment) => {
+                            WorkDepartmentModal.fetchAllWorkDepartment(User[0]?.DistrictId, (err, WorkDepartment) => {
                                 if (err) {
                                     return res.status(500).json({
                                         message: err
                                     })
                                 }
-                                workPositionModal.fetchAllWorkPosition((err, WorkPosition) => {
+                                workPositionModal.fetchAllWorkPosition(User[0]?.DistrictId, (err, WorkPosition) => {
                                     if (err) {
                                         return res.status(500).json({
                                             message: err

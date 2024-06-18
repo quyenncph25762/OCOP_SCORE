@@ -55,15 +55,46 @@ const ScoreTempDetail = {
         const query = `UPDATE scoretemp_detail SET IsDeleted = 0 WHERE _id = ${id}`
         connection.query(query, id, callback)
     },
-    // removeToTrash
-    removeToTrashScoreTempDetail: (id, callback) => {
-        const query = `UPDATE scoretemp_detail SET IsDeleted = 1 WHERE _id = ?`
-        connection.query(query, [id], callback)
+    // khoi phuc nhieu
+    revertScoreTempDetailAll: (id) => {
+        return new Promise((resolve, reject) => {
+            const query = `UPDATE scoretemp_detail SET IsDeleted = 0 WHERE _id = ${id}`
+            connection.query(query, (err, results) => {
+                if (err) {
+                    return reject(err)
+                }
+                return resolve(results)
+            })
+        })
     },
     // removeToTrash
+    removeToTrashScoreTempDetail: (id) => {
+        return new Promise((resolve, reject) => {
+            const query = `UPDATE scoretemp_detail SET IsDeleted = 1 WHERE _id = ${id}`
+            connection.query(query, (err, result) => {
+                if (err) {
+                    return reject(err)
+                }
+                return resolve(result)
+            })
+        })
+    },
+    // remove
     deleteScoreTempDetail: (id, callback) => {
         const query = `DELETE FROM scoretemp_detail WHERE _id = ?`
         connection.query(query, [id], callback)
+    },
+    // removeAll
+    deleteScoreTempDetailAll: (id) => {
+        return new Promise((resolve, reject) => {
+            const query = `DELETE FROM scoretemp_detail WHERE _id = ${id}`
+            connection.query(query, (err, results) => {
+                if (err) {
+                    return reject(err)
+                }
+                return resolve(results)
+            })
+        })
     },
     // lay productDetail theo scorefile
     getScoreTempDetailByScoreFile: (scorefileId, callback) => {

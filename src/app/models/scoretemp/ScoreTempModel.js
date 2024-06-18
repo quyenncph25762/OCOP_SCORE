@@ -48,6 +48,18 @@ const ScoreTempModel = {
         const query = `UPDATE scoretemp SET IsDeleted = 1 WHERE _id = ?`
         connection.query(query, [id], callback)
     },
+    // removeToTrashAll
+    removeToTrashScoreTempAll: (id) => {
+        return new Promise((resolve, reject) => {
+            const query = `UPDATE scoretemp SET IsDeleted = 1 WHERE _id = ${id}`
+            connection.query(query, (err, results) => {
+                if (err) {
+                    return reject(err)
+                }
+                return resolve(results)
+            })
+        })
+    },
     // add
     create: (ScoreTemp, callback) => {
         const query = `INSERT INTO scoretemp (Code,Name,Note,IsActive,ProductGroup_id,CreatorUser_id) VALUES (?,?,?,?,?,?)`
@@ -75,6 +87,18 @@ const ScoreTempModel = {
     revertScoreTemp: (id, callback) => {
         const query = `UPDATE scoretemp SET IsDeleted = 0 WHERE _id = ${id}`
         connection.query(query, id, callback)
+    },
+    // khoi phuc nhieu
+    revertScoreTempAll: (id) => {
+        return new Promise((resolve, reject) => {
+            const query = `UPDATE scoretemp SET IsDeleted = 0 WHERE _id = ${id}`
+            connection.query(query, (err, results) => {
+                if (err) {
+                    return reject(err)
+                }
+                return resolve(results)
+            })
+        })
     },
 }
 

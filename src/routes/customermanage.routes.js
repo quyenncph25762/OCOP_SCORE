@@ -10,9 +10,9 @@ router.delete('/trash/:id', CheckController.checkout('Customer'), Customermanage
 // khoi phuc
 router.patch('/trash/:id/update', CheckController.checkout('Customer'), CustomermanageController.revertCustomer);
 // trash
-router.post('/create', CheckController.checkout('Customer'), upload.single(), CustomermanageController.create);
+router.post('/create', CheckController.checkout('Customer'), CustomermanageController.create);
 router.delete('/:id', CheckController.checkout('Customer'), CustomermanageController.delete);
-router.post('/:id/update', CheckController.checkout('Customer'), upload.single(), CustomermanageController.update);
+router.post('/:id/update', CheckController.checkout('Customer'), CustomermanageController.update);
 router.get('/:id/edit', CheckController.checkout('Customer'), CustomermanageController.getbyId);
 router.use('/', CheckController.checkout('Customer'), CustomermanageController.index);
 module.exports = router;

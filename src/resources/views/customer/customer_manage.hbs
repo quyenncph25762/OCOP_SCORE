@@ -333,19 +333,23 @@
       const City_id = document.getElementById(`City_id${id}`).value
       const District_id = document.getElementById(`District_id${id}`).value
       const Ward_id = document.getElementById(`Ward_id${id}`).value
-      const formData = new FormData()
-      formData.append("Code", Code)
-      formData.append("Name", Name)
-      formData.append("Address", Address)
-      formData.append("SubName", SubName)
-      formData.append("Phone", Phone)
-      formData.append("Email", Email)
-      formData.append("City_id", City_id)
-      formData.append("District_id", District_id)
-      formData.append("Ward_id", Ward_id)
+      const form = {
+        Code: Code,
+        Name: Name,
+        Address: Address,
+        SubName: SubName,
+        Phone: Phone,
+        Email: Email,
+        City_id: City_id,
+        District_id: District_id,
+        Ward_id: Ward_id,
+      }
       const res = await fetch(`/customer-manage/${id}/update`, {
         method: "POST",
-        body: formData
+        body: JSON.stringify(form),
+        headers: {
+          "Content-Type": "application/json"
+        }
       })
       if (res.ok) {
         const data = await res.json()
@@ -372,7 +376,6 @@
           showHideTransition: 'slide',
           stack: 4
         });
-        console.error("Response was not ok:", res.status);
       }
     }
   </script>

@@ -28,7 +28,7 @@ class ProductGroupControllers {
                             message: "Lỗi"
                         })
                     }
-                    CustomerModel.getAllCustomer((err, Customer) => {
+                    CustomerModel.getAllCustomer(User[0]?.DistrictId, (err, Customer) => {
                         if (err) {
                             return res.status(400).json({
                                 message: err
@@ -77,12 +77,7 @@ class ProductGroupControllers {
                 })
             }
             if (data.length === 0) {
-                ProductGroupModel.AddProductGroup({
-                    Name: req.body.Name,
-                    IsActive: req.body.IsActive === "true" ? 1 : 0,
-                    Note: req.body.Note,
-                    Code: req.body.Code
-                }, (err, data) => {
+                ProductGroupModel.AddProductGroup(req.body, (err, data) => {
                     if (err) {
                         console.error('Lỗi thêm sản phẩm:', err);
                         return res.status(500).json({
@@ -96,7 +91,7 @@ class ProductGroupControllers {
                 })
             } else {
                 return res.status(400).json({
-                    message: "Gia tri da ton tai"
+                    message: "Tên nhóm sản phẩm đã tồn tại"
                 })
             }
         })
@@ -120,7 +115,6 @@ class ProductGroupControllers {
                             message: err
                         })
                     } else {
-
                         return res.status(203).json({
                             message: "Xoa thanh cong"
                         })
@@ -129,6 +123,30 @@ class ProductGroupControllers {
             })
         }
 
+    }
+    // xoa vao thung rac nhieu
+    removeToTrashAll = async (req, res) => {
+        try {
+            const cookie = req.cookies
+            if (cookie?.User) {
+                const UserDataCookie = jwt.verify(cookie.User, SECRET_CODE)
+                AccountModel.fetchOneUser(UserDataCookie?._id, async (err, User) => {
+                    if (err) {
+                        return res.status(400).json({
+                            message: err
+                        })
+                    }
+                    for (const id of req.body) {
+                        await ProductGroupModel.deleteProductGroupToTrashAll(id, User[0]?._id)
+                    }
+                    return res.status(203).json({
+                        message: "Xoa thanh cong"
+                    })
+                })
+            }
+        } catch (error) {
+            console.log(error)
+        }
     }
     // xoa
     remove(req, res, next) {
@@ -142,6 +160,19 @@ class ProductGroupControllers {
                 })
             }
         })
+    }
+    // xoa nhieeuf
+    removeAll = async (req, res) => {
+        try {
+            for (const id of req.body) {
+                await ProductGroupModel.deleteProductGroupAll(id)
+            }
+            return res.status(203).json({
+                message: "Xóa thành thành công"
+            })
+        } catch (error) {
+            console.log(error)
+        }
     }
     // khoi phuc
     revert(req, res, next) {
@@ -158,9 +189,21 @@ class ProductGroupControllers {
             }
         })
     }
+    // khoi phuc nhieeuf
+    revertAll = async (req, res) => {
+        try {
+            for (const id of req.body) {
+                await ProductGroupModel.revertProductGroupAll(id)
+            }
+            return res.status(203).json({
+                message: "khoi phuc thành công"
+            })
+        } catch (error) {
+            console.log(error)
+        }
+    }
     // update
     update(req, res, next) {
-        console.log(req.body)
         const id = req.params.id
         ProductGroupModel.findProductGroupUpdate(id, req.body, (err, data) => {
             if (err) {
@@ -169,12 +212,7 @@ class ProductGroupControllers {
                 })
             }
             if (data.length === 0) {
-                ProductGroupModel.updateProductGroup(id, {
-                    Name: req.body.Name,
-                    IsActive: req.body.IsActive === "true" ? 1 : 0,
-                    Note: req.body.Note,
-                    Code: req.body.Code
-                }, (err, result) => {
+                ProductGroupModel.updateProductGroup(id, req.body, (err, result) => {
                     if (err) {
                         return res.status(400).json({
                             message: `${err}: Loi updateProductGroup`
@@ -186,7 +224,7 @@ class ProductGroupControllers {
                 })
             } else {
                 return res.status(400).json({
-                    message: "Gia tri da ton tai"
+                    message: "Tên nhóm sản phẩm đã tồn tại"
                 })
             }
         })

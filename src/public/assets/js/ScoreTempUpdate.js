@@ -6,6 +6,20 @@ async function handleUpdate(id) {
         const IsActive = document.getElementById(`IsActive${id}`).checked
         const ProductGroup_id = document.getElementById(`ProductGroup_id${id}`).value
         const Note = document.getElementById(`Note${id}`).value
+        if (Name.trim() === "") {
+            hideLoading()
+            $.toast({
+                position: "top-right",
+                heading: 'WARNING!',
+                icon: "warning",
+                loader: true,
+                loaderBg: '#9EC600',
+                stack: 4,
+                text: `Tên phiếu không được để trống`,
+                allowToastClose: true
+            });
+            return
+        }
         const ScoreTemp = {
             Code: Code,
             Name: Name,

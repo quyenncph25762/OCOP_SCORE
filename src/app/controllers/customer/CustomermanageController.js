@@ -101,18 +101,7 @@ class CustomerManageController {
                         })
                     }
                     if (results.length === 0) {
-                        CustomerManagerModel.addCustomer({
-                            Name: req.body.Name,
-                            SubName: req.body.SubName,
-                            Phone: req.body.Phone,
-                            Email: req.body.Email,
-                            City_id: req.body.City_id,
-                            District_id: req.body.District_id,
-                            Ward_id: req.body.Ward_id,
-                            Address: req.body.Address,
-                            CreatorUser_id: req.body.CreatorUser_id,
-                            Code: req.body.Code
-                        }, (err) => {
+                        CustomerManagerModel.addCustomer(req.body, (err) => {
                             if (err) {
                                 console.log(err)
                                 return res.status(500).json({
@@ -176,18 +165,7 @@ class CustomerManageController {
                         return res.status(500).json({ success: false, message: 'Lỗi truy vấn' });
                     }
                     if (data.length === 0) {
-                        CustomerManagerModel.updateCustomer(customer_id, {
-                            Name: req.body.Name,
-                            SubName: req.body.SubName,
-                            Phone: req.body.Phone,
-                            Email: req.body.Email,
-                            City_id: req.body.City_id,
-                            District_id: req.body.District_id,
-                            Ward_id: req.body.Ward_id,
-                            Address: req.body.Address,
-                            Code: req.body.Code,
-                            IsActive: req.body.IsActive === "on" ? 1 : 0
-                        }, (err, result) => {
+                        CustomerManagerModel.updateCustomer(customer_id, req.body, (err, result) => {
                             if (err) {
                                 // Xử lý lỗi nếu có
                                 console.error('Lỗi khi cập nhật thông tin khách hàng:', err);

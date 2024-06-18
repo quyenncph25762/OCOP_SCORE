@@ -195,7 +195,7 @@
             })
         }
         //removeAll
-        btnDeleteAll.addEventListener("click", async (e) => {
+        btnDeleteAll.addEventListener("click", (e) => {
             $.confirm({
                 title: '<ion-icon name="trash-bin-outline"></ion-icon>',
                 content: 'Xác nhận xóa những đối tượng bạn đã chọn ?',
@@ -203,15 +203,21 @@
                     confirm: {
                         text: 'Confirm',
                         btnClass: 'btn-red',
-                        action: function () {
+                        action: async function () {
+                            const arrId = []
                             for (let btnCheck of btnsCheck) {
                                 if (btnCheck.checked) {
                                     const id = btnCheck.dataset.idcheckbox
-                                    fetch(`/product-group/removeToTrash/${id}`, {
-                                        method: 'DELETE'
-                                    })
+                                    arrId.push(id)
                                 }
                             }
+                            await fetch(`/product-group/removeToTrashAll`, {
+                                method: 'POST',
+                                body: JSON.stringify(arrId),
+                                headers: {
+                                    "Content-Type": "application/json"
+                                }
+                            })
                             localStorage.setItem('toast', JSON.stringify({
                                 position: "top-right",
                                 heading: 'Xóa thành công',

@@ -223,15 +223,21 @@
                     confirm: {
                         text: 'Confirm',
                         btnClass: 'btn-red',
-                        action: function () {
+                        action: async function () {
+                            const arrId = []
                             for (let btnCheck of btnsCheck) {
                                 if (btnCheck.checked) {
                                     const id = btnCheck.dataset.idcheckbox
-                                    fetch(`/scoreTemp/removeToTrash/${id}`, {
-                                        method: 'PATCH'
-                                    })
+                                    arrId.push(id)
                                 }
                             }
+                            await fetch(`/scoreTemp/removeToTrashAll`, {
+                                method: 'POST',
+                                body: JSON.stringify(arrId),
+                                headers: {
+                                    "Content-Type": "application/json"
+                                }
+                            })
                             localStorage.setItem('toast', JSON.stringify({
                                 position: "top-right",
                                 heading: 'Xóa thành công',

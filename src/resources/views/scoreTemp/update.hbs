@@ -83,19 +83,31 @@
                                         tiết
                                         phiếu chấm
                                     </div>
-                                    <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
+
+
+                                </div>
+                                {{> modalScoreDetailTrash}}
+                                <div class=" col-md-12 mb-3 mt-3">
+                                    <button class="btn btn-danger btnDeleteAllOutSide btnDisabledOutside mb-3">Xóa mục
+                                        đã
+                                        chọn</button>
+                                    <span class="d-inline-block ml-3" tabindex="0" data-toggle="tooltip"
                                         title="Xem những phiếu bạn đã xóa">
                                         <ion-icon name="trash-outline" data-toggle="modal"
                                             data-target="#exampleModalCenter">
                                         </ion-icon>
                                     </span>
-                                </div>
-                                {{> modalScoreDetailTrash}}
-                                <div class=" col-md-12 mb-3 mt-3">
                                     <div class="panel-body">
                                         <table class="table table-bordered table__temptDetail">
                                             <thead>
                                                 <tr>
+                                                    <td>
+                                                        <div class="checkbox-wrapper-42 checkbox">
+                                                            <input id="checkAllOutSide" type="checkbox"
+                                                                class="checkOutSide" />
+                                                            <label class="cbx" for="checkAllOutSide"></label>
+                                                        </div>
+                                                    </td>
                                                     <th scope="col">#</th>
                                                     <th scope="col">Nội dung</th>
                                                     <th scope="col">Chấm điểm</th>
@@ -103,7 +115,7 @@
                                                     <th scope="col">Điều kiện xếp hạng</th>
                                                     <th scope="col">Viện dẫn</th>
                                                     <th scope="col">Ghi chú</th>
-                                                    <th scope="col"></th>
+                                                    {{!-- <th scope="col"></th> --}}
                                                 </tr>
                                             </thead>
                                             {{!-- body --}}
@@ -112,6 +124,13 @@
                                             <tbody id="education_fields">
                                                 {{#each ScoreTempDetail}}
                                                 <tr>
+                                                    <td>
+                                                        <div class="checkbox-wrapper-42 checkOutSide">
+                                                            <input id="cbx-42{{this._id}}" type="checkbox"
+                                                                class="checkOutSide" data-idCheckBox="{{this._id}}" />
+                                                            <label class="cbx" for="cbx-42{{this._id}}"></label>
+                                                        </div>
+                                                    </td>
                                                     <th scope="row">{{plus
                                                         @index}}</th>
                                                     <td>
@@ -182,11 +201,6 @@
                                                         <textarea name="Note" class="NoteDetail{{this.ScoreTemp_id}}"
                                                             cols="10" rows="1">{{this.Note}}</textarea>
                                                     </td>
-                                                    <td>
-                                                        <ion-icon data-id="{{this._id}}" id="icon_moveToTrash"
-                                                            class="icon__scoreTempDetail"
-                                                            name="trash-outline"></ion-icon>
-                                                    </td>
                                                 </tr>
                                                 {{/each}}
                                             </tbody>
@@ -213,7 +227,21 @@
     </div>
 </div>
 {{> footer}}
-
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+    gtag('js', new Date());
+    gtag('config', 'UA-56159088-1');
+    // checkbox All
+    $("#checkAllOutSide").click(function (e) {
+        $(".checkOutSide").prop('checked', $(this).prop('checked'));
+    });
+    $("#checkAll").click(function (e) {
+        $(".check").prop('checked', $(this).prop('checked'));
+    });
+</script>
 <script>
     window.dataLayer = window.dataLayer || [];
 
@@ -298,51 +326,60 @@
             localStorage.removeItem('toast');
         }
         const btnTrash = document.querySelectorAll("#icon_moveToTrash");
-        //remove One
-        for (let btn of btnTrash) {
-            btn.addEventListener("click", (event) => {
-                $.confirm({
-                    title: '<ion-icon name="trash-bin-outline"></ion-icon>',
-                    content: 'Bạn có chắc chắn muốn xóa ?',
-                    buttons: {
-                        confirm: {
-                            text: 'Confirm',
-                            btnClass: 'btn-red',
-                            action: function () {
-                                // Lấy ID của mục cần xóa từ thuộc tính data-id của nút
-                                const id = event.target.dataset.id;
-
-                                // Gọi API xóa mục
-                                fetch(`/scoreTempDetail/removeToTrash/${id}`, {
-                                    method: 'PATCH'
-                                }).then(response => {
-                                    if (response.ok) {
-                                        localStorage.setItem('toast', JSON.stringify({
-                                            position: "top-right",
-                                            heading: 'Xóa thành công',
-                                            text: 'Đã xóa thành công thành công',
-                                            icon: 'success',
-                                            loader: true,
-                                            loaderBg: '#9EC600',
-                                            showHideTransition: 'slide',
-                                            stack: 4
-                                        }));
-                                        window.location.reload()
-                                    } else {
-                                        alert('Có lỗi xảy ra khi xóa mục');
-                                    }
-                                }).catch(error => {
-                                    $.alert('Đã hủy');
-                                });
-                            }
-                        },
-                        cancel: function () {
-                            $.alert('Đã hủy!');
-                        }
-                    }
-                });
-            })
+        const btnsCheck = document.querySelectorAll(".checkOutSide")
+        const btnDeleteAllOutSide = document.querySelector(".btnDeleteAllOutSide")
+        const btnDisabledOutside = document.querySelector(".btnDisabledOutside")
+        let count = 0
+        const checkBtnDisabled = () => {
+            if (count === 0) {
+                btnDisabledOutside.setAttribute("disabled", true)
+            } else {
+                btnDisabledOutside.removeAttribute("disabled")
+            }
         }
+        //remove all
+        btnDeleteAllOutSide.addEventListener("click", async (e) => {
+            $.confirm({
+                title: '<ion-icon name="trash-bin-outline"></ion-icon>',
+                content: 'Xác nhận xóa những đối tượng bạn đã chọn ?',
+                buttons: {
+                    confirm: {
+                        text: 'Confirm',
+                        btnClass: 'btn-red',
+                        action: async function () {
+                            const arrId = []
+                            for (let btnCheck of btnsCheck) {
+                                if (btnCheck.checked) {
+                                    const id = btnCheck.dataset.idcheckbox
+                                    arrId.push(id)
+                                }
+                            }
+                            await fetch(`/scoreTempDetail/removeToTrash`, {
+                                method: 'POST',
+                                body: JSON.stringify(arrId),
+                                headers: {
+                                    "Content-Type": "application/json"
+                                }
+                            })
+                            localStorage.setItem('toast', JSON.stringify({
+                                position: "top-right",
+                                heading: 'Xóa thành công',
+                                text: 'Đã xóa thành công thành công',
+                                icon: 'success',
+                                loader: true,
+                                loaderBg: '#9EC600',
+                                showHideTransition: 'slide',
+                                stack: 4
+                            }));
+                            window.location.reload()
+                        }
+                    },
+                    cancel: function () {
+                        $.alert('Đã hủy');
+                    }
+                }
+            });
+        })
     })
 </script>
 <script src="/assets/js/ScoreTempUpdate.js"></script>

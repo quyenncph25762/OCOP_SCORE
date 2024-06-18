@@ -14,6 +14,7 @@ async function handleclickDetail(id) {
             tbody.innerHTML += `
             ${item.IsScore === 0 ?
                     `<tr>
+                       
                         <td style="font-weight: 600; max-width: 500px;text-wrap: wrap; word-wrap: break-word; overflow-wrap: break-word;">
                     ${item.Name}
                         </td>

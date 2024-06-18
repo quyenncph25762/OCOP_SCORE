@@ -188,7 +188,6 @@
             })
         }
         const btnRevertAll = document.querySelector(".btnRevertAll")
-        console.log(btnRevertAll)
         btnRevertAll.addEventListener("click", async (e) => {
             $.confirm({
                 title: '<ion-icon name="help-circle-outline"></ion-icon>',
@@ -196,7 +195,7 @@
                 buttons: {
                     confirm: {
                         text: 'Confirm',
-                        btnClass: 'btn-red',
+                        btnClass: 'btn-blue',
                         action: async function () {
                             const id = event.target.dataset.id;
                             for (let btnCheck of btnsCheck) {
