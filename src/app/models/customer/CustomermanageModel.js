@@ -1,21 +1,26 @@
 const connection = require('../../../config/db')
 const CustomerManageController = {
-    getAllCustomer: (callback) => {
+    getAllCustomer: (districtId, callback) => {
         const query = `SELECT customer.*, 
         city.Name AS city_name, 
         district.Name AS district_name, 
         ward.Name AS ward_name 
- FROM customer 
- JOIN city ON city._id = customer.City_id 
- JOIN district ON district._id = customer.District_id 
- JOIN ward ON ward._id = customer.Ward_id 
- WHERE customer.Isdeleted = 0 ORDER BY customer._id DESC;
+        FROM 
+            customer 
+        JOIN 
+            city ON city._id = customer.City_id 
+        JOIN 
+            district ON district._id = customer.District_id 
+        JOIN 
+            ward ON ward._id = customer.Ward_id 
+        WHERE 
+            customer.Isdeleted = 0 AND customer.District_id ${districtId ? `= ${districtId}` : `IS NULL`}  ORDER BY customer._id DESC;
         `;
         // const query = 'SELECT * FROM customer WHERE Isdeleted = 0';
         connection.query(query, callback)
     },
     getCustomerbyId: (callback) => {
-        const query = 'SELECT Name, Phone, Address * FROM customer WHERE _id=?';
+        const query = 'SELECT Name, Phone, Address * FROM customer WHERE _id = ?';
         connection.query(query, callback);
     },
     addCustomer: (customer, callback) => {
@@ -30,24 +35,23 @@ const CustomerManageController = {
         connection.query(query, values, callback);
     },
     // tim khach hang
-    findCustomerAdd: (Customer, callback) => {
-        const query = 'SELECT * FROM customer WHERE Name = ?';
+    findCustomerAdd: (DistrictId, Customer, callback) => {
+        const query = `SELECT * FROM customer WHERE Name = ? AND customer.District_id ${DistrictId ? ` = ${DistrictId}` : `IS NULL`}`;
         const values = [Customer.Name];
         connection.query(query, values, callback);
     },
-    findCustomerUpdate: (id, Customer, callback) => {
-        const query = `SELECT * FROM customer WHERE Name = ? AND _id != ${id} `;
+    findCustomerUpdate: (id, DistrictId, Customer, callback) => {
+        const query = `SELECT * FROM customer WHERE Name = ? AND customer.District_id ${DistrictId ? ` = ${DistrictId}` : `IS NULL`} AND _id != ${id} `;
         const values = [Customer.Name];
         connection.query(query, values, callback);
     },
-
     // xoa customer to trash
     deleteCustomer: (customer_id, UserId, callback) => {
         const query = `UPDATE customer SET IsDeleted = 1 , DeleterUser_id = ${UserId} ,DeletionTime = CURRENT_TIMESTAMP  WHERE _id = ?`;
         connection.query(query, customer_id, callback);
     },
     // trash
-    getAllCustomerFromTrash: (callback) => {
+    getAllCustomerFromTrash: (DistrictId, callback) => {
         const query = `SELECT customer.*, 
         city.Name AS city_name, 
         district.Name AS district_name, 
@@ -56,7 +60,7 @@ const CustomerManageController = {
  JOIN city ON city._id = customer.City_id 
  JOIN district ON district._id = customer.District_id 
  JOIN ward ON ward._id = customer.Ward_id 
- WHERE customer.Isdeleted = 1;
+ WHERE customer.Isdeleted = 1 AND customer.District_id ${DistrictId ? `= ${DistrictId}` : `IS NULL`};
         `;
         connection.query(query, callback);
     },

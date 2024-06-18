@@ -480,6 +480,44 @@
         const UserName = document.getElementById(`UserName${id}`).value
         const roleId = document.getElementById(`roleId${id}`).value
         const District = document.getElementById(`District${id}`).value
+        if (FullName.trim() === "") {
+            $.toast({
+                position: "top-right",
+                heading: 'WARNING!',
+                text: "Tên cán bộ không được để trống",
+                icon: 'warning',
+                loader: true,
+                loaderBg: '#f2a654',
+                showHideTransition: 'slide',
+                stack: 4
+            });
+            return
+        }
+        if (UserName.trim() === "") {
+            $.toast({
+                position: "top-right",
+                heading: 'WARNING!',
+                text: "Tên đăng nhập không được để trống",
+                icon: 'warning',
+                loader: true,
+                loaderBg: '#f2a654',
+                showHideTransition: 'slide',
+                stack: 4
+            });
+            return
+        } else if (UserName.length < 6) {
+            $.toast({
+                position: "top-right",
+                heading: 'WARNING!',
+                text: "Tên đăng nhập phải lớn hơn hoặc bằng 6",
+                icon: 'warning',
+                loader: true,
+                loaderBg: '#f2a654',
+                showHideTransition: 'slide',
+                stack: 4
+            });
+            return
+        }
         //cat url
         const fileUrl = Avatar.files && Avatar.files[0] ? URL.createObjectURL(Avatar.files[0]) : imagePreview.src;
         const index = fileUrl.indexOf("Uploads/");
@@ -500,10 +538,10 @@
         formData.append("FullName", FullName)
         formData.append("Phone", Phone)
         formData.append("Address", Address)
-        formData.append("WorkDepartment_id", WorkDepartment_id)
-        formData.append("WorkPosition_id", WorkPosition_id)
+        formData.append("WorkDepartment_id", WorkDepartment_id ?? null)
+        formData.append("WorkPosition_id", WorkPosition_id ?? null)
         formData.append("roleId", roleId)
-        formData.append("DistrictId", District ? District : null)
+        formData.append("DistrictId", District ?? null)
         const res = await fetch(`/employee/update/${id}`, {
             method: "POST",
             body: formData

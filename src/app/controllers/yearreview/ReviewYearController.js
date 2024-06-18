@@ -91,7 +91,7 @@ class ReviewYearController {
                 })
             } else {
                 return res.status(400).json({
-                    message: 'Gía trị đã tồn tại'
+                    message: 'Năm đã tồn tại trong hệ thống'
                 });
             }
         })
@@ -115,6 +115,31 @@ class ReviewYearController {
             })
         }
     }
+    // xoa vao thung rac nhieu
+    removeToTrashAll = async (req, res) => {
+        try {
+            const cookie = req.cookies
+            if (cookie?.User) {
+                const UserDataCookie = jwt.verify(cookie.User, SECRET_CODE)
+                AccountModel.fetchOneUser(UserDataCookie?._id, async (err, User) => {
+                    if (err) {
+                        return res.status(400).json({
+                            message: err
+                        })
+                    }
+                    for (const id of req.body) {
+                        await YearReviewModel.deleteYearToTrashAll(id, User[0]?._id)
+                    }
+                    return res.status(203).json({
+                        message: "Xoa thanh cong"
+                    })
+                })
+            }
+
+        } catch (error) {
+            console.log(error)
+        }
+    }
     // xoa
     remove(req, res, next) {
         console.log(req.params.id)
@@ -128,6 +153,21 @@ class ReviewYearController {
                 })
             }
         })
+    }
+    // xoa
+    removeAll = async (req, res) => {
+        try {
+            for (const id of req.body) {
+                if (id) {
+                    await YearReviewModel.deleteYearAll(id)
+                }
+            }
+            return res.status(204).json({
+                message: "Xóa thành công"
+            })
+        } catch (error) {
+            console.log(error)
+        }
     }
     // khoi phuc
     revert(req, res, next) {
@@ -143,6 +183,19 @@ class ReviewYearController {
                 })
             }
         })
+    }
+    // khoi phuc nhieu
+    revertAll = async (req, res) => {
+        try {
+            for (const id of req.body) {
+                await YearReviewModel.revertYearAll(id)
+            }
+            return res.status(204).json({
+                message: "Khôi phục thành công"
+            })
+        } catch (error) {
+            console.log(error)
+        }
     }
     // update
     update(req, res, next) {
@@ -170,7 +223,7 @@ class ReviewYearController {
                 })
             } else {
                 return res.status(500).json({
-                    message: "Gía trị đã tồn tại"
+                    message: "Năm đã tồn tại trong hệ thống"
                 })
             }
         })

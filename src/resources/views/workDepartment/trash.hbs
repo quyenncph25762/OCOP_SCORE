@@ -64,26 +64,18 @@
                                         <td>{{this.code}}</td>
                                         <td>{{this.title}}</td>
                                         <td>{{this.description}}</td>
-                                        <td style="display: flex;">
-                                            <div class="action_center">
-                                                <button data-toggle="modal" data-target="#exampleModal{{this._id}}"
-                                                    style="background-color: transparent;border: none;cursor: pointer;">
-                                                    <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
-                                                        title="Khôi phục: {{this.title}}">
-                                                        <ion-icon name="sync-outline"
-                                                            style="color: white; font-size: 18px;" id="icon_revert"
-                                                            data-id="{{this._id}}"></ion-icon>
-                                                    </span>
-                                                </button>
-                                            </div>
-                                            <div class="delete_action">
-                                                <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
-                                                    title="Xóa">
-                                                    <ion-icon id="icon_moveToTrash" name="trash-outline"
-                                                        data-id="{{this._id}}">
-                                                    </ion-icon>
-                                                </span>
-                                            </div>
+                                        <td>
+
+                                            <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
+                                                title="Khôi phục">
+                                                <ion-icon name="sync-outline" id="icon_revert"
+                                                    data-id="{{this._id}}"></ion-icon>
+                                            </span>
+                                            <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Xóa">
+                                                <ion-icon id="icon_moveToTrash" name="trash-outline"
+                                                    data-id="{{this._id}}">
+                                                </ion-icon>
+                                            </span>
                                         </td>
                                     </tr>
                                     {{else}}
@@ -193,7 +185,7 @@
                         buttons: {
                             confirm: {
                                 text: 'Confirm',
-                                btnClass: 'btn-red',
+                                btnClass: 'btn-blue',
                                 action: function () {
                                     // Lấy ID của mục cần xóa từ thuộc tính data-id của nút
                                     const id = event.target.dataset.id;
@@ -264,15 +256,20 @@
                             text: 'Confirm',
                             btnClass: 'btn-red',
                             action: async function () {
-                                const id = event.target.dataset.id;
+                                const arrId = []
                                 for (let btnCheck of btnsCheck) {
                                     if (btnCheck.checked) {
                                         const id = btnCheck.dataset.idcheckbox
-                                        const res = await fetch(`/workDepartment/remove/${id}`, {
-                                            method: "DELETE"
-                                        })
+                                        arrId.push(id)
                                     }
                                 }
+                                await fetch(`/workDepartment/removeAll`, {
+                                    method: "POST",
+                                    body: JSON.stringify(arrId),
+                                    headers: {
+                                        "Content-Type": "application/json"
+                                    }
+                                })
                                 localStorage.setItem('toast', JSON.stringify({
                                     position: "top-right",
                                     heading: 'Xóa thành công',
@@ -302,15 +299,20 @@
                             text: 'Confirm',
                             btnClass: 'btn-red',
                             action: async function () {
-                                const id = event.target.dataset.id;
+                                const arrId = []
                                 for (let btnCheck of btnsCheck) {
                                     if (btnCheck.checked) {
                                         const id = btnCheck.dataset.idcheckbox
-                                        const res = await fetch(`/workDepartment/revert/${id}`, {
-                                            method: "PATCH"
-                                        })
+                                        arrId.push(id)
                                     }
                                 }
+                                await fetch(`/workDepartment/revertAll`, {
+                                    method: "POST",
+                                    body: JSON.stringify(arrId),
+                                    headers: {
+                                        "Content-Type": "application/json"
+                                    }
+                                })
                                 localStorage.setItem('toast', JSON.stringify({
                                     position: "top-right",
                                     heading: 'Khôi phục thành công',

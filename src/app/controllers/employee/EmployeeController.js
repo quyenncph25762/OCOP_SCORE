@@ -26,14 +26,13 @@ class EmployeeControllers {
                             message: err
                         })
                     }
-
-                    workDepartmentModel.fetchAllWorkDepartment((err, WorkDepartMent) => {
+                    workDepartmentModel.fetchAllWorkDepartment(User[0].DistrictId, (err, WorkDepartMent) => {
                         if (err) {
                             return res.status(400).json({
                                 message: err
                             })
                         }
-                        workPositionModel.fetchAllWorkPosition((err, WorkPosition) => {
+                        workPositionModel.fetchAllWorkPosition(User[0].DistrictId, (err, WorkPosition) => {
                             if (err) {
                                 return res.status(400).json({
                                     message: err

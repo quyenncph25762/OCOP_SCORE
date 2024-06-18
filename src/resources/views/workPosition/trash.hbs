@@ -272,15 +272,20 @@
                         text: 'Confirm',
                         btnClass: 'btn-red',
                         action: async function () {
-                            const id = event.target.dataset.id;
+                            const arrId = []
                             for (let btnCheck of btnsCheck) {
                                 if (btnCheck.checked) {
                                     const id = btnCheck.dataset.idcheckbox
-                                    const res = await fetch(`/workPosition/remove/${id}`, {
-                                        method: "DELETE"
-                                    })
+                                    arrId.push(id)
                                 }
                             }
+                            await fetch(`/workPosition/removeAll`, {
+                                method: 'POST',
+                                body: JSON.stringify(arrId),
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                }
+                            })
                             localStorage.setItem('toast', JSON.stringify({
                                 position: "top-right",
                                 heading: 'Xóa thành công',
@@ -310,15 +315,20 @@
                         text: 'Confirm',
                         btnClass: 'btn-blue',
                         action: async function () {
-                            const id = event.target.dataset.id;
+                            const arrId = []
                             for (let btnCheck of btnsCheck) {
                                 if (btnCheck.checked) {
                                     const id = btnCheck.dataset.idcheckbox
-                                    const res = await fetch(`/workPosition/revert/${id}`, {
-                                        method: "PATCH"
-                                    })
+                                    arrId.push(id)
                                 }
                             }
+                            await fetch(`/workPosition/revertAll`, {
+                                method: 'POST',
+                                body: JSON.stringify(arrId),
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                }
+                            })
                             localStorage.setItem('toast', JSON.stringify({
                                 position: "top-right",
                                 heading: 'Khôi phục thành công',

@@ -34,7 +34,7 @@
 
                             <thead>
                                 <tr>
-                                    <th {{#ifCond data.length 0}}hidden{{/ifCond}}>
+                                    <th {{#ifCond Customer.length 0}}hidden{{/ifCond}}>
                                         <div class="checkbox-wrapper-42 checkbox">
                                             <input id="checkAll" type="checkbox" class="check" />
                                             <label class="cbx" for="checkAll"></label>
@@ -48,7 +48,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                {{#each viewData.data}}
+                                {{#each Customer}}
                                 <tr>
                                     <td>
                                         <div class="checkbox-wrapper-42 checkbox">

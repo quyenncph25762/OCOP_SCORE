@@ -97,7 +97,7 @@
               <thead>
                 <tr>
                   <th>
-                    <div class="checkbox" {{#ifCond viewData.data.length 0}}hidden{{/ifCond}}>
+                    <div class="checkbox" {{#ifCond Product.length 0}}hidden{{/ifCond}}>
                       <div class="checkbox-wrapper-42 checkbox">
                         <input id="checkAll" type="checkbox" class="check" />
                         <label class="cbx" for="checkAll"></label>
@@ -113,7 +113,7 @@
                 </tr>
               </thead>
               <tbody>
-                {{#each viewData.data}}
+                {{#each Product}}
                 <tr>
                   <td>
                     <div class="checkbox-wrapper-42 checkbox">

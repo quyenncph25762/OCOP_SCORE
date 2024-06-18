@@ -18,34 +18,12 @@ const ProductmanageController = {
     JOIN
         yearreview ON yearreview._id = product.ProductYearId
     WHERE 
-        product.IsDeleted = 0 AND product.DistrictId = ? ORDER BY product._id DESC;
+        product.IsDeleted = 0 AND product.DistrictId ${DistrictId ? `= ${DistrictId}` : `IS NULL`} ORDER BY product._id DESC;
         `;
         connection.query(query, [DistrictId], callback);
 
     },
-    getAllProductIsNull: (callback) => {
-        const query = `SELECT 
-        product.*,
-        customer.Name AS customer_name,
-        productgroup.Name AS productGroup_name,
-        yearreview.yearName AS yearName,
-        customer.IsDeleted AS customer_IsDeleted,
-        productgroup.IsDeleted AS productgroup_IsDeleted,
-        yearreview.isDeleted AS yearreview_IsDeleted
-    FROM 
-        product
-    JOIN 
-        customer ON customer._id = product.Customer_id
-    JOIN 
-        productgroup ON productgroup._id = product.ProductGroup_id
-    JOIN
-        yearreview ON yearreview._id = product.ProductYearId
-    WHERE 
-        product.IsDeleted = 0 AND product.DistrictId IS NULL ORDER BY product._id DESC;
-        `;
-        connection.query(query, callback);
 
-    },
 
     getProductbyId: (id, callback) => {
         const query = `
@@ -144,29 +122,7 @@ const ProductmanageController = {
     JOIN
         yearreview ON yearreview._id = product.ProductYearId
     WHERE 
-        product.DistrictId = ${DistrictId} AND product.IsDeleted = 1;
-        `
-        connection.query(query, callback)
-    },
-    getAllProductFromtTrashIsNull: (callback) => {
-        const query = `SELECT 
-        product.*,
-        customer.Name AS customer_name,
-        productgroup.Name AS productGroup_name,
-        yearreview.yearName AS yearName,
-        customer.IsDeleted AS customer_IsDeleted,
-        productgroup.IsDeleted AS productgroup_IsDeleted,
-        yearreview.isDeleted AS yearreview_IsDeleted
-    FROM 
-        product
-    JOIN 
-        customer ON customer._id = product.Customer_id
-    JOIN 
-        productgroup ON productgroup._id = product.ProductGroup_id
-    JOIN
-        yearreview ON yearreview._id = product.ProductYearId
-    WHERE 
-        product.DistrictId IS NULL AND product.IsDeleted = 1;
+        product.DistrictId ${DistrictId ? `= ${DistrictId}` : `IS NULL`} AND product.IsDeleted = 1;
         `
         connection.query(query, callback)
     },
