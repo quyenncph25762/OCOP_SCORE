@@ -11,7 +11,13 @@ async function generatePDF(htmlContent, outputPath) {
         await page.pdf({
             path: outputPath,
             format: 'A4',
-            printBackground: true
+            printBackground: true,
+            margin: {
+                bottom: '2cm',
+                top: '2cm',
+                left: '3cm',
+                right: '3cm',
+            }
         });
         console.log('PDF generated successfully:', outputPath);
 
