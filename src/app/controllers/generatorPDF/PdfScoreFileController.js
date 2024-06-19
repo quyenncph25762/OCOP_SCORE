@@ -209,7 +209,7 @@ class PdfScoreFileController {
                             <tr key="${index}">
                                 ${item.scoreTempDetail_isScore ? `
                                     <td>
-                                        ${item.scoreTempDetail_isScore && item.Score ? `☒` : "☐"}
+                                        ${item.scoreTempDetail_maxScore === item.Score ? `☒` : "☐"}
                                     </td>
                                 ` : ``}
                                 ${item.scoreTempDetail_name && !item.scoreTempDetail_isScore ? `

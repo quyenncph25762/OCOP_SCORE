@@ -51,7 +51,7 @@ class ScoreTempController {
                     message: "Lỗi truy xuất"
                 })
             }
-            return res.status(200).json(scoretemp?.[0])
+            return res.status(200).json(scoretemp[0] ? scoretemp[0] : [])
         })
     }
     // trang them scoretemp
@@ -121,7 +121,6 @@ class ScoreTempController {
     }
     // lay 1 scoreTemp
     getOne(req, res) {
-        console.log(1)
         const id = req.params.id
         const cookie = req.cookies
         if (cookie?.User) {

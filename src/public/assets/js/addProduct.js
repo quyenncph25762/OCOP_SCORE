@@ -9,22 +9,19 @@ async function handleAdd() {
     const Note = document.getElementById("Note").value
     const IsActive = document.getElementById("IsActive").value
     const Avatar = document.getElementById("Avatar")
-    if (Name.trim() === "") {
-        hideLoading()
-        $.toast({
-            position: "top-right",
-            heading: 'WARNING!',
-            icon: "warning",
-            loader: true,
-            loaderBg: '#9EC600',
-            stack: 4,
-            text: 'Tên không được để trống',
-            allowToastClose: true
-        });
-        return
-    } else {
-        document.querySelector("#ErrorName").innerHTML = ""
+    if (showToastAndReturn(Name.trim() === "", 'Tên không được để trống')) {
+        return;
     }
+    if (showToastAndReturn(ProductYearId.trim() === "", 'Hãy nhập số năm của sản phẩm')) {
+        return;
+    }
+    if (showToastAndReturn(ProductGroup_id.trim() === "", 'Hãy nhập nhóm sản phẩm')) {
+        return;
+    }
+    if (showToastAndReturn(Customer_id.trim() === "", 'Hãy nhập chủ thể của sản phẩm')) {
+        return;
+    }
+
     const formData = new FormData()
     formData.append('Name', Name);
     formData.append('Description', Description);
@@ -40,15 +37,17 @@ async function handleAdd() {
         body: formData
     })
     if (!res.ok) {
-        localStorage.setItem('toast', JSON.stringify({
+        hideLoading()
+        const data = await res.json()
+        $.toast({
             position: "top-right",
             heading: 'Hãy nhập giá trị của sản phẩm',
-            text: 'Sản phẩm thiếu giá trị',
+            text: `${data.message}`,
             icon: 'warning',
             loader: true,
             loaderBg: '#9EC600',
             stack: 4
-        }));
+        })
         return
     }
     const responseProduct = await res.json()
@@ -128,4 +127,22 @@ const handleShowListCitation = () => {
     boxFormProduct.classList.remove("active")
     list_citation.classList.remove("displayNone")
     boxFormProduct.classList.remove("activeTabs")
+}
+
+function showToastAndReturn(condition, message) {
+    if (condition) {
+        hideLoading();
+        $.toast({
+            position: "top-right",
+            heading: 'WARNING!',
+            icon: "warning",
+            loader: true,
+            loaderBg: '#9EC600',
+            stack: 4,
+            text: message,
+            allowToastClose: true
+        });
+        return true;
+    }
+    return false;
 }

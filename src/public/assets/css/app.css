@@ -6,6 +6,10 @@ th {
     text-align: left !important;
 }
 
+body {
+    font-size: 12px !important;
+}
+
 
 
 /* Styles for modal overlay */
@@ -27,7 +31,7 @@ th {
     min-width: 650px;
     margin-left: 50%;
     transform: translateX(-50%);
-    background-image: url(../images/bg-themes/2.png);
+    background-image: #fff;
     background-size: cover;
     padding: 20px;
     border-radius: 10px;
@@ -274,8 +278,8 @@ ion-icon[name="bookmark-outline"] {
 }
 
 ion-icon[name="stop-circle-outline"] {
-    color: #fff;
     font-size: 20px;
+    font-weight: 600;
     cursor: pointer;
 }
 
@@ -294,8 +298,10 @@ ion-icon[name="build-outline"] {
     font-size: 13px;
 }
 
+
 ion-icon[name="create-outline"] {
-    color: rgb(229, 247, 66);
+    color: #7ba5d5;
+    font-weight: 600;
     font-size: 20px;
     cursor: pointer;
 }
@@ -334,7 +340,7 @@ ion-icon[name="hand-left-outline"] {
 }
 
 ion-icon[name="attach-outline"] {
-    color: rgb(221, 62, 72);
+    color: rgb(24, 93, 170);
     font-size: 20px;
     cursor: pointer;
 }
@@ -390,7 +396,7 @@ ion-icon[name="arrow-undo-outline"] {
 ion-icon[name="star"] {
     font-size: 16px;
     cursor: pointer;
-    color: yellow;
+    color: #ff8800;
 }
 
 .text-center {
@@ -455,6 +461,7 @@ input.form-control.input-headerTable.w-100 {
     background: #04b962;
     padding: 3px 8px;
     border-radius: 8px;
+    color: #fff;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -462,6 +469,7 @@ input.form-control.input-headerTable.w-100 {
 
 .statusLabelWarning {
     background: #e3a922;
+    color: #fff;
     border-radius: 8px;
     display: flex;
     align-items: center;
@@ -473,6 +481,7 @@ input.form-control.input-headerTable.w-100 {
     background: #F64E60;
     padding: 3px 8px;
     border-radius: 8px;
+    color: #fff;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -530,7 +539,7 @@ input.form-control.input-headerTable.w-100 {
 .radio-custom+.radio-custom-label:before {
     content: '';
     background: transparent;
-    border: 2px solid #ddd;
+    border: 2px solid #33333333;
     display: inline-block;
     vertical-align: middle;
     width: 24px;
@@ -663,7 +672,7 @@ input.form-control.input-headerTable.w-100 {
 
 .checkbox-wrapper-42 input[type="checkbox"]:checked~.cbx {
     border-color: transparent;
-    background: #6871f1;
+    background: #14b6ff;
     animation: jelly-42 0.6s ease;
 }
 
@@ -845,4 +854,15 @@ input.form-control.input-headerTable.w-100 {
 
 .jstree-default .jstree-leaf>.jstree-ocl {
     background-position: none;
+}
+
+.background-login {
+    background-image: url('https://csdl.ocopthaibinh.vn/Designs/Images/bg-login.jpg') !important;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.text-hightlight {
+    color: #ff8800 !important;
+    font-weight: 600;
 }

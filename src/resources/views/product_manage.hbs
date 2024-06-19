@@ -68,7 +68,7 @@
         <button class="btn btn-danger btnDeleteAll btnDisabled" style="float: left;">Xóa mục đã chọn</button>
         <div class="import_customer_button"
           style="list-style: none; display:flex; justify-content: space-between; align-items: center;">
-          <button class="btn btn-success" id="buttonAddProduct" data-toggle="modal" data-target="#exampleModalAdd">Thêm
+          <button class="btn btn-info" id="buttonAddProduct" data-toggle="modal" data-target="#exampleModalAdd">Thêm
             mới</button>
         </div>
         {{> modalProduct}}
@@ -124,31 +124,31 @@
                   <td class="codeColumn" style="display: none;">{{this.Code}}</td>
                   <td>
                     <div style="display: flex;flex-direction: column;">
-                      <p style="color: rgb(236, 236, 118); font-size: 14px;font-weight: 600;">{{this.Name}}</p>
+                      <p class="text-hightlight" style="font-size: 14px;font-weight: 600;">{{this.Name}}</p>
                       {{#ifCond customer_IsDeleted 0}}
-                      <p style="color: #ccc; font-weight: 550;text-wrap: wrap;">{{this.customer_name}}</p>
+                      <p style="color: #B5B5C3; font-weight: 550;text-wrap: wrap;">{{this.customer_name}}</p>
                       {{else}}
-                      <p style="color: rgb(236, 236, 118);">Không xác định</p>
+                      <p class="text-hightlight" style=">Không xác định</p>
                       {{/ifCond}}
                     </div>
                   </td>
                   {{#ifCond productgroup_IsDeleted 0}}
                   <td>
-                    <p class="text-overhidden">
-                      {{this.productGroup_name}}
-                    </p>
+                    <p class=" text-overhidden">
+                        {{this.productGroup_name}}
+                      </p>
                   </td>
                   {{else}}
-                  <td style="color: rgb(236, 236, 118);">Không xác định</td>
+                  <td class="text-hightlight" style=">Không xác định</td>
                   {{/ifCond}}
                   {{#ifCond yearreview_IsDeleted 0}}
                   <td>{{this.yearName}}</td>
                   {{else}}
-                  <td style="color: rgb(236, 236, 118);">Không xác định</td>
+                  <td class=" text-hightlight" style=">Không xác định</td>
                   {{/ifCond}}
                   {{#ifCond this.Status 1}}
                   <td>
-                    <p class="statusLabelSuccess" for="" style="">Đã duyệt</p>
+                    <p class=" statusLabelSuccess" for="" style="">Đã duyệt</p>
                   </td>
                   {{else}}
                   <td>
@@ -409,10 +409,6 @@
                     </div>
                   </td>
                   {{!-- end icons --}}
-                </tr>
-                {{else}}
-                <tr>
-                  <td colspan="9" class="text-center">Không tìm thấy từ khoá nào</td>
                 </tr>
                 {{/each }}
               </tbody>

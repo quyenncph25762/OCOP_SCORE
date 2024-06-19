@@ -70,12 +70,12 @@
                                     {{#ifCond workdepartment_IsDeleted 0}}
                                     <td>{{this.workdepartment_name}}</td>
                                     {{else}}
-                                    <td style="color: rgb(236, 236, 118);">Không xác định</td>
+                                    <td class="text-hightlight">Không xác định</td>
                                     {{/ifCond}}
                                     {{#ifCond workposition_IsDeleted 0}}
                                     <td>{{this.workposition_name}}</td>
                                     {{else}}
-                                    <td style="color: rgb(236, 236, 118);">Không xác định</td>
+                                    <td class="text-hightlight">Không xác định</td>
                                     {{/ifCond}}
                                     <td>{{this.role_name}}</td>
                                     <td style="display: flex;">
@@ -98,10 +98,6 @@
                                             </span>
                                         </div>
                                     </td>
-                                </tr>
-                                {{else}}
-                                <tr>
-                                    <td colspan="9" class="text-center">Không tìm thấy từ khoá nào</td>
                                 </tr>
                                 {{/each }}
                             </tbody>

@@ -62,17 +62,17 @@
                                     {{#ifCond productgroup_IsDeleted 0}}
                                     <td style="text-wrap: wrap;">{{this.productGroup_name}}</td>
                                     {{else}}
-                                    <td style="color: rgb(236, 236, 118);">Không xác định</td>
+                                    <td class="text-hightlight">Không xác định</td>
                                     {{/ifCond}}
                                     {{#ifCond yearreview_IsDeleted 0}}
                                     <td>{{this.yearName}}</td>
                                     {{else}}
-                                    <td style="color: rgb(236, 236, 118);">Không xác định</td>
+                                    <td class="text-hightlight">Không xác định</td>
                                     {{/ifCond}}
                                     {{#ifCond customer_IsDeleted 0}}
                                     <td>{{this.customer_name}}</td>
                                     {{else}}
-                                    <td style="color: rgb(236, 236, 118);">Không xác định</td>
+                                    <td class="text-hightlight">Không xác định</td>
                                     {{/ifCond}}
                                     <td>{{this.Note}}</td>
                                     <td style="display: flex;">
@@ -98,10 +98,6 @@
                                             </span>
                                         </div>
                                     </td>
-                                </tr>
-                                {{else}}
-                                <tr>
-                                    <td colspan="9" class="text-center">Không tìm thấy từ khoá nào</td>
                                 </tr>
                                 {{/each }}
                             </tbody>

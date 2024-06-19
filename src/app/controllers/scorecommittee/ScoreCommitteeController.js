@@ -149,7 +149,6 @@ class ScoreCommitteController {
                     ...req.body
                 }, async (err, results) => {
                     if (err) {
-                        console.log(err)
                         return res.status(500).json({
                             message: err
                         })
@@ -184,8 +183,6 @@ class ScoreCommitteController {
     // update chu tich hoi dong
     updateCharman(req, res) {
         const id = req.params.id
-        console.log(1)
-        console.log(`req body: ` + req.body)
         ScoreCommitteeModel.updateCharmanScoreCommittee(id, req.body, (err, results) => {
             if (err) {
                 return res.status(500).json({
@@ -294,13 +291,10 @@ class ScoreCommitteController {
             // Loc ra id chua co scorefile trong hoi dong
             console.log(`arrProductId:`, arrProductId)
             const filterEmployeeId = listEmployeeId.filter((item) => !arrId.includes(item))
-            console.log(`filterEmployeeId:`, filterEmployeeId)
             if (filterEmployeeId.length > 0) {
                 for (const employee of filterEmployeeId) {
-                    console.log(`employee:`, employee)
                     // 1 employee them nhieu scorefile theo product_id
                     for (let i = 0; i < arrProductId.length; i++) {
-                        console.log(`arrProductId[i]:`, arrProductId[i])
                         ScoreFileModel.create({
                             forEmployeeId: employee,
                             IsActive: 1,
@@ -337,10 +331,10 @@ class ScoreCommitteController {
                         if (err) {
                             return console.log(err)
                         }
+
                         // console.log(`listScoreFile:`, listScoreFile)
                         // loc nhung employee = null va khac voi id cua nguoi tao ra hoi dong de xoa
                         const listEmployeeFilter = listScoreFile.filter((scorefile) => !scorefile.Employee_id && scorefile.forEmployeeId != User[0]._id || scorefile.Status < 2)
-                        console.log(`listEmployeeFilter:`, listEmployeeFilter)
                         await listEmployeeFilter.forEach(async (scorefile) => {
                             await ScoreFileModel.remove(scorefile._id)
                         })

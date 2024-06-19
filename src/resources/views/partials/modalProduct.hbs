@@ -56,7 +56,7 @@
         width: 250px;
         max-width: 100%;
         padding: 12px;
-        border: 1px dashed rgba(255, 255, 255, 0.4);
+        border: 1px dashed #ccc;
         border-radius: 3px;
         transition: 0.2s;
 
@@ -65,7 +65,7 @@
     .choose-file-button {
         flex-shrink: 0;
         background-color: rgba(255, 255, 255, 0.04);
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        border: 1px solid #ccc;
         border-radius: 3px;
         padding: 8px 15px;
         margin-right: 10px;
@@ -90,7 +90,7 @@
         width: 100%;
         cursor: pointer;
         opacity: 0;
-
+        border: 1px solid #ccc;
     }
 
     .mt-100 {
@@ -239,9 +239,8 @@
                                                 <div class="row">
                                                     <div class="col-md-12">
                                                         <div class="file-drop-area">
-                                                            <span class="choose-file-button">Choose files</span>
-                                                            <span class="file-message">or drag and drop files
-                                                                here</span>
+                                                            <span class="choose-file-button">Chọn</span>
+                                                            <span class="file-message">hoặc kéo thả</span>
                                                             <input id="AttachFile{{this._id}}" class="file-input"
                                                                 name="AttachFile" type="file" multiple>
                                                         </div>
@@ -261,7 +260,7 @@
                 </form>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                    <button onclick="handleAdd()" class="btn btn-success">Thêm sản phẩm</button>
+                    <button onclick="handleAdd()" class="btn btn-info">Thêm sản phẩm</button>
                 </div>
             </div>
         </div>

@@ -1,6 +1,6 @@
 <style>
     .modal-employee {
-        width: 950px;
+        max-width: 950px;
     }
 
     @media screen and (max-width: 765px) {
@@ -22,7 +22,7 @@
                 <button class="btn btn-danger btnDeleteAll btnDisabled" style="float: left;">Xóa mục đã chọn</button>
                 <div class="import_customer_button"
                     style="list-style: none; display:flex; justify-content: space-between; align-items: center;">
-                    <button class="btn btn-success" data-toggle="modal" data-target="#exampleModal">Thêm mới</button>
+                    <button class="btn btn-info" data-toggle="modal" data-target="#exampleModal">Thêm mới</button>
                 </div>
                 {{> modalEmployee}}
             </ul>
@@ -80,17 +80,17 @@
                                         <p class="text-overhidden">{{this.workdepartment_name}}</p>
                                     </td>
                                     {{else}}
-                                    <td style="color: rgb(236, 236, 118);">Không xác định</td>
+                                    <td class="text-hightlight">Không xác định</td>
                                     {{/ifCond}}
                                     {{#ifCond workposition_IsDeleted 0}}
                                     <td>{{this.workposition_name}}</td>
                                     {{else}}
-                                    <td style="color: rgb(236, 236, 118);">Không xác định</td>
+                                    <td class="text-hightlight">Không xác định</td>
                                     {{/ifCond}}
                                     {{#ifCond role_isDeleted 0}}
                                     <td>{{this.role_name}}</td>
                                     {{else}}
-                                    <td style="color: rgb(236, 236, 118);">Không xác định</td>
+                                    <td class="text-hightlight">Không xác định</td>
                                     {{/ifCond}}
                                     <td scope="row">
                                         {{#ifCondNot ../User.id 1}}
@@ -292,10 +292,6 @@
                                         </span>
                                         {{/ifCondAndNot}}
                                     </td>
-                                </tr>
-                                {{else}}
-                                <tr>
-                                    <td colspan="9" class="text-center">Không tìm thấy từ khoá nào</td>
                                 </tr>
                                 {{/each }}
                             </tbody>

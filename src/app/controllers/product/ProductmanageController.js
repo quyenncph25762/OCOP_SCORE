@@ -179,7 +179,7 @@ class ProductmanageController {
                             })
                         }
                         else {
-                            return res.status(400).json({ success: false, message: 'Sản phẩm đã tồn tại trong cơ sở dữ liệu' });
+                            return res.status(400).json({ success: false, message: 'Tên sản phẩm đã tồn tại' });
                         }
 
                     }

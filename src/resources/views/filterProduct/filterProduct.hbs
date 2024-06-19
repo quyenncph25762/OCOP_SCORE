@@ -6,7 +6,7 @@
                 style="list-style: none; display:flex; justify-content: space-between; align-items: center;">
                 <div class="import_customer_button"
                     style="list-style: none; display:flex; justify-content: space-between; align-items: center;">
-                    <button class="btn btn-success btnSubmitFile d-flex align-items-center btnDisabled">
+                    <button class="btn btn-info btnSubmitFile d-flex align-items-center btnDisabled">
                         <ion-icon name="mail-open-outline" style="font-size: 16px;"></ion-icon>
                         <p class="ml-2 mb-0">Gửi link tải hồ sơ</p>
                     </button>
@@ -53,7 +53,7 @@
                                     </div>
                                 </div>
                                 <tr>
-                                    <th {{#ifCond viewData.data.length 0}}hidden{{/ifCond}}>
+                                    <th {{#ifCond Product.length 0}}hidden{{/ifCond}}>
                                         <div class="checkbox-wrapper-42 checkbox">
                                             <input id="checkAll" type="checkbox" class="check" />
                                             <label class="cbx" for="checkAll"></label>
@@ -69,7 +69,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                {{#each viewData.data}}
+                                {{#each Product}}
                                 <tr>
                                     <td>
                                         <div class="checkbox-wrapper-42 checkbox">
@@ -86,7 +86,7 @@
                                         <p class="text-overhidden">{{this.productGroup_name}}</p>
                                     </td>
                                     {{else}}
-                                    <td style="color: rgb(236, 236, 118);">Không xác định</td>
+                                    <td class="text-hightlight">Không xác định</td>
                                     {{/ifCond}}
                                     {{#ifCond this.rankOcop NULL}}
                                     <td>Chưa xếp hạng</td>
@@ -97,7 +97,7 @@
                                     {{#ifCond yearreview_IsDeleted 0}}
                                     <td>{{this.yearName}}</td>
                                     {{else}}
-                                    <td style="color: rgb(236, 236, 118);">Không xác định</td>
+                                    <td class="text-hightlight">Không xác định</td>
                                     {{/ifCond}}
 
                                     {{#ifCond customer_IsDeleted 0}}
@@ -107,13 +107,10 @@
                                         </p>
                                     </td>
                                     {{else}}
-                                    <td style="color: rgb(236, 236, 118);">Không xác định</td>
+                                    <td class="text-hightlight">Không xác định</td>
                                     {{/ifCond}}
                                 </tr>
-                                {{else}}
-                                <tr>
-                                    <td colspan="9" class="text-center">Không tìm thấy từ khoá nào</td>
-                                </tr>
+
                                 {{/each }}
                             </tbody>
                         </table>

@@ -8,7 +8,7 @@
         <button class="btn btn-danger btnDeleteAll btnDisabled" style="float: left;">Xóa mục đã chọn</button>
         <div class="import_customer_button"
           style="list-style: none; display:flex; justify-content: space-between; align-items: center;">
-          <button class="btn btn-success" data-toggle="modal" data-target="#modalCustomerAdd">Thêm mới</button>
+          <button class="btn btn-info" data-toggle="modal" data-target="#modalCustomerAdd">Thêm mới</button>
         </div>
         {{> modalCustomer}}
       </ul>
@@ -174,9 +174,6 @@
                 </div>
                 {{!-- end modal --}}
                 {{else}}
-                <tr>
-                  <td colspan="9" class="text-center">Không tìm thấy từ khoá nào</td>
-                </tr>
                 {{/each }}
               </tbody>
             </table>

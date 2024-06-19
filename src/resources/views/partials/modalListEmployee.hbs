@@ -108,17 +108,13 @@
                             {{#ifCond workdepartment_IsDeleted 0}}
                             <td style="max-width: 150px;text-wrap: wrap;">{{this.workdepartment_name}}</td>
                             {{else}}
-                            <td style="color: rgb(236, 236, 118);">Không xác định</td>
+                            <td class="text-hightlight">Không xác định</td>
                             {{/ifCond}}
                             {{#ifCond workposition_IsDeleted 0}}
                             <td>{{this.workposition_name}}</td>
                             {{else}}
-                            <td style="color: rgb(236, 236, 118);">Không xác định</td>
+                            <td class="text-hightlight">Không xác định</td>
                             {{/ifCond}}
-                        </tr>
-                        {{else}}
-                        <tr>
-                            <td colspan="9" class="text-center">Không tìm thấy từ khoá nào</td>
                         </tr>
                         {{/each }}
                     </tbody>
@@ -215,18 +211,15 @@
                             {{#ifCond workdepartment_IsDeleted 0}}
                             <td style="max-width: 150px;text-wrap: wrap;">{{this.workdepartment_name}}</td>
                             {{else}}
-                            <td style="color: rgb(236, 236, 118);">Không xác định</td>
+                            <td class="text-hightlight">Không xác định</td>
                             {{/ifCond}}
                             {{#ifCond workposition_IsDeleted 0}}
                             <td>{{this.workposition_name}}</td>
                             {{else}}
-                            <td style="color: rgb(236, 236, 118);">Không xác định</td>
+                            <td class="text-hightlight">Không xác định</td>
                             {{/ifCond}}
                         </tr>
                         {{else}}
-                        <tr>
-                            <td colspan="9" class="text-center">Không tìm thấy từ khoá nào</td>
-                        </tr>
                         {{/each }}
                     </tbody>
                 </table>

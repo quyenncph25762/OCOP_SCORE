@@ -71,6 +71,7 @@ class SiteController {
             })
 
         } else {
+
             res.redirect("/auth/loginPage")
         }
     }
