@@ -11,7 +11,7 @@ router.post("/add", CheckController.checkout('Score'), ScoreFileDetailController
 // update
 // router.patch("/update/:id", ScoreFileDetailController.updateScoreFileDetail)
 // updateScoreById
-router.patch("/updateScore", CheckController.checkout('Score'), ScoreFileDetailController.updateScoreById)
+router.post("/updateScore", CheckController.checkout('Score'), ScoreFileDetailController.updateScoreById)
 
 
 module.exports = router;

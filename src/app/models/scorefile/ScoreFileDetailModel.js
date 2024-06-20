@@ -76,6 +76,18 @@ const ScoreDetailModel = {
     getScoreFileDetailScoreByScoreFile: (id, callback) => {
         const query = `SELECT * FROM scorefile_detail WHERE Score IS NOT NULL AND ScoreFile_id = ?`
         connection.query(query, [id], callback)
+    },
+    // xoa nhieu
+    removeAll: (id) => {
+        return new Promise((resolve, reject) => {
+            const query = `DELETE FROM scorefile_detail WHERE scorefile_detail.ScoreFile_id = ${id}`
+            connection.query(query, (err, result) => {
+                if (err) {
+                    return reject(err)
+                }
+                return resolve(result)
+            })
+        })
     }
 }
 

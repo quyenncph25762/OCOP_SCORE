@@ -187,6 +187,7 @@ class ScoreTempController {
         const id = req.params.id
         ScoreTempModel.findScoreTemUpdate(id, req.body, (err, data) => {
             if (err) {
+                console.log(`findScoreTemUpdate:`, err)
                 return res.status(500).json({
                     message: "Lỗi truy vấn"
                 })
@@ -194,6 +195,7 @@ class ScoreTempController {
             if (data.length === 0) {
                 ScoreTempModel.updateScoreTemp(id, req.body, (err, data) => {
                     if (err) {
+                        console.log(`updateScoreTemp:`, err)
                         return res.status(500).json({
                             message: "Lỗi truy vấn"
                         })

@@ -79,7 +79,7 @@
                                             <button data-toggle="modal"
                                                 style="background-color: transparent;border: none;cursor: pointer;">
                                                 <span class="d-inline-block" tabindex="0" title="Khôi phục">
-                                                    <ion-icon name="sync-outline" style="color: white; font-size: 18px;"
+                                                    <ion-icon name="sync-outline" style="font-size: 18px;"
                                                         id="icon_revert" data-id="{{this._id}}"></ion-icon>
                                                 </span>
                                             </button>
@@ -133,7 +133,6 @@
                                 action: function () {
                                     // Lấy ID của mục cần xóa từ thuộc tính data-id của nút
                                     const id = event.target.dataset.id;
-
                                     // Gọi API xóa mục
                                     fetch(`/scoreTemp/revert/${id}`, {
                                         method: 'PATCH'

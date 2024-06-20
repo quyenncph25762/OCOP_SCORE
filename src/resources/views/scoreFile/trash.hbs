@@ -151,19 +151,18 @@
                                                 style="background-color: transparent;border: none;cursor: pointer;">
                                                 <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
                                                     title="Khôi phục">
-                                                    <ion-icon name="sync-outline" style="color: white; font-size: 18px;"
+                                                    <ion-icon name="sync-outline" style="font-size: 18px;"
                                                         class="icon_revert" data-id="{{this._id}}"></ion-icon>
                                                 </span>
                                             </button>
                                         </div>
-                                        <div class="delete_action">
-                                            <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
-                                                title="Xóa chủ thể">
+                                        {{!-- <div class="delete_action">
+                                            <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Xóa">
                                                 <ion-icon class="icon_moveToTrash" name="trash-outline"
                                                     data-id="{{this._id}}">
                                                 </ion-icon>
                                             </span>
-                                        </div>
+                                        </div> --}}
                                     </div>
                                 </td>
                             </tr>
@@ -200,39 +199,34 @@
                         confirm: {
                             text: 'Confirm',
                             btnClass: 'btn-red',
-                            action: function () {
-                                // Lấy ID của mục cần xóa từ thuộc tính data-id của nút
+                            action: async function () {
                                 const id = event.target.dataset.id;
-
                                 // Gọi API xóa mục
-                                fetch(`/scoreFile/remove/${id}`, {
+                                const response = await fetch(`/scoreFile/remove/${id}`, {
                                     method: 'DELETE'
-                                }).then(response => {
-                                    if (response.ok) {
-                                        localStorage.setItem('toast', JSON.stringify({
-                                            position: "top-right",
-                                            heading: 'SUCCESS!',
-                                            text: 'Đã xóa thành công thành công',
-                                            icon: 'success',
-                                            loader: true,
-                                            loaderBg: '#9EC600',
-                                            showHideTransition: 'slide'
-                                        }));
-                                        window.location.reload()
-                                    } else {
-                                        localStorage.setItem('toast', JSON.stringify({
-                                            position: "top-right",
-                                            heading: 'Xóa không thành công',
-                                            text: 'Đã xảy ra lỗi khi xóa mục',
-                                            icon: 'error',
-                                            loader: true,
-                                            loaderBg: '#9EC600',
-                                            showHideTransition: 'slide'
-                                        }));
-                                    }
-                                }).catch(error => {
-                                    $.alert('Đã hủy');
-                                });
+                                })
+                                if (response.ok) {
+                                    localStorage.setItem('toast', JSON.stringify({
+                                        position: "top-right",
+                                        heading: 'SUCCESS!',
+                                        text: 'Đã xóa thành công thành công',
+                                        icon: 'success',
+                                        loader: true,
+                                        loaderBg: '#9EC600',
+                                        showHideTransition: 'slide'
+                                    }));
+                                    window.location.reload()
+                                } else {
+                                    localStorage.setItem('toast', JSON.stringify({
+                                        position: "top-right",
+                                        heading: 'Xóa không thành công',
+                                        text: 'Đã xảy ra lỗi khi xóa mục',
+                                        icon: 'error',
+                                        loader: true,
+                                        loaderBg: '#9EC600',
+                                        showHideTransition: 'slide'
+                                    }));
+                                }
                             }
                         },
                         cancel: function () {
@@ -251,32 +245,29 @@
                     buttons: {
                         confirm: {
                             text: 'Confirm',
-                            btnClass: 'btn-red',
-                            action: function () {
+                            btnClass: 'btn-blue',
+                            action: async function () {
                                 // Lấy ID của mục cần xóa từ thuộc tính data-id của nút
                                 const id = event.target.dataset.id;
-
                                 // Gọi API xóa mục
-                                fetch(`/scoreFile/revert/${id}`, {
+                                const response = await fetch(`/scoreFile/revert/${id}`, {
                                     method: 'PATCH'
-                                }).then(response => {
-                                    if (response.ok) {
-                                        localStorage.setItem('toast', JSON.stringify({
-                                            position: "top-right",
-                                            heading: 'Khôi phục thành công',
-                                            text: 'Đã khôi phục thành công thành công',
-                                            icon: 'info',
-                                            loader: true,
-                                            loaderBg: '#9EC600',
-                                            showHideTransition: 'slide'
-                                        }));
-                                        window.location.reload()
-                                    } else {
-                                        alert('Có lỗi xảy ra khi xóa mục');
-                                    }
-                                }).catch(error => {
-                                    $.alert('Đã hủy');
-                                });
+                                })
+                                if (response.ok) {
+                                    localStorage.setItem('toast', JSON.stringify({
+                                        position: "top-right",
+                                        heading: 'Khôi phục thành công',
+                                        text: 'Đã khôi phục thành công thành công',
+                                        icon: 'info',
+                                        loader: true,
+                                        loaderBg: '#9EC600',
+                                        showHideTransition: 'slide'
+                                    }));
+                                    window.location.reload()
+                                } else {
+                                    alert('Có lỗi xảy ra khi khôi phục');
+                                    return
+                                }
                             }
                         },
                         cancel: function () {

@@ -65,7 +65,7 @@
                         {{!-- {{#ifCondNot User.RoleId 1}} --}}
                         {{!-- Tài khoản người dùng mà khác với scorefile người đang xem thì hiện --}}
                         {{#ifCondNot User._id ScoreFile.Employee_id}}
-                        <button class="btn btn-light" type="button"
+                        <button class="btn btn-info" type="button"
                             onclick="handleAddScoreFile('{{User._id}}','{{ScoreFile._id}}','{{ScoreFile.ScoreCommitee_id}}','{{Product_id}}','{{this.productgroup_id}}')">Chấm
                             điểm theo thư
                             kí</button>
@@ -156,7 +156,7 @@
                     <div class="card shadow">
                         <div class="card-body">
                             <table class="table table-bordered table-striped table-hover table-scoreTemp">
-                                <thead class="sticky-top" style="backdrop-filter: blur(5px);">
+                                <thead class="sticky-top" style="backdrop-filter: blur(5px);background: transparent;">
                                     <tr>
                                         <th scope="col">
                                         </th>

@@ -6,18 +6,10 @@ async function handleUpdate(id) {
         const IsActive = document.getElementById(`IsActive${id}`).checked
         const ProductGroup_id = document.getElementById(`ProductGroup_id${id}`).value
         const Note = document.getElementById(`Note${id}`).value
-        if (Name.trim() === "") {
-            hideLoading()
-            $.toast({
-                position: "top-right",
-                heading: 'WARNING!',
-                icon: "warning",
-                loader: true,
-                loaderBg: '#9EC600',
-                stack: 4,
-                text: `Tên phiếu không được để trống`,
-                allowToastClose: true
-            });
+        if (funcValidate(Name.trim() === "", "Tên phiếu không được để trống")) {
+            return
+        }
+        if (funcValidate(ProductGroup_id.trim() === "", "Tên nhóm sản phẩm không được để trống")) {
             return
         }
         const ScoreTemp = {
@@ -35,7 +27,11 @@ async function handleUpdate(id) {
             }
         })
         if (!response.ok) {
+            const data = await response.json()
+            console.log(data)
+            hideLoading()
             alert("Sửa sản phẩm thất bại!")
+            return
         }
         // Thêm phiếu chi tiết chưa có
         const NewNameDetail = Array.from(document.querySelectorAll(".NameDetail"))?.map(e => e.value)
@@ -115,4 +111,22 @@ async function handleUpdate(id) {
         }));
         window.location.replace("/scoreTemp")
     }
+}
+
+function funcValidate(err, message) {
+    if (err) {
+        hideLoading()
+        $.toast({
+            position: "top-right",
+            heading: 'WARNING!',
+            icon: "warning",
+            loader: true,
+            loaderBg: '#9EC600',
+            stack: 4,
+            text: message,
+            allowToastClose: true
+        });
+        return true
+    }
+    return false
 }

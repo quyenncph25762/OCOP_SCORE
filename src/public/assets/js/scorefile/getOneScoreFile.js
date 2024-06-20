@@ -121,6 +121,26 @@ async function getOneScoreTemp(code, productId, productgroupId) {
                         
                         `;
                 }
+                // undo radio
+                document.querySelectorAll('input[type="radio"]').forEach(radio => {
+                    radio.addEventListener('click', function () {
+                        if (this.checked) {
+                            console.log(`this.checked:`, this.checked)
+                            console.log(`this.wasChecked:`, this.wasChecked)
+                            if (this.wasChecked) {
+                                this.checked = false;
+                            }
+                            // Lấy tất cả các radio có cùng name với this
+                            const radiosWithSameName = document.querySelectorAll(`input[type="radio"][name="${this.name}"]`);
+                            radiosWithSameName.forEach(otherRadio => {
+                                if (otherRadio !== this) {
+                                    otherRadio.wasChecked = false;
+                                }
+                            });
+                            this.wasChecked = this.checked;
+                        }
+                    });
+                });
             } else {
                 tbodyScoreFile.innerHTML = `
                 <tr>
@@ -149,7 +169,6 @@ async function getScoreTempByProductGroup(idProductGroup) {
         const response = await fetch(`/scoretemp/byProductGroupId/${idProductGroup}`, {
             method: "GET"
         })
-        console.log(response)
         if (!response.ok) {
             alert("Có lỗi không mong muốn , xin vui lòng thử lại")
             return

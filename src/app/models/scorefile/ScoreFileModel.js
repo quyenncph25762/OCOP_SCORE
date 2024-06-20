@@ -225,10 +225,10 @@ const ScoreFileModel = {
         const query = `UPDATE scorefile SET IsDeleted = 1 WHERE _id = ${id}`
         connection.query(query, callback)
     },
-    // Xoa vinh vien
+    // Xoa phieu da cham
     remove: (id) => {
         return new Promise((resolve, reject) => {
-            const query = `DELETE FROM scorefile WHERE _id = ${id}`
+            const query = `UPDATE scorefile SET Status = 0 , ScoreTotal = 0 , RankOcop = 0  WHERE _id = ${id}`
             connection.query(query, (err, result) => {
                 if (err) {
                     return reject(err)

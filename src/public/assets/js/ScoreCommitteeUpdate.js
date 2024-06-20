@@ -60,13 +60,13 @@ const handleGetOneScoreCommittee = async (id) => {
             <td style="max-width:200px">
            <div style="display: flex;flex-direction: column">
            <p style="font-weight:600;font-size:13px;text-wrap:wrap">${employee.employee_FullName ? employee.employee_FullName : ""}</p>
-           <p style="color:#ccc;text-wrap:wrap">${employee.employee_Email ? employee.employee_Email : ""}</p>
+           <p style="opacity:0.7;text-wrap:wrap">${employee.employee_Email ? employee.employee_Email : ""}</p>
            </div>
             </td>
             <td style="max-width:200px">
             <div style="display: flex;flex-direction: column">
             <p style="font-weight:600;font-size:13px;text-wrap:wrap;">${employee.department_Name ? employee.department_Name : ""}</p>
-           <p style="color:#ccc">${employee.workposition_Name ? employee.workposition_Name : ""}</p>
+           <p style="opacity:0.7">${employee.workposition_Name ? employee.workposition_Name : ""}</p>
             </div>
             </td>
             <td style="max-width: 130px;">

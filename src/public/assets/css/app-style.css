@@ -66,9 +66,9 @@ body {
     outline: 0 !important
 }
 
-::selection {
+/* ::selection {
     background: rgba(255, 255, 255, 0.2);
-}
+} */
 
 select option {
     background: #fff;
@@ -199,10 +199,9 @@ p {
 
 a {
     color: #3F4254;
-}
+    outline: none !important;
+    font-size: 12px !important;
 
-a {
-    outline: none !important
 }
 
 a:hover {
@@ -2202,7 +2201,8 @@ thead {
     padding-top: .75rem;
     padding-bottom: .75rem;
     letter-spacing: 1px;
-    text-transform: uppercase;
+    /* text-transform: uppercase; */
+    font-size: 13px;
     border-bottom: 1px solid #ccc
 }
 

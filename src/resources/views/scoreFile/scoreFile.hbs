@@ -71,12 +71,13 @@
             <div class="card">
                 <div class="card-body">
                     <div class="d-flex align-items">
-                        <h5 class="card-title">Danh sách sản phẩm</h5>
-                        <span class="d-inline-block ml-3" tabindex="0" data-toggle="tooltip" title="Thùng rác của bạn">
+                        <h5 class="card-title">Danh sách phiếu chấm</h5>
+                        {{!-- <span class="d-inline-block ml-3" tabindex="0" data-toggle="tooltip"
+                            title="Thùng rác của bạn">
                             <a href="/scorefile/trash">
                                 <ion-icon name="trash-outline"></ion-icon>
                             </a>
-                        </span>
+                        </span> --}}
                     </div>
                     <table id="myTable" class="table datatables table-bordered table-hover table-striped"
                         style="font-size: 13px">
@@ -119,6 +120,9 @@
                                 </td>
                                 <td class="totalScoreStyle">
                                     {{#ifCond this.ScoreTotal 0}}
+                                    <p style="font-weight: 600; text-align: center;" class="text-hightlight">
+                                        {{this.ScoreTotal}}
+                                    </p>
                                     {{else}}
                                     <p style="font-weight: 600; text-align: center;" class="text-hightlight">
                                         {{this.ScoreTotal}}
@@ -130,7 +134,8 @@
                                     <ion-icon name="star"></ion-icon>
                                     {{/repeat}}
                                     {{#if RankOcop}}
-                                    <p style="color: #B5B5C3;font-weight: 600px;">{{this.RankOcop}} sao</p>
+                                    <p style="color: #B5B5C3;font-weight: 600;font-size: 11px;">{{this.RankOcop}} sao
+                                    </p>
                                     {{/if}}
                                 </td>
                                 <td class="col-dateScore text-center">
@@ -250,40 +255,25 @@
                         confirm: {
                             text: 'Confirm',
                             btnClass: 'btn-red',
-                            action: function () {
+                            action: async function () {
                                 // Lấy ID của mục cần xóa từ thuộc tính data-id của nút
                                 const id = event.target.dataset.id;
-
-                                // Gọi API xóa mục
-                                fetch(`/scoreFile/removeToTrash/${id}`, {
-                                    method: 'PATCH'
-                                }).then(response => {
-                                    if (response.ok) {
-                                        localStorage.setItem('toast', JSON.stringify({
-                                            position: "top-right",
-                                            heading: 'Xóa thành công',
-                                            text: 'Đã xóa thành công thành công',
-                                            icon: 'success',
-                                            loader: true,
-                                            loaderBg: '#9EC600',
-                                            showHideTransition: 'slide',
-                                            stack: 4
-                                        }));
-                                        window.location.reload()
-                                    } else {
-                                        localStorage.setItem('toast', JSON.stringify({
-                                            position: "top-right",
-                                            heading: 'Xóa không thành công',
-                                            text: 'Đã xảy ra lỗi khi xóa mục',
-                                            icon: 'error',
-                                            loader: true,
-                                            loaderBg: '#9EC600',
-                                            showHideTransition: 'slide'
-                                        }));
-                                    }
-                                }).catch(error => {
-                                    $.alert('Đã hủy');
-                                });
+                                const response = await fetch(`/scorefile/remove/${id}`, {
+                                    method: "PATCH"
+                                })
+                                if (!response.ok) {
+                                    alert("Có lỗi xảy ra , vui lòng thử lại!")
+                                }
+                                localStorage.setItem('toast', JSON.stringify({
+                                    position: "top-right",
+                                    heading: 'SUCCESS!',
+                                    text: 'Đã xóa thành công!',
+                                    icon: 'success',
+                                    loader: true,
+                                    loaderBg: '#9EC600',
+                                    stack: 4
+                                }));
+                                window.location.reload()
                             }
                         },
                         cancel: function () {

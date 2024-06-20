@@ -1,0 +1,77 @@
+<div class="modal fade" id="exampleModalDetail{{this._id}}" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="height: 98vh; overflow-y: auto;">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Xem chi tiết sản phẩm {{this.Name}}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form enctype="multipart/form-data">
+                    <div class="row row-content">
+                        {{!-- form Product --}}
+                        <div class="form-row col-sm-12 form_product">
+                            {{!-- title --}}
+                            <div class="col-md-12 mb-3">
+                                <label for="Name">Tên sản phẩm</label>
+                                <input value="{{this.Name}}" name="Name" type="text" class="form-control" id="Name"
+                                    style="pointer-events: none;">
+
+                            </div>
+                            <div class=" col-md-6 mb-3 mt-3">
+                                <label for="Customer_id">Chủ thể</label>
+                                <input type="text" class="form-control" value="{{this.customer_name}}"
+                                    style="pointer-events: none;">
+                            </div>
+                            {{!-- Product- group --}}
+                            <div class="col-md-6 mb-3 mt-3">
+                                <label for="note">Nhóm sản phẩm</label>
+                                <input type="text" class="form-control" value="{{this.productGroup_name}}"
+                                    style="pointer-events: none;">
+                            </div>
+                            {{!-- Year Review --}}
+                            <div class="col-md-6 mb-3 mt-3">
+                                <label for="ProductYearId">Năm đánh giá</label>
+                                <input type="text" class="form-control" value="{{this.yearName}}"
+                                    style="pointer-events: none;">
+                            </div>
+                            {{!-- note --}}
+                            <div class="col-md-6 mb-3 mt-3">
+                                <label for="Note">Ghi
+                                    chú</label>
+                                <input value="{{this.Note}}" name="Note" type="text" class="form-control" id="Note"
+                                    style="pointer-events: none;">
+                            </div>
+                            {{!-- mô tả sản phẩm --}}
+                            <div class="col-md-12 mb-3 mt-3">
+                                <label for="Description">Mô tả sản phẩm</label>
+                                <textarea id="Description" name="Description" class="form-control"
+                                    style="pointer-events: none;">{{this.Description}}</textarea>
+                            </div>
+                            {{!-- Customer --}}
+
+                        </div>
+                        {{!-- bảng viễn dẫn --}}
+                        <div class="list_citation col-sm-12" style="font-size: 13px;">
+                            <table border="1" class="table table-hover table-border table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Name</th>
+                                        <th>Bắt buộc</th>
+                                        <th>Tệp đính kèm</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="bodyProductDetail{{this._id}}">
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -8,6 +8,7 @@ th {
 
 body {
     font-size: 12px !important;
+    font-family: Arial, Helvetica, sans-serif !important;
 }
 
 
@@ -244,6 +245,7 @@ ion-icon[name="trash-outline"] {
 }
 
 ion-icon[name="sync-outline"] {
+    color: #6593E8;
     font-size: 20px;
     cursor: pointer;
 }
@@ -266,7 +268,7 @@ ion-icon[name="documents-outline"] {
 }
 
 ion-icon[name="checkbox-outline"] {
-    color: rgb(24, 93, 170);
+    color: rgb(48, 190, 150);
     font-size: 20px;
     cursor: pointer;
 }
@@ -833,7 +835,7 @@ input.form-control.input-headerTable.w-100 {
     ion-icon[name="star"] {
         font-size: 12px;
         cursor: pointer;
-        color: yellow;
+        color: #ff8800;
     }
 
     .card .table td,
@@ -865,4 +867,9 @@ input.form-control.input-headerTable.w-100 {
 .text-hightlight {
     color: #ff8800 !important;
     font-weight: 600;
+}
+
+#AvatarPreview:hover {
+    opacity: 0.7;
+    cursor: pointer;
 }

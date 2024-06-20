@@ -9,6 +9,7 @@ async function handleAdd() {
     const Note = document.getElementById("Note").value
     const IsActive = document.getElementById("IsActive").value
     const Avatar = document.getElementById("Avatar")
+    console.log(Name)
     if (showToastAndReturn(Name.trim() === "", 'Tên không được để trống')) {
         return;
     }
