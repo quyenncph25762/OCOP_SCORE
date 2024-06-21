@@ -39,18 +39,10 @@ async function handleAdd() {
                 ProductDetailId: ProductDetailIdDetail[i] === "" ? null : ProductDetailIdDetail[i],
                 Note: NoteDetail[i]
             }
-            const response = await fetch("/scoreTempDetail/add", {
-                method: "POST",
-                body: JSON.stringify(ProductDetail),
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            })
-            if (response.ok) {
-                arrRes.push(response)
-            }
+
+            arrRes.push(ProductDetail)
         }
-        await Promise.all(arrRes)
+        await funcAddScoreTempDetail(arrRes)
         localStorage.setItem('toast', JSON.stringify({
             position: "top-right",
             heading: 'Thêm thành công',
@@ -73,3 +65,20 @@ async function handleAdd() {
         }));
     }
 }
+
+async function funcAddScoreTempDetail(arrRes) {
+    try {
+        const res = await fetch("/scoreTempDetail/add", {
+            method: "POST",
+            body: JSON.stringify(arrRes),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+        if (!res.ok) {
+            console.log("Loi khi them scoretempdetail")
+        }
+    } catch (error) {
+        console.log(error)
+    }
+} 

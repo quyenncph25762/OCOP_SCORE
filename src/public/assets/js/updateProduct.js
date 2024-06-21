@@ -48,29 +48,25 @@ const handleUpdate = async (id) => {
         }
         const arrResponseDelete = []
         for (const idGallery of ArrId) {
-            const res = await fetch(`/gallery/delete/${idGallery}`, {
-                method: "DELETE"
-            })
-            arrResponseDelete.push(res)
+            arrResponseDelete.push(idGallery)
         }
-        await Promise.all(arrResponseDelete)
+        if (arrResponseDelete.length > 0) {
+            await funcDeleteGallery(arrResponseDelete)
+        }
         // const responseJson = await response.json()
-        const reqGalleryNew = []
+        const formGalleryNew = new FormData()
         for (let i = 0; i < AttachFile.length; i++) {
             if (AttachFile[i].length > 0) {
                 for (const gallery of AttachFile[i]) {
-                    const formGalleryNew = new FormData()
                     formGalleryNew.append("imgUrl", gallery)
                     formGalleryNew.append("productDetail_id", ProductDetailId[i])
-                    const res = await fetch("/gallery/add", {
-                        method: "POST",
-                        body: formGalleryNew
-                    });
-                    reqGalleryNew.push(res)
                 }
             }
         }
-        await Promise.all(reqGalleryNew)
+        if (formGalleryNew) {
+            await funcAddGallery(formGalleryNew)
+        }
+
         hideLoading()
         localStorage.setItem('toast', JSON.stringify({
             position: "top-right",
@@ -88,6 +84,31 @@ const handleUpdate = async (id) => {
 const handleIdGallery = async (id) => {
     if (id) {
         ArrId.push(Number(id))
+    }
+}
+
+async function funcDeleteGallery(arrId) {
+    try {
+        await fetch(`/gallery/delete`, {
+            method: "POST",
+            body: JSON.stringify(arrId),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+async function funcAddGallery(arrGallery) {
+    try {
+        await fetch("/gallery/add", {
+            method: "POST",
+            body: arrGallery
+        });
+    } catch (error) {
+        console.log(error)
     }
 }
 // const handleProductDetailid = async (id) => {

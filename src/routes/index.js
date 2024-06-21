@@ -25,7 +25,10 @@ const scoreCommitteeDetailRouter = require("./scoreCommitteeDetail.routes")
 const scoreFileRouter = require("./scoreFile.routes")
 const scoreFileDetailRouter = require("./scoreFileDetail.routes")
 const userPageRouter = require("./userPage.routes")
+const pdfRouter = require("./pdfRoutes.routes")
 function route(app) {
+    // pdf
+    app.use("/pdf", pdfRouter)
     // userPage
     app.use("/users", userPageRouter)
     // client

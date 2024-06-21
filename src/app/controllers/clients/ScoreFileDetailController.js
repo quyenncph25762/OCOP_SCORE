@@ -1,17 +1,19 @@
 const ScoreFileDetailModel = require("../../models/scorefile/ScoreFileDetailModel")
 
 class ScoreFileDetailController {
-    getByScoreFileId(req, res) {
-        const scoreFileId = req.params.id
-        ScoreFileDetailModel.getByScoreFileId(scoreFileId, (err, ListScoreFileDetail) => {
-            if (err) {
-                console.log(err)
-                return res.status(500).json({
-                    message: "Lỗi truy vấn"
+    getByScoreFileId = async (req, res) => {
+        try {
+            const scoreFileId = req.params.id
+            const ListScoreFileDetail = await ScoreFileDetailModel.getByScoreFileId(scoreFileId)
+            if (!ListScoreFileDetail) {
+                return res.status(400).json({
+                    message: "Không có list scoredetail nào"
                 })
             }
             return res.status(200).json(ListScoreFileDetail)
-        })
+        } catch (error) {
+            console.log(error)
+        }
     }
     // lay tat ca scorefileDetail da cham theo scorefile
     getIsScoreByScoreFile(req, res) {
@@ -40,14 +42,16 @@ class ScoreFileDetailController {
 
     }
     updateScoreById = async (req, res) => {
-        if (req.body) {
+        try {
             for (const ScoreDetail of req.body) {
                 await ScoreFileDetailModel.updateScoreFileDetailById(ScoreDetail)
             }
+            return res.status(200).json({
+                message: "Cập nhật thành công"
+            })
+        } catch (error) {
+            console.log(error)
         }
-        return res.status(200).json({
-            message: "Cập nhật thành công"
-        })
     }
 }
 

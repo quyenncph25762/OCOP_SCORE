@@ -33,16 +33,20 @@ class ScoreFileController {
 
     }
     // getOne
-    getOneController(req, res) {
-        const id = req.params.id
-        ScoreFileModel.getOne(id, (err, data) => {
-            if (err) {
-                return res.status(500).json({
-                    message: err
+    getOneController = async (req, res) => {
+        try {
+            const id = req.params.id
+            const data = await ScoreFileModel.getOne(id)
+            if (data) {
+                return res.status(200).json(data[0])
+            } else {
+                return res.status(400).json({
+                    message: "Khong co scorefile nao"
                 })
             }
-            return res.status(200).json(data[0])
-        })
+        } catch (error) {
+            console.log(error)
+        }
     }
     // getAllFromTrash
     getAllFromTrash(req, res) {
@@ -198,7 +202,7 @@ class ScoreFileController {
         const cookie = req.cookies
         if (cookie?.User) {
             const UserDataCookie = jwt.verify(cookie.User, SECRET_CODE)
-            AccountModel.fetchOneUser(UserDataCookie?._id, (err, User) => {
+            AccountModel.fetchOneUser(UserDataCookie?._id, async (err, User) => {
                 if (err) {
                     return res.status(500).json({
                         message: err
@@ -206,15 +210,13 @@ class ScoreFileController {
                 }
                 const idScoreFile = Number(req.query.ScoreFile_id)
 
-                ScoreFileModel.getOne(idScoreFile, (err, ScoreFile) => {
-                    if (err) {
-                        return res.status(500).json({
-                            message: err
-                        })
-                    }
-                    console.log(ScoreFile[0])
-                    res.render("scoreFile/scoreFileUpdate", { User: User[0], ScoreFile: ScoreFile[0] })
-                })
+                const ScoreFile = await ScoreFileModel.getOne(idScoreFile)
+                if (!ScoreFile) {
+                    return res.status(400).json({
+                        message: "Khong co scorefile nao"
+                    })
+                }
+                res.render("scoreFile/scoreFileUpdate", { User: User[0], ScoreFile: ScoreFile[0] })
             })
         }
 
@@ -224,22 +226,18 @@ class ScoreFileController {
         const cookie = req.cookies
         if (cookie?.User) {
             const UserDataCookie = jwt.verify(cookie.User, SECRET_CODE)
-            AccountModel.fetchOneUser(UserDataCookie?._id, (err, User) => {
+            AccountModel.fetchOneUser(UserDataCookie?._id, async (err, User) => {
                 if (err) {
                     return res.status(500).json({
                         message: err
                     })
                 }
                 const idScoreFile = Number(req.query.ScoreFile_id)
-                ScoreFileModel.getOne(idScoreFile, (err, ScoreFile) => {
-                    if (err) {
-                        return res.status(500).json({
-                            message: err
-                        })
-                    }
-                    console.log(ScoreFile[0])
-                    res.render("scoreFile/review", { User: User[0], ScoreFile: ScoreFile[0] })
-                })
+                const ScoreFile = await ScoreFileModel.getOne(idScoreFile)
+                if (!ScoreFile) {
+                    return res.status(400).json("Khong co scorefile nao")
+                }
+                res.render("scoreFile/review", { User: User[0], ScoreFile: ScoreFile[0] })
             })
         }
 

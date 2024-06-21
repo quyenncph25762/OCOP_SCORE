@@ -79,9 +79,8 @@ class UserPageController {
                         message: `Looi truy xuat ${err}`
                     })
                 }
-                EmployeeModal.findEmployeeAdd(User[0].DistrictId, req.body, (err, data) => {
+                EmployeeModal.findEmployeeAdd(req.body, (err, data) => {
                     if (err) {
-                        console.log(err)
                         return res.status(500).json({
                             message: "Loi truy van"
                         })
@@ -133,9 +132,8 @@ class UserPageController {
                     })
                 }
                 const id = req.params.id
-                EmployeeModal.findEmployeeUpdate(id, req.body, User[0].DistrictId, (err, data) => {
+                EmployeeModal.findEmployeeUpdate(id, req.body, (err, data) => {
                     if (err) {
-                        console.log(err);
                         return res.status(500).json({
                             message: "Lỗi truy vấn"
                         });

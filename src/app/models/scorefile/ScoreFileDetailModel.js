@@ -1,25 +1,32 @@
 const connection = require("../../../config/db")
 const ScoreDetailModel = {
-    getByScoreFileId: (id, callback) => {
-        const query = `
-        SELECT 
-            scorefile_detail.*,
-            scoretemp_detail.Name AS scoreTempDetail_name,
-            scoretemp_detail.MaxScore AS scoreTempDetail_maxScore,
-            scoretemp_detail.IsScore AS scoreTempDetail_isScore,
-            scoretemp_detail.ProductDetailId AS scoreTempDetail_productDetailId,
-            scoretemp_detail.ValidatedRank AS scoreTempDetail_validateRank,
-            product_detail.code AS scoreTempDetail_productDetailCode
-        FROM 
-            scorefile_detail
-        LEFT JOIN 
-            scoretemp_detail ON scoretemp_detail._id = scorefile_detail.ScoreTempDetail_id 
-        LEFT JOIN 
-            product_detail ON product_detail._id = scoretemp_detail.ProductDetailId
-        WHERE 
-            ScoreFile_id = ? ORDER BY scorefile_detail.ScoreTempDetail_id ASC
-    `;
-        connection.query(query, id, callback)
+    getByScoreFileId: (id) => {
+        return new Promise((resolve, reject) => {
+            const query = `
+            SELECT 
+                scorefile_detail.*,
+                scoretemp_detail.Name AS scoreTempDetail_name,
+                scoretemp_detail.MaxScore AS scoreTempDetail_maxScore,
+                scoretemp_detail.IsScore AS scoreTempDetail_isScore,
+                scoretemp_detail.ProductDetailId AS scoreTempDetail_productDetailId,
+                scoretemp_detail.ValidatedRank AS scoreTempDetail_validateRank,
+                product_detail.code AS scoreTempDetail_productDetailCode
+            FROM 
+                scorefile_detail
+            LEFT JOIN 
+                scoretemp_detail ON scoretemp_detail._id = scorefile_detail.ScoreTempDetail_id 
+            LEFT JOIN 
+                product_detail ON product_detail._id = scoretemp_detail.ProductDetailId
+            WHERE 
+                ScoreFile_id = ${id} ORDER BY scorefile_detail.ScoreTempDetail_id ASC
+        `;
+            connection.query(query, (err, results) => {
+                if (err) {
+                    return reject(err)
+                }
+                return resolve(results)
+            })
+        })
     },
     create: (scoreFileDetail) => {
         return new Promise((resolve, reject) => {

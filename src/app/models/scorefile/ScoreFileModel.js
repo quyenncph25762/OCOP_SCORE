@@ -39,7 +39,7 @@ const ScoreFileModel = {
     `;
         connection.query(query, [idScoreCommitee], callback);
     },
-    // get scoreFileByScoreCommitee
+    // get scoreFileByScoreCommitee status = 2
     getScoreFileByScoreCommittee: (idScoreCommitee, callback) => {
         const query = `
         SELECT 
@@ -71,7 +71,7 @@ const ScoreFileModel = {
         LEFT JOIN 
             workposition ON workposition._id = employee.WorkPosition_id
         WHERE 
-            scorefile.IsDeleted = 0 AND scorefile.Status = 2 AND scorefile.Product_id IS NOT NULL AND scorefile.ScoreCommitee_id = ?
+            scorefile.IsDeleted = 0 AND scorefile.Status = 2 AND scorefile.IsActive = 1 AND scorefile.Product_id IS NOT NULL AND scorefile.ScoreCommitee_id = ?
          ORDER BY 
         scorefile._id DESC
     `;
@@ -91,7 +91,8 @@ const ScoreFileModel = {
         DATE_FORMAT(scorefile.ScoreDate, '%Y-%m-%d') AS formattedScoreDate,
         scorecommittee._id AS scorecommitee_id,
         scorecommittee.Employee_id AS scorecommittee_employeeId,
-        scorecommittee.Name AS scorecommittee_name
+        scorecommittee.Name AS scorecommittee_name,
+        scorecommittee.IsActive AS scorecommittee_active
     FROM 
         scorefile
     LEFT JOIN 
@@ -137,38 +138,61 @@ const ScoreFileModel = {
     },
 
     // getOne
-    getOne: (id, callback) => {
-        const query = `
-        SELECT 
-        scorefile.*,
-        product.Name AS product_name,
-        product.Avatar AS product_avatar,
-        customer.Name AS customer_name,
-        productgroup.Name AS productgroup_name,   
-        productgroup.Code AS productgroup_code,
-        DATE_FORMAT(scorefile.ScoreDate, '%Y-%m-%d') AS formattedScoreDate,
-        scorecommittee._id AS scorecommitee_id,
-        employee.FullName AS employee_FullName,
-        workdepartment.title AS workdepartment_title,
-        workposition.Name AS workposition_name
-    FROM scorefile
-    LEFT JOIN 
-        product ON product._id = scorefile.Product_id
-    LEFT JOIN 
-        customer ON customer._id = product.Customer_id
-    LEFT JOIN 
-        productgroup ON productgroup._id = product.ProductGroup_id
-    LEFT JOIN 
-        scorecommittee ON scorecommittee._id = scorefile.Scorecommitee_id
-    LEFT JOIN 
-        employee ON employee._id = scorefile.Employee_id
-    LEFT JOIN 
-        workdepartment ON workdepartment._id = employee.WorkDepartment_id
-    LEFT JOIN 
-        workposition ON workposition._id = employee.WorkPosition_id
-    WHERE scorefile.IsDeleted = 0 AND scorefile._id  = ?
-`
-        connection.query(query, id, callback)
+    getOne: (id) => {
+        return new Promise((resolve, reject) => {
+            const query = `
+            SELECT 
+            scorefile.*,
+            product.Name AS product_name,
+            product.Code AS product_code,
+            district.Name AS product_district,
+            product.Avatar AS product_avatar,
+            customer.Name AS customer_name,
+            customer.Address AS customer_address,
+            productgroup.Name AS productgroup_name,   
+            productgroup.Code AS productgroup_code,
+            DATE_FORMAT(scorefile.ScoreDate, '%Y-%m-%d') AS formattedScoreDate,
+            DATE_FORMAT(scorefile.ScoreDate, 'ngày %d tháng %m năm %Y') AS formattedScoreDatePdf,
+            scorecommittee._id AS scorecommitee_id,
+            scorecommittee.Name AS scorecommitee_name,
+            employee.FullName AS employee_FullName,
+            d.Name AS districtCustomer_name,
+            w.Name AS wardCustomer_name,
+            c.Name AS cityCustomer_name,
+            workdepartment.title AS workdepartment_title,
+            workposition.Name AS workposition_name
+        FROM scorefile
+        LEFT JOIN 
+            product ON product._id = scorefile.Product_id
+        LEFT JOIN
+            district ON district._id = product.DistrictId
+        LEFT JOIN 
+            customer ON customer._id = product.Customer_id
+        LEFT JOIN
+            ward AS w ON w._id = customer.Ward_id
+        LEFT JOIN
+            city AS c ON c._id = customer.City_id
+        LEFT JOIN 
+            district AS d ON d._id = customer.District_id
+        LEFT JOIN 
+            productgroup ON productgroup._id = product.ProductGroup_id
+        LEFT JOIN 
+            scorecommittee ON scorecommittee._id = scorefile.Scorecommitee_id
+        LEFT JOIN 
+            employee ON employee._id = scorefile.Employee_id
+        LEFT JOIN 
+            workdepartment ON workdepartment._id = employee.WorkDepartment_id
+        LEFT JOIN 
+            workposition ON workposition._id = employee.WorkPosition_id
+        WHERE scorefile.IsDeleted = 0 AND scorefile._id  = ${id}
+    `
+            connection.query(query, (err, result) => {
+                if (err) {
+                    return reject(err)
+                }
+                return resolve(result)
+            })
+        })
     },
     create: (scoreFile, callback) => {
         const query = `INSERT INTO scorefile (RankOcop,ScoreTotal,ScoreTemp_id,Employee_id,EmployeeUserId,Product_id,Customer_id,ScoreCommitee_id,CreatorUser_id,Note,Name,Code,IsActive,Status,forEmployeeId) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`
@@ -204,9 +228,16 @@ const ScoreFileModel = {
         connection.query(query, callback)
     },
     // Xoa vinh vien
-    remove: (id, callback) => {
-        const query = `DELETE FROM scorefile WHERE _id = ${id}`
-        connection.query(query, callback)
+    remove: (id) => {
+        return new Promise((resolve, reject) => {
+            const query = `DELETE FROM scorefile WHERE _id = ${id}`
+            connection.query(query, (err, result) => {
+                if (err) {
+                    return reject(err)
+                }
+                return resolve(result)
+            })
+        })
     },
     // Khoi phuc
     revert: (id, callback) => {

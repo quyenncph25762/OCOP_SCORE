@@ -196,7 +196,7 @@
                         buttons: {
                             confirm: {
                                 text: 'Confirm',
-                                btnClass: 'btn-red',
+                                btnClass: 'btn-blue',
                                 action: function () {
                                     // Lấy ID của mục cần xóa từ thuộc tính data-id của nút
                                     const id = event.target.dataset.id;
@@ -260,22 +260,27 @@
             //removeAll
             btnDeleteAll.addEventListener("click", async (e) => {
                 $.confirm({
-                    title: '<ion-icon name="help-circle-outline"></ion-icon>',
+                    title: '<ion-icon name="trash-bin-outline"></ion-icon>',
                     content: 'Bạn muốn xóa mục đã chọn ?',
                     buttons: {
                         confirm: {
                             text: 'Confirm',
                             btnClass: 'btn-red',
                             action: async function () {
-                                const id = event.target.dataset.id;
+                                const arrId = []
                                 for (let btnCheck of btnsCheck) {
                                     if (btnCheck.checked) {
                                         const id = btnCheck.dataset.idcheckbox
-                                        const res = await fetch(`/product-manage/remove/${id}`, {
-                                            method: "DELETE"
-                                        })
+                                        arrId.push(id)
                                     }
                                 }
+                                const res = await fetch(`/product-manage/removeAll`, {
+                                    method: "POST",
+                                    body: JSON.stringify(arrId),
+                                    headers: {
+                                        "Content-Type": "application/json"
+                                    }
+                                })
                                 localStorage.setItem('toast', JSON.stringify({
                                     position: "top-right",
                                     heading: 'Xóa thành công',
@@ -285,15 +290,13 @@
                                     loaderBg: '#9EC600',
                                     showHideTransition: 'slide'
                                 }));
-                                setTimeout(() => {
-                                    window.location.reload()
-                                }, 1000)
+                                window.location.reload()
                             }
+                        },
+                        cancel: function () {
+                            $.alert('Đã hủy!');
                         }
                     },
-                    cancel: function () {
-                        $.alert('Đã hủy!');
-                    }
                 })
             })
             //RevertByCheckBox
@@ -305,17 +308,23 @@
                     buttons: {
                         confirm: {
                             text: 'Confirm',
-                            btnClass: 'btn-red',
+                            btnClass: 'btn-blue',
                             action: async function () {
-                                const id = event.target.dataset.id;
+                                const arrId = []
                                 for (let btnCheck of btnsCheck) {
                                     if (btnCheck.checked) {
                                         const id = btnCheck.dataset.idcheckbox
-                                        const res = await fetch(`/product-manage/revert/${id}`, {
-                                            method: "PATCH"
-                                        })
+                                        arrId.push(id)
+
                                     }
                                 }
+                                const res = await fetch(`/product-manage/revertAll`, {
+                                    method: "POST",
+                                    body: JSON.stringify(arrId),
+                                    headers: {
+                                        "Content-Type": "application/json"
+                                    }
+                                })
                                 localStorage.setItem('toast', JSON.stringify({
                                     position: "top-right",
                                     heading: 'Khôi phục thành công',

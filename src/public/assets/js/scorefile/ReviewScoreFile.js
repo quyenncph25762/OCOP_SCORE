@@ -7,6 +7,7 @@ if (params.has("ScoreFile_id") && params.has("productId")) {
     // lay id scorefile tren thanh url
     const product_id = params.get("productId")
     const ScoreFile_id = params.get("ScoreFile_id")
+    console.log(1)
     handleGetScoreFileDetail(ScoreFile_id, product_id, tbodyScoreFileUpdate)
 } else {
     console.log("error")
@@ -160,10 +161,27 @@ function repeatStarUpdate(number) {
 }
 
 async function handleAddScoreFile(userId, scoreFileId, ScoreCommitee_id, productId, productgroupId) {
+    showLoading()
     const getOneScoreFile = await FuncGetOneScoreFile(scoreFileId)
     const listScoreFile = await FuncListScoreFileDetail(scoreFileId)
+    // ham tim ra scorefile cua userid dang dang nhap
     const idScoreFileUpdate = await filterScoreFileId(userId, ScoreCommitee_id)
-
+    // func kiem tra xem idScoreFile cua user dang nhap co scorefiledetail chua neu co roi k cho cham theo 
+    const checkScoreFile = await FuncListScoreFileDetail(idScoreFileUpdate)
+    if (checkScoreFile.length > 0) {
+        $.toast({
+            position: "top-right",
+            heading: 'WARNING!',
+            icon: "warning",
+            loader: true,
+            loaderBg: '#9EC600',
+            stack: 4,
+            text: `Hiện bạn đang có phiếu , không thể chấm theo thư kí <a href='/scoreFile/updateScoreFile?productId=${productId}&productgroupId=${productgroupId}&ScoreFile_id=${idScoreFileUpdate}'>Xem phiếu của bạn</a>`,
+            allowToastClose: true
+        });
+        hideLoading()
+        return
+    }
     // lấy tất cả trường của scorefile getOne
     const { Product_id, Customer_id, CreatorUser_id, Employee_id, EmployeeUserId, ScoreDate, RankOcop, Note, Code, ScoreTotal, ScoreTemp_id, Status, IsActive } = getOneScoreFile
     const now = Date.now();
@@ -285,6 +303,8 @@ async function FuncGetOneScoreFile(scoreFileId) {
         console.log(error)
     }
 }
+
+
 
 
 

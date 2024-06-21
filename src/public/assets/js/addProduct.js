@@ -10,8 +10,17 @@ async function handleAdd() {
     const IsActive = document.getElementById("IsActive").value
     const Avatar = document.getElementById("Avatar")
     if (Name.trim() === "") {
-        console.log(1)
-        document.querySelector("#ErrorName").innerHTML = "Tên không được để trống"
+        hideLoading()
+        $.toast({
+            position: "top-right",
+            heading: 'WARNING!',
+            icon: "warning",
+            loader: true,
+            loaderBg: '#9EC600',
+            stack: 4,
+            text: 'Tên không được để trống',
+            allowToastClose: true
+        });
         return
     } else {
         document.querySelector("#ErrorName").innerHTML = ""
@@ -70,23 +79,19 @@ async function handleAdd() {
         });
         const dataProductDetail = await resProductDetail.json()
         // them anh
-        const reqGallery = []
+        const formGallery = new FormData()
         for (i = 0; i < data.length; i++) {
             const AttachFile = document.querySelector(`#AttachFile${data[i]._id}`);
-            console.log(AttachFile)
             for (const file of AttachFile.files) {
-                const formGallery = new FormData()
                 formGallery.append("productDetail_id", dataProductDetail?.resultsArray
                 [i]?._id)
                 formGallery.append("imgUrl", file)
-                const res = await fetch("/gallery/add", {
-                    method: "POST",
-                    body: formGallery
-                });
-                reqGallery.push(res)
             }
         }
-        await Promise.all(reqGallery)
+        await fetch("/gallery/add", {
+            method: "POST",
+            body: formGallery
+        });
         hideLoading()
         localStorage.setItem('toast', JSON.stringify({
             position: "top-right",

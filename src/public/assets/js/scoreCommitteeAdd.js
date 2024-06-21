@@ -28,12 +28,12 @@ const handleAdd = async () => {
         alert("Có lỗi xảy ra khi thêm Hội đồng")
         return
     }
-    const response = await res.json()
+    const responseAddScoreCommitt = await res.json()
 
-
-    if (response) {
+    console.log(responseAddScoreCommitt)
+    if (responseAddScoreCommitt) {
         // lay id scoreCommittee vua them 
-        const IdScoreCommittee = response.ScoreCommittee._id
+        const IdScoreCommittee = responseAddScoreCommitt.ScoreCommittee._id
         // Them scoreCommittee detail
         // vai tro cua hoi dong
         let CommitteeRole = Array.from(document.querySelectorAll(".CommitteeRole")).map(e => e.value)
@@ -55,19 +55,22 @@ const handleAdd = async () => {
                 UserId: listEmployee[i],
                 SecUserId: listSecEmployee[i] === 0 ? null : listSecEmployee[i]
             }
-            const response = await fetch(`/scoreCommitteeDetail/add`, {
-                method: "POST",
-                body: JSON.stringify(form),
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            })
-            arrResponse.push(response)
+
+            arrResponse.push(form)
         }
-        await Promise.all(arrResponse)
+        const response = await fetch(`/scoreCommitteeDetail/add`, {
+            method: "POST",
+            body: JSON.stringify(arrResponse),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+        if (!response.ok) {
+            console.log("Lỗi khi thêm scorecommitteeDetail")
+            return
+        }
 
         // thuc hien them charName cho scorecommittee 
-
         // lay ra nhng scoreCommitteeDetail vua them
         const responseScoreDetail = await fetch(`/scoreCommitteeDetail/getByScoreCommittee/${IdScoreCommittee}`, {
             method: "GET"

@@ -31,7 +31,8 @@
                             </a>
                         </span>
                     </div>
-                    <table id="myTableCommittee" class="table table-hover" style="font-size: 13px;">
+                    <table id="myTableCommittee" class="table datatables table-bordered table-hover table-striped"
+                        style="font-size: 13px;">
                         <thead>
                             <tr>
                                 <th>STT</th>
@@ -76,16 +77,22 @@
                                 </td>
                                 <td>
                                     <div class="icons">
+                                        {{#ifCondNot IsActive 0}}
+                                        {{!-- icon cham diem --}}
                                         <button onclick="handleUpdateIsDefault('{{this._id}}')" class="d-inline-block"
                                             style="background: transparent;border: none;" tabindex="0"
                                             data-toggle="tooltip" title="Bắt đầu chấm">
                                             <ion-icon name="bookmark-outline" style="cursor: pointer;"></ion-icon>
                                         </button>
-                                        <button onclick="handleUpdateIsDefault('{{this._id}}')" class="d-inline-block"
+                                        {{!-- icon ngung cham diem --}}
+                                        {{#ifCondAnd this.CreatorUser_id ../User._id this.IsDefault 1}}
+                                        <button onclick="handleUpdateIsActive('{{this._id}}')" class="d-inline-block"
                                             style="background: transparent;border: none;" tabindex="0"
                                             data-toggle="tooltip" title="Ngừng chấm điểm">
                                             <ion-icon name="stop-circle-outline" style="cursor: pointer;"></ion-icon>
                                         </button>
+                                        {{/ifCondAnd}}
+                                        {{/ifCondNot}}
                                         {{!-- nhan vao nut handleUpadte de hien thi scoreCommitteeDetail --}}
                                         <button type="button" style="background: transparent; border: none;"
                                             onclick="handleGetOneScoreCommittee('{{this._id}}')" class="d-inline-block"
@@ -118,8 +125,7 @@
 {{> footer}}
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-{{!--
-<script src="/assets/js/custom.js"></script> --}}
+<script src="/assets/js/custom.js"></script>
 <script src="/assets/js/ScoreCommitteeUpdate.js"></script>
 <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
 <script>

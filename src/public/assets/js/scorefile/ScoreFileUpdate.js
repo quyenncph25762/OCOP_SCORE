@@ -323,7 +323,6 @@ async function updateScoreTotal() {
         }
 
         const newRankOcop = await checkingRankOcop(RankOcop, ScoreFile_id)
-        console.log(`newRankOcop:`, newRankOcop)
         if (TotalAfter && TotalAfter > 0) {
             const res = await fetch(`/scorefile/updateScoreTotal/${ScoreFile_id}`, {
                 method: "PATCH",
@@ -381,11 +380,22 @@ async function checkScoreFileDetail(scoreFileId, RankOcop) {
     const listScoreChecked = data.map((scoreDetail) => scoreDetail._id)
     // dieu neu rank ocop = 3   
     if (RankOcop === 2) {
-        return checkRank(RankOcop, listScoreChecked, scoreFileId)
+        return await checkRank(RankOcop, listScoreChecked, scoreFileId)
     } else if (RankOcop === 3) {
-        return checkRank(RankOcop, listScoreChecked, scoreFileId)
+        return await checkRank(RankOcop, listScoreChecked, scoreFileId)
     } else if (RankOcop === 4) {
-        return checkRank(RankOcop, listScoreChecked, scoreFileId)
+        return await checkRank(RankOcop, listScoreChecked, scoreFileId)
+        // console.log(resultCheckRank)
+        // if (resultCheckRank >= 3) {
+        //     const list3sao = await listScoreFileDetail3sao(scoreFileId)
+        //     for (const id of list3sao) {
+        //         const results = listScoreChecked.includes(id)
+        //         if (!results) {
+        //             return resultCheckRank - 1
+        //         }
+        //     }
+        // }
+        // return resultCheckRank
     } else {
         return checkRank(RankOcop, listScoreChecked, scoreFileId)
     }
@@ -393,11 +403,22 @@ async function checkScoreFileDetail(scoreFileId, RankOcop) {
 }
 
 async function checkRank(RankOcop, listScoreChecked, scoreFileId) {
-    console.log(RankOcop)
     if (RankOcop > 3) {
         const list3sao = await listScoreFileDetail3sao(scoreFileId)
         const containsRank = listScoreChecked.some(id => list3sao.includes(id));
+        // if(!con)
         if (containsRank) {
+            // RankOcop = 3
+            // if (RankOcop = 3) {
+            //     const list3sao = await listScoreFileDetail3sao(scoreFileId)
+            //     for (const id of list3sao) {
+            //         const results = listScoreChecked.includes(id)
+            //         if (!results) {
+            //             return RankOcop - 1
+            //         }
+            //     }
+            // }
+            // neu tich het roi thi cho 3 sao
             return RankOcop = 3
         } else {
             if (RankOcop = 5) {
@@ -413,8 +434,6 @@ async function checkRank(RankOcop, listScoreChecked, scoreFileId) {
         }
     } else if (RankOcop === 3) {
         const list3sao = await listScoreFileDetail3sao(scoreFileId)
-        console.log(list3sao)
-        console.log(listScoreChecked)
         for (const id of list3sao) {
             const results = listScoreChecked.includes(id)
             console.log(results)

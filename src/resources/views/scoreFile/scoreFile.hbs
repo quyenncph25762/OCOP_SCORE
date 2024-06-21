@@ -142,7 +142,9 @@
                                         </button>
                                         {{> modalResultScoreFile id=this._id}}
                                         {{/ifCondOr}}
-                                        {{#ifCondNot ../User.RoleId 1}}
+                                        {{!-- {{#ifCondNot ../User.RoleId 1}} --}}
+                                        {{!-- neu scorecommitt active = 1 thi moi hien cham diem --}}
+                                        {{#ifCond scorecommittee_active 1}}
                                         {{#ifCondAnd this.Status 0 this.IsActive 1}}
                                         <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
                                             title="Chấm điểm">
@@ -154,6 +156,8 @@
                                             </div>
                                         </span>
                                         {{/ifCondAnd}}
+                                        {{/ifCond}}
+                                        {{!-- cham xong thi moi dc hien nut xac nhan --}}
                                         {{#ifCond this.Status 1}}
                                         <button style="background: transparent; border: none;" class="d-inline-block"
                                             tabindex="0" data-toggle="tooltip" title="Xác nhận"
@@ -168,6 +172,7 @@
                                             </a>
                                         </span>
                                         {{/ifCond}}
+                                        {{!-- xac nhan xong thi moi xem dc chi tiet --}}
                                         {{#ifCond this.Status 2}}
                                         <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
                                             title="Xem chi tiết">
@@ -184,7 +189,7 @@
                                                 data-id="{{this._id}}"></ion-icon>
                                         </span>
                                         {{/ifCond}}
-                                        {{/ifCondNot}}
+                                        {{!-- {{/ifCondNot}} --}}
                                     </div>
                                 </td>
                             </tr>
@@ -316,8 +321,5 @@
 </script>
 {{!-- dropdown --}}
 <script>
-    const dropDownResults = document.querySelector(".dropDownResults")
-    function handleDropDownResults(idScoreFile, data, status) {
 
-    }
 </script>

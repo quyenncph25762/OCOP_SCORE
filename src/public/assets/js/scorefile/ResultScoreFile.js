@@ -3,21 +3,46 @@ var AverageScore = 0
 // tinh so sao ocop trung bình
 var AverageRankOcop = 0
 async function handleResultScoreFiles(idScoreCommittee, productId) {
+    const btnUpdate = document.getElementById(`btnUpdate${productId}`)
     const ArrSecUserId = await FuncListSecUserId(idScoreCommittee)
+    // Lay ra tat ca scorefile co status = 2
     const listScoreFile = await FuncListScoreFileByScoreCommittee(idScoreCommittee)
+    // lay ra tat ca scorefile
+    const listScoreFileAll = await FuncListScoreFileByScoreCommitteeAll(idScoreCommittee)
+    // Lay 1 scoreCommitt
+    const ScoreCommitteeByid = await getOneScoreCommittee(idScoreCommittee)
     const tbodyResultsScoreFile = document.getElementById(`tbodyResultsScoreFile${productId}`)
-    console.log(listScoreFile)
+    // lay ra the in ra nhung can bo da cham / tong so can bo trong employee
+    const employeeScored = document.querySelector(".employeeScored")
+    employeeScored.innerHTML = ""
+    // lay tat ca scorefile trong hoi dong
+    const filterScoreFileScoreCommit = listScoreFileAll.filter(scorefile => scorefile.Product_id === Number(productId) &&
+        !ArrSecUserId.includes(scorefile.forEmployeeId) && scorefile.IsActive === 1);
+    // console.log(`Tổng Employee trong hội đồng:`, filterScoreFileScoreCommit)
+
+
     // Lọc những employee đã chấm xong và k có secUserId
     const filterScoreFile = listScoreFile.filter(scorefile =>
         scorefile.Employee_id && scorefile.Product_id === Number(productId) &&
         !ArrSecUserId.includes(scorefile.Employee_id)
     );
+    // Gọi hàm tính điểm chênh lệch phiếu k lớn hơn 10
+    const alert = caculatorScoreEmployee(filterScoreFile)
+    if (alert) {
+        document.querySelector(".alert").innerHTML = "Điểm hội đồng chấm chênh lệch quá 10 điểm"
+        btnUpdate.disabled = true
+    } else {
+        btnUpdate.disabled = false
+    }
+    // console.log(`Employee đã chấm: `, filterScoreFile)
+    employeeScored.innerHTML = `(${filterScoreFile.length}/${filterScoreFileScoreCommit.length})`
 
     tbodyResultsScoreFile.innerHTML = ""
     if (filterScoreFile.length > 0) {
         let i = 0
         let totalScore = 0
         let totalRankOcop = 0
+        // Hiển thị ra list Employeee
         for (const scorefile of filterScoreFile) {
             i += 1
             // tinh diem trung binh
@@ -42,13 +67,15 @@ async function handleResultScoreFiles(idScoreCommittee, productId) {
                                     <ion-icon name="eye-outline"></ion-icon>
                                 </a>
                             </span>
-                            <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Yêu cầu chấm lại">
+                            
+                            ${ScoreCommitteeByid.IsActive != 0 ?
+                    ` <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Yêu cầu chấm lại">
                                     <ion-icon name="hand-left-outline" onclick="handleRevertScoreFile(${scorefile._id})"></ion-icon>
-                            </span>
+                            </span>` : ""
+                }
+                           
                             <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Phiếu chấm">
-                                <a href="">
-                                    <ion-icon name="link-outline" onclick="generatePDF()"></ion-icon>
-                                </a>
+                                <ion-icon name="link-outline" onclick="generatePDF(${scorefile._id})"></ion-icon>
                             </span>
                         </div>
                     </td>
@@ -211,7 +238,7 @@ async function handleRevertScoreFile(idScoreFile) {
 
 }
 
-//list ScoreFile theo scoreCommittee
+//list ScoreFile theo scoreCommittee status = 2
 async function FuncListScoreFileByScoreCommittee(idScoreCommittee) {
     try {
         const response = await fetch(`/scorefile/byIdScoreCommittee/${idScoreCommittee}`, {
@@ -224,4 +251,50 @@ async function FuncListScoreFileByScoreCommittee(idScoreCommittee) {
     } catch (error) {
         console.log(error)
     }
-} 
+}
+
+// listScoreFile theo scoreCommittee
+async function FuncListScoreFileByScoreCommitteeAll(idScoreCommittee) {
+    try {
+        const response = await fetch(`/scorefile/byIdScoreCommitteeAll/${idScoreCommittee}`, {
+            method: "GET"
+        })
+        if (!response.ok) {
+            console.log("Lỗi khi gọi ResultScoreFiles")
+        }
+        return await response.json()
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+// getOneScoreCommitt
+async function getOneScoreCommittee(idScoreCommittee) {
+    try {
+        const response = await fetch(`/scoreCommittee/getOne/${idScoreCommittee}`, {
+            method: "GET"
+        })
+        if (!response.ok) {
+            return console.log("Loi khi get One ScoreCommittee")
+        }
+        return await response.json()
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+// function tim ra nhung so diem can bo đã chấm để tính điểm chênh lệch k được lớn hơn 10
+function caculatorScoreEmployee(filterScoreFile) {
+    if (filterScoreFile.length > 1) {
+        for (i = 0; i < filterScoreFile.length; i++) {
+            for (j = i + 1; j < filterScoreFile.length; j++) {
+                // Tính giá trị tuyệt dối của 1 số
+                if (Math.abs(filterScoreFile[i].ScoreTotal - filterScoreFile[j].ScoreTotal) > 10) {
+                    return true
+                }
+
+            }
+        }
+    }
+    return false
+}
