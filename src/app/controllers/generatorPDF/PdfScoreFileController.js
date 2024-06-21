@@ -187,7 +187,7 @@ class PdfScoreFileController {
                     Bị loại khi: Giả mạo hồ sơ hoặc không tuân thủ đầy đủ các quy định về giấy chứng nhận cơ sở đủ điều kiện ATTP (hoặc tương đương); hoặc Hồ sơ tự công bố sản phẩm, ghi nhãn sản phẩm không đúng theo quy định; hoặc không đáp ứng quy định Hồ sơ dự thi theo quy định.
                 </p>
             </ul>
-            <table>
+            <table style="border:none">
                 <thead>
                     <tr>
                         <th scope="col"></th>

@@ -205,7 +205,7 @@ class WorkPositionControllers {
     }
     // update
     update(req, res, next) {
-        console.log(req.body)
+        // console.log(req.body)
         const cookie = req.cookies
         if (cookie?.User) {
             const UserDataCookie = jwt.verify(cookie.User, SECRET_CODE)

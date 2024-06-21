@@ -125,8 +125,8 @@ async function getOneScoreTemp(code, productId, productgroupId) {
                 document.querySelectorAll('input[type="radio"]').forEach(radio => {
                     radio.addEventListener('click', function () {
                         if (this.checked) {
-                            console.log(`this.checked:`, this.checked)
-                            console.log(`this.wasChecked:`, this.wasChecked)
+                            // console.log(`this.checked:`, this.checked)
+                            // console.log(`this.wasChecked:`, this.wasChecked)
                             if (this.wasChecked) {
                                 this.checked = false;
                             }
