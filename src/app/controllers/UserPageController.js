@@ -68,7 +68,6 @@ class UserPageController {
                 }
             })
         }
-
     }
     create(req, res) {
         const cookie = req.cookies

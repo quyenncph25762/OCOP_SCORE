@@ -36,6 +36,7 @@
     "express": "^4.19.2",
     "express-fileupload": "^1.5.0",
     "express-handlebars": "^7.1.2",
+    "html-docx-js": "^0.3.1",
     "install": "^0.13.0",
     "jquery-confirm": "^3.3.4",
     "jsonwebtoken": "^9.0.2",

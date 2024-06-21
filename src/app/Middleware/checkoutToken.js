@@ -59,42 +59,46 @@ const SECRET_CODE = process.env.SECRET_CODE; // Sửa SECRET_CODE để lấy t�
 const checkout = (NamePermission) => {
     return (req, res, next) => {
         const token = req.cookies.User;
-        const payload = jwt.verify(token, SECRET_CODE);
-        Employee.getOneEmployee(payload._id, (err, data) => {
-            if (err) {
-                console.log('Error', err)
-            } else {
-
-                Permission.getAllPermissionBy_Role_And_Name(data[0]?.RoleId, NamePermission, (err, results) => {
-                    if (err) {
-                        console.log('Error', err)
-                    }
-                    else {
-                        console.log(data[0]?.RoleId)
-                        if (results.length > 0) {
-                            Permission.getAllPermissionBy_Role(data[0].RoleId, (err, result) => {
-                                if (err) {
-                                    console.log('Error', err)
-                                }
-                                else {
-                                    var permission = result.map(item => {
-                                        return item.NamePermission
-                                    })
-                                    res.locals.permission = permission
-
-                                    next()
-
-                                }
-                            })
-
+        if (token) {
+            const payload = jwt.verify(token, SECRET_CODE);
+            Employee.getOneEmployee(payload._id, (err, data) => {
+                if (err) {
+                    console.log('Error', err)
+                } else {
+                    Permission.getAllPermissionBy_Role_And_Name(data[0]?.RoleId, NamePermission, (err, results) => {
+                        if (err) {
+                            console.log('Error', err)
                         }
                         else {
-                            res.redirect('back')
+                            if (results.length > 0) {
+                                Permission.getAllPermissionBy_Role(data[0].RoleId, (err, result) => {
+                                    if (err) {
+                                        console.log('Error', err)
+                                    }
+                                    else {
+                                        var permission = result.map(item => {
+                                            return item.NamePermission
+                                        })
+                                        res.locals.permission = permission
+
+                                        next()
+
+                                    }
+                                })
+
+                            }
+                            else {
+                                res.redirect('back')
+
+                            }
                         }
-                    }
-                })
-            }
-        })
+                    })
+                }
+            })
+        }
+        else {
+            res.redirect('/auth/loginPage')
+        }
     }
 
 }

@@ -142,7 +142,8 @@ class PdfScoreFileController {
         }
         body {
          font-family: 'Times New Roman', Times, serif !important;
-            width: 100%;
+         width: 100%;
+         font-size:16px !important;
         }
         p {
             margin: 0 !important;
@@ -153,104 +154,103 @@ class PdfScoreFileController {
 <body>
     <div class="" style="min-width:100%">
         <!-- head -->
-        <div class="" style="display: flex;justify-content:space-between;align-items:center;width:100%">
-            <div class="" style="text-align: center; font-size: 16px;">
-                <p style="text-align: center; max-width: 200px;">${ScoreFile.product_district ? ScoreFile.product_district : "Hệ thống"}</p>
-                <p style="font-weight: 600; max-width: 200px;">${ScoreFile.scorecommitee_name}</p>
-            </div>
-            <div class="" style="text-align: center; font-weight: 600">
-                <p style="text-transform: uppercase; font-size: 16px;">Cộng Hòa xã hội chủ nghĩa việt nam</p>
-                <p style="font-size: 14px;">Độc lập - Tự do - Hạnh phúc</p>
-            </div>
-        </div>
+        <table style="width:100%;border-collapse:collapse;">
+            <tr>
+                <td style="font-size:18px;border:none;margin-bottom:0px">
+                    <p style="margin-bottom:0px">${ScoreFile.product_district ? ScoreFile.product_district : "Hệ thống"}</p>
+                    <div style="max-width:200px;margin-left:11px">
+                    <p style="font-weight:bold;">${ScoreFile.scorecommitee_name}</p>
+                    </div>
+                </td>
+                <td style="text-align:right;font-weight:bold;border:none;font-size:18px;">
+                    <p style="text-transform:uppercase;margin-bottom:0px">Cộng Hòa xã hội chủ nghĩa việt nam</p>
+                    <div style="margin-right:50px">
+                        <p>Độc lập - Tự do - Hạnh phúc</p>
+                    </div>
+                </td>
+            </tr>
+        </table>
         <!-- subhead -->
-        <div style="padding-top: 40px;">
-            <h5 class="text-center" style="text-transform: uppercase;font-weight: 600">Phiếu đánh giá</h5>
-            <ul style="list-style-type: none; font-size: 13px; margin-top: 20px;padding:0">
-                <li style="margin-top:5px">
+        <!-- subhead -->
+        <div style="margin-top:40px">
+            <p style="text-transform:uppercase;font-weight:bold;text-align:center;font-size:18px">Phiếu đánh giá</p>
+            <div style="margin-top:20px;">
+                <p>
                     <strong>Tên sản phẩm:</strong>
-                    <span style="text-transform: uppercase;">${ScoreFile.product_name}</span>
-                </li>
-                <li style="margin-top:5px">
-                    <strong>Mã sản phẩm:</strong>
-                    <span style="text-transform: uppercase;">${ScoreFile.product_code}</span>
-                </li>
-                <li style="margin-top:5px">
-                    <strong>Tên chủ thể sản xuất:</strong>
-                    <span style="text-transform: uppercase;">${ScoreFile.customer_name}</span>
-                </li>
-                <li style="margin-top:5px">
-                    <strong>Địa chỉ:</strong>
-                    <span style="text-transform: uppercase;">${ScoreFile.customer_address} ${ScoreFile.wardCustomer_name} ${ScoreFile.districtCustomer_name} tỉnh ${ScoreFile.cityCustomer_name}</span>
-                </li>
-                <p style="font-size: 12px; color: red; font-style: italic; padding-top: 20px;">
-                    Bị loại khi: Giả mạo hồ sơ hoặc không tuân thủ đầy đủ các quy định về giấy chứng nhận cơ sở đủ điều kiện ATTP (hoặc tương đương); hoặc Hồ sơ tự công bố sản phẩm, ghi nhãn sản phẩm không đúng theo quy định; hoặc không đáp ứng quy định Hồ sơ dự thi theo quy định.
+                    <span style="text-transform:uppercase;">${ScoreFile.product_name}</span>
                 </p>
-            </ul>
-            <table style="border:none">
+                <p>
+                    <strong>Mã sản phẩm:</strong>
+                    <span style="text-transform:uppercase;">${ScoreFile.product_code}</span>
+                </p>
+                <p>
+                    <strong>Tên chủ thể sản xuất:</strong>
+                    <span style="text-transform:uppercase;">${ScoreFile.customer_name}</span>
+                </p>
+                <p>
+                    <strong>Địa chỉ:</strong>
+                    <span style="text-transform:uppercase;">${ScoreFile.customer_address}, ${ScoreFile.wardCustomer_name}, ${ScoreFile.districtCustomer_name} ,tỉnh ${ScoreFile.cityCustomer_name}</span>
+                </p>
+                <h5 style="color:red;font-style:italic;margin-top:20px;">
+                    Bị loại khi: Giả mạo hồ sơ hoặc không tuân thủ đầy đủ các quy định về giấy chứng nhận cơ sở đủ điều kiện ATTP (hoặc tương đương); hoặc Hồ sơ tự công bố sản phẩm, ghi nhãn sản phẩm không đúng theo quy định; hoặc không đáp ứng quy định Hồ sơ dự thi theo quy định.
+                </h5>
+            </div>
+            <table style="width:100%;border-collapse:collapse;">
                 <thead>
                     <tr>
-                        <th scope="col"></th>
-                        <th scope="col"></th>
-                        <th scope="col"></th>
+                        <th style="border:none;"></th>
+                        <th style="border:none;"></th>
+                        <th style="border:none;"></th>
                     </tr>
                 </thead>
                 <tbody>
                     ${ListScoreFileDetail.map((item, index) => {
                 if (item.scoreTempDetail_maxScore > 10 && item.scoreTempDetail_isScore === 0) {
-                    countTotal += 1
+                    countTotal += 1;
                 }
-
                 if (item.scoreTempDetail_isScore === 0 && Number(item.scoreTempDetail_name[1])) {
-                    countTotalPart += 1
+                    countTotalPart += 1;
                 }
-
                 return `
                             <tr key="${index}">
                                 ${item.scoreTempDetail_isScore ? `
-                                    <td>
-                                        ${item.scoreTempDetail_maxScore === item.Score ? `☒` : "☐"}
+                                    <td style="border:none">
+                                        ${item.scoreTempDetail_maxScore === item.Score ? '☒' : '☐'}
                                     </td>
-                                ` : ``}
+                                ` : ''}
+                              
                                 ${item.scoreTempDetail_name && !item.scoreTempDetail_isScore ? `
                                     ${item.scoreTempDetail_maxScore > 10 ? `
-                                        <td colspan="3" class="text-center" style="text-transform: uppercase; font-weight: 600; font-size: 14px;padding: 20px 0;">
-                                        <div style="border: 1px solid #000;">
+                                        <td colspan="3" style="text-align:center;text-transform:uppercase;font-weight:bold;border:1px solid #000;">
                                             <p>${item.scoreTempDetail_name}</p>
-                                            <p class="text-center mt-1" style="font-size:13px"> ${countTotal === 1 && totalPartA ? `Tổng điểm phần A: <span style="color:red"> ${totalPartA}</span> điểm` : ""}</p>
-                                            <p class="text-center mt-1" style="font-size:13px"> ${countTotal === 2 && totalPartB ? `Tổng điểm phần B:<span style="color:red"> ${totalPartB}</span> điểm` : ""}</p>
-                                            <p class="text-center mt-1" style="font-size:13px">${countTotal === 3 && totalPartC ? `Tổng điểm phần C: <span style="color:red"> ${totalPartC}</span> điểm` : ""}</p>
-                                            <p class="text-center mt-1" style="font-size:13px">${countTotal === 4 && totalPartD ? `Tổng điểm phần D: <span style="color:red"> ${totalPartD}</span> điểm` : ""}</p>
-                                        </div>
+                                            ${countTotal === 1 && totalPartA ? `<p style="">Tổng điểm phần A: <span style="color:red;">${totalPartA}</span> điểm</p>` : ''}
+                                            ${countTotal === 2 && totalPartB ? `<p style="">Tổng điểm phần B: <span style="color:red;">${totalPartB}</span> điểm</p>` : ''}
+                                            ${countTotal === 3 && totalPartC ? `<p style="">Tổng điểm phần C: <span style="color:red;">${totalPartC}</span> điểm</p>` : ''}
+                                            ${countTotal === 4 && totalPartD ? `<p style="">Tổng điểm phần D: <span style="color:red;">${totalPartD}</span> điểm</p>` : ''}
                                         </td>
-                                    ` :
-                            `${`<td colspan="2" style="max-width:300px;">
+                                    ` : `
                                     
-                                    ${item.scoreTempDetail_isScore === 0 && Number(item.scoreTempDetail_name[1])
-                                ?
-                                `<p style="font-weight: 600; font-size: 12px; padding: 6px 0;text-transform: uppercase;text-wrap:wrap">${item.scoreTempDetail_name}
-                               ${totalParts ? `(${totalParts[totalPartsIndex += 1]} điểm)` : ""}
-                                </p>`
-                                :
-                                `
-                                <p style="${item.scoreTempDetail_productDetailId ? `font-weight: 600` : 'font-weight: 400;font-style:italic'}; font-size: 12px; padding-top: 6px;padding-bottom:3px;">${item.scoreTempDetail_name}</p>
-                                `
-                            }
-                                    </td>`}
-
-                                    
+                                        <td colspan="2" style="max-width:300px;border:none">
+                                            ${item.scoreTempDetail_isScore === 0 && Number(item.scoreTempDetail_name[1]) ? `
+                                            
+                                                <div style="margin-top:8px">
+                                                <p style="font-weight:bold;text-transform:uppercase;">${item.scoreTempDetail_name} ${totalParts ? `(${totalParts[totalPartsIndex += 1]} điểm)` : ''}</p>
+                                                </div>
+                                            ` : `
+                                                <p style="font-weight:${item.scoreTempDetail_productDetailId ? 'bold' : 'normal'};font-style:${item.scoreTempDetail_productDetailId ? 'normal' : 'italic'};">${item.scoreTempDetail_name}</p>
+                                            `}
+                                        </td>
                                     `}
-                                ` :
-                        `
-                                    <td style="font-weight: 400; font-size: 12px; padding-left: 10px;">
-                                        <p class="ml-2" style="text-wrap:wrap">${item.scoreTempDetail_name} ${item.scoreTempDetail_validateRank ? repeatStarUpdate(item.scoreTempDetail_validateRank) : ""}</p>
+                                ` : `
+                                    <td style="font-weight:normal;margin-left:10px;border:none">
+                                        <p>${item.scoreTempDetail_name} ${item.scoreTempDetail_validateRank ? repeatStarUpdate(item.scoreTempDetail_validateRank) : ''}</p>
                                     </td>
                                 `}
-                                <td>
+                                <td style="border:none">
                                     ${item.scoreTempDetail_maxScore >= 0 && item.scoreTempDetail_isScore ? `
-                                        <p style="font-size:12px">${item.scoreTempDetail_maxScore}</p>
+                                        <p style="">${item.scoreTempDetail_maxScore}</p>
                                     ` : `
-                                        ${item.scoreTempDetail_productDetailId ? `<p style="font-weight:600; font-size:12px;border-bottom:1px solid #ccc">${arrScoreMax.length > 0 && arrScoreMax[i += 1]}</p>` : ""}
+                                        ${item.scoreTempDetail_productDetailId ? `<p style="font-weight:bold;border-bottom:1px solid #ccc;">${arrScoreMax.length > 0 && arrScoreMax[i += 1]}</p>` : ''}
                                     `}
                                 </td>
                             </tr>
@@ -258,26 +258,36 @@ class PdfScoreFileController {
             }).join('')}
                 </tbody>
             </table>
-            <div class="mt-3" style="border: 1px solid #000; padding: 3px;font-weight:600">
+            <div style="border:1px solid #000;padding:3px;font-weight:bold;">
                 <p>Kết quả:</p>
-                <div class="text-center">
-                    <p>Tổng điểm (Phần A + B + C): <span style="color:red">${totalPartA + totalPartB + totalPartC}</span> Điểm</p>
-                    <p>Xếp hạng: <span style="color:red">${ScoreFile.RankOcop}</span> sao</p>
+                <div style="text-align:center;">
+                    <p>Tổng điểm (Phần A + B + C): <span style="color:red;">${totalPartA + totalPartB + totalPartC}</span> Điểm</p>
+                    <p>Xếp hạng: <span style="color:red;">${ScoreFile.RankOcop}</span> sao</p>
                 </div>
             </div>
-            <div class="" style="width: 100%;font-size:12px">
-                <p class="mt-3 ml-4" style="font-weight:600;border-bottom:1px solid #000;width:150px;">Ý kiến của người đánh giá</p>
-                ${ScoreFile.Note ? ` <p name="" id="" style="text-decoration: underline dotted">${ScoreFile.Note}</p>` : `<p class="mt-4" style="font-size:14px;line-height:20px;word-break: break-all;width:200px">...................................................................................................................................................................................... <br>......................................................................................................................................................................................</p>`}
-               
+            <div style="width:100%;">
+                <div style="font-weight:bold;text-decoration:underline;width:150px;margin-top:20px;margin-bottom:20px;margin-left:20px">Ý kiến của người đánh giá</div>
+                ${ScoreFile.Note ? `<div style="text-decoration:underline dotted;">${ScoreFile.Note}</div>` : `<div style="font-size:18px;line-height:20px;word-break:break-all;width:200px;">....................................................................................................................................................................................................................................................................................................................................................................</div>`}
             </div>
-            <div class="mt-4" style="display: flex; justify-content: end;">
-                <div style="font-size: 13px; text-align: center;">
-                    <p style="font-style: italic">Tỉnh ${ScoreFile.cityCustomer_name}, ${ScoreFile.formattedScoreDatePdf}</p>
-                    <strong>Người đánh giá</strong>
-                    <p style="font-style: italic">(Ký và ghi rõ họ tên)</p>
-                    <p style="font-size: 18px; font-weight: 550; padding-top: 14px;">${ScoreFile.employee_FullName}</p>
-                </div>
-            </div>
+            
+             <table style="width:100%;border-collapse:collapse;margin-top:15px">
+            <tr>
+                <td style="text-align:center;font-size:16px;width:50%;border:none">
+                    <div style=""></div>
+                </td>
+                <td style="text-align:right; vertical-align: middle;width:50%;border:none">
+                    <div style="display:inline-block; text-align:center;">
+                        <p style="font-style:italic;">Tỉnh ${ScoreFile.cityCustomer_name}, ${ScoreFile.formattedScoreDatePdf}</p>
+                        <p style="font-weight:bold">Người đánh giá</p>
+                        <p style="font-style:italic;">(Ký và ghi rõ họ tên)</p>
+                        <div style="margin-top:18px;">
+                            <p style="font-weight:bold; font-size:18px">${ScoreFile.employee_FullName}</p>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+                
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -293,32 +303,38 @@ class PdfScoreFileController {
                 }
                 return star
             }
-            const outputPath = path.join(__dirname, `../../../../Uploads/phieu-cham-${ScoreFile.employee_FullName}.pdf`);
-            console.log(`Saving PDF to: ${outputPath}`);
-
+            const nameFile = `phieu-cham-${ScoreFile.employee_FullName}.docx`;
             // Tạo file PDF và lưu tại outputPath
-            await generatePDFutils(htmlContent, outputPath);
-
-            // Đảm bảo file PDF đã được tạo thành công
-            if (fs.existsSync(outputPath)) {
-                console.log("File PDF đã được tạo thành công.");
-                // Gửi file PDF về client
-                res.download(outputPath, `phieu-cham-${ScoreFile.employee_FullName}.pdf`, (err) => {
-                    if (err) {
-                        console.error("Lỗi khi tải file PDF:", err);
-                        return res.status(500).send({
-                            message: "Lỗi khi tải file PDF",
-                            error: err.message
-                        });
-                    }
-                    console.log("File PDF đã được tải xuống thành công!");
-                });
-            } else {
-                console.error("File PDF không tồn tại tại đường dẫn:", outputPath);
-                return res.status(500).send({
-                    message: "File PDF không tồn tại"
-                });
-            }
+            await generatePDFutils(htmlContent, nameFile, res);
+            // if (fs.existsSync(outputPath)) {
+            //     // Set header để trình duyệt hiểu được dạng file là docx
+            //     res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+            //     res.setHeader('Content-Disposition', `attachment; filename=phieu.docx`);
+            //     // Đọc file và gửi về client
+            //     fs.createReadStream(outputPath).pipe(res);
+            // } else {
+            //     res.status(404).send('File not found');
+            // }
+            //    Đảm bảo file PDF đã được tạo thành công
+            // if (fs.existsSync(outputPath)) {
+            //     console.log("File PDF đã được tạo thành công.");
+            //     // Gửi file PDF về client
+            //     res.download(outputPath, `phieu-cham-create-${ScoreFile.employee_FullName}.docx`, (err) => {
+            //         if (err) {
+            //             console.error("Lỗi khi tải file PDF:", err);
+            //             return res.status(500).send({
+            //                 message: "Lỗi khi tải file PDF",
+            //                 error: err.message
+            //             });
+            //         }
+            //         console.log("File PDF đã được tải xuống thành công!");
+            //     });
+            // } else {
+            //     console.error("File PDF không tồn tại tại đường dẫn:", outputPath);
+            //     return res.status(500).send({
+            //         message: "File PDF không tồn tại"
+            //     });
+            // }
         } catch (error) {
             console.error("Lỗi server:", error);
             return res.status(500).json({
