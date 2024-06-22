@@ -1,4 +1,5 @@
 const ScoreFileModel = require("../../models/scorefile/ScoreFileModel")
+const ScoreFileDetailModel = require("../../models/scorefile/ScoreFileDetailModel")
 const AccountModel = require("../../models/Account")
 const ProductModel = require("../../models/product/ProductmanageModel")
 const EmployeeModel = require("../../models/employee/EmployeeModel")
@@ -126,7 +127,9 @@ class ScoreFileController {
                             message: "Lỗi truy vấn"
                         })
                     }
-                    await employees.forEach(async (employee) => {
+                    // loc ra nhung employee khong bi khoa
+                    const employeeFilter = employees.filter((employee) => employee.isLock === 0)
+                    await employeeFilter.forEach(async (employee) => {
                         ScoreFileModel.create({
                             forEmployeeId: employee._id,
                             IsActive: 0,
@@ -299,20 +302,6 @@ class ScoreFileController {
         })
     }
     // removeToTrash
-    removeToTrash(req, res) {
-        const id = req.params.id
-        ScoreFileModel.removeToTrash(id, (err, results) => {
-            if (err) {
-                return res.status(500).json({
-                    message: err
-                })
-            }
-            return res.status(204).json({
-                message: "Xóa thành công"
-            })
-        })
-    }
-    // removeToTrash
     revert(req, res) {
         const id = req.params.id
         ScoreFileModel.revert(id, (err, results) => {
@@ -326,19 +315,21 @@ class ScoreFileController {
             })
         })
     }
-    // removeForever
-    removeForever(req, res) {
-        const id = req.params.id
-        ScoreFileModel.remove(id, (err, results) => {
-            if (err) {
-                return res.status(500).json({
-                    message: err
+    // remove
+    removeScoreFile = async (req, res) => {
+        try {
+            const id = req.params.id
+            if (id) {
+                await ScoreFileModel.remove(id)
+                await ScoreFileDetailModel.removeAll(id)
+                return res.status(203).json({
+                    message: "Xoa thanh cong"
                 })
             }
-            return res.status(204).json({
-                message: "Xóa thành công"
-            })
-        })
+        } catch (error) {
+            console.log(error)
+        }
+
     }
 
 }

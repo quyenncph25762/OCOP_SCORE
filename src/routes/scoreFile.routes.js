@@ -31,10 +31,8 @@ router.patch("/updateScoreTotal/:id", CheckController.checkout('Score'), ScoreFi
 router.patch("/updateStatus/:id", CheckController.checkout('Score'), ScoreFileController.updateStatusScoreFile)
 // add
 router.post("/add", CheckController.checkout('Score'), ScoreFileController.createScoreFile)
-// removeToTrash
-router.patch("/removeToTrash/:id", CheckController.checkout('Score'), ScoreFileController.removeToTrash)
-// removeForever
-router.delete("/remove/:id", CheckController.checkout('Score'), ScoreFileController.removeForever)
+// remove
+router.patch("/remove/:id", CheckController.checkout('Score'), ScoreFileController.removeScoreFile)
 // revert
 router.patch("/revert/:id", CheckController.checkout('Score'), ScoreFileController.revert)
 

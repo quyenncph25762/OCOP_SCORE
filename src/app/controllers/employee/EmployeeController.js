@@ -26,14 +26,13 @@ class EmployeeControllers {
                             message: err
                         })
                     }
-
-                    workDepartmentModel.fetchAllWorkDepartment((err, WorkDepartMent) => {
+                    workDepartmentModel.fetchAllWorkDepartment(User[0].DistrictId, (err, WorkDepartMent) => {
                         if (err) {
                             return res.status(400).json({
                                 message: err
                             })
                         }
-                        workPositionModel.fetchAllWorkPosition((err, WorkPosition) => {
+                        workPositionModel.fetchAllWorkPosition(User[0].DistrictId, (err, WorkPosition) => {
                             if (err) {
                                 return res.status(400).json({
                                     message: err
@@ -242,7 +241,7 @@ class EmployeeControllers {
                     } else {
                         if (data.length === 0) {
                             EmployeeModel.updateEmployee(id, ({
-                                Code: req.body.Code,
+                                UserName: req.body.UserName,
                                 FullName: req.body.FullName,
                                 Email: req.body.Email,
                                 Avatar: req.file ? req.file.path : req.body.Avatar,

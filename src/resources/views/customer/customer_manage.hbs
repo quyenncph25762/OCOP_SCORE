@@ -8,7 +8,7 @@
         <button class="btn btn-danger btnDeleteAll btnDisabled" style="float: left;">Xóa mục đã chọn</button>
         <div class="import_customer_button"
           style="list-style: none; display:flex; justify-content: space-between; align-items: center;">
-          <button class="btn btn-success" data-toggle="modal" data-target="#modalCustomerAdd">Thêm mới</button>
+          <button class="btn btn-info" data-toggle="modal" data-target="#modalCustomerAdd">Thêm mới</button>
         </div>
         {{> modalCustomer}}
       </ul>
@@ -32,7 +32,7 @@
             <table id="myTable" class="table datatables table-bordered table-hover table-striped">
               <thead>
                 <tr>
-                  <th {{#ifCond data.length 0}}hidden{{/ifCond}}>
+                  <th {{#ifCond Customer.length 0}}hidden{{/ifCond}}>
                     <div class="checkbox-wrapper-42 checkbox">
                       <input id="checkAll" type="checkbox" class="check" />
                       <label class="cbx" for="checkAll"></label>
@@ -46,7 +46,7 @@
                 </tr>
               </thead>
               <tbody>
-                {{#each viewData.data}}
+                {{#each Customer}}
                 <tr>
                   <td>
                     <div class="checkbox-wrapper-42 checkbox">
@@ -74,7 +74,6 @@
                       </ion-icon>
                     </span>
                   </td>
-
                 </tr>
                 {{!-- modal --}}
                 <div class="modal fade" id="exampleModal{{this._id}}" tabindex="-1" role="dialog"
@@ -165,7 +164,7 @@
                             </div>
                         </form>
                         <div class="modal-footer">
-                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                          <button type="button" class="btn btn-danger" data-dismiss="modal">Đóng</button>
                           <button onclick="handleUpdate('{{this._id}}')" class="btn btn-warning">Câp nhật chủ
                             thể</button>
                         </div>
@@ -175,9 +174,6 @@
                 </div>
                 {{!-- end modal --}}
                 {{else}}
-                <tr>
-                  <td colspan="9" class="text-center">Không tìm thấy từ khoá nào</td>
-                </tr>
                 {{/each }}
               </tbody>
             </table>
@@ -334,19 +330,23 @@
       const City_id = document.getElementById(`City_id${id}`).value
       const District_id = document.getElementById(`District_id${id}`).value
       const Ward_id = document.getElementById(`Ward_id${id}`).value
-      const formData = new FormData()
-      formData.append("Code", Code)
-      formData.append("Name", Name)
-      formData.append("Address", Address)
-      formData.append("SubName", SubName)
-      formData.append("Phone", Phone)
-      formData.append("Email", Email)
-      formData.append("City_id", City_id)
-      formData.append("District_id", District_id)
-      formData.append("Ward_id", Ward_id)
+      const form = {
+        Code: Code,
+        Name: Name,
+        Address: Address,
+        SubName: SubName,
+        Phone: Phone,
+        Email: Email,
+        City_id: City_id,
+        District_id: District_id,
+        Ward_id: Ward_id,
+      }
       const res = await fetch(`/customer-manage/${id}/update`, {
         method: "POST",
-        body: formData
+        body: JSON.stringify(form),
+        headers: {
+          "Content-Type": "application/json"
+        }
       })
       if (res.ok) {
         const data = await res.json()
@@ -373,7 +373,6 @@
           showHideTransition: 'slide',
           stack: 4
         });
-        console.error("Response was not ok:", res.status);
       }
     }
   </script>

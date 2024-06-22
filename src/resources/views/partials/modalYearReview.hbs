@@ -44,7 +44,7 @@
                     </div>
                 </form>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Đóng</button>
                     <button onclick="handleUpdate('{{this._id}}')" class="btn btn-warning">Câp nhật năm đánh
                         giá</button>
                 </div>
@@ -91,8 +91,8 @@
                     </div>
                 </form>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                    <button type="button" onclick="handleAdd()" class="btn btn-success">Thêm mới năm</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Đóng</button>
+                    <button type="button" onclick="handleAdd()" class="btn btn-info">Thêm mới năm</button>
                 </div>
             </div>
         </div>
@@ -106,6 +106,32 @@
         const status = document.getElementById(`status`).checked
         const note = document.getElementById(`note`).value
         const creatorUser_id = document.getElementById(`creatorUser_id`).value
+        if (yearName.trim() === "") {
+            $.toast({
+                position: "top-right",
+                heading: 'WARNING!',
+                text: "Năm đánh giá không được để trống",
+                icon: 'warning',
+                loader: true,
+                loaderBg: '#f2a654',
+                showHideTransition: 'slide',
+                stack: 4
+            });
+            return
+        }
+        if (!Number(yearName)) {
+            $.toast({
+                position: "top-right",
+                heading: 'WARNING!',
+                text: "Năm đánh giá phải là số",
+                icon: 'warning',
+                loader: true,
+                loaderBg: '#f2a654',
+                showHideTransition: 'slide',
+                stack: 4
+            });
+            return
+        }
         const formData = new FormData()
         formData.append("yearName", yearName)
         formData.append("status", status)
@@ -130,9 +156,16 @@
             window.location.replace("/year-review")
         } else {
             const data = await res.json()
-            const messageErrorUpdate = document.getElementById(`messageError`)
-            messageErrorUpdate.innerHTML = data.message
-            console.error("Response was not ok:", res.status);
+            $.toast({
+                position: "top-right",
+                heading: 'WARNING!',
+                text: data.message || 'Đã có lỗi xảy ra',
+                icon: 'warning',
+                loader: true,
+                loaderBg: '#f2a654',
+                showHideTransition: 'slide',
+                stack: 4
+            });
         }
     }
     //update
@@ -163,9 +196,16 @@
             window.location.replace("/year-review")
         } else {
             const data = await res.json()
-            const messageErrorUpdate = document.getElementById(`messageErrorUpdate${id}`)
-            messageErrorUpdate.innerHTML = data.message
-            console.error("Response was not ok:", res.status);
+            $.toast({
+                position: "top-right",
+                heading: 'WARNING!',
+                text: data.message || 'Đã có lỗi xảy ra',
+                icon: 'warning',
+                loader: true,
+                loaderBg: '#f2a654',
+                showHideTransition: 'slide',
+                stack: 4
+            });
         }
     }
 </script>

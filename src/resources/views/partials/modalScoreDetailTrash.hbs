@@ -20,7 +20,7 @@
                         style="list-style: none; display:flex; justify-content: space-between; align-items: center;padding: 0;margin-bottom: 0;margin-top: 20px;">
                         <button type="button" class="btn btn-danger btnDeleteAll btnDisabledDelete">Xóa mục đã
                             chọn</button>
-                        <button type="button" class="btn btn-primary btnRevertAll ml-3 btnDisabledRevert">Khôi phục mục
+                        <button type="button" class="btn btn-info btnRevertAll ml-3 btnDisabledRevert">Khôi phục mục
                             đã
                             chọn</button>
                     </ul>
@@ -33,7 +33,12 @@
                 <table class="table table-bordered table__temptDetail">
                     <thead>
                         <tr>
-                            <th scope="col"></th>
+                            <th {{#ifCond ScoreTemp.length 0}}hidden{{/ifCond}}>
+                                <div class="checkbox-wrapper-42 checkbox">
+                                    <input id="checkAll" type="checkbox" class="check" />
+                                    <label class="cbx" for="checkAll"></label>
+                                </div>
+                            </th>
                             <th scope="col">#</th>
                             <th scope="col">Nội dung</th>
                             <th scope="col">Chấm điểm</th>
@@ -49,10 +54,10 @@
                         {{#each ScoreTempTrash}}
                         <tr>
                             <td>
-                                <div class="">
-                                    <div class="checkbox">
-                                        <input type="checkbox" class="check" data-idCheckBox="{{this._id}}">
-                                    </div>
+                                <div class="checkbox-wrapper-42 checkbox">
+                                    <input id="cbx-43{{this._id}}" type="checkbox" class="check"
+                                        data-idCheckBox="{{this._id}}" />
+                                    <label class="cbx" for="cbx-43{{this._id}}"></label>
                                 </div>
                             </td>
                             <th scope="row">{{plus @index}}</th>
@@ -123,8 +128,8 @@
                                         style="background-color: transparent;border: none;cursor: pointer;">
                                         <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
                                             title="Khôi phục">
-                                            <ion-icon name="sync-outline" style="color: white; font-size: 18px;"
-                                                id="icon_revertScore" data-id="{{this._id}}"></ion-icon>
+                                            <ion-icon name="sync-outline" style="font-size: 18px;" id="icon_revertScore"
+                                                data-id="{{this._id}}"></ion-icon>
                                         </span>
                                     </button>
                                 </div>
@@ -142,8 +147,8 @@
                 </table>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Hủy</button>
+                <button type="button" class="btn btn-info">Lưu thông tin</button>
             </div>
         </div>
     </div>
@@ -276,21 +281,30 @@
         btnDeleteAll.addEventListener("click", async (e) => {
             e.preventDefault();
             $.confirm({
-                title: '<ion-icon name="help-circle-outline"></ion-icon>',
+                title: '<ion-icon name="trash-bin-outline"></ion-icon>',
                 content: 'Bạn muốn xóa mục đã chọn ?',
                 buttons: {
                     confirm: {
                         text: 'Confirm',
                         btnClass: 'btn-red',
                         action: async function () {
-                            const id = event.target.dataset.id;
+                            const arrId = []
                             for (let btnCheck of btnsCheck) {
                                 if (btnCheck.checked) {
                                     const id = btnCheck.dataset.idcheckbox
-                                    const res = await fetch(`/scoreTempDetail/remove/${id}`, {
-                                        method: "DELETE"
-                                    })
+                                    arrId.push(id)
                                 }
+                            }
+                            const res = await fetch(`/scoreTempDetail/removeAll`, {
+                                method: "POST",
+                                body: JSON.stringify(arrId),
+                                headers: {
+                                    "Content-Type": "application/json"
+                                }
+                            })
+                            if (!res.ok) {
+                                alert("Co loi xay ra vui long thu lai !")
+                                return
                             }
                             localStorage.setItem('toast', JSON.stringify({
                                 position: "top-right",
@@ -321,16 +335,25 @@
                 buttons: {
                     confirm: {
                         text: 'Confirm',
-                        btnClass: 'btn-red',
+                        btnClass: 'btn-blue',
                         action: async function () {
-                            const id = event.target.dataset.id;
+                            const arrId = []
                             for (let btnCheck of btnsCheck) {
                                 if (btnCheck.checked) {
                                     const id = btnCheck.dataset.idcheckbox
-                                    const res = await fetch(`/scoreTempDetail/revert/${id}`, {
-                                        method: "PATCH"
-                                    })
+                                    arrId.push(id)
                                 }
+                            }
+                            const res = await fetch(`/scoreTempDetail/revertAll`, {
+                                method: "POST",
+                                body: JSON.stringify(arrId),
+                                headers: {
+                                    "Content-Type": "application/json"
+                                }
+                            })
+                            if (!res.ok) {
+                                alert("Co loi xay ra vui long thu lai !")
+                                return
                             }
                             localStorage.setItem('toast', JSON.stringify({
                                 position: "top-right",

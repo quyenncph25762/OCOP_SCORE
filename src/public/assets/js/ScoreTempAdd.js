@@ -5,6 +5,19 @@ async function handleAdd() {
     const ProductGroup_id = document.getElementById("ProductGroup_id").value
     const Note = document.getElementById("Note").value
     const CreatorUser_id = document.getElementById("CreatorUser_id").value
+    if (Name.trim() === "") {
+        $.toast({
+            position: "top-right",
+            heading: 'WARNING!',
+            icon: "warning",
+            loader: true,
+            loaderBg: '#9EC600',
+            stack: 4,
+            text: `Tên phiếu không được để trống`,
+            allowToastClose: true
+        });
+        return
+    }
     const ScoreTemp = {
         Code: Code,
         Name: Name,

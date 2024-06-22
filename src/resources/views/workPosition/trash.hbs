@@ -11,7 +11,7 @@
                         style="list-style: none; display:flex; justify-content: space-between; align-items: center;">
                         <div class="">
                             <button class="btn btn-danger btnDeleteAll btnDisabledDelete">Xóa mục đã chọn</button>
-                            <button class="btn btn-primary btnRevertAll ml-3 btnDisabledRevert">Khôi phục mục đã
+                            <button class="btn btn-info btnRevertAll ml-3 btnDisabledRevert">Khôi phục mục đã
                                 chọn</button>
                         </div>
                     </ul>
@@ -101,10 +101,6 @@
                                                 </span>
                                             </div>
                                         </td>
-                                    </tr>
-                                    {{else}}
-                                    <tr>
-                                        <td colspan="9" class="text-center">Không tìm thấy từ khoá nào</td>
                                     </tr>
                                     {{/each }}
                                 </tbody>
@@ -272,15 +268,20 @@
                         text: 'Confirm',
                         btnClass: 'btn-red',
                         action: async function () {
-                            const id = event.target.dataset.id;
+                            const arrId = []
                             for (let btnCheck of btnsCheck) {
                                 if (btnCheck.checked) {
                                     const id = btnCheck.dataset.idcheckbox
-                                    const res = await fetch(`/workPosition/remove/${id}`, {
-                                        method: "DELETE"
-                                    })
+                                    arrId.push(id)
                                 }
                             }
+                            await fetch(`/workPosition/removeAll`, {
+                                method: 'POST',
+                                body: JSON.stringify(arrId),
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                }
+                            })
                             localStorage.setItem('toast', JSON.stringify({
                                 position: "top-right",
                                 heading: 'Xóa thành công',
@@ -292,6 +293,9 @@
                             }));
                             window.location.reload()
                         }
+                    },
+                    cancel: function () {
+                        $.alert('Đã hủy!');
                     }
                 },
                 cancel: function () {
@@ -310,15 +314,20 @@
                         text: 'Confirm',
                         btnClass: 'btn-blue',
                         action: async function () {
-                            const id = event.target.dataset.id;
+                            const arrId = []
                             for (let btnCheck of btnsCheck) {
                                 if (btnCheck.checked) {
                                     const id = btnCheck.dataset.idcheckbox
-                                    const res = await fetch(`/workPosition/revert/${id}`, {
-                                        method: "PATCH"
-                                    })
+                                    arrId.push(id)
                                 }
                             }
+                            await fetch(`/workPosition/revertAll`, {
+                                method: 'POST',
+                                body: JSON.stringify(arrId),
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                }
+                            })
                             localStorage.setItem('toast', JSON.stringify({
                                 position: "top-right",
                                 heading: 'Khôi phục thành công',

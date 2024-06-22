@@ -16,7 +16,7 @@ class WorkPositionControllers {
                         message: err
                     })
                 }
-                WorkPositionModel.fetchAllWorkPosition((err, workPosition) => {
+                WorkPositionModel.fetchAllWorkPosition(User[0]?.DistrictId, (err, workPosition) => {
                     if (err) {
                         return res.status(400).json({
                             message: err
@@ -45,7 +45,7 @@ class WorkPositionControllers {
                         message: err
                     })
                 }
-                WorkPositionModel.fetchAllWorkPositionFromTrash((err, workPosition) => {
+                WorkPositionModel.fetchAllWorkPositionFromTrash(User[0]?.DistrictId, (err, workPosition) => {
                     if (err) {
                         return res.status(400).json({
                             message: err
@@ -66,40 +66,46 @@ class WorkPositionControllers {
     }
     // them
     create(req, res, next) {
-        const dateTime = new Date()
-        WorkPositionModel.findWorkPositionAdd(req.body, (err, data) => {
-            if (err) {
-                return res.status(500).json({
-                    message: "Loi truy xuat"
-                })
-            } else {
-                if (data.length === 0) {
-                    WorkPositionModel.AddWorkPosition({
-                        Name: req.body.Name,
-                        Code: req.body.Code,
-                        IsManager: req.body.IsManager === "true" ? 1 : 0,
-                        IsActive: req.body.IsActive === "true" ? 1 : 0,
-                        Note: req.body.note,
-                        CreatorUser_id: req.body.CreatorUser_id,
-                        CreationTime: dateTime
-                    }, (err, data) => {
-                        if (err) {
-                            return res.status(500).json({
-                                message: 'Internal Server Error'
-                            })
-                        } else {
+        console.log(req.body)
+        const cookie = req.cookies
+        if (cookie?.User) {
+            const UserDataCookie = jwt.verify(cookie.User, SECRET_CODE)
+            AccountModel.fetchOneUser(UserDataCookie?._id, (err, User) => {
+                if (err) {
+                    return res.status(400).json({
+                        message: err
+                    })
+                }
+                WorkPositionModel.findWorkPositionAdd(User[0].DistrictId, req.body, (err, data) => {
+                    if (err) {
+                        console.log(err)
+                        return res.status(500).json({
+                            message: "Loi truy xuat"
+                        })
+                    }
+                    if (data.length === 0) {
+                        WorkPositionModel.AddWorkPosition({
+                            DistrictId: User?.[0].DistrictId ? User?.[0].DistrictId : null,
+                            ...req.body
+                        }, (err, data) => {
+                            if (err) {
+                                return res.status(500).json({
+                                    message: 'Internal Server Error'
+                                })
+                            }
                             return res.status(201).json({
                                 message: 'Thêm thành công'
                             })
-                        }
-                    })
-                } else {
-                    return res.status(400).json({
-                        message: "Ten da ton tai"
-                    })
-                }
-            }
-        })
+                        })
+                    } else {
+                        return res.status(400).json({
+                            message: "Ten da ton tai"
+                        })
+                    }
+                })
+            })
+        }
+
 
     }
     // xoa vao thung rac
@@ -110,7 +116,7 @@ class WorkPositionControllers {
             const id = req.params.id
             WorkPositionModel.deleteWorkPositionToTrash(id, UserDataCookie?._id, (err, result) => {
                 if (err) {
-                    return res.status(400).json({
+                    return res.status(500).json({
                         message: err
                     })
                 } else {
@@ -119,6 +125,30 @@ class WorkPositionControllers {
                     })
                 }
             })
+        }
+    }
+    // xoa vao thung rac nhieu
+    removeToTrashAll = async (req, res) => {
+        try {
+            const cookie = req.cookies
+            if (cookie?.User) {
+                const UserDataCookie = jwt.verify(cookie.User, SECRET_CODE)
+                AccountModel.fetchOneUser(UserDataCookie?._id, async (err, User) => {
+                    if (err) {
+                        return res.status(400).json({
+                            message: err
+                        })
+                    }
+                    for (const id of req.body) {
+                        await WorkPositionModel.deleteWorkPositionToTrashAll(id, User[0]?._id)
+                    }
+                    return res.status(203).json({
+                        message: "Xoa thanh cong"
+                    })
+                })
+            }
+        } catch (error) {
+            console.log(error)
         }
     }
     // xoa
@@ -133,6 +163,18 @@ class WorkPositionControllers {
                 })
             }
         })
+    }
+    removeAll = async (req, res) => {
+        try {
+            for (const id of req.body) {
+                await WorkPositionModel.deleteWorkPositionAll(id)
+            }
+            return res.status(203).json({
+                message: "Xoa thanh cong"
+            })
+        } catch (error) {
+            console.log(error)
+        }
     }
     // khoi phuc
     revert(req, res, next) {
@@ -149,42 +191,57 @@ class WorkPositionControllers {
             }
         })
     }
+    revertAll = async (req, res) => {
+        try {
+            for (const id of req.body) {
+                await WorkPositionModel.revertWorkPositionAll(id)
+            }
+            return res.status(203).json({
+                message: "Xoa thanh cong"
+            })
+        } catch (error) {
+            console.log(error)
+        }
+    }
     // update
     update(req, res, next) {
-        console.log(req.body)
-        const dateTime = new Date()
-        const id = req.params.id
-        WorkPositionModel.findWorkPositionUpdate(id, req.body, (err, data) => {
-            if (err) {
-                return res.status(500).json({
-                    message: "Loi truy xuat"
-                })
-            } else {
-                if (data?.length === 0) {
-                    WorkPositionModel.updateProductGroup(id, ({
-                        Name: req.body.Name,
-                        Code: req.body.Code,
-                        IsManager: req.body.IsManager === 'true' ? 1 : 0,
-                        IsActive: req.body.IsActive === 'true' ? 1 : 0,
-                        Note: req.body.Note,
-                        CreationTime: dateTime
-                    }), (err, result) => {
-                        if (err) {
-                            return res.status(400).json({
-                                message: `${err}: Loi updateProductGroup`
-                            })
-                        }
-                        return res.status(202).json({
-                            message: `Cập nhật thành công`
-                        })
-                    })
-                } else {
+        // console.log(req.body)
+        const cookie = req.cookies
+        if (cookie?.User) {
+            const UserDataCookie = jwt.verify(cookie.User, SECRET_CODE)
+            AccountModel.fetchOneUser(UserDataCookie?._id, (err, User) => {
+                if (err) {
                     return res.status(400).json({
-                        message: "Ten da ton tai"
+                        message: err
                     })
                 }
-            }
-        })
+                const id = req.params.id
+                WorkPositionModel.findWorkPositionUpdate(id, User[0].DistrictId, req.body, (err, data) => {
+                    if (err) {
+                        return res.status(500).json({
+                            message: "Loi truy xuat"
+                        })
+                    } else {
+                        if (data?.length === 0) {
+                            WorkPositionModel.updateWorkPosition(id, req.body, (err, result) => {
+                                if (err) {
+                                    return res.status(400).json({
+                                        message: `${err}: Loi updateWorkPosition`
+                                    })
+                                }
+                                return res.status(202).json({
+                                    message: `Cập nhật thành công`
+                                })
+                            })
+                        } else {
+                            return res.status(400).json({
+                                message: "Ten da ton tai"
+                            })
+                        }
+                    }
+                })
+            })
+        }
     }
 }
 

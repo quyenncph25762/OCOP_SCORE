@@ -1,13 +1,19 @@
 <!-- Modal -->
 <style>
     .modal-content {
-        min-width: 1000px;
-        height: 90vh;
+
+        max-height: 90vh;
     }
 
     .table td,
     .table th {
         padding: 0.50rem;
+    }
+
+    @media screen and (min-width: 1025px) {
+        .modal-content {
+            min-width: 1000px;
+        }
     }
 
     @media screen and (min-width: 350px) and (max-width: 1024px) {
@@ -23,7 +29,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Cập nhật</h5>
+                <h5 style="font-weight: 600;" class="modal-title" id="exampleModalLabel">Cập nhật hội đồng</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -92,7 +98,7 @@
                                             <th scope="col">Vai trò</th>
                                             <th scope="col">Tổ giúp việc</th>
                                             <th scope="col" style="max-width: 58px;text-wrap: wrap;">
-                                                Hành động</th>
+                                            </th>
                                         </tr>
                                     </thead>
                                     {{!-- body --}}
@@ -103,7 +109,7 @@
                                     <tfoot>
                                         <tr>
                                             <td colspan="8" style="text-align: center;color: white;">
-                                                <button class="btn btn-success" type="button"
+                                                <button class="btn btn-info" type="button"
                                                     style="margin-left: 50%;transform: translateX(-50%);"
                                                     onclick="education_fields_update('{{this._id}}');">
                                                     <span class="glyphicon glyphicon-plus"
@@ -118,12 +124,20 @@
                     </div>
                 </form>
             </div>
+            <p style="font-style: italic;font-size: 12px;text-align: right;">*Sau khi <strong>cập nhật</strong> hội đồng
+                xong hãy nhấn
+                nút <strong>kích hoạt chấm
+                    điểm</strong></p>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Hủy bỏ</button>
-                <button type="button" onclick="handleUpdateScoreCommittee('{{this._id}}')" class="btn btn-warning"
-                    {{#ifCond IsActive 0}}disabled{{/ifCond}}>Lưu
-                    thông
-                    tin</button>
+                <button type="button" onclick="handleUpdateScoreCommittee('{{this._id}}')"
+                    style="display: flex;align-items: center;gap: 10px;" class="btn btn-info" {{#ifCond IsActive
+                    0}}disabled{{/ifCond}}>
+                    <ion-icon name="file-tray-outline"></ion-icon>
+                    <p style="margin-bottom: 0;"> Cập nhật
+                        thông
+                        tin</p>
+                </button>
             </div>
         </div>
     </div>
@@ -136,7 +150,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Thêm mới</h5>
+                <h5 style="font-weight: 600;" class="modal-title" id="exampleModalLabel">Thêm mới hội đồng</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -194,17 +208,17 @@
                                             <th scope="col">Tổ / Phòng ban</th>
                                             <th scope="col">Vai trò</th>
                                             <th scope="col">Tổ giúp việc</th>
-                                            <th scope="col" style="max-width: 58px;text-wrap: wrap;">Hành động</th>
+                                            <th scope="col" style="max-width: 58px;text-wrap: wrap;"></th>
                                         </tr>
                                     </thead>
+
                                     {{!-- body --}}
                                     <tbody id="education_fields" style="font-size: 12px;">
                                     </tbody>
                                     <tfoot>
                                         <tr>
                                             <td colspan="8" style="text-align: center;color: white;">
-                                                <button class="btn btn-success" type="button"
-                                                    onclick="education_fields()">
+                                                <button class="btn btn-info" type="button" onclick="education_fields()">
                                                     <span class="glyphicon glyphicon-plus"
                                                         aria-hidden="true"></span>Thêm</button>
                                             </td>
@@ -217,6 +231,9 @@
                     </div>
                 </form>
             </div>
+            <p style="font-style: italic;font-size: 12px;text-align: right;">*Hội đồng bắt đầu chấm khi nhấn
+                nút <strong>kích hoạt chấm
+                    điểm</strong></p>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Hủy bỏ</button>
                 <button type="button" class="btn btn-info" onclick="handleAdd()">Lưu thông

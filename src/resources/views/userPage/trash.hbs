@@ -6,7 +6,7 @@
                 style="list-style: none; display:flex; justify-content: space-between; align-items: center;">
                 <div class="">
                     <button class="btn btn-danger btnDeleteAll btnDisabledDelete">Xóa mục đã chọn</button>
-                    <button class="btn btn-primary btnRevertAll ml-3 btnDisabledRevert">Khôi phục mục đã
+                    <button class="btn btn-info btnRevertAll ml-3 btnDisabledRevert">Khôi phục mục đã
                         chọn</button>
                 </div>
             </ul>
@@ -89,7 +89,7 @@
                                                 style="background-color: transparent;border: none;cursor: pointer;">
                                                 <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
                                                     title="Khôi phục: {{this.product_name}}">
-                                                    <ion-icon name="sync-outline" style="color: white; font-size: 18px;"
+                                                    <ion-icon name="sync-outline" style="font-size: 18px;"
                                                         id="icon_revert" data-id="{{this._id}}"></ion-icon>
                                                 </span>
                                             </button>
@@ -283,11 +283,11 @@
                             }));
                             window.location.reload()
                         }
+                    },
+                    cancel: function () {
+                        $.alert('Đã hủy!');
                     }
                 },
-                cancel: function () {
-                    $.alert('Đã hủy!');
-                }
             })
         })
         //RevertByCheckBox

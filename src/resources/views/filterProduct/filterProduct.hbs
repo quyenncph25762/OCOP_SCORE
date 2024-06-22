@@ -1,3 +1,57 @@
+<style>
+    .listGallery {
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+    }
+
+
+
+    .file-item a {
+        font-size: 12px;
+    }
+
+    @media screen and (min-width: 768px) and (max-width: 1180px) {
+        .modal-content {
+            min-width: 750px !important;
+            height: auto;
+            overflow-y: auto;
+        }
+
+        #myTable {
+            font-size: 12px !important;
+            width: 100%;
+        }
+
+        .row-content {
+            height: auto !important;
+        }
+
+        .form-row {
+            margin-bottom: 80px;
+        }
+
+        .file-upload {
+            margin-bottom: 40px;
+        }
+    }
+
+    @media screen and (min-width:1180px) {
+        .codeColumn {
+            display: none !important;
+        }
+
+        .modal-content {
+            min-width: 1000px !important;
+        }
+
+    }
+
+    .form-row>.col,
+    .form-row>[class*=col-] {
+        padding-left: 19px !important;
+    }
+</style>
 {{> header}}
 <div class="content-wrapper">
     <div class="container-fluid">
@@ -6,7 +60,7 @@
                 style="list-style: none; display:flex; justify-content: space-between; align-items: center;">
                 <div class="import_customer_button"
                     style="list-style: none; display:flex; justify-content: space-between; align-items: center;">
-                    <button class="btn btn-success btnSubmitFile d-flex align-items-center btnDisabled">
+                    <button class="btn btn-info btnSubmitFile d-flex align-items-center btnDisabled">
                         <ion-icon name="mail-open-outline" style="font-size: 16px;"></ion-icon>
                         <p class="ml-2 mb-0">Gửi link tải hồ sơ</p>
                     </button>
@@ -53,7 +107,7 @@
                                     </div>
                                 </div>
                                 <tr>
-                                    <th {{#ifCond viewData.data.length 0}}hidden{{/ifCond}}>
+                                    <th {{#ifCond Product.length 0}}hidden{{/ifCond}}>
                                         <div class="checkbox-wrapper-42 checkbox">
                                             <input id="checkAll" type="checkbox" class="check" />
                                             <label class="cbx" for="checkAll"></label>
@@ -69,7 +123,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                {{#each viewData.data}}
+                                {{#each Product}}
                                 <tr>
                                     <td>
                                         <div class="checkbox-wrapper-42 checkbox">
@@ -80,16 +134,22 @@
                                     </td>
                                     <td hidden>{{this.ProductGroup_id}}</td>
                                     <td hidden>{{this.ProductYearId}}</td>
-                                    <td>{{this.Name}}</td>
+                                    <td>
+                                        <p onclick="handleProductDetail('{{this._id}}')" class="text-hightlight"
+                                            data-toggle="modal" data-target="#exampleModalDetail{{this._id}}"
+                                            style="cursor: pointer">
+                                            {{this.Name}}</p>
+                                        {{> modalReviewProduct}}
+                                    </td>
                                     {{#ifCond productgroup_IsDeleted 0}}
                                     <td style="max-width: 150px;">
                                         <p class="text-overhidden">{{this.productGroup_name}}</p>
                                     </td>
                                     {{else}}
-                                    <td style="color: rgb(236, 236, 118);">Không xác định</td>
+                                    <td class="text-hightlight">Không xác định</td>
                                     {{/ifCond}}
                                     {{#ifCond this.rankOcop NULL}}
-                                    <td>Chưa xếp hạng</td>
+                                    <td class="text-hightlight">Chưa xếp hạng</td>
                                     {{else}}
                                     <td>{{this.rankOcop}}</td>
                                     {{/ifCond}}
@@ -97,7 +157,7 @@
                                     {{#ifCond yearreview_IsDeleted 0}}
                                     <td>{{this.yearName}}</td>
                                     {{else}}
-                                    <td style="color: rgb(236, 236, 118);">Không xác định</td>
+                                    <td class="text-hightlight">Không xác định</td>
                                     {{/ifCond}}
 
                                     {{#ifCond customer_IsDeleted 0}}
@@ -107,12 +167,9 @@
                                         </p>
                                     </td>
                                     {{else}}
-                                    <td style="color: rgb(236, 236, 118);">Không xác định</td>
+                                    <td class="text-hightlight">Không xác định</td>
                                     {{/ifCond}}
-                                </tr>
-                                {{else}}
-                                <tr>
-                                    <td colspan="9" class="text-center">Không tìm thấy từ khoá nào</td>
+
                                 </tr>
                                 {{/each }}
                             </tbody>
@@ -141,7 +198,8 @@
         });
     </script>
     <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
-
+    {{!-- show productDetail --}}
+    <script src="/assets/js/showProductDetail.js"></script>
     {{!-- actions --}}
     <script>
         //sendFile
@@ -169,18 +227,14 @@
             })
         }
         btnSubmitFile.addEventListener("click", async (e) => {
-            const isConfirmDeleteByCheckbox = window.confirm("Xác nhận xóa những đối tượng bạn đã chọn ?")
-            if (isConfirmDeleteByCheckbox) {
-                for (let btnCheck of btnsCheck) {
-                    if (btnCheck.checked) {
-                        const id = btnCheck.dataset.idcheckbox
-                        fetch(`/product-manage/removeToTrash/${id}`, {
-                            method: "DELETE"
-                        })
-                    }
-                }
-                alert("Gửi file thành công!")
-                window.location.reload()
-            }
+            $.toast({
+                position: "top-right",
+                heading: 'WARNING!',
+                text: `Hiện tính năng đang phát triển`,
+                icon: 'warning',
+                loader: true,
+                loaderBg: '#9EC600',
+                stack: 4
+            })
         })
     </script>

@@ -114,8 +114,8 @@ const EmployeeModel = {
     },
     //  cap nhat doi tuong
     updateEmployee: (id, employee, callback) => {
-        const query = `UPDATE employee SET Code = ? , FullName = ? , Email = ? , Avatar = ? , Gender = ? , DoB = ? , Phone = ? , Address = ? , WorkDepartment_id = ? , WorkPosition_id = ? , roleId = ? , DistrictId = ? WHERE _id = ?`
-        const values = [employee.Code, employee.FullName, employee.Email, employee.Avatar, employee.Gender, employee.DoB, employee.Phone, employee.Address, employee.WorkDepartment_id, employee.WorkPosition_id, employee.roleId, employee.DistrictId, id]
+        const query = `UPDATE employee SET UserName = ? , FullName = ? , Email = ? , Avatar = ? , Gender = ? , DoB = ? , Phone = ? , Address = ? , WorkDepartment_id = ? , WorkPosition_id = ? , roleId = ? , DistrictId = ? WHERE _id = ?`
+        const values = [employee.UserName, employee.FullName, employee.Email, employee.Avatar, employee.Gender, employee.DoB, employee.Phone, employee.Address, employee.WorkDepartment_id, employee.WorkPosition_id, employee.roleId, employee.DistrictId, id]
         connection.query(query, values, callback)
     },
     // findByEmail

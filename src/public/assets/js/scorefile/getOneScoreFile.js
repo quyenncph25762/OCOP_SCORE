@@ -63,63 +63,90 @@ async function getOneScoreTemp(code, productId, productgroupId) {
             // tao ten checkbox mac dinh
             let checkBoxScoreName = "Score1"
             let checkboxScore = 1
-
-            for (let i = 0; i < ListScoreTempDetail.length; i++) {
-                // kiem tra neu ma co attachFile thi name checkbox thay doi
-                if (ListScoreTempDetail[i].ProductDetailId) {
-                    checkBoxScoreName = "Score" + checkboxScore
-                    checkboxScore += 1
-                }
-                getList = JSON.stringify(ListScoreTempDetail[i])
-                tbodyScoreFile.innerHTML += `
-                <tr>
-                <input type="hidden" class="ScoreTemp_id" value=${getOneScoreTemp._id}>
-                <input type="hidden" id="ScoreTempDetail${i}" value='${getList}'>
-                <input type="hidden" class="Score"></input>
-                            ${ListScoreTempDetail[i].Name && !ListScoreTempDetail[i].IsScore ?
-                        `
-                                <td style="font-weight: 600; max-width: 500px; text-wrap: wrap; word-wrap: break-word; overflow-wrap: break-word;">
-                                    ${ListScoreTempDetail[i].Name}
-                                </td>
-                                `
-                        :
-                        `<td style="font-weight: 300; color: #ccc; max-width: 500px; text-wrap: wrap; word-wrap: break-word; overflow-wrap: break-word;">
-                        
-                    ${ListScoreTempDetail[i].Name} ${ListScoreTempDetail[i].ValidatedRank
-                            ?
-                            `<span style="color:yellow">${repeatStar(ListScoreTempDetail[i].ValidatedRank)}</span>`
-                            :
-                            ""}
-                                </td > `
+            if (ListScoreTempDetail.length > 0) {
+                for (let i = 0; i < ListScoreTempDetail.length; i++) {
+                    // kiem tra neu ma co attachFile thi name checkbox thay doi
+                    if (ListScoreTempDetail[i].ProductDetailId) {
+                        checkBoxScoreName = "Score" + checkboxScore
+                        checkboxScore += 1
                     }
-                            
-                            ${ListScoreTempDetail[i].MaxScore >= 0 && ListScoreTempDetail[i].IsScore ?
-                        `<td style="font-style: italic; color: rgb(232, 67, 67); font-weight: 600;">(${ListScoreTempDetail[i].MaxScore} điểm)</td>`
-                        :
-                        `<td></td>`
-                    }
-                            ${ListScoreTempDetail[i].ProductDetailId ?
-                        `<td data-toggle="modal" data-target="#exampleModalProductDetail" onclick="handleShowAttachFile(${productId},${ListScoreTempDetail[i].ProductDetailId})"><ion-icon name="attach-outline"></ion-icon></td>
+                    getList = JSON.stringify(ListScoreTempDetail[i])
+                    tbodyScoreFile.innerHTML += `
+                    <tr>
+                    <input type="hidden" class="ScoreTemp_id" value=${getOneScoreTemp._id}>
+                    <input type="hidden" id="ScoreTempDetail${i}" value='${getList}'>
+                    <input type="hidden" class="Score"></input>
+                                ${ListScoreTempDetail[i].Name && !ListScoreTempDetail[i].IsScore ?
                             `
-                        :
-                        `<td></td>`
-                    }
+                                    <td style="font-weight: 600; max-width: 500px; text-wrap: wrap; word-wrap: break-word; overflow-wrap: break-word;">
+                                        ${ListScoreTempDetail[i].Name}
+                                    </td>
+                                    `
+                            :
+                            `<td style="font-weight: 400; color: #000; max-width: 500px; text-wrap: wrap; word-wrap: break-word; overflow-wrap: break-word;">
+                            
+                        ${ListScoreTempDetail[i].Name} ${ListScoreTempDetail[i].ValidatedRank
+                                ?
+                                `<span class="text-hightlight">${repeatStar(ListScoreTempDetail[i].ValidatedRank)}</span>`
+                                :
+                                ""}
+                                    </td > `
+                        }
+                                
+                                ${ListScoreTempDetail[i].MaxScore >= 0 && ListScoreTempDetail[i].IsScore ?
+                            `<td style="font-style: italic; color: rgb(232, 67, 67); font-weight: 600;">(${ListScoreTempDetail[i].MaxScore} điểm)</td>`
+                            :
+                            `<td></td>`
+                        }
+                                ${ListScoreTempDetail[i].ProductDetailId ?
+                            `<td data-toggle="modal" data-target="#exampleModalProductDetail" onclick="handleShowAttachFile(${productId},${ListScoreTempDetail[i].ProductDetailId})"><ion-icon name="attach-outline"></ion-icon></td>
+                                `
+                            :
+                            `<td></td>`
+                        }
+                               
+                                ${ListScoreTempDetail[i].IsScore ?
+                            `
                            
-                            ${ListScoreTempDetail[i].IsScore ?
-                        `
-                       
-                        <td style="color: red; font-style: italic; text-align: center;"> 
-                        <input type="radio" class="btnsRadio radio-custom" id="radio-${i}" data-id="${ListScoreTempDetail[i]._id}" value="${ListScoreTempDetail[i].MaxScore}" name="${checkBoxScoreName}">
-                        <label for="radio-${i}" class="radio-custom-label"></label>
-                        </td>
+                            <td style="color: red; font-style: italic; text-align: center;"> 
+                            <input type="radio" class="btnsRadio radio-custom" id="radio-${i}" data-id="${ListScoreTempDetail[i]._id}" value="${ListScoreTempDetail[i].MaxScore}" name="${checkBoxScoreName}">
+                            <label for="radio-${i}" class="radio-custom-label"></label>
+                            </td>
+                            
+                            `
+                            :
+                            `<td></td>`
+                        }
+                            </tr>
                         
-                        `
-                        :
-                        `<td></td>`
-                    }
-                        </tr>
-                    
-                    `;
+                        `;
+                }
+                // undo radio
+                document.querySelectorAll('input[type="radio"]').forEach(radio => {
+                    radio.addEventListener('click', function () {
+                        if (this.checked) {
+                            // console.log(`this.checked:`, this.checked)
+                            // console.log(`this.wasChecked:`, this.wasChecked)
+                            if (this.wasChecked) {
+                                this.checked = false;
+                            }
+                            // Lấy tất cả các radio có cùng name với this
+                            const radiosWithSameName = document.querySelectorAll(`input[type="radio"][name="${this.name}"]`);
+                            radiosWithSameName.forEach(otherRadio => {
+                                if (otherRadio !== this) {
+                                    otherRadio.wasChecked = false;
+                                }
+                            });
+                            this.wasChecked = this.checked;
+                        }
+                    });
+                });
+            } else {
+                tbodyScoreFile.innerHTML = `
+                <tr>
+                <td colspan="4" class="text-center">Hiện chưa có phiếu</td>
+                </tr>
+                `
             }
         }
 

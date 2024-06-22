@@ -25,9 +25,6 @@ const handleAddScoreFile = async () => {
                 scoreValues[id] = Number(btn.value);
             }
         }
-
-
-
         // 
         // Phan A
         let totalPartA = 0;
@@ -225,7 +222,6 @@ async function checkScoreFileDetail(scoreFileId, RankOcop) {
 }
 
 async function checkRank(RankOcop, listScoreChecked, scoreFileId) {
-    console.log(RankOcop)
     if (RankOcop > 3) {
         const list3sao = await listScoreFileDetail3sao(scoreFileId)
         const containsRank = listScoreChecked.some(id => list3sao.includes(id));

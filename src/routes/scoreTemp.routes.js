@@ -5,8 +5,12 @@ const CheckController = require("../app/Middleware/checkoutToken")
 // delete
 // revert
 router.patch("/revert/:id", CheckController.checkout('Category'), ScoreTempController.revert)
+// revertAll
+router.post("/revertAll", CheckController.checkout('Category'), ScoreTempController.revertAll)
 // removeToTrash
 router.patch("/removeToTrash/:id", CheckController.checkout('Category'), ScoreTempController.removeToTrash)
+// removeToTrashAll
+router.post("/removeToTrashAll", CheckController.checkout('Category'), ScoreTempController.removeToTrashAll)
 // pageTrash
 router.get("/trashPage", CheckController.checkout('Category'), ScoreTempController.pageTrash)
 // add

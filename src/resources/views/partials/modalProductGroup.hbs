@@ -14,16 +14,16 @@
                 <form method="POST" action="/product-group/update/{{this._id}}">
                     <div class="form-row">
                         {{!-- code --}}
-                        <div class="col-md-4 mb-3">
+                        <div class="col-md-2 mb-3">
                             <label for="code">Mã</label>
                             <input value="{{this.Code}}" name="Code" type="text" class="form-control"
                                 id="Code{{this._id}}" required>
                         </div>
                         {{!-- title --}}
-                        <div class="col-md-5 mb-3">
+                        <div class="col-md-7 mb-3">
                             <label for="Name">Tên nhóm sản phẩm</label>
-                            <input value="{{this.Name}}" name="Name" type="text" class="form-control"
-                                id="Name{{this._id}}" required>
+                            <textarea name="" id="Name{{this._id}}" class="form-control">{{this.Name}}</textarea>
+
                             <span
                                 style="color: #de2935;font-size: 14px;font-style: italic;margin-top: 5px;font-weight: 600;"
                                 id="messageErrorUpdate{{this._id}}"></span>
@@ -52,7 +52,7 @@
                     </div>
                 </form>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Đóng</button>
                     <button onclick="handleUpdate('{{this._id}}')" class="btn btn-warning">Câp nhật nhóm sản
                         phẩm</button>
                 </div>
@@ -77,17 +77,15 @@
                     <div class="form-row">
                         <input type="text" value="{{User._id}}" name="CreatorUser_id" class="CreatorUser_id" hidden>
                         {{!-- code --}}
-                        <div class="col-md-4 mb-3">
+                        <div class="col-md-2 mb-3">
                             <label for="Code">Mã</label>
                             <input name="Code" type="text" class="form-control Code" required>
                         </div>
                         {{!-- title --}}
-                        <div class="col-md-5 mb-3">
+                        <div class="col-md-7 mb-3">
                             <label for="Name">Tên nhóm sản phẩm</label>
-                            <input name="Name" type="text" class="form-control Name" required>
-                            <span
-                                style="color: #de2935;font-size: 14px;font-style: italic;margin-top: 5px;font-weight: 600;"
-                                id="messageError"></span>
+                            {{!-- <input name="Name" type="text" class="form-control Name" required> --}}
+                            <textarea name="" id="" class="form-control Name">{{this.Name}}</textarea>
                         </div>
                         {{!-- status --}}
                         <div class="custom-control custom-switch col-md-3"
@@ -104,8 +102,8 @@
                     </div>
                 </form>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                    <button onclick="handleAdd()" class="btn btn-success">Thêm nhóm sản phẩm</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Đóng</button>
+                    <button onclick="handleAdd()" class="btn btn-info">Thêm nhóm sản phẩm</button>
                 </div>
             </div>
         </div>
@@ -137,15 +135,32 @@
         const Note = document.querySelector(".Note").value
         const IsActive = document.querySelector(".IsActive").checked
         const CreatorUser_id = document.querySelector(".CreatorUser_id").value
-        const formData = new FormData()
-        formData.append("Code", Code)
-        formData.append("Name", Name)
-        formData.append("Note", Note)
-        formData.append("IsActive", IsActive)
-        formData.append("CreatorUser_id", CreatorUser_id)
+        if (Name.trim() === "") {
+            $.toast({
+                position: "top-right",
+                heading: 'WARNING!',
+                icon: "warning",
+                loader: true,
+                loaderBg: '#9EC600',
+                stack: 4,
+                text: 'Tên nhóm sản phẩm không được để trống',
+                allowToastClose: true
+            });
+            return
+        }
+        const form = {
+            Code: Code,
+            Name: Name,
+            Note: Note,
+            IsActive: IsActive === true ? 1 : 0,
+            CreatorUser_id: CreatorUser_id
+        }
         const res = await fetch("/product-group/add", {
             method: "POST",
-            body: formData
+            body: JSON.stringify(form),
+            headers: {
+                "Content-Type": "application/json"
+            }
         })
         if (res.ok) {
             const data = await res.json()
@@ -162,8 +177,16 @@
             window.location.replace("/product-group")
         } else {
             const data = await res.json()
-            document.getElementById("messageError").innerHTML = data.message
-            console.error("Response was not ok:", res.status);
+            $.toast({
+                position: "top-right",
+                heading: 'WARNING!',
+                icon: "warning",
+                loader: true,
+                loaderBg: '#9EC600',
+                stack: 4,
+                text: `${data.message}`,
+                allowToastClose: true
+            });
         }
     }
 
@@ -172,14 +195,31 @@
         const Name = document.getElementById(`Name${id}`).value
         const Note = document.getElementById(`Note${id}`).value
         const IsActive = document.getElementById(`IsActive${id}`).checked
-        const formData = new FormData()
-        formData.append("Code", Code)
-        formData.append("Name", Name)
-        formData.append("Note", Note)
-        formData.append("IsActive", IsActive)
+        if (Name.trim() === "") {
+            $.toast({
+                position: "top-right",
+                heading: 'WARNING!',
+                icon: "warning",
+                loader: true,
+                loaderBg: '#9EC600',
+                stack: 4,
+                text: 'Tên nhóm sản phẩm không được để trống',
+                allowToastClose: true
+            });
+            return
+        }
+        const form = {
+            Code: Code,
+            Name: Name,
+            Note: Note,
+            IsActive: IsActive === true ? 1 : 0
+        }
         const res = await fetch(`/product-group/update/${id}`, {
             method: "POST",
-            body: formData
+            body: JSON.stringify(form),
+            headers: {
+                "Content-Type": "application/json"
+            }
         })
         if (res.ok) {
             const data = await res.json()
@@ -196,9 +236,16 @@
             window.location.replace("/product-group")
         } else {
             const data = await res.json()
-            const messageErrorUpdate = document.getElementById(`messageErrorUpdate${id}`)
-            messageErrorUpdate.innerHTML = data.message
-            console.error("Response was not ok:", res.status);
+            $.toast({
+                position: "top-right",
+                heading: 'WARNING!',
+                icon: "warning",
+                loader: true,
+                loaderBg: '#9EC600',
+                stack: 4,
+                text: `${data.message}`,
+                allowToastClose: true
+            });
         }
     }
 </script>

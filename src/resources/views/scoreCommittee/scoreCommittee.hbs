@@ -10,7 +10,7 @@
         <div class="row" style="max-width: 100%; display: contents;">
             <ul class="search-customer"
                 style="list-style: none; display:flex; justify-content: space-between; align-items: center;padding: 0;">
-                <button onclick="handleAddCheck()" class="btn btn-success" data-toggle="modal"
+                <button onclick="handleAddCheck()" class="btn btn-info" data-toggle="modal"
                     data-target="#exampleModal">Thêm
                     mới</button>
                 {{> modalScoreCommittee}}
@@ -49,9 +49,9 @@
                                 <th>{{plus @index}}</th>
                                 <td>
                                     <div class="" style="display: flex;flex-direction: column;">
-                                        <p style="color: rgb(236, 236, 118); font-size: 14px;font-weight: 600;">
+                                        <p class="text-hightlight" style="font-size: 14px;font-weight: 600;">
                                             {{this.Name}}</p>
-                                        <p style="color: #ccc; font-weight: 550;">Chủ tịch HĐ:
+                                        <p style="color: #B5B5C3; font-weight: 550;">Chủ tịch HĐ:
                                             {{#if employee_name}}
                                             {{employee_name}}
                                             {{else}}
@@ -60,7 +60,9 @@
                                         </p>
                                     </div>
                                 </td>
-                                <td>{{year_name}}</td>
+                                <td>
+                                    {{year_name}}
+                                </td>
                                 <td>
                                     {{#ifCond this.IsDefault 1}}
                                     <div class="active"></div>
@@ -116,7 +118,6 @@
                             {{/each}}
                         </tbody>
                     </table>
-
                 </div>
             </div>
         </div><!--End Row-->

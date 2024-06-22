@@ -32,15 +32,51 @@ const ProductGroupModel = {
         const query = `UPDATE productgroup SET IsDeleted = 1 , DeletedUser_id=${userId} , DeletionTime = CURRENT_TIMESTAMP WHERE _id = ?`
         connection.query(query, id, callback)
     },
+    // xoa vao thung rac nhieu
+    deleteProductGroupToTrashAll: (id, userId) => {
+        return new Promise((resolve, reject) => {
+            const query = `UPDATE productgroup SET IsDeleted = 1 , DeletedUser_id=${userId} , DeletionTime = CURRENT_TIMESTAMP WHERE _id = ${id}`
+            connection.query(query, (err, result) => {
+                if (err) {
+                    return reject(err)
+                }
+                return resolve(result)
+            })
+        })
+    },
     // xoa
     deleteProductGroup: (id, callback) => {
         const query = `DELETE FROM productgroup WHERE _id=${id}`
         connection.query(query, id, callback)
     },
+    // xoa nhieu
+    deleteProductGroupAll: (id) => {
+        return new Promise((resolve, reject) => {
+            const query = `DELETE FROM productgroup WHERE _id=${id}`
+            connection.query(query, (err, result) => {
+                if (err) {
+                    return reject(err)
+                }
+                return resolve(result)
+            })
+        })
+    },
     // khoi phuc
     revertProductGroup: (id, callback) => {
         const query = `UPDATE productgroup SET isDeleted = 0 WHERE _id=${id}`
         connection.query(query, id, callback)
+    },
+    // khoi phuc nhieu
+    revertProductGroupAll: (id) => {
+        return new Promise((resolve, reject) => {
+            const query = `UPDATE productgroup SET isDeleted = 0 WHERE _id=${id}`
+            connection.query(query, (err, result) => {
+                if (err) {
+                    return reject(err)
+                }
+                return resolve(result)
+            })
+        })
     },
     // lay 1 doi tuong
     getOneProductGroup: (id, callback) => {

@@ -39,19 +39,21 @@ class ScoreCommitteController {
                                     message: err
                                 })
                             }
-                            WorkDepartmentModal.fetchAllWorkDepartment((err, WorkDepartment) => {
+                            WorkDepartmentModal.fetchAllWorkDepartment(User[0]?.DistrictId, (err, WorkDepartment) => {
                                 if (err) {
                                     return res.status(500).json({
                                         message: err
                                     })
                                 }
-                                workPositionModal.fetchAllWorkPosition((err, WorkPosition) => {
+                                workPositionModal.fetchAllWorkPosition(User[0]?.DistrictId, (err, WorkPosition) => {
                                     if (err) {
                                         return res.status(500).json({
                                             message: err
                                         })
                                     }
-                                    res.render("scoreCommittee/scoreCommittee", { User: User[0], ScoreCommittee: ScoreCommittee, YearReview: YearReview, Employee: Employee, WorkDepartment: WorkDepartment, WorkPosition: WorkPosition })
+                                    // loc ra nhung employee khong khoa
+                                    const EmployeeFilter = Employee.filter((employee) => employee.isLock === 0)
+                                    res.render("scoreCommittee/scoreCommittee", { User: User[0], ScoreCommittee: ScoreCommittee, YearReview: YearReview, Employee: EmployeeFilter, WorkDepartment: WorkDepartment, WorkPosition: WorkPosition })
                                 })
                             })
                         })
@@ -147,7 +149,6 @@ class ScoreCommitteController {
                     ...req.body
                 }, async (err, results) => {
                     if (err) {
-                        console.log(err)
                         return res.status(500).json({
                             message: err
                         })
@@ -182,8 +183,6 @@ class ScoreCommitteController {
     // update chu tich hoi dong
     updateCharman(req, res) {
         const id = req.params.id
-        console.log(1)
-        console.log(`req body: ` + req.body)
         ScoreCommitteeModel.updateCharmanScoreCommittee(id, req.body, (err, results) => {
             if (err) {
                 return res.status(500).json({
@@ -218,7 +217,7 @@ class ScoreCommitteController {
                     new Set(listScoreCommitteeDetail
                         .map(employee => [employee.UserId, employee.SecUserId])
                         .flat()
-                        .filter(id => id !== undefined && id !== null))
+                        .filter(id => id !== undefined && id !== null && id !== 0))
                 )
                 // console.log(`listScoreCommitteeDetail:`, listEmployeeId)
                 // lay scorefile theo status = 0
@@ -235,13 +234,10 @@ class ScoreCommitteController {
                                 message: err
                             })
                         }
-                        // lay ra listEmployee Id roi push vao mang listEmployeeId
-                        // const employeesAdminId = employeesAdmin.map((employee) => employee._id)
-                        // if (employeesAdminId.length > 0) {
-                        //     employeesAdminId.forEach((employeeId) => listEmployeeId.push(employeeId))
-                        // }
+
                         // loc scorefile nhung employee nao dang o trong scorecommitteeDetail
                         const dataFilter = Array.from(new Set(data.filter((item) => listEmployeeId.includes(item.forEmployeeId))))
+                        await filterEmployee(dataFilter, listEmployeeId, id)
                         // nhung scorefile nao k co trong scoreCommittee thi them scoreCommittee tranh truong hop get all scorefile status = 0
                         const dataFilterDifferent = data.filter((item) => !listEmployeeId.includes(item.forEmployeeId))
                         const formScoreFile = {
@@ -264,7 +260,6 @@ class ScoreCommitteController {
                         // thuc hien chi update scoreCommittee 
                         await dataFilterDifferent.forEach(async (element) => {
                             if (!element.ScoreCommitee_id || element.ScoreCommitee_id === Number(id)) {
-                                console.log(element)
                                 // thuc hien cap nhat trang thai cham diem cho scorefile
                                 await ScoreFileModel.updateScoreCommitteOnScoreFile(element._id, {
                                     ScoreCommitee_id: id,
@@ -285,6 +280,39 @@ class ScoreCommitteController {
                 })
             })
         })
+
+        // ham xu li loc nhung employee chua co scorefile trong hoi dong roi them vao
+        async function filterEmployee(listScoreFile, listEmployeeId, idScoreCommittee) {
+            // lay ra nhung id cua employee da co scorefile trong hoi dong cham
+            const arrId = listScoreFile.map((item) => item.forEmployeeId)
+            // lay ra arr productid de them vao employee moi
+            // loc ra nhung scorefile nao dang cham , neu ma san pham do cham xong het roi thi se khong dc set
+            const arrProductId = Array.from(new Set(listScoreFile.filter((scorefile) => scorefile.Product_id && (scorefile.Status === 0 || scorefile.Status === 1)).map((item) => item.Product_id)))
+            // Loc ra id chua co scorefile trong hoi dong
+            console.log(`arrProductId:`, arrProductId)
+            const filterEmployeeId = listEmployeeId.filter((item) => !arrId.includes(item))
+            if (filterEmployeeId.length > 0) {
+                for (const employee of filterEmployeeId) {
+                    // 1 employee them nhieu scorefile theo product_id
+                    for (let i = 0; i < arrProductId.length; i++) {
+                        ScoreFileModel.create({
+                            forEmployeeId: employee,
+                            IsActive: 1,
+                            ScoreCommitee_id: idScoreCommittee,
+                            Status: 0,
+                            Product_id: Number(arrProductId[i]),
+                            CreatorUser_id: Number(employee),
+                        }, (err) => {
+                            if (err) {
+                                return res.status(500).json({
+                                    message: "Lỗi truy vấn"
+                                })
+                            }
+                        })
+                    }
+                }
+            }
+        }
     }
     // update IsActive
     updateIsActive = async (req, res) => {
@@ -303,10 +331,10 @@ class ScoreCommitteController {
                         if (err) {
                             return console.log(err)
                         }
+
                         // console.log(`listScoreFile:`, listScoreFile)
                         // loc nhung employee = null va khac voi id cua nguoi tao ra hoi dong de xoa
                         const listEmployeeFilter = listScoreFile.filter((scorefile) => !scorefile.Employee_id && scorefile.forEmployeeId != User[0]._id || scorefile.Status < 2)
-                        console.log(`listEmployeeFilter:`, listEmployeeFilter)
                         await listEmployeeFilter.forEach(async (scorefile) => {
                             await ScoreFileModel.remove(scorefile._id)
                         })

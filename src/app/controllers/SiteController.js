@@ -29,7 +29,7 @@ class SiteController {
                     })
                 }
                 // Đếm số lượng chủ thể
-                const CountCustomer = await StatisticalCustomerModel.quantityCustomer()
+                const CountCustomer = await StatisticalCustomerModel.quantityCustomer(User[0].DistrictId)
                 // Đếm số lượng sản phẩm theo huyện
                 const countAllProduct = await StatisticalProductByDistrictModel.countAllProductByDistrict(User[0]?.DistrictId)
                 // Sản phẩm 3 sao
@@ -71,6 +71,7 @@ class SiteController {
             })
 
         } else {
+
             res.redirect("/auth/loginPage")
         }
     }

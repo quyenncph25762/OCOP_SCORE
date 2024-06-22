@@ -33,11 +33,11 @@ const ScoreFileModel = {
         LEFT JOIN 
             workposition ON workposition._id = employee.WorkPosition_id
         WHERE 
-            scorefile.IsDeleted = 0 AND scorefile.Product_id IS NOT NULL AND scorefile.ScoreCommitee_id = ?
+            scorefile.IsDeleted = 0 AND scorefile.Product_id IS NOT NULL AND scorefile.ScoreCommitee_id = ${idScoreCommitee}
          ORDER BY 
         scorefile._id DESC
     `;
-        connection.query(query, [idScoreCommitee], callback);
+        connection.query(query, callback);
     },
     // get scoreFileByScoreCommitee status = 2
     getScoreFileByScoreCommittee: (idScoreCommitee, callback) => {
@@ -111,7 +111,6 @@ const ScoreFileModel = {
 
         connection.query(query, [id], callback);
     },
-
     // get all where IsDeleted = 1
     getAllFromTrash: (callback) => {
         const query = `
@@ -136,7 +135,6 @@ const ScoreFileModel = {
         const query = `SELECT * FROM scorefile WHERE Status = 0 AND	IsDeleted = 0`
         connection.query(query, callback)
     },
-
     // getOne
     getOne: (id) => {
         return new Promise((resolve, reject) => {
@@ -227,10 +225,10 @@ const ScoreFileModel = {
         const query = `UPDATE scorefile SET IsDeleted = 1 WHERE _id = ${id}`
         connection.query(query, callback)
     },
-    // Xoa vinh vien
+    // Xoa phieu da cham
     remove: (id) => {
         return new Promise((resolve, reject) => {
-            const query = `DELETE FROM scorefile WHERE _id = ${id}`
+            const query = `UPDATE scorefile SET Status = 0 , ScoreTotal = 0 , RankOcop = 0  WHERE _id = ${id}`
             connection.query(query, (err, result) => {
                 if (err) {
                     return reject(err)

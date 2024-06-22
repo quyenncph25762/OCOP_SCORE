@@ -65,7 +65,7 @@
                         {{!-- {{#ifCondNot User.RoleId 1}} --}}
                         {{!-- Tài khoản người dùng mà khác với scorefile người đang xem thì hiện --}}
                         {{#ifCondNot User._id ScoreFile.Employee_id}}
-                        <button class="btn btn-light" type="button"
+                        <button class="btn btn-info" type="button"
                             onclick="handleAddScoreFile('{{User._id}}','{{ScoreFile._id}}','{{ScoreFile.ScoreCommitee_id}}','{{Product_id}}','{{this.productgroup_id}}')">Chấm
                             điểm theo thư
                             kí</button>
@@ -140,7 +140,7 @@
                             </div>
                             <div class="d-flex align-items-center justify-content-between">
                                 <p> Xếp hạng OCOP:</p>
-                                <p style="color: rgb(236, 236, 118)" class="startOcop">
+                                <p class="startOcop text-hightlight">
                                     {{#repeat this.ScoreFile.RankOcop}}
                                     <ion-icon name="star"></ion-icon>
                                     {{/repeat}}
@@ -156,7 +156,7 @@
                     <div class="card shadow">
                         <div class="card-body">
                             <table class="table table-bordered table-striped table-hover table-scoreTemp">
-                                <thead class="sticky-top" style="backdrop-filter: blur(5px);">
+                                <thead class="sticky-top" style="backdrop-filter: blur(5px);background: transparent;">
                                     <tr>
                                         <th scope="col">
                                         </th>
@@ -176,10 +176,11 @@
                             </table>
                             <input type="hidden" class="Code" value="">
                             <input type="hidden" id="CreatorUser_id" value="{{User._id}}">
-                            <p style="margin-top: 10px;border-bottom: 1px solid #ccc;padding-bottom: 5px;width: 250px;">
+                            <p
+                                style="margin-top: 10px;border-bottom: 1px solid #B5B5C3;padding-bottom: 5px;width: 250px;">
                                 Ý kiến của người đánh giá</p>
                             <textarea name="" id="Note"
-                                style="width: 100%;background-color: #ccc;padding: 12px;color: #000;">
+                                style="width: 100%;background-color: #fff;padding: 12px;color: #000;">
                                 {{ScoreFile.Note}}
                                 </textarea>
                         </div>

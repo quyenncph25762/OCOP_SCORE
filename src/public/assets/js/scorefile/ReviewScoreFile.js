@@ -7,7 +7,6 @@ if (params.has("ScoreFile_id") && params.has("productId")) {
     // lay id scorefile tren thanh url
     const product_id = params.get("productId")
     const ScoreFile_id = params.get("ScoreFile_id")
-    console.log(1)
     handleGetScoreFileDetail(ScoreFile_id, product_id, tbodyScoreFileUpdate)
 } else {
     console.log("error")
@@ -32,10 +31,10 @@ async function handleGetScoreFileDetail(ScoreFile_id, product_id, tbodyScoreFile
                 `<td style="font-weight: 600; max-width: 500px; text-wrap: wrap; word-wrap: break-word; overflow-wrap: break-word;">
                         ${listScoreFileDetail[i].scoreTempDetail_name}
                     </td>` :
-                `<td style="font-weight: 300; color: #ccc; max-width: 500px; text-wrap: wrap; word-wrap: break-word; overflow-wrap: break-word;">
+                `<td style="font-weight: 400; color: #000; max-width: 500px; text-wrap: wrap; word-wrap: break-word; overflow-wrap: break-word;">
                         ${listScoreFileDetail[i].scoreTempDetail_name} ${listScoreFileDetail[i].scoreTempDetail_validateRank
                     ?
-                    `<span style="color:yellow">${repeatStarUpdate(listScoreFileDetail[i].scoreTempDetail_validateRank)}</span>`
+                    `<span class="text-hightlight">${repeatStarUpdate(listScoreFileDetail[i].scoreTempDetail_validateRank)}</span>`
                     :
                     ""}
                     </td>`

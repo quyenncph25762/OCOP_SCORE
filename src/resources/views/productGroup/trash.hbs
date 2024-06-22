@@ -7,7 +7,7 @@
                 style="list-style: none; display:flex; justify-content: space-between; align-items: center;padding: 0;">
                 <div class="">
                     <button class="btn btn-danger btnDeleteAll btnDisabledDelete">Xóa mục đã chọn</button>
-                    <button class="btn btn-primary btnRevertAll ml-3 btnDisabledRevert">Khôi phục mục đã
+                    <button class="btn btn-info btnRevertAll ml-3 btnDisabledRevert">Khôi phục mục đã
                         chọn</button>
                 </div>
             </ul>
@@ -74,7 +74,7 @@
                                                 style="background-color: transparent;border: none;cursor: pointer;">
                                                 <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
                                                     title="Khôi phục: {{this.customer_name}}">
-                                                    <ion-icon name="sync-outline" style="color: white; font-size: 18px;"
+                                                    <ion-icon name="sync-outline" style="font-size: 18px;"
                                                         id="icon_revert" data-id="{{this._id}}"></ion-icon>
                                                 </span>
                                             </button>
@@ -91,10 +91,6 @@
                                             </span>
                                         </div>
                                     </td>
-                                </tr>
-                                {{else}}
-                                <tr>
-                                    <td colspan="9" class="text-center">Không tìm thấy từ khoá nào</td>
                                 </tr>
                                 {{/each }}
                             </tbody>
@@ -263,17 +259,20 @@
                             btnClass: 'btn-red',
                             action: async function () {
                                 const id = event.target.dataset.id;
-                                const arrRes = []
+                                const arrId = []
                                 for (let btnCheck of btnsCheck) {
                                     if (btnCheck.checked) {
                                         const id = btnCheck.dataset.idcheckbox
-                                        const res = await fetch(`/product-group/remove/${id}`, {
-                                            method: "DELETE"
-                                        })
-                                        arrRes.push(res)
+                                        arrId.push(id)
                                     }
                                 }
-                                await Promise.all(arrRes)
+                                await fetch(`/product-group/removeAll`, {
+                                    method: 'POST',
+                                    body: JSON.stringify(arrId),
+                                    headers: {
+                                        "Content-Type": "application/json"
+                                    }
+                                })
                                 localStorage.setItem('toast', JSON.stringify({
                                     position: "top-right",
                                     heading: 'Xóa thành công',
@@ -286,6 +285,9 @@
 
                                 window.location.reload()
                             }
+                        },
+                        cancel: function () {
+                            $.alert('Đã hủy!');
                         }
                     },
                     cancel: function () {
@@ -304,15 +306,20 @@
                             text: 'Confirm',
                             btnClass: 'btn-blue',
                             action: async function () {
-                                const id = event.target.dataset.id;
+                                const arrId = []
                                 for (let btnCheck of btnsCheck) {
                                     if (btnCheck.checked) {
                                         const id = btnCheck.dataset.idcheckbox
-                                        const res = await fetch(`/product-group/revert/${id}`, {
-                                            method: "PATCH"
-                                        })
+                                        arrId.push(id)
                                     }
                                 }
+                                await fetch(`/product-group/revertAll`, {
+                                    method: 'POST',
+                                    body: JSON.stringify(arrId),
+                                    headers: {
+                                        "Content-Type": "application/json"
+                                    }
+                                })
                                 localStorage.setItem('toast', JSON.stringify({
                                     position: "top-right",
                                     heading: 'Khôi phục thành công',

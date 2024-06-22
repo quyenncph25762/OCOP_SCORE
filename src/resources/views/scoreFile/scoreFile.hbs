@@ -5,9 +5,33 @@
             min-width: 100%;
         }
 
+        table.dataTable>tbody>tr>th,
+        table.dataTable>tbody>tr>td {
+            padding: 8px 10px !important;
+        }
+
+        .box-icons {
+            display: flex;
+            flex-direction: column;
+            justify-content: baseline;
+            align-items: center;
+            width: 50px;
+        }
+
+        #myTable tbody tr td li,
+        #myTable tbody tr td p {
+            font-size: 12px !important
+        }
+
+        .rankOcopStyle,
+        .totalScoreStyle,
         .col-dateScore,
         .col-Status {
             display: none;
+        }
+
+        .dropDownResults {
+            display: table-cell !important;
         }
 
         .totalScoreStyle {
@@ -47,25 +71,26 @@
             <div class="card">
                 <div class="card-body">
                     <div class="d-flex align-items">
-                        <h5 class="card-title">Danh sách sản phẩm</h5>
-                        <span class="d-inline-block ml-3" tabindex="0" data-toggle="tooltip" title="Thùng rác của bạn">
+                        <h5 class="card-title">Danh sách phiếu chấm</h5>
+                        {{!-- <span class="d-inline-block ml-3" tabindex="0" data-toggle="tooltip"
+                            title="Thùng rác của bạn">
                             <a href="/scorefile/trash">
                                 <ion-icon name="trash-outline"></ion-icon>
                             </a>
-                        </span>
+                        </span> --}}
                     </div>
                     <table id="myTable" class="table datatables table-bordered table-hover table-striped"
                         style="font-size: 13px">
                         <thead>
                             <tr>
                                 <th scope="col" class="col-image">Ảnh</th>
-                                <th scope="col">Sản phẩm</th>
+                                <th scope="col" style="text-wrap: wrap;">Sản phẩm</th>
                                 <th scope="col" class="col-productGroup" style="text-wrap: wrap;">Nhóm sản phẩm</th>
                                 <th scope="col" class="totalScoreStyle" style="text-wrap: wrap;">Tổng điểm</th>
-                                <th scope="col">Xếp hạng</th>
+                                <th scope="col" class="rankOcopStyle">Xếp hạng</th>
                                 <th scope="col" class="col-dateScore">Ngày chấm</th>
                                 <th scope="col" class="col-Status">Trạng thái</th>
-                                <th scope="col" class="dropDownResults"></th>
+                                <th scope="col" class="dropDownResults">quyen</th>
                                 <th scope="col" class="actions" style="text-wrap: wrap;">Actions</th>
                             </tr>
                         </thead>
@@ -80,7 +105,7 @@
                                 </th>
                                 <td>
                                     <ul style="list-style-type: none; font-weight: 600; padding: 0;">
-                                        <li style="font-size: 13px; color: rgb(236, 236, 118);text-wrap: wrap;"
+                                        <li class="text-hightlight" style="font-size: 13px;text-wrap: wrap;"
                                             data-toggle="modal" data-target="#exampleModal">
                                             {{this.product_name}}
                                         </li>
@@ -95,18 +120,22 @@
                                 </td>
                                 <td class="totalScoreStyle">
                                     {{#ifCond this.ScoreTotal 0}}
+                                    <p style="font-weight: 600; text-align: center;" class="text-hightlight">
+                                        {{this.ScoreTotal}}
+                                    </p>
                                     {{else}}
-                                    <p style="font-weight: 600; text-align: center; color: rgb(236, 236, 118)">
+                                    <p style="font-weight: 600; text-align: center;" class="text-hightlight">
                                         {{this.ScoreTotal}}
                                     </p>
                                     {{/ifCond}}
                                 </td>
-                                <td class="text-center">
+                                <td class="text-center rankOcopStyle">
                                     {{#repeat this.RankOcop}}
                                     <ion-icon name="star"></ion-icon>
                                     {{/repeat}}
                                     {{#if RankOcop}}
-                                    <p style="color: #B5B5C3;font-weight: 600px;">{{this.RankOcop}} sao</p>
+                                    <p style="color: #B5B5C3;font-weight: 600;font-size: 11px;">{{this.RankOcop}} sao
+                                    </p>
                                     {{/if}}
                                 </td>
                                 <td class="col-dateScore text-center">
@@ -226,40 +255,25 @@
                         confirm: {
                             text: 'Confirm',
                             btnClass: 'btn-red',
-                            action: function () {
+                            action: async function () {
                                 // Lấy ID của mục cần xóa từ thuộc tính data-id của nút
                                 const id = event.target.dataset.id;
-
-                                // Gọi API xóa mục
-                                fetch(`/scoreFile/removeToTrash/${id}`, {
-                                    method: 'PATCH'
-                                }).then(response => {
-                                    if (response.ok) {
-                                        localStorage.setItem('toast', JSON.stringify({
-                                            position: "top-right",
-                                            heading: 'Xóa thành công',
-                                            text: 'Đã xóa thành công thành công',
-                                            icon: 'success',
-                                            loader: true,
-                                            loaderBg: '#9EC600',
-                                            showHideTransition: 'slide',
-                                            stack: 4
-                                        }));
-                                        window.location.reload()
-                                    } else {
-                                        localStorage.setItem('toast', JSON.stringify({
-                                            position: "top-right",
-                                            heading: 'Xóa không thành công',
-                                            text: 'Đã xảy ra lỗi khi xóa mục',
-                                            icon: 'error',
-                                            loader: true,
-                                            loaderBg: '#9EC600',
-                                            showHideTransition: 'slide'
-                                        }));
-                                    }
-                                }).catch(error => {
-                                    $.alert('Đã hủy');
-                                });
+                                const response = await fetch(`/scorefile/remove/${id}`, {
+                                    method: "PATCH"
+                                })
+                                if (!response.ok) {
+                                    alert("Có lỗi xảy ra , vui lòng thử lại!")
+                                }
+                                localStorage.setItem('toast', JSON.stringify({
+                                    position: "top-right",
+                                    heading: 'SUCCESS!',
+                                    text: 'Đã xóa thành công!',
+                                    icon: 'success',
+                                    loader: true,
+                                    loaderBg: '#9EC600',
+                                    stack: 4
+                                }));
+                                window.location.reload()
                             }
                         },
                         cancel: function () {

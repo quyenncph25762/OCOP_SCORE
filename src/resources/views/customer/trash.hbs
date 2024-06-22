@@ -8,7 +8,7 @@
                 style="list-style: none; display:flex; justify-content: space-between; align-items: center;">
                 <div class="">
                     <button class="btn btn-danger btnDeleteAll btnDisabledDelete">Xóa mục đã chọn</button>
-                    <button class="btn btn-primary btnRevertAll ml-3 btnDisabledRevert">Khôi phục mục đã
+                    <button class="btn btn-info btnRevertAll ml-3 btnDisabledRevert">Khôi phục mục đã
                         chọn</button>
                 </div>
             </ul>
@@ -34,7 +34,7 @@
 
                             <thead>
                                 <tr>
-                                    <th {{#ifCond data.length 0}}hidden{{/ifCond}}>
+                                    <th {{#ifCond Customer.length 0}}hidden{{/ifCond}}>
                                         <div class="checkbox-wrapper-42 checkbox">
                                             <input id="checkAll" type="checkbox" class="check" />
                                             <label class="cbx" for="checkAll"></label>
@@ -48,7 +48,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                {{#each viewData.data}}
+                                {{#each Customer}}
                                 <tr>
                                     <td>
                                         <div class="checkbox-wrapper-42 checkbox">
@@ -67,7 +67,7 @@
                                                 style="background-color: transparent;border: none;cursor: pointer;">
                                                 <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
                                                     title="Khôi phục">
-                                                    <ion-icon name="sync-outline" style="color: white; font-size: 18px;"
+                                                    <ion-icon name="sync-outline" style="font-size: 18px;"
                                                         id="icon_revert" data-id="{{this._id}}"></ion-icon>
                                                 </span>
                                             </button>
@@ -81,10 +81,6 @@
                                             </span>
                                         </div>
                                     </td>
-                                </tr>
-                                {{else}}
-                                <tr>
-                                    <td colspan="9" class="text-center">Không tìm thấy từ khoá nào</td>
                                 </tr>
                                 {{/each }}
                             </tbody>
@@ -267,6 +263,9 @@
                                 }));
                                 window.location.reload()
                             }
+                        },
+                        cancel: function () {
+                            $.alert('Đã hủy!');
                         }
                     },
                     cancel: function () {

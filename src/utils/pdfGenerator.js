@@ -12,7 +12,18 @@ async function generatePDF(htmlContent, nameFile, res) {
         const page = await browser.newPage();
         await page.setContent(htmlContent, { waitUntil: 'networkidle0' });
         await page.emulateMediaType('screen');
-        await page.pdf({ format: 'A4' });
+        await page.pdf(
+            {
+                format: 'A4',
+              
+                margin: {
+                    bottom: '2cm',
+                    top: '2cm',
+                    left: '3cm',
+                    right: '3cm',
+                }
+            }
+        );
         await browser.close();
         // Chuyển đổi HTML sang DOCX bằng html-docx-js
         const docxBuffer = htmlDocx.asBlob(htmlContent);

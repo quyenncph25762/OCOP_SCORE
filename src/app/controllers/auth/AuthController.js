@@ -89,7 +89,6 @@ class AuthController {
     changePassword(req, res) {
         const id = req.params.id
         const { Password } = req.body
-        console.log(Password)
         AccountModel.changePasswordByUserId(id, Password, (err, User) => {
             if (err) {
                 return res.status(500).json({
@@ -117,7 +116,6 @@ class AuthController {
             } else {
                 bcrypt.hash(employee[0].Email, parseInt(process.env.BCRYPT_SALT_ROUND)).then((hashedEmail) => {
                     const resetLink = `${process.env.APP_URL}/auth/password/reset/${employee[0].Email}?token=${hashedEmail}`;
-                    console.log(resetLink)
                     mailer.sendMail(employee[0].Email, "RESET PASSWORD", `<a href="${resetLink}">RESET PASSWORD</a>`);
                     return res.status(204).json({
                         message: "Đã gửi tới email",
@@ -129,7 +127,6 @@ class AuthController {
     };
 
     showResetForm = (req, res) => {
-        console.log(req.params.email)
         if (!req.params.email || !req.query.token) {
             res.redirect('/auth/password/reset')
         } else {
@@ -144,7 +141,7 @@ class AuthController {
             })
         } else {
             bcrypt.compare(Email, token, (err, result) => {
-                console.log('compare', result);
+                // console.log('compare', result);
                 if (result == true) {
                     AccountModel.changePasswordByEmail(Email, Password, (err, result) => {
                         if (err) {

@@ -4,10 +4,14 @@ const router = express.Router();
 const CheckController = require("../app/Middleware/checkoutToken")
 // delete forever
 router.delete("/remove/:id", CheckController.checkout('Score'), ScoreTempDetailController.remove)
+// delete forever All
+router.delete("/removeAll", CheckController.checkout('Score'), ScoreTempDetailController.removeAll)
 // khoi phuc
 router.patch("/revert/:id", CheckController.checkout('Score'), ScoreTempDetailController.revert)
-// deleteToTrash
-router.patch("/removeToTrash/:id", CheckController.checkout('Score'), ScoreTempDetailController.removeToTrash)
+// khoi phuc
+router.post("/revertAll", CheckController.checkout('Score'), ScoreTempDetailController.revertAll)
+// deleteToTrashAll
+router.post("/removeToTrash", CheckController.checkout('Score'), ScoreTempDetailController.removeToTrash)
 // get phieu cham chi tieu theo phieu cham
 router.get("/scoreTemp/:id", CheckController.checkout('Score'), ScoreTempDetailController.getScoreTempDetailFilter)
 // getOne ScoreTempDetail by id

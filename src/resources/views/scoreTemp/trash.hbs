@@ -13,7 +13,7 @@
 
             <ul class="search-customer"
                 style="list-style: none; display:flex; justify-content: space-between; align-items: center;">
-                <button class="btn btn-primary btnRevertAll ml-3 btnDisabledRevert">Khôi phục mục đã
+                <button class="btn btn-info btnRevertAll ml-3 btnDisabledRevert">Khôi phục mục đã
                     chọn</button>
             </ul>
         </div>
@@ -72,14 +72,14 @@
                                         {{#ifCond productgroup_IsDeleted 0}}
                                         <td>{{this.productgroup_name}}</td>
                                         {{else}}
-                                        <td style="color: rgb(236, 236, 118);">Không xác định</td>
+                                        <td class="text-hightlight">Không xác định</td>
                                         {{/ifCond}}
                                         <td>{{this.Note}}</td>
                                         <td style="display: flex;">
                                             <button data-toggle="modal"
                                                 style="background-color: transparent;border: none;cursor: pointer;">
                                                 <span class="d-inline-block" tabindex="0" title="Khôi phục">
-                                                    <ion-icon name="sync-outline" style="color: white; font-size: 18px;"
+                                                    <ion-icon name="sync-outline" style="font-size: 18px;"
                                                         id="icon_revert" data-id="{{this._id}}"></ion-icon>
                                                 </span>
                                             </button>
@@ -133,7 +133,6 @@
                                 action: function () {
                                     // Lấy ID của mục cần xóa từ thuộc tính data-id của nút
                                     const id = event.target.dataset.id;
-
                                     // Gọi API xóa mục
                                     fetch(`/scoreTemp/revert/${id}`, {
                                         method: 'PATCH'
@@ -197,17 +196,22 @@
                     buttons: {
                         confirm: {
                             text: 'Confirm',
-                            btnClass: 'btn-red',
+                            btnClass: 'btn-blue',
                             action: async function () {
-                                const id = event.target.dataset.id;
+                                const arrId = []
                                 for (let btnCheck of btnsCheck) {
                                     if (btnCheck.checked) {
                                         const id = btnCheck.dataset.idcheckbox
-                                        const res = await fetch(`/scoreTemp/revert/${id}`, {
-                                            method: "PATCH"
-                                        })
+                                        arrId.push(id)
                                     }
                                 }
+                                await fetch(`/scoreTemp/revertAll`, {
+                                    method: 'POST',
+                                    body: JSON.stringify(arrId),
+                                    headers: {
+                                        "Content-Type": "application/json"
+                                    }
+                                })
                                 localStorage.setItem('toast', JSON.stringify({
                                     position: "top-right",
                                     heading: 'Khôi phục thành công',

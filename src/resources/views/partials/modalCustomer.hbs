@@ -72,8 +72,8 @@
                         </div>
                 </form>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
-                    <button type="button" onclick="handleAdd()" class="btn btn-success">Thêm chủ thể</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Đóng</button>
+                    <button type="button" onclick="handleAdd()" class="btn btn-info">Thêm chủ thể</button>
                 </div>
             </div>
         </div>
@@ -107,20 +107,76 @@
         const District_id = document.getElementById("District_id").value
         const Ward_id = document.getElementById("Ward_id").value
         const CreatorUser_id = document.getElementById("CreatorUser_id").value
-        const formData = new FormData()
-        formData.append("Code", Code)
-        formData.append("Name", Name)
-        formData.append("Address", Address)
-        formData.append("SubName", SubName)
-        formData.append("Phone", Phone)
-        formData.append("Email", Email)
-        formData.append("City_id", City_id)
-        formData.append("District_id", District_id)
-        formData.append("Ward_id", Ward_id)
-        formData.append("CreatorUser_id", CreatorUser_id)
+        if (Name.trim() === "") {
+            $.toast({
+                position: "top-right",
+                heading: 'WARNING!',
+                text: "Tên chủ thể không được để trống",
+                icon: 'warning',
+                loader: true,
+                loaderBg: '#f2a654',
+                showHideTransition: 'slide',
+                stack: 4
+            });
+            return
+        }
+        if (City_id.trim() === "") {
+            $.toast({
+                position: "top-right",
+                heading: 'WARNING!',
+                text: "Tỉnh không được để trống",
+                icon: 'warning',
+                loader: true,
+                loaderBg: '#f2a654',
+                showHideTransition: 'slide',
+                stack: 4
+            });
+            return
+        }
+        if (District_id.trim() === "") {
+            $.toast({
+                position: "top-right",
+                heading: 'WARNING!',
+                text: "Huyện không được để trống",
+                icon: 'warning',
+                loader: true,
+                loaderBg: '#f2a654',
+                showHideTransition: 'slide',
+                stack: 4
+            });
+            return
+        }
+        if (Ward_id.trim() === "") {
+            $.toast({
+                position: "top-right",
+                heading: 'WARNING!',
+                text: "Xã không được để trống",
+                icon: 'warning',
+                loader: true,
+                loaderBg: '#f2a654',
+                showHideTransition: 'slide',
+                stack: 4
+            });
+            return
+        }
+        const form = {
+            Code: Code,
+            Name: Name,
+            Address: Address,
+            SubName: SubName,
+            Phone: Phone,
+            Email: Email,
+            City_id: City_id,
+            District_id: District_id,
+            Ward_id: Ward_id,
+            CreatorUser_id: City_id
+        }
         const res = await fetch("/customer-manage/create", {
             method: "POST",
-            body: formData
+            body: JSON.stringify(form),
+            headers: {
+                "Content-Type": "application/json"
+            }
         })
         if (res.ok) {
             const data = await res.json()

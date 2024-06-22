@@ -9,13 +9,13 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body" style="overflow-y: auto;max-height: 80vh;">
+            <div class="modal-body" style="min-height: 80vh;">
                 <form class="row" enctype="multipart/form-data">
                     <input type="text" hidden value="{{User._id}}" id="CreatorUser_id">
-                    <input type="text" hidden id="UserName">
+                    <input type="text" hidden id="Code">
                     <div class="col-md-4">
                         <h1 style="font-size: 16px; text-align: center;font-weight: 600;">Ảnh đại diện</h1>
-                        <div>
+                        <div style="display: flex;flex-direction: column;">
                             <div class="col-sm-12 mb-3" style="position: relative;">
                                 <div data-toggle="tooltip" data-html="true" title="Xóa ảnh" onclick="removeUpload()"
                                     style="position: absolute;top: 0;right: 0;">
@@ -23,7 +23,7 @@
                                 </div>
                                 <input type="file" id="Avatar" accept="image/*" hidden>
                                 <img id="AvatarPreview" onclick="document.getElementById('Avatar').click()"
-                                    style="width: 100%;height: 100%;object-fit: cover;border-radius:50%"
+                                    style="width: 200px;height: 200px;object-fit: cover;border-radius:50%"
                                     src="/Uploads//user_boy.jpg" alt="">
 
                             </div>
@@ -38,14 +38,15 @@
                                     <label for="nu">Nữ</label>
                                 </div>
                             </div>
+
                         </div>
                     </div>
                     <div class="col-md-8">
                         <div class="form-row">
                             {{!-- code --}}
                             <div class="col-md-6 mb-3">
-                                <label for="Code">Mã</label>
-                                <input name="Code" type="text" class="form-control" id="Code" required>
+                                <label for="UserName">Tên đăng nhập</label>
+                                <input name="UserName" type="text" class="form-control" id="UserName" required>
                             </div>
                             {{!-- Email --}}
                             <div class="col-md-6 mb-3">
@@ -126,11 +127,22 @@
                         </div>
                     </div>
                 </form>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                    <button onclick="handleAdd('{{User.DistrictId}}')" type="submit" class="btn btn-success">Thêm cán
+                <div class="modal-footer" style="padding: 12px 0;">
+                    <div class="" style="flex-grow: 1;">
+                        <p style="font-style: italic;font-size: 11px;text-align: left;width: 100%;">
+                            *Mật
+                            khẩu mặc định của
+                            tài khoản mới
+                            tạo sẽ
+                            là: 123456</p>
+                    </div>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Đóng</button>
+                    <button onclick="handleAdd('{{User.DistrictId}}')" type="submit" class="btn btn-info">Thêm
+                        cán
                         bộ</button>
+
                 </div>
+
             </div>
         </div>
     </div>
@@ -198,6 +210,20 @@
         const roleId = document.getElementById("roleId")?.value
         const CreatorUser_id = document.getElementById("CreatorUser_id").value
         const District = document.getElementById("District")?.value
+        if (errorMessage(FullName.trim() === "", "Tên cán bộ không được để trống")) {
+            return
+        }
+        if (errorMessage(WorkDepartment_id.trim() === "", "Phòng ban không được để trống")) {
+            return
+        }
+        if (errorMessage(WorkPosition_id.trim() === "", "Vị trí chức danh không được để trống")) {
+            return
+        }
+        if (errorMessage(UserName.trim() === "", "Tên cán bộ không được để trống")) {
+            return
+        } else if (errorMessage(UserName.length < 6, "Tên đăng nhập phải lớn hơn hoặc bằng 6")) {
+            return
+        }
         const formData = new FormData()
         formData.append("Avatar", Avatar?.files[0] ? Avatar?.files[0] : null)
         formData.append("Gender", nu === true ? "nu" : "nam")
@@ -237,7 +263,7 @@
                 position: "top-right",
                 heading: 'WARNING!',
                 text: data.message,
-                icon: 'error',
+                icon: 'warning',
                 loader: true,
                 loaderBg: '#f2a654',
                 showHideTransition: 'slide',
@@ -245,7 +271,22 @@
             });
         }
     }
-
+    function errorMessage(error, message) {
+        if (error) {
+            $.toast({
+                position: "top-right",
+                heading: 'WARNING!',
+                text: message,
+                icon: 'warning',
+                loader: true,
+                loaderBg: '#f2a654',
+                showHideTransition: 'slide',
+                stack: 4
+            });
+            return true;
+        }
+        return false;
+    }
 </script>
 {{!-- random code --}}
 <script>

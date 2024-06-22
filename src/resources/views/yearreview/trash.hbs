@@ -6,7 +6,7 @@
                 style="list-style: none; display:flex; justify-content: space-between; align-items: center;">
                 <div class="">
                     <button class="btn btn-danger btnDeleteAll btnDisabledDelete">Xóa mục đã chọn</button>
-                    <button class="btn btn-primary btnRevertAll ml-3 btnDisabledRevert">Khôi phục mục đã
+                    <button class="btn btn-info btnRevertAll ml-3 btnDisabledRevert">Khôi phục mục đã
                         chọn</button>
                 </div>
             </ul>
@@ -71,7 +71,7 @@
                                                 style="background-color: transparent;border: none;cursor: pointer;">
                                                 <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
                                                     title="Khôi phục">
-                                                    <ion-icon name="sync-outline" style="color: white; font-size: 18px;"
+                                                    <ion-icon name="sync-outline" style="font-size: 18px;"
                                                         id="icon_revert" data-id="{{this._id}}"></ion-icon>
                                                 </span>
                                             </button>
@@ -88,10 +88,6 @@
                                             </span>
                                         </div>
                                     </td>
-                                </tr>
-                                {{else}}
-                                <tr>
-                                    <td colspan="9" class="text-center">Không tìm thấy từ khoá nào</td>
                                 </tr>
                                 {{/each }}
                             </tbody>
@@ -253,25 +249,35 @@
                         text: 'Confirm',
                         btnClass: 'btn-red',
                         action: async function () {
-                            const id = event.target.dataset.id;
+                            const arrId = []
                             for (let btnCheck of btnsCheck) {
                                 if (btnCheck.checked) {
                                     const id = btnCheck.dataset.idcheckbox
-                                    const res = await fetch(`/year-review/remove/${id}`, {
-                                        method: "DELETE"
-                                    })
+                                    arrId.push(id)
                                 }
                             }
-                            localStorage.setItem('toast', JSON.stringify({
-                                position: "top-right",
-                                heading: 'Xóa thành công',
-                                text: 'Đã xóa thành công thành công',
-                                icon: 'success',
-                                loader: true,
-                                loaderBg: '#9EC600'
-                            }));
-                            window.location.reload()
+                            const response = await fetch(`/year-review/removeAll`, {
+                                method: 'POST',
+                                body: JSON.stringify(arrId),
+                                headers: {
+                                    "Content-Type": "application/json"
+                                }
+                            })
+                            if (response.ok) {
+                                localStorage.setItem('toast', JSON.stringify({
+                                    position: "top-right",
+                                    heading: 'Xóa thành công',
+                                    text: 'Đã xóa thành công thành công',
+                                    icon: 'success',
+                                    loader: true,
+                                    loaderBg: '#9EC600'
+                                }));
+                                window.location.reload()
+                            }
                         }
+                    },
+                    cancel: function () {
+                        $.alert('Đã hủy!');
                     }
                 },
                 cancel: function () {
@@ -290,14 +296,20 @@
                         text: 'Confirm',
                         btnClass: 'btn-blue',
                         action: async function () {
+                            const arrId = []
                             for (let btnCheck of btnsCheck) {
                                 if (btnCheck.checked) {
                                     const id = btnCheck.dataset.idcheckbox
-                                    const res = await fetch(`/year-review/revert/${id}`, {
-                                        method: "PATCH"
-                                    })
+                                    arrId.push(id)
                                 }
                             }
+                            await fetch(`/year-review/revertAll`, {
+                                method: 'POST',
+                                body: JSON.stringify(arrId),
+                                headers: {
+                                    "Content-Type": "application/json"
+                                }
+                            })
                             localStorage.setItem('toast', JSON.stringify({
                                 position: "top-right",
                                 heading: 'Khôi phục thành công',

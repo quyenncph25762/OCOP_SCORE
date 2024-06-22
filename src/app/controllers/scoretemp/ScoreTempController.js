@@ -51,7 +51,7 @@ class ScoreTempController {
                     message: "Lỗi truy xuất"
                 })
             }
-            return res.status(200).json(scoretemp?.[0])
+            return res.status(200).json(scoretemp[0] ? scoretemp[0] : [])
         })
     }
     // trang them scoretemp
@@ -121,7 +121,6 @@ class ScoreTempController {
     }
     // lay 1 scoreTemp
     getOne(req, res) {
-        console.log(1)
         const id = req.params.id
         const cookie = req.cookies
         if (cookie?.User) {
@@ -188,6 +187,7 @@ class ScoreTempController {
         const id = req.params.id
         ScoreTempModel.findScoreTemUpdate(id, req.body, (err, data) => {
             if (err) {
+                console.log(`findScoreTemUpdate:`, err)
                 return res.status(500).json({
                     message: "Lỗi truy vấn"
                 })
@@ -195,6 +195,7 @@ class ScoreTempController {
             if (data.length === 0) {
                 ScoreTempModel.updateScoreTemp(id, req.body, (err, data) => {
                     if (err) {
+                        console.log(`updateScoreTemp:`, err)
                         return res.status(500).json({
                             message: "Lỗi truy vấn"
                         })
@@ -227,6 +228,19 @@ class ScoreTempController {
             })
         })
     }
+    // Xoa nhieu
+    removeToTrashAll = async (req, res) => {
+        try {
+            for (const id of req.body) {
+                await ScoreTempModel.removeToTrashScoreTempAll(id)
+            }
+            return res.status(204).json({
+                message: "Xóa thành công"
+            })
+        } catch (error) {
+            console.log(error)
+        }
+    }
     // khoi phuc
     revert(req, res) {
         const id = req.params.id
@@ -243,6 +257,19 @@ class ScoreTempController {
                 message: "Khôi phục thành công"
             })
         })
+    }
+    // khoi phuc nhieu
+    revertAll = async (req, res) => {
+        try {
+            for (const id of req.body) {
+                await ScoreTempModel.revertScoreTempAll(id)
+            }
+            return res.status(204).json({
+                message: "Khoi phuc thành công"
+            })
+        } catch (error) {
+            console.log(error)
+        }
     }
     // trang chua cac scoretemp isDeleted = 1
     pageTrash(req, res) {

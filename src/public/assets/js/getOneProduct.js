@@ -51,8 +51,8 @@ const handleShowListCitationUpdate = async (id) => {
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="file-drop-area">
-                                        <span class="choose-file-button">Choose files</span>
-                                        <span class="file-message">or drag and drop files here</span>
+                                        <span class="choose-file-button">Chọn ảnh</span>
+                                        <span class="file-message">hoặc kéo thả</span>
                                         <input data-productDetailId=${ProductDetail._id} id="AttachFile" class="file-input" name="AttachFile" type="file" multiple>
                                     </div>
                                     <div class="selected-files listGallery">
