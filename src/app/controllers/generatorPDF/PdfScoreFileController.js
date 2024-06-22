@@ -164,7 +164,7 @@ class PdfScoreFileController {
                 </td>
                 <td style="text-align:right;font-weight:bold;border:none;font-size:18px;">
                     <p style="text-transform:uppercase;margin-bottom:0px">Cộng Hòa xã hội chủ nghĩa việt nam</p>
-                    <div style="margin-right:50px">
+                    <div style="margin-right:70px">
                         <p>Độc lập - Tự do - Hạnh phúc</p>
                     </div>
                 </td>
@@ -215,7 +215,9 @@ class PdfScoreFileController {
                             <tr key="${index}">
                                 ${item.scoreTempDetail_isScore ? `
                                     <td style="border:none">
+                                       <div style="margin-top:11px">
                                         ${item.scoreTempDetail_maxScore === item.Score ? '☒' : '☐'}
+                                       </div>
                                     </td>
                                 ` : ''}
                               

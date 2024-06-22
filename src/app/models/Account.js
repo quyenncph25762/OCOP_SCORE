@@ -73,9 +73,22 @@ const AccountModel = {
         connection.query(query, [password, id], callback)
     },
     // changePassword by email
-    changePasswordByEmail: (Email, password, callback) => {
-        const query = `UPDATE employee SET Password = ? WHERE Email = ?`
-        connection.query(query, [password, Email], callback)
+    changePasswordByEmail: (email, password, callback) => {
+        const query = `UPDATE employee SET Password = ? WHERE email = ?`
+        connection.query(query, [password, email], callback)
+    },
+    // find user by email
+    findUserByEmail: (email) => {
+        return new Promise((resolve, reject) => {
+            const query = `SELECT * FROM employee WHERE Email = ${email}`
+            connection.query(query, (err, results) => {
+                if (err) {
+                    return reject(err)
+                }
+                return resolve(results)
+            })
+
+        })
     },
     // tim ten user xem da ton tai chua
     findUserAdd: (employee, callback) => {
