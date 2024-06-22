@@ -105,7 +105,7 @@ class PdfScoreFileController {
                     Bị loại khi: Giả mạo hồ sơ hoặc không đủ điều kiện bắt buộc để sản xuất sản phẩm theo quy định quản lí chuyên ngành của bộ Y Tế hoặc không có bản công bố sản phẩm (hoặc tương đương)
                 </p>
             </ul>
-            <table>
+            <table style ="border:none">
                 <thead>
                     <tr>
                         <th scope="col"></th>
