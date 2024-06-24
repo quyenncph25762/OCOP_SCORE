@@ -53,7 +53,8 @@
 	padding: 13px 5px 13px 15px;
 	display: block;
 	border-left: 3px solid transparent;
-	color: #000;
+	font-weight: 600;
+	color: #3F4254;
 	font-size: 15px;
 }
 
@@ -63,10 +64,10 @@
 
 .sidebar-menu>li:hover>a,
 .sidebar-menu>li.active>a {
-	color: #000;
+	color: #14b6ff;
 	background: rgba(255, 255, 255, 0.15);
-	border-left-color: #000;
-	border-bottom: 1px solid #ccc;
+	border-left-color: #14b6ff;
+	border-bottom: 1px solid #14b6ff;
 }
 
 .sidebar-menu>li .label,

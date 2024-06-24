@@ -1,5 +1,6 @@
 tbody td {
     text-align: left !important;
+    color: #3F4254 !important;
 }
 
 th {
@@ -7,10 +8,13 @@ th {
 }
 
 body {
-    font-size: 12px !important;
-    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 14px !important;
+    font-family: sans-serif-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji' !important;
 }
 
+:not(.input-group)>.bootstrap-select.form-control:not([class*=col-]) {
+    border: 1px solid #d1d1d1
+}
 
 
 /* Styles for modal overlay */
@@ -100,7 +104,7 @@ body {
 }
 
 
-table .active {
+table .dt-type-numeric .active {
     width: 10px;
     height: 10px;
     border-radius: 50%;
@@ -461,7 +465,7 @@ input.form-control.input-headerTable.w-100 {
 
 .statusLabelSuccess {
     background: #04b962;
-    padding: 3px 8px;
+    padding: 3px 0px;
     border-radius: 8px;
     color: #fff;
     display: flex;
@@ -476,12 +480,12 @@ input.form-control.input-headerTable.w-100 {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 3px 8px;
+    padding: 3px 0px;
 }
 
 .statusLabelDanger {
     background: #F64E60;
-    padding: 3px 8px;
+    padding: 3px 0px;
     border-radius: 8px;
     color: #fff;
     display: flex;
@@ -865,11 +869,43 @@ input.form-control.input-headerTable.w-100 {
 }
 
 .text-hightlight {
-    color: #ff8800 !important;
-    font-weight: 600;
+    color: #14b6ff !important;
+    font-weight: 700 !important;
+}
+
+.text-start {
+    color: #ff8800;
+}
+
+.text-red {
+    color: rgb(247, 66, 66) !important;
+}
+
+.text-black-custom {
+    color: #3F4254;
+    font-weight: 700 !important;
+    font-size: 13px;
+}
+
+.text-muted {
+    color: #B5B5C3 !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+}
+
+.table.dataTable thead th {
+    font-weight: 400;
 }
 
 #AvatarPreview:hover {
     opacity: 0.7;
     cursor: pointer;
+}
+
+/* select custom */
+.inner.show {}
+
+.dropdown-menu.show {
+
+    /* transform: translateY(38px) !important */
 }

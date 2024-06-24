@@ -32,19 +32,23 @@ async function handleGetScoreFileDetail(ScoreFile_id, product_id) {
     
                 ${listScoreFileDetail[i].scoreTempDetail_name && !listScoreFileDetail[i].scoreTempDetail_isScore ?
                 `<td style="font-weight: 600; max-width: 500px; text-wrap: wrap; word-wrap: break-word; overflow-wrap: break-word;">
-                        ${listScoreFileDetail[i].scoreTempDetail_name}
+                <p class="text-black-custom">
+                ${listScoreFileDetail[i].scoreTempDetail_name}
+                </p>
                     </td>` :
                 `<td style="font-weight:400; color: #000; max-width: 500px; text-wrap: wrap; word-wrap: break-word; overflow-wrap: break-word;">
                         ${listScoreFileDetail[i].scoreTempDetail_name} ${listScoreFileDetail[i].scoreTempDetail_validateRank ?
-                    `<span class="text-hightlight"> ${repeatStarUpdate(listScoreFileDetail[i].scoreTempDetail_validateRank)} </span>`
+                    `<span class="text-start"> ${repeatStarUpdate(listScoreFileDetail[i].scoreTempDetail_validateRank)} </span>`
                     :
                     ""}
                     </td>`
             }
     
                 ${listScoreFileDetail[i].scoreTempDetail_maxScore >= 0 && listScoreFileDetail[i].scoreTempDetail_isScore ?
-                `<td style="font-style: italic; color: rgb(232, 67, 67); font-weight: 600;">
-                        (${listScoreFileDetail[i].scoreTempDetail_maxScore} điểm)
+                `<td style="font-style: italic; font-weight: 600;">
+                       <p class="text-red">
+                             (${listScoreFileDetail[i].scoreTempDetail_maxScore} điểm)
+                       </p>
                     </td>` :
                 `<td></td>`
             }

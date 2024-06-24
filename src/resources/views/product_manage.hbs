@@ -103,11 +103,12 @@
                     </div>
                   </th>
                   <th scope="col" style="display: none;">Mã sản phẩm</th>
+                  <th scope="col" style="max-width: 50px;"></th>
                   <th scope="col">Tên sản phẩm</th>
                   <th scope="col">Nhóm sản phẩm</th>
-                  <th scope="col">Năm đánh giá</th>
-                  <th scope="col">Trạng thái</th>
-                  <th scope="col">Hành động</th>
+                  <th scope="col" style="max-width: 100px;">Năm đánh giá</th>
+                  <th scope="col" style="max-width: 100px;">Trạng thái</th>
+                  <th scope="col" style="max-width: 100px;">Hành động</th>
                 </tr>
               </thead>
               <tbody>
@@ -119,22 +120,27 @@
                       <label class="cbx" for="cbx-42{{this._id}}"></label>
                     </div>
                   </td>
+                  <td style="max-width: 70px;">
+                    <img style="width: 50px;height: 50px;border-radius: 50%;border: 1px solid #ccc;"
+                      src="{{this.Avatar}}" alt="">
+                  </td>
                   <td class="codeColumn" style="display: none;">{{this.Code}}</td>
                   <td>
                     <div style="display: flex;flex-direction: column;">
                       <p onclick="handleProductDetail('{{this._id}}')" class="text-hightlight"
-                        style="font-size: 14px;font-weight: 600;cursor: pointer;" data-toggle="modal"
+                        style="font-size: 14px;cursor: pointer;" data-toggle="modal"
                         data-target="#exampleModalDetail{{this._id}}">{{this.Name}}</p>
                       {{#ifCond customer_IsDeleted 0}}
-                      <p style="color: #B5B5C3; font-weight: 550;text-wrap: wrap;">{{this.customer_name}}</p>
+                      <p style="color: #B5B5C3; font-weight: 550;text-wrap: wrap;font-weight: 700">
+                        {{this.customer_name}}</p>
                       {{else}}
                       <p class="text-hightlight" style="">Không xác định</p>
                       {{/ifCond}}
                     </div>
                   </td>
                   {{#ifCond productgroup_IsDeleted 0}}
-                  <td>
-                    <p class="text-overhidden">
+                  <td style="max-width: 150px;">
+                    <p class="text-overhidden" style="word-break: break;">
                       {{this.productGroup_name}}
                     </p>
                   </td>
@@ -142,9 +148,11 @@
                   <td class="text-hightlight" style="">Không xác định</td>
                   {{/ifCond}}
                   {{#ifCond yearreview_IsDeleted 0}}
-                  <td>{{this.yearName}}</td>
+                  <td style="max-width: 100px;">
+                    <p>{{this.yearName}}</p>
+                  </td>
                   {{else}}
-                  <td class=" text-hightlight" style="">Không xác định</td>
+                  <td class="text-hightlight" style="">Không xác định</td>
                   {{/ifCond}}
                   {{#ifCond this.Status 1}}
                   <td>
@@ -157,31 +165,33 @@
                   {{/ifCond}}
                   {{!-- icons --}}
                   <td scope="row">
-                    <span class="d-inline-block ml-3" tabindex="0" data-toggle="tooltip" title="Chỉnh sửa">
-                      <ion-icon name="create-outline" data-toggle="modal"
-                        data-target="#exampleModal{{this._id}}"></ion-icon>
-                    </span>
-                    {{> modalProduct ProductGroup=../ProductGroup Customer=../Customer Review=../Review}}
-                    {{!-- icon eye --}}
-                    <span onclick="handleProductDetail('{{this._id}}')" class="d-inline-block ml-3" tabindex="0"
-                      data-toggle="tooltip" title="Xem chi tiết">
-                      <ion-icon name="eye-outline" data-toggle="modal"
-                        data-target="#exampleModalDetail{{this._id}}"></ion-icon>
-                    </span>
-                    {{!-- icon duyet --}}
-                    {{#ifCondAnd this.Status 0 ../User.RoleId 1}}
-                    <span onclick="handleProductStatus('{{this._id}}')" class="d-inline-block ml-3" tabindex="0"
-                      data-toggle="tooltip" title="Duyệt">
-                      <ion-icon name="checkbox-outline"></ion-icon>
-                    </span>
-                    {{/ifCondAnd}}
-                    {{!-- icon xoa --}}
-                    <span class="d-inline-block ml-3" tabindex="0" data-toggle="tooltip" title="Xóa">
-                      <ion-icon id="icon_moveToTrash" name="trash-outline" data-id="{{this._id}}">
-                      </ion-icon>
-                    </span>
-                    {{!-- modal xem chi tiet --}}
-                    {{> modalReviewProduct}}
+                    <div class="" style="display: flex;gap: 10px;">
+                      <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Chỉnh sửa">
+                        <ion-icon name="create-outline" data-toggle="modal"
+                          data-target="#exampleModal{{this._id}}"></ion-icon>
+                      </span>
+                      {{> modalProduct ProductGroup=../ProductGroup Customer=../Customer Review=../Review}}
+                      {{!-- icon eye --}}
+                      <span onclick="handleProductDetail('{{this._id}}')" class="d-inline-block" tabindex="0"
+                        data-toggle="tooltip" title="Xem chi tiết">
+                        <ion-icon name="eye-outline" data-toggle="modal"
+                          data-target="#exampleModalDetail{{this._id}}"></ion-icon>
+                      </span>
+                      {{!-- icon duyet --}}
+                      {{#ifCondAnd this.Status 0 ../User.RoleId 1}}
+                      <span onclick="handleProductStatus('{{this._id}}')" class="d-inline-block" tabindex="0"
+                        data-toggle="tooltip" title="Duyệt">
+                        <ion-icon name="checkbox-outline"></ion-icon>
+                      </span>
+                      {{/ifCondAnd}}
+                      {{!-- icon xoa --}}
+                      <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Xóa">
+                        <ion-icon id="icon_moveToTrash" name="trash-outline" data-id="{{this._id}}">
+                        </ion-icon>
+                      </span>
+                      {{!-- modal xem chi tiet --}}
+                      {{> modalReviewProduct}}
+                    </div>
                   </td>
                   {{!-- end icons --}}
                 </tr>
@@ -196,13 +206,7 @@
   <!--End content-wrapper-->
   {{> footer}}
 
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      buttonAddProduct.addEventListener("click", () => {
-        $(".selectProductAdd").select2();
-      })
-    })
-  </script>
+
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="/assets/js/custom.js"></script>
   <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
@@ -423,6 +427,6 @@
   {{!-- show productDetail --}}
   <script src="/assets/js/showProductDetail.js"></script>
   {{!-- Gallery --}}
-  <script src="/assets/js/addGallery.js"></script>
+  <script src="/assets/js/AddGallery.js"></script>
   {{!-- updateProduct --}}
   <script src="/assets/js/updateProduct.js"></script>

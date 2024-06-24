@@ -12,6 +12,10 @@
             min-width: 100% !important;
         }
     }
+
+    :not(.input-group)>.bootstrap-select.form-control:not([class*=col-]) {
+        display: block;
+    }
 </style>
 <!-- Modal -->
 <div class="modal fade" id="modalUpdateUser{{this._id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -71,7 +75,8 @@
                                         </div>
                                         <div class="col-sm-6 mb-3">
                                             <label for="Code">Vai trò</label>
-                                            <select name="" id="RoleIdUpdate{{this._id}}" class="form-control">
+                                            <select name="" id="RoleIdUpdate{{this._id}}"
+                                                class="form-control selectpicker" data-live-search="true">
                                                 {{#each Role}}
                                                 <option value="{{this._id}}" {{#ifCond this.status
                                                     0}}disabled{{/ifCond}} {{#ifCond this._id

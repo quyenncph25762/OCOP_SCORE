@@ -53,10 +53,10 @@ async function handleResultScoreFiles(idScoreCommittee, productId) {
                 <tr class="tr">
                     <td>${i}</td>
                     <td>
-                        <strong style="font-size: 16px;">${scorefile.employee_FullName}</strong>
-                        <p style="font-style: italic;text-wrap:wrap">${scorefile.workposition_name} - ${scorefile.workdepartment_title}</p>
+                        <p style="font-size: 16px;" class="text-black-custom mb-0">${scorefile.employee_FullName}</p>
+                        <p style="text-wrap:wrap" class="text-muted">${scorefile.workposition_name} - ${scorefile.workdepartment_title}</p>
                     </td>
-                    <td style="color: #F64E60; font-weight: 600;" class="text-center">${scorefile.ScoreTotal}</td>
+                    <td style="font-weight: 600;" class="text-center text-red">${scorefile.ScoreTotal}</td>
                     <td class="text-center">
                     ${repeatStar(scorefile.RankOcop)}
                     </td>
@@ -89,7 +89,7 @@ async function handleResultScoreFiles(idScoreCommittee, productId) {
             <tr>
                 <td  colspan="2"></td>
                 <td id="AverageScore" >
-                <p style="font-weight:700; font-size:14px" class="text-center">${AverageScore ? Number(AverageScore.toFixed(1)) : 0}</p>
+                <p style="font-weight:700; font-size:14px" class="text-center text-black-custom">${AverageScore ? Number(AverageScore.toFixed(1)) : 0}</p>
                 </td>
                 <td id="AverageRankOcop" class="text-center">
                 <p style="font-size:14px">
@@ -97,7 +97,7 @@ async function handleResultScoreFiles(idScoreCommittee, productId) {
                 </p>
                 </td>
                 <td>
-                <p style="text-align:center;font-weight: 600">${Number(Math.floor(AverageRankOcop)) > 2 ? "Đạt" : "Không đạt"}</p>
+                <p style="text-align:center;font-weight: 600" class="text-black-custom">${Number(Math.floor(AverageRankOcop)) > 2 ? "Đạt" : "Không đạt"}</p>
                 </td>
             </tr>
         `;

@@ -97,13 +97,23 @@
     .mt-100 {
         margin-top: 100px;
     }
+
+    :not(.input-group)>.bootstrap-select.form-control:not([class*=col-]) {
+        display: block;
+    }
+
+    .drag-text,
+    .file-upload {
+        max-width: 150px !important;
+        max-height: 150px !important;
+    }
 </style>
 {{!-- UPADTE --}}
 {{#if this._id}}
 <div class="modal fade" id="exampleModal{{this._id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
     <div class="modal-dialog modal__size" role="document">
-        <div class="modal-content modal-product" style="100%">
+        <div class="modal-content modal-product">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Cập nhật sản phẩm</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -112,7 +122,7 @@
             </div>
             <div class="modal-body" class="width: 100%">
                 <form enctype="multipart/form-data">
-                    <div class="row row-content">
+                    <div class="row">
                         <div class="form-row col-sm-12 col-md-12 col-xl-3"
                             style="display: flex;flex-direction: column; text-align: center;">
                             <h1 style="font-size: 16px; text-align: center;font-weight: 600;">Ảnh sản phẩm</h1>
@@ -122,7 +132,7 @@
                                     <input type='file' name="Avatar" id="avatar{{this._id}}" style="display: none;">
                                     <input type="text" value="{{this.Avatar}}" name="Avatar" hidden>
                                     <div class="drag-text" onclick="onclickImage(`{{this._id}}`)">
-                                        <img style="width: 100%; height: 100%;object-fit: cover;"
+                                        <img style="width: 150px; height: 150px;object-fit: cover;border:1px solid #ccc"
                                             id="avatarPreview{{this._id}}" class="file-upload-image"
                                             src="{{this.Avatar}}" />
                                     </div>
@@ -156,7 +166,7 @@
                                     id="Name{{this._id}}" required>
                             </div>
                             {{!-- IsStatus --}}
-                            <div class="custom-control custom-switch col-md-2"
+                            <div class="custom-control custom-switch col-md-2 mb-3"
                                 style="display: flex; justify-content: center;align-items: center;">
                                 {{#ifCond IsActive 1}}
                                 <input name="IsActive" type="checkbox" class="custom-control-input"
@@ -180,7 +190,7 @@
                             <div class="col-md-6 mb-3 mt-3">
                                 <label for="Customer_id">Chủ thể</label>
                                 <select id="Customer_id{{this._id}}" name="Customer_id"
-                                    class="form-control selectProductAdd">
+                                    class="form-control selectProductAdd selectpicker" data-live-search="true">
                                     {{#each Customer}}
                                     <option value="{{this._id}}" {{#ifCond this._id
                                         ../this.Customer_id}}selected{{/ifCond}}>{{this.Name}}</option>
@@ -191,7 +201,7 @@
                             <div class="col-md-6 mb-3 mt-3">
                                 <label for="note">Nhóm sản phẩm</label>
                                 <select id="ProductGroup_id{{this._id}}" name="ProductGroup_id"
-                                    class="form-control selectProductAdd">
+                                    class="form-control selectProductAdd selectpicker" data-live-search="true">
                                     {{#each ProductGroup}}
                                     <option value="{{this._id}}" {{#ifCond this.IsActive 0}}disabled{{/ifCond}}
                                         {{#ifCond this._id ../this.ProductGroup_id}}selected{{/ifCond}}>
@@ -203,7 +213,7 @@
                             <div class="col-md-3 mb-3 mt-3">
                                 <label for="ProductYearId">Năm đánh giá</label>
                                 <select id="ProductYearId{{this._id}}" name="ProductYearId"
-                                    class="form-control selectProductAdd">
+                                    class="form-control selectProductAdd selectpicker" data-live-search="true">
                                     {{#each Review}}
                                     <option value="{{this._id}}" {{#ifCond ../this.status 0}}disabled{{/ifCond}}
                                         {{#ifCond this._id ../this.ProductYearId}}selected{{/ifCond}}>
@@ -323,8 +333,8 @@
                             {{!-- Customer --}}
                             <div class="col-md-6 mb-3 mt-3">
                                 <label for="Customer_id">Chủ thể</label>
-                                <select id="Customer_id" name="Customer_id"
-                                    class="form-control js-example-basic-single">
+                                <select id="Customer_id" name="Customer_id" class="form-control selectpicker"
+                                    data-live-search="true">
                                     {{#each Customer}}
                                     <option value="{{this._id}}">{{this.Name}}</option>
                                     {{/each}}
@@ -333,8 +343,8 @@
                             {{!-- Product- group --}}
                             <div class="col-md-6 mb-3 mt-3">
                                 <label for="note">Nhóm sản phẩm</label>
-                                <select id="ProductGroup_id" name="ProductGroup_id"
-                                    class="form-control js-example-basic-single">
+                                <select id="ProductGroup_id" name="ProductGroup_id" class="form-control selectpicker"
+                                    data-live-search="true">
                                     {{#each ProductGroup}}
                                     <option value="{{this._id}}" {{#ifCond this.IsActive 0}}disabled{{/ifCond}}>
                                         {{this.Name}}</option>
@@ -344,8 +354,8 @@
                             {{!-- Year Review --}}
                             <div class="col-md-3 mb-3 mt-3">
                                 <label for="ProductYearId">Năm đánh giá</label>
-                                <select id="ProductYearId" name="ProductYearId"
-                                    class="form-control js-example-basic-single">
+                                <select id="ProductYearId" name="ProductYearId" class="form-control selectpicker"
+                                    data-live-search="true">
                                     {{#each Review}}
                                     <option value="{{this._id}}" {{#ifCond this.status 0}}disabled{{/ifCond}}>
                                         {{this.yearName}}
@@ -362,7 +372,7 @@
                         </div>
                         {{!-- bảng viễn dẫn --}}
                         <div class="col-xl-9 col-sm-12 col-md-12 list_citation displayNone"
-                            style="overflow-y: auto;height: 70vh;font-size: 12px">
+                            style="overflow-y: auto;max-height: 70vh;font-size: 12px">
                             <table border="1" class="table table-hover table-border table-striped">
                                 <thead>
                                     <tr>

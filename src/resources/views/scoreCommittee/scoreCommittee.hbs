@@ -2,6 +2,11 @@
     th.dt-type-numeric.dt-orderable-asc.dt-orderable-desc {
         text-align: center;
     }
+
+    :not(.input-group)>.bootstrap-select.form-control:not([class*=col-]) {
+        max-width: 200px;
+        display: block;
+    }
 </style>
 
 {{> header}}
@@ -37,7 +42,7 @@
                             <tr>
                                 <th>STT</th>
                                 <th>Tên</th>
-                                <th>Thời gian</th>
+                                <th style="max-width: 100px;">Thời gian</th>
                                 <th>Mặc định</th>
                                 <th>Áp dụng</th>
                                 <th>Hành động</th>
@@ -49,9 +54,9 @@
                                 <th>{{plus @index}}</th>
                                 <td>
                                     <div class="" style="display: flex;flex-direction: column;">
-                                        <p class="text-hightlight" style="font-size: 14px;font-weight: 600;">
+                                        <p class="text-black-custom mb-0" style="font-size: 14px;font-weight: 600;">
                                             {{this.Name}}</p>
-                                        <p style="color: #B5B5C3; font-weight: 550;">Chủ tịch HĐ:
+                                        <p style="color: #B5B5C3; font-weight: 700;">Chủ tịch HĐ:
                                             {{#if employee_name}}
                                             {{employee_name}}
                                             {{else}}

@@ -1,29 +1,30 @@
 // handleChoose Add
 async function handleChooseCity(idCity) {
     if (idCity) {
-
-        const listDistric = await FuncListDistricByCity(idCity)
-        const selectDistrict = document.getElementById("District_id")
-        selectDistrict.innerHTML = ""
-        for (const district of listDistric) {
-            selectDistrict.innerHTML += `
-                <option value="${district._id}">${district.Name}</option>
-        `
+        const listDistrict = await FuncListDistricByCity(idCity);
+        const selectDistrict = document.getElementById("District_id");
+        selectDistrict.innerHTML = '<option value="" selected>--</option>'; // Clear previous options
+        for (const district of listDistrict) {
+            const option = document.createElement('option');
+            option.value = district._id;
+            option.text = district.Name;
+            selectDistrict.appendChild(option);
         }
+        $('.selectpicker').selectpicker('refresh'); // Refresh the selectpicker
     }
 }
 async function handleChooseDistrict(idDistrict) {
     if (idDistrict) {
-        const listWards = await FuncListWardByDisTrict(idDistrict)
-        if (listWards.length > 0) {
-            const selectWard = document.getElementById("Ward_id")
-            selectWard.innerHTML = ""
-            for (const ward of listWards) {
-                selectWard.innerHTML += `
-                    <option value="${ward._id}">${ward.Name}</option>
-            `
-            }
+        const listWards = await FuncListWardByDisTrict(idDistrict);
+        const selectWard = document.getElementById("Ward_id");
+        selectWard.innerHTML = '<option value="" selected>--</option>'; // Clear previous options
+        for (const ward of listWards) {
+            const option = document.createElement('option');
+            option.value = ward._id;
+            option.text = ward.Name;
+            selectWard.appendChild(option);
         }
+        $('.selectpicker').selectpicker('refresh'); // Refresh the selectpicker
     }
 }
 
@@ -40,6 +41,7 @@ async function handleChooseUpdateCity(valueChoose, idCity, idCustomer) {
                 <option value="${district._id}" ${idCity === value ? "selected" : ""}>${district.Name}</option>
         `
     }
+    $('.selectpicker').selectpicker('refresh');
 }
 
 async function handleChooseUpdateDistrict(valueChoose, IdDistrict, idCustomer) {
@@ -55,6 +57,7 @@ async function handleChooseUpdateDistrict(valueChoose, IdDistrict, idCustomer) {
                 <option value="${ward._id}" ${DistrictId === value ? "selected" : ""}>${ward.Name}</option>
         `
     }
+    $('.selectpicker').selectpicker('refresh');
 }
 
 

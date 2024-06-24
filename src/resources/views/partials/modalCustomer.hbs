@@ -44,8 +44,8 @@
                         </div>
                         <div class="col-md-4 mb-3">
                             <label for="customer_email">Tỉnh/Thành phố</label>
-                            <select name="City_id" id="City_id" class="form-control modalCustomerAdd"
-                                onchange="handleChooseCity(this.value)">
+                            <select name="City_id" id="City_id" class="form-control modalCustomerAdd selectpicker"
+                                data-live-search="true" onchange="handleChooseCity(this.value)">
                                 <option value="" selected>--</option>
                                 {{#each Province}}
                                 <option value="{{this._id}}">{{this.Name}}
@@ -55,14 +55,16 @@
                         </div>
                         <div class="col-md-4 mb-3">
                             <label for="customer_email">Quận / Huyện</label>
-                            <select name="District_id" id="District_id" class="form-control modalCustomerAdd"
-                                onchange="handleChooseDistrict(this.value)">
+                            <select name="District_id" id="District_id"
+                                class="form-control modalCustomerAdd selectpicker"
+                                onchange="handleChooseDistrict(this.value)" data-live-search="true">
                                 <option value="" selected>--</option>
                             </select>
                         </div>
                         <div class="col-md-4 mb-3">
                             <label for="customer_email">Xã / Phường</label>
-                            <select name="Ward_id" id="Ward_id" class="form-control modalCustomerAdd">
+                            <select name="Ward_id" id="Ward_id" class="form-control modalCustomerAdd selectpicker"
+                                data-live-search="true">
                                 <option value="" selected>--</option>
                             </select>
                         </div>
@@ -208,5 +210,3 @@
     }
     //update
 </script>
-
-<script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>

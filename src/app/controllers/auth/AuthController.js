@@ -2,7 +2,6 @@ const AccountModel = require("../../models/Account")
 const jwt = require("jsonwebtoken")
 const dotenv = require("dotenv");
 const EmployeeModel = require("../../models/employee/EmployeeModel");
-const bcrypt = require("bcrypt")
 const mailer = require("../../../utils/mailer");
 const { token } = require("morgan");
 const DistrictModel = require("../../models/District");
@@ -138,7 +137,6 @@ class AuthController {
                 message: "Có lỗi xảy ra"
             })
         } else {
-            console.log(`Password:`, Password)
             AccountModel.changePasswordByEmail(email, Password, (err, result) => {
                 if (err) {
                     return res.status(500).json({

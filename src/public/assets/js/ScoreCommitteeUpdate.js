@@ -99,8 +99,8 @@ const handleGetOneScoreCommittee = async (id) => {
             </td>
         </tr >
         `
-
     }
+
 }
 
 

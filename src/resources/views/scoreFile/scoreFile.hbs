@@ -104,8 +104,8 @@
                                     </div>
                                 </th>
                                 <td>
-                                    <ul style="list-style-type: none; font-weight: 600; padding: 0;">
-                                        <li class="text-hightlight" style="font-size: 13px;text-wrap: wrap;"
+                                    <ul style="list-style-type: none; font-weight: 700; padding: 0;">
+                                        <li class="text-black-custom" style="font-size: 13px;text-wrap: wrap;"
                                             data-toggle="modal" data-target="#exampleModal">
                                             {{this.product_name}}
                                         </li>
@@ -115,16 +115,16 @@
                                         </p>
                                     </ul>
                                 </td>
-                                <td style="text-wrap: wrap;" class="col-productGroup">
-                                    <p class="">Nhóm 19: {{this.productgroup_name}}</p>
+                                <td style="max-width: 150px;">
+                                    <p class="" style="text-wrap: wrap;">Nhóm 19: {{this.productgroup_name}}</p>
                                 </td>
                                 <td class="totalScoreStyle">
                                     {{#ifCond this.ScoreTotal 0}}
-                                    <p style="font-weight: 600; text-align: center;" class="text-hightlight">
+                                    <p style="font-weight: 600; text-align: center;" class="text-red">
                                         {{this.ScoreTotal}}
                                     </p>
                                     {{else}}
-                                    <p style="font-weight: 600; text-align: center;" class="text-hightlight">
+                                    <p style="font-weight: 700; text-align: center;" class="text-red">
                                         {{this.ScoreTotal}}
                                     </p>
                                     {{/ifCond}}

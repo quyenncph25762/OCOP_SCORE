@@ -1,5 +1,9 @@
 {{> header}}
-
+<style>
+  .bootstrap-select:not(.input-group-btn) {
+    display: block;
+  }
+</style>
 <div class="content-wrapper">
   <div class="container-fluid">
     <div class="row" style="max-width: 100%; display: contents;">
@@ -55,12 +59,21 @@
                     </div>
                   </td>
                   <td hidden>{{@index}}</td>
-                  <td style="max-width: 200px;">
-                    <p style="text-wrap: wrap;font-size: 12px;">{{this.Name}}</p>
+                  <td style="max-width: 200px">
+                    <div class="" style="display: flex;flex-direction: column">
+                      <p style="text-wrap: wrap;font-size: 12px;text-transform: uppercase;" class="text-black-custom">
+                        {{this.Name}}</p>
+                      <p
+                        style="text-wrap: wrap;font-size: 12px;text-transform: uppercase;color: #B5B5C3;font-weight: 700;">
+                        {{this.SubName}}</p>
+                    </div>
                   </td>
-                  <td>{{this.Phone}}</td>
-                  <td>
-                    <p class="text-overhidden">Tỉnh {{this.city_name}} , {{this.district_name}} , {{this.ward_name}}
+                  <td style="max-width: 150px;">
+                    <p>{{this.Phone}}</p>
+                  </td>
+                  <td style="max-width: 150px;">
+                    <p class="text-overhidden" style="word-break: break-all;">Tỉnh {{this.city_name}} ,
+                      {{this.district_name}} , {{this.ward_name}}
                     </p>
                   </td>
                   <td>
@@ -81,7 +94,7 @@
                   <div class="modal-dialog" role="document">
                     <div class="modal-content" style="width: 800px;">
                       <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Thêm chủ thể</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">Cập nhật chủ thể</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                           <span aria-hidden="true">&times;</span>
                         </button>
@@ -122,10 +135,11 @@
                               <label for="customer_email">Tỉnh/Thành phố</label>
                               <select name="City_id state" id="City_id{{this._id}}"
                                 onchange="handleChooseUpdateCity(this.value,'{{this.City_id}}','{{this._id}}')"
-                                class="form-control js-example-basic-single">
+                                class="form-control selectpicker" data-live-search="true">
                                 <option value="" selected>--</option>
                                 {{#each ../Province}}
-                                <option value="{{this._id}}" {{#ifCond ../this.City_id this._id}}selected{{/ifCond}}>
+                                <option value="{{this._id}}" data-tokens="{{this._id}}" {{#ifCond ../this.City_id
+                                  this._id}}selected{{/ifCond}}>
                                   {{this.Name}}
                                 </option>
                                 {{/each}}
@@ -134,8 +148,9 @@
                             <div class="col-md-4 mb-3">
                               <label for="customer_email">Quận / Huyện</label>
                               <select name="District_id state" id="District_id{{this._id}}"
-                                class="form-control js-example-basic-single"
-                                onchange="handleChooseUpdateDistrict(this.value,'{{this.District_id}}','{{this._id}}')">
+                                class="form-control selectpicker"
+                                onchange="handleChooseUpdateDistrict(this.value,'{{this.District_id}}','{{this._id}}')"
+                                data-live-search="true">
                                 <option value="" selected>--</option>
                                 {{#each ../District}}
                                 <option value="{{this._id}}" {{#ifCond ../this.District_id
@@ -146,8 +161,8 @@
                             </div>
                             <div class="col-md-4 mb-3">
                               <label for="customer_email">Xã / Phường</label>
-                              <select name="Ward_id state" id="Ward_id{{this._id}}"
-                                class="form-control js-example-basic-single">
+                              <select name="Ward_id state" id="Ward_id{{this._id}}" class="form-control selectpicker"
+                                data-live-search="true">
                                 <option value="" selected>--</option>
                                 {{#each ../Ward}}
                                 <option value="{{this._id}}" {{#ifCond ../this.Ward_id this._id}}selected{{/ifCond}}>
@@ -375,14 +390,4 @@
         });
       }
     }
-  </script>
-
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      $('#modalCustomerAdd').one('shown.bs.modal', function () {
-        $(".modalCustomerAdd").select2({
-          dropdownParent: $('#modalCustomerAdd')
-        });
-      });
-    })
   </script>

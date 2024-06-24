@@ -65,7 +65,8 @@
                                         </div>
                                         <div class="col-sm-6 mb-3">
                                             <label for="RoleIdCreate">Vai trò</label>
-                                            <select name="" id="RoleIdCreate" class="form-control">
+                                            <select name="" id="RoleIdCreate" class="form-control selectpicker"
+                                                data-live-search="true">
                                                 {{#each Role}}
                                                 <option value="{{this._id}}" {{#ifCond this.status
                                                     0}}disabled{{/ifCond}}>{{this.title}}</option>

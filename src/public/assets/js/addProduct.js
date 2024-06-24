@@ -9,6 +9,7 @@ async function handleAdd() {
     const Note = document.getElementById("Note").value
     const IsActive = document.getElementById("IsActive").value
     const Avatar = document.getElementById("Avatar")
+    const CreatorUser_id = document.getElementById("CreatorUser_id")
     if (showToastAndReturn(Name.trim() === "", 'Tên không được để trống')) {
         return;
     }
@@ -32,6 +33,7 @@ async function handleAdd() {
     formData.append('Avatar', Avatar?.files[0]);
     formData.append('ProductGroup_id', ProductGroup_id);
     formData.append('Customer_id', Customer_id);
+    formData.append('CreatorUser_id', CreatorUser_id);
     const res = await fetch("/product-manage/create", {
         method: "POST",
         body: formData

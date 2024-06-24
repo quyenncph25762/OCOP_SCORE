@@ -1,4 +1,9 @@
 {{> header}}
+<style>
+    #education_fields :not(.input-group)>.bootstrap-select.form-control:not([class*=col-]) {
+        max-width: 200px !important;
+    }
+</style>
 <div class="content-wrapper">
     <div class="container-fluid">
         {{!-- subHeader --}}
@@ -57,9 +62,8 @@
                                 <!-- group product -->
                                 <div class="custom-control custom-switch col-md-10">
                                     <label for="ProductGroup_id">Nhóm sản phẩm</label>
-                                    <select name="ProductGroup_id"
-                                        class="custom-select my-1 form-control js-example-basic-single"
-                                        id="ProductGroup_id{{ScoreTemp._id}}">
+                                    <select name="ProductGroup_id" class="custom-select my-1 form-control selectpicker"
+                                        id="ProductGroup_id{{ScoreTemp._id}}" data-live-search="true">
                                         <option value="" selected>Choose...</option>
                                         {{#each productGroup}}
                                         <option value="{{this._id}}" {{#ifCond this.IsActive 0}}disabled{{/ifCond}}
@@ -162,9 +166,10 @@
                                                     <td>
                                                         <div class="form-group">
                                                             <select name="validateRank"
-                                                                class="form-control ValidatedRankDetail{{this.ScoreTemp_id}} js-example-basic-single"
+                                                                class="form-control ValidatedRankDetail{{this.ScoreTemp_id}} selectpicker"
                                                                 style="transform: translateY(10px);max-width: 200px;max-height: 200px;overflow-y: hidden;"
-                                                                data-target="#navbar-example2" data-offset="0">
+                                                                data-target="#navbar-example2" data-offset="0"
+                                                                data-live-search="true">
                                                                 <option value="" selected>Không xác định</option>
                                                                 <option {{#ifCond this.ValidatedRank
                                                                     1}}selected{{/ifCond}} value="1">1 sao
@@ -183,10 +188,11 @@
                                                     <td>
                                                         <div class="form-group">
                                                             <select name="ProductDetailId"
-                                                                class="form-control ProductDetailIdDetail{{this.ScoreTemp_id}} js-example-basic-single"
+                                                                class="form-control ProductDetailIdDetail{{this.ScoreTemp_id}} selectpicker"
                                                                 style="transform: translateY(10px);max-width: 200px;max-height: 200px;overflow-y: hidden;"
-                                                                data-target="#navbar-example2" data-offset="0">
-                                                                <option selected></option>
+                                                                data-target="#navbar-example2" data-offset="0"
+                                                                data-live-search="true">
+                                                                <option selected>Không xác định</option>
                                                                 {{#each ../ProductDetail}}
                                                                 <option value="{{this._id}}" {{#ifCond this._id
                                                                     ../this.ProductDetailId}}selected{{/ifCond}}>
@@ -382,3 +388,9 @@
     })
 </script>
 <script src="/assets/js/ScoreTempUpdate.js"></script>
+{{!--
+<script>
+    $(function () {
+        $('.selectpicker').selectpicker();
+    });
+</script> --}}

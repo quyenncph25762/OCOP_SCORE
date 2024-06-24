@@ -225,6 +225,7 @@ class EmployeeControllers {
     update(req, res, next) {
         const id = req.params.id
         const cookie = req.cookies
+        console.log(req.body)
         if (cookie?.User) {
             const UserDataCookie = jwt.verify(cookie.User, SECRET_CODE)
             AccountModel.fetchOneUser(UserDataCookie?._id, (err, User) => {
@@ -252,7 +253,7 @@ class EmployeeControllers {
                                 WorkDepartment_id: req.body.WorkDepartment_id,
                                 WorkPosition_id: req.body.WorkPosition_id,
                                 roleId: req.body.roleId,
-                                DistrictId: req.body.DistrictId === 'null' ? null : Number(req.body.DistrictId)
+                                DistrictId: req.body.DistrictId || null
                             }), (err, result) => {
                                 if (err) {
                                     return res.status(400).json({

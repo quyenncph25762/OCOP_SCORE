@@ -24,8 +24,8 @@ const CustomerManageController = {
         connection.query(query, callback);
     },
     addCustomer: (customer, callback) => {
-        const query = 'INSERT INTO customer (Name,SubName,Email, Phone, Address,Code,City_id,District_id,Ward_id ) VALUES (?,?,?,?,?,?,?,?,?)';
-        const values = [customer.Name, customer.SubName, customer.Email, customer.Phone, customer.Address, customer.Code, customer.City_id, customer.District_id, customer.Ward_id];
+        const query = 'INSERT INTO customer (Name,SubName,Email, Phone, Address,Code,City_id,District_id,Ward_id,CreatorUser_id ) VALUES (?,?,?,?,?,?,?,?,?,?)';
+        const values = [customer.Name, customer.SubName, customer.Email, customer.Phone, customer.Address, customer.Code, customer.City_id, customer.District_id, customer.Ward_id, customer.CreatorUser_id];
         connection.query(query, values, callback);
     },
     // update
@@ -56,11 +56,11 @@ const CustomerManageController = {
         city.Name AS city_name, 
         district.Name AS district_name, 
         ward.Name AS ward_name 
- FROM customer 
- JOIN city ON city._id = customer.City_id 
- JOIN district ON district._id = customer.District_id 
- JOIN ward ON ward._id = customer.Ward_id 
- WHERE customer.Isdeleted = 1 AND customer.District_id ${DistrictId ? `= ${DistrictId}` : `IS NULL`};
+            FROM customer 
+            JOIN city ON city._id = customer.City_id 
+            JOIN district ON district._id = customer.District_id 
+            JOIN ward ON ward._id = customer.Ward_id 
+            WHERE customer.Isdeleted = 1 AND customer.District_id ${DistrictId ? `= ${DistrictId}` : `IS NULL`};
         `;
         connection.query(query, callback);
     },

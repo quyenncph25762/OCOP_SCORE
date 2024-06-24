@@ -51,11 +51,12 @@
                                 <div class="custom-control custom-switch col-md-10">
                                     <label for="ProductGroup_id">Nhóm sản phẩm</label>
                                     <select name="ProductGroup_id state"
-                                        class="custom-select my-1 form-control js-example-basic-single"
+                                        class="custom-select my-1 form-control selectpicker" data-live-search="true"
                                         id="ProductGroup_id">
                                         <option selected>Choose...</option>
                                         {{#each productGroup}}
-                                        <option value="{{this._id}}" {{#ifCond this.IsActive 0}}disabled{{/ifCond}}>
+                                        <option value="{{this._id}}" data-tokens="{{this._id}}" {{#ifCond this.IsActive
+                                            0}}disabled{{/ifCond}}>
                                             {{this.Name}}</option>
                                         {{/each}}
                                     </select>
@@ -143,10 +144,10 @@
                         </td>
                         <td>
                             <div class="form-group">
-                            <select id="ValidatedRankDetail" name="validateRank" class="form-control"
+                            <select id="ValidatedRankDetail" name="validateRank" class="form-control selectpicker" data-live-search="true"
                                         style="transform: translateY(10px);max-width: 200px;max-height: 200px;overflow-y: hidden;"
                                         data-target="#navbar-example2" data-offset="0">
-                                        <option selected>Không xác định</option>
+                                        <option selected data-tokens="{{this._id}}">Không xác định</option>
                                         <option value="1">1 sao</option>
                                         <option value="2">2 sao</option>
                                         <option value="3">3 sao</option>
@@ -157,12 +158,12 @@
                                   </td>
                         <td>
                             <div class="form-group">
-                            <select id="ProductDetailIdDetail" name="ProductDetailId state" class="form-control js-example-basic-single"
+                            <select id="ProductDetailIdDetail" name="ProductDetailId state" class="form-control selectpicker"  data-live-search="true"
                                         style="transform: translateY(10px);max-width: 200px;max-height: 200px;overflow-y: hidden;"
                                         data-target="#navbar-example2" data-offset="0">
                                         <option selected></option>
                                         {{#each ProductDetail}}
-                                        <option value={{this._id}}>{{this.ProductDetail_Name}}</option>
+                                        <option value={{this._id}} data-tokens="{{this._id}}">{{this.ProductDetail_Name}}</option>
                                         {{/each}}
                                       </select>
                                     </div>
@@ -177,7 +178,9 @@
         }
         divtest.innerHTML = tableBody();
         objTo.appendChild(divtest)
-
+        $(function () {
+            $('.selectpicker').selectpicker();
+        });
     }
     function remove_education_fields(rid) {
         console.log(rid)
@@ -185,6 +188,7 @@
         $('.removeclass' + rid).remove();
     }
 </script>
+
 {{!-- random --}}
 <script>
     const codeValue = document.querySelector("#Code")

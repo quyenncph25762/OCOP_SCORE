@@ -55,7 +55,8 @@
                         </div>
                         <div class="col-md-4">
                             <label for="yearReviewId{{this._id}}">Thời gian</label>
-                            <select name="" class="form-control js-example-basic-single" id="yearReviewId{{this._id}}">
+                            <select name="" class="form-control selectpicker" data-live-search="true"
+                                id="yearReviewId{{this._id}}">
                                 {{#each YearReview}}
                                 <option value="{{this._id}}" {{#ifCond this._id
                                     ../this.yearReviewId}}selected{{/ifCond}}>
@@ -173,7 +174,7 @@
                         </div>
                         <div class="col-md-4">
                             <label for="yearReviewId">Thời gian</label>
-                            <select name="" class="form-control js-example-basic-single" id="yearReviewId">
+                            <select name="" class="form-control " id="yearReviewId">
                                 {{#each YearReview}}
                                 <option value="{{this._id}}">{{this.yearName}}</option>
                                 {{/each}}
@@ -304,7 +305,7 @@
             </td>
             <td style="max-width: 250px;font-size:12px">
                 <div class="form-group">
-                    <select id="Employee_id_${room}" name="validateRank" class="form-control listEmployee js-example-basic-single"
+                    <select id="Employee_id_${room}" name="validateRank" class="form-control listEmployee"
                             style="transform: translateY(10px); max-width: 200px; max-height: 200px; overflow-y: hidden;font-size:12px"
                             data-target="#navbar-example2" data-offset="0">
                             <option checked>Không xác định</option>
@@ -321,6 +322,7 @@
         }
         divtest.innerHTML = tableBody();
         objTo.appendChild(divtest)
+
     }
 </script>
 
@@ -372,9 +374,9 @@
             </td>
             <td style="max-width: 250px;font-size:12px">
                 <div class="form-group">
-                    <select id="Employee_id_${room}" name="validateRank" class="form-control listSecEmployee listEmployee listSecEmployee_newMember js-example-basic-single"
+                    <select id="Employee_id_${room}" name="validateRank" class="form-control listSecEmployee listEmployee listSecEmployee_newMember " 
                             style="transform: translateY(10px); max-width: 200px; max-height: 200px; overflow-y: hidden;font-size:12px"
-                            data-target="#navbar-example2" data-offset="0">
+                            data-target="#navbar-example2" data-offset="0" data-live-search="true">
                             <option selected>Không xác định</option>
                     </select >
                 </div >
@@ -389,6 +391,9 @@
         }
         divtest.innerHTML = tableBody();
         objTo.appendChild(divtest)
+        $(function () {
+            $('.selectpicker').selectpicker();
+        });
     }
     // update
 

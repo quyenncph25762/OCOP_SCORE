@@ -40,21 +40,21 @@
                         <div class="row" style="margin: 20px 0;">
                             <div class="col-sm-3" style="padding: 0;">
                                 <label for="">Tổ phòng ban</label>
-                                <select name="state" id="WorkDepartmentFilter"
-                                    class="form-control js-example-basic-single">
-                                    <option value="" style="color: white;" selected>Tất cả</option>
+                                <select name="state" id="WorkDepartmentFilter" class="form-control selectpicker"
+                                    data-live-search="true">
+                                    <option value="" selected>Tất cả</option>
                                     {{#each WorkDepartment}}
-                                    <option value="{{this._id}}" style="color: white;">{{this.title}}</option>
+                                    <option value="{{this._id}}">{{this.title}}</option>
                                     {{/each}}
                                 </select>
                             </div>
                             <div class="col-sm-3" style="padding: 0;margin-left: 10px;">
                                 <label for="">Vị trí chức danh</label>
-                                <select name="" id="WorkPositionFilter" class="form-control js-example-basic-single">
-                                    <option value="" style="color: white;" selected>Tất cả</option>
+                                <select name="" id="WorkPositionFilter" class="form-control selectpicker"
+                                    data-live-search="true">
+                                    <option value="" selected>Tất cả</option>
                                     {{#each WorkPosition}}
-                                    <option value="{{this._id}}" style="color: white;" {{#ifCond this.IsActive
-                                        0}}disabled{{/ifCond}}>
+                                    <option value="{{this._id}}" {{#ifCond this.IsActive 0}}disabled{{/ifCond}}>
                                         {{this.Name}}</option>
                                     {{/each}}
                                 </select>
@@ -146,9 +146,9 @@
                                 <label for="">Tổ phòng ban</label>
                                 <select name="" id="WorkDepartmentFilterUpdate"
                                     class="form-control js-example-basic-single">
-                                    <option value="" style="color: white;" selected>Tất cả</option>
+                                    <option value="" selected>Tất cả</option>
                                     {{#each WorkDepartment}}
-                                    <option value="{{this._id}}" style="color: white;">{{this.title}}</option>
+                                    <option value="{{this._id}}">{{this.title}}</option>
                                     {{/each}}
                                 </select>
                             </div>
@@ -156,10 +156,9 @@
                                 <label for="">Vị trí chức danh</label>
                                 <select name="" id="WorkPositionFilterUpdate"
                                     class="form-control js-example-basic-single">
-                                    <option value="" style="color: white;" selected>Tất cả</option>
+                                    <option value="" selected>Tất cả</option>
                                     {{#each WorkPosition}}
-                                    <option value="{{this._id}}" style="color: white;" {{#ifCond this.IsActive
-                                        0}}disabled{{/ifCond}}>
+                                    <option value="{{this._id}}" {{#ifCond this.IsActive 0}}disabled{{/ifCond}}>
                                         {{this.Name}}</option>
                                     {{/each}}
                                 </select>
@@ -294,7 +293,7 @@
     };
 
     const updateSelectOptions = (select, options, selectedId) => {
-        const currentOptions = Array.from(select.options).map(option => option.value);
+        const currentOptions = Array.from(select?.options).map(option => option?.value);
         const newOptions = options.map(option => option._id);
         const optionsToRemove = currentOptions.filter(option => !newOptions.includes(option) && option !== "");
         const optionsToAdd = options.filter(option => !currentOptions.includes(option._id));
@@ -398,8 +397,8 @@
             <td style="">
                 <div class="form-group">
                     <select id="ValidatedRankDetail_${room}" name="validateRank" class="form-control CommitteeRole"
-                            style="transform: translateY(10px); max-width: 200px; max-height: 200px; overflow-y: hidden; font-size:12px"
-                            data-target="#navbar-example2" data-offset="0">
+                            style="transform: translateY(10px); max-width: 200px; max-height: 200px; overflow-y: hidden; font-size:12px selectpicker"
+                            data-target="#navbar-example2" data-offset="0" data-live-search="true">
                         <option value="1">Chủ tịch</option>
                         <option value="2" selected>Thành viên</option>
                         <option value="3">Tư vấn viên</option>
@@ -422,6 +421,9 @@
             </td>
         `;
             objTo.appendChild(divtest);
+            $(function () {
+                $('.selectpicker').selectpicker();
+            });
         });
 
         // Thông báo kết quả thêm thành viên
@@ -481,7 +483,6 @@
         document.querySelector(`.removeclass${rid}`).remove();
         room--;
     }
-
     document.addEventListener("DOMContentLoaded", () => {
         const btnsCheck = document.querySelectorAll(".check");
         const btnDisabled = document.querySelector(".btnDisabled");
@@ -523,9 +524,9 @@
 
     // Hàm đặt các tùy chọn cho một phần tử select mà không dùng innerHTML
     const updateSelectOptionsUpdate = (select, options, selectedId) => {
-        const currentOptions = Array.from(select.options).map(option => option.value);
+        const currentOptions = Array.from(select?.options).map(option => option?.value);
         const newOptions = options.map(option => option._id);
-        const optionsToRemove = currentOptions.filter(option => !newOptions.includes(option) && option !== "");
+        const optionsToRemove = currentOptions?.filter(option => !newOptions.includes(option) && option !== "");
         const optionsToAdd = options.filter(option => !currentOptions.includes(option._id));
 
         // Xóa các tùy chọn không còn trong danh sách
@@ -646,9 +647,9 @@
                 </td>
                 <td style="max-width: 250px; font-size:12px">
                     <div class="form-group">
-                        <select id="SecEmployee_id_${room}" name="validateRank" class="form-control listEmployee listSecEmployee listSecEmployee_newMember"
+                        <select id="SecEmployee_id_${room}" name="validateRank" class="form-control listEmployee listSecEmployee listSecEmployee_newMember selectpicker" 
                                 style="transform: translateY(10px); max-width: 200px; max-height: 200px; overflow-y: hidden; font-size:12px"
-                                data-target="#navbar-example2" data-offset="0">
+                                data-target="#navbar-example2" data-offset="0" data-live-search="true">
                             <option selected>Chưa chọn thành viên</option>
                         </select>
                     </div>
@@ -660,6 +661,9 @@
                 </td>
             `;
             objTo.appendChild(divtest);
+            $(function () {
+                $('.selectpicker').selectpicker();
+            });
         });
         //tim toi select
         let countEmployee = 0;

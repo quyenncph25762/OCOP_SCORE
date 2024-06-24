@@ -23,16 +23,16 @@ async function getOneProduct(productId) {
                             <img name="Avatar" style="width: 100%;height: 150px;"
                                 src="${Product.Avatar}" alt="">
                         </div>
-                        <p name="Name" class="title-scoreTempDetail">${Product.Name}</p>
+                        <p name="Name" class="title-scoreTempDetail text-black-custom" style="font-size:16px">${Product.Name}</p>
                         <div class="my-4" style="border-top: 1px dashed #ccc;"></div>
                         <div class="" style="font-size: 16px;">
                             <div class="d-flex justify-content-between">
-                                <p style="font-size: 14px;min-width: 75px">Chủ thể:</p>
-                                <p class="" style="font-weight: 600;font-size: 12px;opacity: 0.7;text-transform: uppercase">${Product.customer_name}</p>
+                                <p style="font-size: 12px;min-width: 75px">Chủ thể:</p>
+                                <p class="text-muted" style="font-weight: 600;font-size: 12px;opacity: 0.7;text-transform: uppercase">${Product.customer_name}</p>
                             </div>
                             <div class="d-flex justify-content-between">
-                                <p style="font-size: 14px;min-width: 75px">Nhóm sản phẩm:</p>
-                                <p class="" style="font-weight: 600;font-size: 12px;opacity: 0.7">${Product.productGroup_name}</p>
+                                <p style="font-size: 12px;min-width: 75px">Nhóm sản phẩm:</p>
+                                <p class="text-muted" style="font-weight: 600;font-size: 13px;opacity: 0.7">${Product.productGroup_name}</p>
                             </div>
                         </div>
         `
@@ -78,8 +78,10 @@ async function getOneScoreTemp(code, productId, productgroupId) {
                     <input type="hidden" class="Score"></input>
                                 ${ListScoreTempDetail[i].Name && !ListScoreTempDetail[i].IsScore ?
                             `
-                                    <td style="font-weight: 600; max-width: 500px; text-wrap: wrap; word-wrap: break-word; overflow-wrap: break-word;">
-                                        ${ListScoreTempDetail[i].Name}
+                                    <td style="max-width: 500px; text-wrap: wrap; word-wrap: break-word; overflow-wrap: break-word;">
+                                    <p class="text-black-custom">
+                                    ${ListScoreTempDetail[i].Name}
+                                    </p>
                                     </td>
                                     `
                             :
@@ -87,14 +89,18 @@ async function getOneScoreTemp(code, productId, productgroupId) {
                             
                         ${ListScoreTempDetail[i].Name} ${ListScoreTempDetail[i].ValidatedRank
                                 ?
-                                `<span class="text-hightlight">${repeatStar(ListScoreTempDetail[i].ValidatedRank)}</span>`
+                                `<span class="text-start">${repeatStar(ListScoreTempDetail[i].ValidatedRank)}</span>`
                                 :
                                 ""}
                                     </td > `
                         }
                                 
                                 ${ListScoreTempDetail[i].MaxScore >= 0 && ListScoreTempDetail[i].IsScore ?
-                            `<td style="font-style: italic; color: rgb(232, 67, 67); font-weight: 600;">(${ListScoreTempDetail[i].MaxScore} điểm)</td>`
+                            `<td style="font-style: italic;">
+                             <p class="text-red" style="font-weight:600">
+                             (${ListScoreTempDetail[i].MaxScore} điểm)
+                             </p>
+                            </td>`
                             :
                             `<td></td>`
                         }
