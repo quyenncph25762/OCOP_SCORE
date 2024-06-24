@@ -2,7 +2,7 @@ const AccountModel = require("../../models/Account")
 const jwt = require("jsonwebtoken")
 const dotenv = require("dotenv");
 const EmployeeModel = require("../../models/employee/EmployeeModel");
-const bcrypt = require("bcrypt")
+
 const mailer = require("../../../utils/mailer");
 const { token } = require("morgan");
 const DistrictModel = require("../../models/District");
@@ -114,13 +114,11 @@ class AuthController {
             if (!employee) {
                 res.redirect("/auth/password/reset");
             } else {
-                bcrypt.hash(employee[0].Email, parseInt(process.env.BCRYPT_SALT_ROUND)).then((hashedEmail) => {
-                    const resetLink = `${process.env.APP_URL}/auth/password/reset/${employee[0].Email}?token=${hashedEmail}`;
-                    mailer.sendMail(employee[0].Email, "RESET PASSWORD", `<a href="${resetLink}">RESET PASSWORD</a>`);
-                    return res.status(204).json({
-                        message: "Đã gửi tới email",
-                        resetLink: resetLink
-                    });
+                const resetLink = `${process.env.APP_URL}/auth/password/reset/${employee[0].Email}?token=${employee[0].Email}`;
+                mailer.sendMail(employee[0].Email, "RESET PASSWORD", `<a href="${resetLink}">RESET PASSWORD</a>`);
+                return res.status(204).json({
+                    message: "Đã gửi tới email",
+                    resetLink: resetLink
                 });
             }
         });
@@ -134,30 +132,22 @@ class AuthController {
         }
     }
     reset = (req, res) => {
-        const { Email, token, Password } = req.body;
-        if (!Email || !token || !Password) {
+        const { email, Password } = req.body;
+        if (!email || !Password) {
             return res.status(400).json({
                 message: "Có lỗi xảy ra"
             })
         } else {
-            bcrypt.compare(Email, token, (err, result) => {
-                // console.log('compare', result);
-                if (result == true) {
-                    AccountModel.changePasswordByEmail(Email, Password, (err, result) => {
-                        if (err) {
-                            return res.status(500).json({
-                                message: "Lỗi truy vấn"
-                            })
-                        }
-                        return res.status(203).json({
-                            message: "Cập nhật mật khẩu thành công!"
-                        })
-                    })
-                } else {
-                    return res.status(401).json({
-                        message: "Email không chính xác"
+            console.log(`Password:`, Password)
+            AccountModel.changePasswordByEmail(email, Password, (err, result) => {
+                if (err) {
+                    return res.status(500).json({
+                        message: "Lỗi truy vấn"
                     })
                 }
+                return res.status(203).json({
+                    message: "Cập nhật mật khẩu thành công!"
+                })
             })
         }
     }

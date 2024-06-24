@@ -1,4 +1,4 @@
-FROM node:20
+FROM node:18
 
 # Cài đặt các gói cần thiết
 RUN apt-get update && apt-get install -y \
@@ -47,7 +47,6 @@ COPY package*.json ./
 
 RUN npm install
 
-RUN npm install bcrypt
 COPY . .
 EXPOSE 3000
 

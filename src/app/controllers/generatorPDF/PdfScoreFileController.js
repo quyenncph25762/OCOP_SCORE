@@ -220,7 +220,6 @@ class PdfScoreFileController {
                             <tr key="${index}">
                                 ${item.scoreTempDetail_isScore ? `
                                     <td style="border:none">
-                                      <div style="margin-top:11px">
                                         ${item.scoreTempDetail_maxScore === item.Score ? '☒' : '☐'}
                                        </div>
                                     </td>
