@@ -118,6 +118,7 @@
                                 <td style="max-width: 150px;">
                                     <p class="" style="text-wrap: wrap;">Nhóm 19: {{this.productgroup_name}}</p>
                                 </td>
+                                {{!-- Score Total --}}
                                 <td class="totalScoreStyle">
                                     {{#ifCond this.ScoreTotal 0}}
                                     <p style="font-weight: 600; text-align: center;" class="text-red">
@@ -129,15 +130,17 @@
                                     </p>
                                     {{/ifCond}}
                                 </td>
+                                {{!-- RankOcop --}}
                                 <td class="text-center rankOcopStyle">
                                     {{#repeat this.RankOcop}}
                                     <ion-icon name="star"></ion-icon>
                                     {{/repeat}}
                                     {{#if RankOcop}}
-                                    <p style="color: #B5B5C3;font-weight: 600;font-size: 11px;">{{this.RankOcop}} sao
+                                    <p style="color: #B5B5C3;font-weight: 600;font-size: 12px;">{{this.RankOcop}} sao
                                     </p>
                                     {{/if}}
                                 </td>
+                                {{!-- Ngay cham --}}
                                 <td class="col-dateScore text-center">
                                     {{#if this.formattedScoreDate}}
                                     {{this.formattedScoreDate}}

@@ -9,7 +9,7 @@ async function handleAdd() {
     const Note = document.getElementById("Note").value
     const IsActive = document.getElementById("IsActive").checked
     const Avatar = document.getElementById("Avatar")
-    const CreatorUser_id = document.getElementById("CreatorUser_id")
+    const CreatorUser_id = document.getElementById("CreatorUser_id").value
     if (showToastAndReturn(Name.trim() === "", 'Tên không được để trống')) {
         return;
     }

@@ -9,9 +9,12 @@ router.get('/trash', CheckController.checkout('Customer'), CustomermanageControl
 router.delete('/trash/:id', CheckController.checkout('Customer'), CustomermanageController.deleteForever);
 // khoi phuc
 router.patch('/trash/:id/update', CheckController.checkout('Customer'), CustomermanageController.revertCustomer);
+// khoi phuc nhieu
+router.post('/revertAll', CheckController.checkout('Customer'), CustomermanageController.revertCustomerAll);
 // trash
 router.post('/create', CheckController.checkout('Customer'), CustomermanageController.create);
 router.delete('/:id', CheckController.checkout('Customer'), CustomermanageController.delete);
+router.post('/removeAll', CheckController.checkout('Customer'), CustomermanageController.deleteAll);
 router.post('/:id/update', CheckController.checkout('Customer'), CustomermanageController.update);
 router.get('/:id/edit', CheckController.checkout('Customer'), CustomermanageController.getbyId);
 router.use('/', CheckController.checkout('Customer'), CustomermanageController.index);

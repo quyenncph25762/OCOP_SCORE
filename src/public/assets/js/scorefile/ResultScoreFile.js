@@ -53,7 +53,7 @@ async function handleResultScoreFiles(idScoreCommittee, productId) {
                 <tr class="tr">
                     <td>${i}</td>
                     <td>
-                        <p style="font-size: 16px;" class="text-black-custom mb-0">${scorefile.employee_FullName}</p>
+                        <p style="font-size: 14px;" class="text-black-custom mb-0">${scorefile.employee_FullName}</p>
                         <p style="text-wrap:wrap" class="text-muted">${scorefile.workposition_name} - ${scorefile.workdepartment_title}</p>
                     </td>
                     <td style="font-weight: 600;" class="text-center text-red">${scorefile.ScoreTotal}</td>

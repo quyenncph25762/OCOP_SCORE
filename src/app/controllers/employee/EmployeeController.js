@@ -194,11 +194,29 @@ class EmployeeControllers {
             })
         }
     }
+    // xoa vao thung rac nhieu
+    removeToTrashAll = async (req, res, next) => {
+        try {
+            const cookie = req.cookies
+            if (cookie?.User) {
+                const UserDataCookie = jwt.verify(cookie.User, SECRET_CODE)
+                for (const id of req.body) {
+                    await EmployeeModel.deleteEmployeeToTrashAll(id, UserDataCookie?._id)
+                }
+                return res.status(203).json({
+                    message: "Xoa thanh cong"
+                })
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
     // xoa
     remove(req, res, next) {
         const id = req.params.id
         EmployeeModel.deleteEmployee(id, (err, result) => {
             if (err) {
+                console.log(err)
                 return res.status(404).send(err);
             } else {
                 return res.status(203).json({
@@ -208,19 +226,29 @@ class EmployeeControllers {
         })
     }
     // khoi phuc
-    revert(req, res, next) {
-        const id = req.params.id
-        EmployeeModel.revertEmployee(id, (err, data) => {
-            if (err) {
-                return res.status(400).json({
-                    message: err
-                })
-            } else {
-                return res.status(200).json({
-                    message: "Khôi phục thành công"
-                })
+    revert = async (req, res, next) => {
+        try {
+            const id = req.params.id
+            await EmployeeModel.revertEmployee(id)
+            return res.status(200).json({
+                message: "Khôi phục thành công"
+            })
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    // khoi phuc nhieu
+    revertAll = async (req, res, next) => {
+        try {
+            for (const id of req.body) {
+                await EmployeeModel.revertEmployee(id)
             }
-        })
+            return res.status(200).json({
+                message: "Khôi phục thành công"
+            })
+        } catch (error) {
+            console.log(error)
+        }
     }
     // update
     update(req, res, next) {

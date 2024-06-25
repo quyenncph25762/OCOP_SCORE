@@ -31,10 +31,10 @@ async function handleGetScoreFileDetail(ScoreFile_id, product_id, tbodyScoreFile
                 `<td style="max-width: 500px; text-wrap: wrap; word-wrap: break-word; overflow-wrap: break-word;">
                        <p class="text-black-custom"> ${listScoreFileDetail[i].scoreTempDetail_name}</p>
                     </td>` :
-                `<td style="font-weight: 400; color: #000; max-width: 500px; text-wrap: wrap; word-wrap: break-word; overflow-wrap: break-word;">
+                `<td style="font-weight: 400; color: #000; max-width: 500px; text-wrap: wrap; word-wrap: break-word; overflow-wrap: break-word;font-size:13px">
                         ${listScoreFileDetail[i].scoreTempDetail_name} ${listScoreFileDetail[i].scoreTempDetail_validateRank
                     ?
-                    `<span class="text-start">${repeatStarUpdate(listScoreFileDetail[i].scoreTempDetail_validateRank)}</span>`
+                    `<span class="text-start" style="font-size:13px">${repeatStarUpdate(listScoreFileDetail[i].scoreTempDetail_validateRank)}</span>`
                     :
                     ""}
                     </td>`

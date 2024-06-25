@@ -50,6 +50,19 @@ const CustomerManageController = {
         const query = `UPDATE customer SET IsDeleted = 1 , DeleterUser_id = ${UserId} ,DeletionTime = CURRENT_TIMESTAMP  WHERE _id = ?`;
         connection.query(query, customer_id, callback);
     },
+    // xoa customer to trash nhieu
+    deleteCustomerAll: (customer_id, UserId) => {
+        return new Promise((resolve, reject) => {
+            const query = `UPDATE customer SET IsDeleted = 1 , DeleterUser_id = ${UserId} ,DeletionTime = CURRENT_TIMESTAMP  WHERE _id = ${customer_id}`;
+            connection.query(query, (err, results) => {
+                if (err) {
+                    return reject(err)
+                }
+                return resolve(results)
+            });
+
+        })
+    },
     // trash
     getAllCustomerFromTrash: (DistrictId, callback) => {
         const query = `SELECT customer.*, 
@@ -68,9 +81,23 @@ const CustomerManageController = {
         const query = 'DELETE FROM customer WHERE _id = ?';
         connection.query(query, id, callback);
     },
+    // khoi phuc
     revert: (id, callback) => {
         const query = `UPDATE customer SET IsDeleted = 0 WHERE _id = ${id}`
         connection.query(query, id, callback)
+    },
+    // khoi phuc nhieu
+    revertAll: (id) => {
+        return new Promise((resolve, reject) => {
+            const query = `UPDATE customer SET IsDeleted = 0 WHERE _id = ${id}`
+            connection.query(query, (err, results) => {
+                if (err) {
+                    return reject(err)
+                }
+                return resolve(results)
+            })
+
+        })
     }
 }
 module.exports = CustomerManageController;

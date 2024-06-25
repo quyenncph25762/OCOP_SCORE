@@ -214,6 +214,31 @@ class CustomerManageController {
         }
 
     }
+    deleteAll = async (req, res, next) => {
+        try {
+            console.log(req.body)
+            const cookie = req.cookies
+            if (cookie?.User) {
+                const UserDataCookie = jwt.verify(cookie.User, SECRET_CODE)
+                AccountModel.fetchOneUser(UserDataCookie?._id, async (err, User) => {
+                    if (err) {
+                        return res.status(400).json({
+                            message: err
+                        })
+                    }
+                    for (const id of req.body) {
+                        await CustomerManagerModel.deleteCustomerAll(id, UserDataCookie?._id)
+                    }
+                    return res.status(203).json({
+                        message: "Xóa thành công"
+                    })
+                })
+            }
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
     // trash
     getAllTrash(req, res, next) {
         const cookie = req.cookies
@@ -247,6 +272,7 @@ class CustomerManageController {
             }
         })
     }
+    // khoi phuc
     revertCustomer(req, res, next) {
         const id = req.params.id
         CustomerManagerModel.revert(id, (err, results) => {
@@ -258,6 +284,19 @@ class CustomerManageController {
                 })
             }
         })
+    }
+    // khoi phuc nhieu
+    revertCustomerAll = async (req, res, next) => {
+        try {
+            for (const id of req.body) {
+                await CustomerManagerModel.revertAll(id)
+            }
+            return res.status(203).json({
+                message: "Khôi phục thành công"
+            })
+        } catch (error) {
+            console.log(error)
+        }
     }
 }
 

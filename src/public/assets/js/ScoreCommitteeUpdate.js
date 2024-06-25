@@ -153,7 +153,7 @@ const handleUpdateIsDefault = (id) => {
 const handleUpdateIsActive = (id) => {
     $.confirm({
         title: '<ion-icon name="help-circle-outline"></ion-icon>',
-        content: 'Hội đồng ngừng chấm vĩnh viễn ?',
+        content: 'Sau khi ngừng chấm những phiếu chưa chấm sẽ bị loại bỏ , bạn vẫn tiếp tục chứ?',
         buttons: {
             confirm: {
                 text: 'Confirm',

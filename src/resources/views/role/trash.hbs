@@ -9,97 +9,97 @@
                     <ul class="search-customer"
                         style="list-style: none; display:flex; justify-content: space-between; align-items: center;">
                         <div class="">
-                            <button class="btn btn-danger btnDeleteAll btnDisabledDelete">Xóa mục đã chọn</button>
-                            <button class="btn btn-info btnRevertAll ml-3 btnDisabledRevert">Khôi phục mục đã
+                            <button class="btn btn-info btnRevertAll btnDisabledRevert">Khôi phục mục đã
+                                chọn</button>
+                            <button class="btn btn-danger btnDeleteAll btnDisabledDelete" style="opacity: 0;">Xóa mục đã
                                 chọn</button>
                         </div>
                     </ul>
                 </li>
             </ul>
         </div>
+    </div><!--End content-wrapper-->
+    <div class="row" style="display: contents;">
+        <div class="col-lg-6" style="max-width: 100%;">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex align-items">
+                        <span style="cursor: pointer;" class="d-inline-block mr-3" tabindex="0" data-toggle="tooltip"
+                            title="Trở về">
+                            <a href="/role">
+                                <ion-icon name="arrow-undo-outline"></ion-icon>
+                            </a>
+                        </span>
+                        <h5 class="card-title">Khôi phục nhóm sản phẩm</h5>
+                    </div>
+                    <div class="table-responsive">
+                        <table id="myTable" class="table table-hover">
 
-        <div class="row" style="display: contents;">
-            <div class="col-lg-6" style="max-width: 100%;">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="d-flex align-items">
-                            <span style="cursor: pointer;" class="d-inline-block mr-3" tabindex="0"
-                                data-toggle="tooltip" title="Trở về">
-                                <a href="/role">
-                                    <ion-icon name="arrow-undo-outline"></ion-icon>
-                                </a>
-                            </span>
-                            <h5 class="card-title">Khôi phục nhóm sản phẩm</h5>
-                        </div>
-                        <div class="table-responsive">
-                            <table id="myTable" class="table table-hover">
-
-                                <thead>
-                                    <th {{#ifCond Role.length 0}}hidden{{/ifCond}}>
+                            <thead>
+                                <th {{#ifCond Role.length 0}}hidden{{/ifCond}}>
+                                    <div class="checkbox-wrapper-42 checkbox">
+                                        <input id="checkAll" type="checkbox" class="check" />
+                                        <label class="cbx" for="checkAll"></label>
+                                    </div>
+                                </th>
+                                <th hidden>#</th>
+                                <th>Active</th>
+                                <th>Tên vai trò</th>
+                                <th>Ghi chú</th>
+                                <th>Actions</th>
+                            </thead>
+                            <tbody>
+                                {{#each Role}}
+                                <tr>
+                                    <td>
                                         <div class="checkbox-wrapper-42 checkbox">
-                                            <input id="checkAll" type="checkbox" class="check" />
-                                            <label class="cbx" for="checkAll"></label>
+                                            <input id="cbx-42{{this._id}}" type="checkbox" class="check"
+                                                data-idCheckBox="{{this._id}}" />
+                                            <label class="cbx" for="cbx-42{{this._id}}"></label>
                                         </div>
-                                    </th>
-                                    <th hidden>#</th>
-                                    <th>Active</th>
-                                    <th>Tên vai trò</th>
-                                    <th>Ghi chú</th>
-                                    <th>Actions</th>
-                                </thead>
-                                <tbody>
-                                    {{#each Role}}
-                                    <tr>
-                                        <td>
-                                            <div class="checkbox-wrapper-42 checkbox">
-                                                <input id="cbx-42{{this._id}}" type="checkbox" class="check"
-                                                    data-idCheckBox="{{this._id}}" />
-                                                <label class="cbx" for="cbx-42{{this._id}}"></label>
-                                            </div>
-                                        </td>
-                                        <td hidden>{{@index}}</td>
-                                        <td>
-                                            {{#if this.status}}
-                                            <div class="active"></div>
-                                            {{else}}
-                                            <div class="inactive"></div>
-                                            {{/if}}
-                                        </td>
-                                        <td>{{this.title}}</td>
-                                        <td>{{this.note}}</td>
-                                        <td style="display: flex;">
-                                            <div class="action_center">
-                                                <button data-toggle="modal" data-target="#exampleModal{{this._id}}"
-                                                    style="background-color: transparent;border: none;cursor: pointer;">
-                                                    <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
-                                                        title="Khôi phục">
-                                                        <ion-icon name="sync-outline"
-                                                            style="color: white; font-size: 18px;" id="icon_revert"
-                                                            data-id="{{this._id}}"></ion-icon>
-                                                    </span>
-                                                </button>
-                                            </div>
-                                            <div class="delete_action">
+                                    </td>
+                                    <td hidden>{{@index}}</td>
+                                    <td>
+                                        {{#if this.status}}
+                                        <div class="active"></div>
+                                        {{else}}
+                                        <div class="inactive"></div>
+                                        {{/if}}
+                                    </td>
+                                    <td>{{this.title}}</td>
+                                    <td>{{this.note}}</td>
+                                    <td style="display: flex;">
+                                        <div class="action_center">
+                                            <button data-toggle="modal" data-target="#exampleModal{{this._id}}"
+                                                style="background-color: transparent;border: none;cursor: pointer;">
                                                 <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
-                                                    title="Xóa chủ thể">
-                                                    <ion-icon id="icon_moveToTrash" name="trash-outline"
-                                                        data-id="{{this._id}}">
-                                                    </ion-icon>
+                                                    title="Khôi phục">
+                                                    <ion-icon name="sync-outline" style="color: white; font-size: 18px;"
+                                                        id="icon_revert" data-id="{{this._id}}"></ion-icon>
                                                 </span>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    {{/each }}
-                                </tbody>
-                            </table>
-                        </div>
+                                            </button>
+                                        </div>
+                                        <div class="delete_action" style="opacity: 0;">
+                                            <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
+                                                title="Xóa chủ thể">
+                                                <ion-icon id="icon_moveToTrash" name="trash-outline"
+                                                    data-id="{{this._id}}">
+                                                </ion-icon>
+                                            </span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {{/each }}
+                            </tbody>
+                        </table>
                     </div>
                 </div>
-            </div><!--End Row-->
-        </div>
-        <!-- End container-fluid-->
+            </div>
+        </div><!--End Row-->
+    </div>
+    <!-- End container-fluid-->
 
-    </div><!--End content-wrapper-->
+
 
     {{> footer}}
 

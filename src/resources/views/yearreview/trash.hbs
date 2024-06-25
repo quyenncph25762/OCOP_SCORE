@@ -5,8 +5,9 @@
             <ul class="search-customer"
                 style="list-style: none; display:flex; justify-content: space-between; align-items: center;">
                 <div class="">
-                    <button class="btn btn-danger btnDeleteAll btnDisabledDelete">Xóa mục đã chọn</button>
-                    <button class="btn btn-info btnRevertAll ml-3 btnDisabledRevert">Khôi phục mục đã
+                    <button class="btn btn-info btnRevertAll btnDisabledRevert">Khôi phục mục đã
+                        chọn</button>
+                    <button class="btn btn-danger btnDeleteAll btnDisabledDelete" style="opacity: 0;">Xóa mục đã
                         chọn</button>
                 </div>
             </ul>
@@ -80,7 +81,7 @@
                                             <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
                                                 title="Xóa vĩnh viễn">
                                                 <button class="delete-button"
-                                                    style="background-color: transparent;border: none;">
+                                                    style="background-color: transparent;border: none;opacity: 0;">
                                                     <ion-icon id="icon_moveToTrash" name="trash-outline"
                                                         data-id="{{this._id}}">
                                                     </ion-icon>

@@ -198,8 +198,8 @@ const ScoreFileModel = {
         connection.query(query, VALUES, callback)
     },
     update: (id, scoreFile, callback) => {
-        const query = `UPDATE scorefile SET RankOcop = ? , ScoreTotal = ?,ScoreTemp_id = ?,Employee_id = ?,EmployeeUserId = ?,Product_id = ? , Customer_id = ?,Status = ? , CreatorUser_id = ? , Note = ? , Name = ? , Code = ? , IsActive = ? ,ScoreDate = ? WHERE _id = ?`
-        const VALUES = [scoreFile.RankOcop, scoreFile.ScoreTotal, scoreFile.ScoreTemp_id, scoreFile.Employee_id, scoreFile.EmployeeUserId, scoreFile.Product_id, scoreFile.Customer_id, scoreFile.Status, scoreFile.CreatorUser_id, scoreFile.Note, scoreFile.Name, scoreFile.Code, scoreFile.IsActive, scoreFile.ScoreDate, id]
+        const query = `UPDATE scorefile SET RankOcop = ? , ScoreTotal = ?,ScoreTemp_id = ?,Employee_id = ?,EmployeeUserId = ?,Product_id = ? , Customer_id = ?,Status = ? , CreatorUser_id = ? , Note = ? , Name = ? , Code = ? , IsActive = ?  WHERE _id = ?`
+        const VALUES = [scoreFile.RankOcop, scoreFile.ScoreTotal, scoreFile.ScoreTemp_id, scoreFile.Employee_id, scoreFile.EmployeeUserId, scoreFile.Product_id, scoreFile.Customer_id, scoreFile.Status, scoreFile.CreatorUser_id, scoreFile.Note, scoreFile.Name, scoreFile.Code, scoreFile.IsActive, id]
         connection.query(query, VALUES, callback)
     },
     // update hoi dong
@@ -229,6 +229,18 @@ const ScoreFileModel = {
     remove: (id) => {
         return new Promise((resolve, reject) => {
             const query = `UPDATE scorefile SET Status = 0 , ScoreTotal = 0 , RankOcop = 0  WHERE _id = ${id}`
+            connection.query(query, (err, result) => {
+                if (err) {
+                    return reject(err)
+                }
+                return resolve(result)
+            })
+        })
+    },
+    // xoa phieu co employee_id = null va status < 2
+    removeScoreFileIsNull: (id) => {
+        return new Promise((resolve, reject) => {
+            const query = `DELETE FROM scorefile  WHERE _id = ${id}`
             connection.query(query, (err, result) => {
                 if (err) {
                     return reject(err)

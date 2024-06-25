@@ -372,8 +372,8 @@
     async function handleUpdate(id) {
         const Avatar = document.getElementById(`avatar${id}`)
         const imagePreview = document.getElementById(`avatarPreview${id}`);
-        const nu = document.getElementById(`nu${id}`).check
-        const nam = document.getElementById(`nam${id}`).check
+        const nu = document.getElementById(`nu${id}`).checked
+        const nam = document.getElementById(`nam${id}`).checked
         const Email = document.getElementById(`Email${id}`).value
         const FullName = document.getElementById(`FullName${id}`).value
         const DoB = document.getElementById(`DoB${id}`).value
@@ -463,7 +463,7 @@
                 showHideTransition: 'slide',
                 stack: 4
             }));
-            window.location.replace("/employee")
+            //window.location.replace("/employee")
 
         } else {
             const data = await res.json()
