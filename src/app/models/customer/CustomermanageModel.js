@@ -24,8 +24,8 @@ const CustomerManageController = {
         connection.query(query, callback);
     },
     addCustomer: (customer, callback) => {
-        const query = 'INSERT INTO customer (Name,SubName,Email, Phone, Address,Code,City_id,District_id,Ward_id ) VALUES (?,?,?,?,?,?,?,?,?)';
-        const values = [customer.Name, customer.SubName, customer.Email, customer.Phone, customer.Address, customer.Code, customer.City_id, customer.District_id, customer.Ward_id];
+        const query = 'INSERT INTO customer (Name,SubName,Email, Phone, Address,Code,City_id,District_id,Ward_id ,CreatorUser_id) VALUES (?,?,?,?,?,?,?,?,?,?)';
+        const values = [customer.Name, customer.SubName, customer.Email, customer.Phone, customer.Address, customer.Code, customer.City_id, customer.District_id, customer.Ward_id,customer.CreatorUser_id];
         connection.query(query, values, callback);
     },
     // update

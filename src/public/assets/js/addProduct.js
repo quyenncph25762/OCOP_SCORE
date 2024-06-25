@@ -82,6 +82,7 @@ async function handleAdd() {
         for (i = 0; i < data.length; i++) {
             const AttachFile = document.querySelector(`#AttachFile${data[i]._id}`);
             for (const file of AttachFile.files) {
+                
                 formGallery.append("productDetail_id", dataProductDetail?.resultsArray
                 [i]?._id)
                 formGallery.append("imgUrl", file)

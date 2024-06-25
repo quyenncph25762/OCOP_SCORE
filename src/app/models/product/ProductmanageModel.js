@@ -42,8 +42,8 @@ const ProductmanageController = {
 
     },
     addProduct: (product, callback) => {
-        const query = 'INSERT INTO product (Name,Code,ProductGroup_id,Customer_id, ProductYearId, Note,Description,RankOcop,Avatar,TotalScore,IsActive,DistrictId) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)';
-        const values = [product.Name, product.Code, product.ProductGroup_id, product.Customer_id, product.ProductYearId, product.Note, product.Description, product.RankOcop, product.Avatar, product.TotalScore, product.IsActive, product.DistrictId];
+        const query = 'INSERT INTO product (Name,Code,ProductGroup_id,Customer_id, ProductYearId, Note,Description,RankOcop,Avatar,TotalScore,IsActive,DistrictId,CreatorUser_id) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)';
+        const values = [product.Name, product.Code, product.ProductGroup_id, product.Customer_id, product.ProductYearId, product.Note, product.Description, product.RankOcop, product.Avatar, product.TotalScore, product.IsActive, product.DistrictId,product.CreatorUser_id];
         connection.query(query, values, callback);
     },
     findProductAdd: (product, callback) => {

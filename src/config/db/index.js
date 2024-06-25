@@ -7,6 +7,11 @@ const connection = mysql.createPool({
   user: process.env.MYSQL_USER,
   password: process.env.MYSQL_PASSWORD,
   database: process.env.MYSQL_DATABASE,
+
+  // host: 'localhost',
+  // user: 'root',
+  // password: '',
+  // database: 'ocop_score',
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0

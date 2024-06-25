@@ -52,12 +52,14 @@ const handleUpdate = async (id) => {
         }
         if (arrResponseDelete.length > 0) {
             await funcDeleteGallery(arrResponseDelete)
+            window.location.replace("/product-manage")
         }
         // const responseJson = await response.json()
         const formGalleryNew = new FormData()
         for (let i = 0; i < AttachFile.length; i++) {
             if (AttachFile[i].length > 0) {
                 for (const gallery of AttachFile[i]) {
+                  
                     formGalleryNew.append("imgUrl", gallery)
                     formGalleryNew.append("productDetail_id", ProductDetailId[i])
                 }
