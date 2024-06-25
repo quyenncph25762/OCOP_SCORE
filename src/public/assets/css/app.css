@@ -1,6 +1,6 @@
 tbody td {
     text-align: left !important;
-    color: #3F4254 !important;
+    color: var(--color-main) !important;
 }
 
 th {
@@ -10,6 +10,30 @@ th {
 body {
     font-size: 14px !important;
     font-family: sans-serif-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji' !important;
+}
+
+:root {
+    /* chỉnh màu của modal và card */
+    --background-color: #fff !important;
+    /* chỉnh chữ */
+    --color-main: #0F1035 !important;
+    /* chỉnh background body */
+    --background-body: #f4f4f5;
+    /* chỉnh chữ hover ở sidebar và hightlight */
+    --text-hover-blue: #6daffe
+        /* Màu nền bạn muốn sử dụng */
+}
+
+.text-hover-blue {
+    color: var(--text-hover-blue);
+}
+
+#myTable_info {
+    color: var(--color-main);
+}
+
+#body {
+    background-color: var(--background-body);
 }
 
 :not(.input-group)>.bootstrap-select.form-control:not([class*=col-]) {
@@ -36,7 +60,7 @@ body {
     min-width: 650px;
     margin-left: 50%;
     transform: translateX(-50%);
-    background-image: #fff;
+    background: var(--background-color) !important;
     background-size: cover;
     padding: 20px;
     border-radius: 10px;
@@ -869,7 +893,7 @@ input.form-control.input-headerTable.w-100 {
 }
 
 .text-hightlight {
-    color: #14b6ff !important;
+    color: var(--text-hover-blue) !important;
     font-weight: 700 !important;
 }
 
@@ -882,7 +906,7 @@ input.form-control.input-headerTable.w-100 {
 }
 
 .text-black-custom {
-    color: #3F4254;
+    color: var(--color-main);
     font-weight: 700 !important;
     font-size: 13px;
 }

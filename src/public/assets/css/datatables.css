@@ -742,7 +742,7 @@ div.dt-container .dt-paging .dt-paging-button {
 
 div.dt-container .dt-paging .dt-paging-button.current,
 div.dt-container .dt-paging .dt-paging-button.current:hover {
-    color: inherit !important;
+    color: var(--color-main) !important;
     border: 1px solid rgba(0, 0, 0, 0.3);
     background-color: rgba(0, 0, 0, 0.05);
     background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(230, 230, 230, 0.05)), color-stop(100%, rgba(0, 0, 0, 0.05)));
@@ -763,7 +763,7 @@ div.dt-container .dt-paging .dt-paging-button.disabled,
 div.dt-container .dt-paging .dt-paging-button.disabled:hover,
 div.dt-container .dt-paging .dt-paging-button.disabled:active {
     cursor: default;
-    color: rgba(0, 0, 0, 0.5) !important;
+    color: var(--color-main) !important;
     border: 1px solid transparent;
     background: transparent;
     box-shadow: none;

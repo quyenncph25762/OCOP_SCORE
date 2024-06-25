@@ -119,7 +119,7 @@ $(async function () {
 			labels: percentProductByDistrict.map((item) => item.DistrictName),
 			datasets: [{
 				backgroundColor: [
-					"#ffffff", //thành phố
+					"#14b6ff", //thành phố
 					"rgba(255, 255, 255, 0.70)", //vũ thư
 					"rgba(255, 255, 255, 0.50)", //quỳnh phụ
 					"rgba(255, 255, 255, 0.20)", //hưng hà

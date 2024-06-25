@@ -269,7 +269,7 @@ class PdfScoreFileController {
             </div>
             <div style="width:100%;">
                 <div style="font-weight:bold;text-decoration:underline;width:150px;margin-top:20px;margin-bottom:20px;margin-left:20px">Ý kiến của người đánh giá</div>
-                ${ScoreFile.Note ? `<div style="text-decoration:underline dotted;">${ScoreFile.Note}</div>` : `<div style="font-size:18px;line-height:20px;word-break:break-all;width:200px;">....................................................................................................................................................................................................................................................................................................................................................................</div>`}
+                ${ScoreFile.Note ? `<div style="text-decoration:underline dotted;">${ScoreFile.Note}</div>` : `<div style="font-size:18px;line-height:20px;word-break:break-word;width:200px;">....................................................................................................................................................................................................................................................................................................................................................................</div>`}
             </div>
             
              <table style="width:100%;border-collapse:collapse;margin-top:15px">
