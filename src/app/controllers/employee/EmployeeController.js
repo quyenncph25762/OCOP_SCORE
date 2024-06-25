@@ -177,12 +177,13 @@ class EmployeeControllers {
     // xoa vao thung rac
     removeToTrash(req, res, next) {
         const cookie = req.cookies
+        const id = req.params.id
         if (cookie?.User) {
+            console.log(id)
             const UserDataCookie = jwt.verify(cookie.User, SECRET_CODE)
-            const id = req.params.id
             EmployeeModel.deleteEmployeeToTrash(id, UserDataCookie?._id, (err, result) => {
                 if (err) {
-                    return res.status(400).json({
+                    return res.status(500).json({
                         message: err
                     })
                 } else {

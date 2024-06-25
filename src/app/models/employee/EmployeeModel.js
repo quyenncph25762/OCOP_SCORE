@@ -18,7 +18,14 @@ const EmployeeModel = {
             workposition ON workposition._id = employee.WorkPosition_id
         JOIN
             role ON role._id = employee.RoleId
-        WHERE employee.IsDeleted = 0 AND employee.IsActive = 1 AND employee.DistrictId ${districtId ? `= ${districtId}` : `IS NULL`} ORDER BY employee._id DESC;
+        WHERE employee.IsDeleted = 0 
+        AND employee.IsActive = 1 
+        AND  
+        ${districtId ? `employee.DistrictId = ${districtId}`
+                :
+                `(employee.DistrictId IS NULL OR employee.RoleId = 1)`}
+        ORDER BY
+        employee._id DESC;
         `
         connection.query(query, callback)
     },
@@ -51,7 +58,11 @@ const EmployeeModel = {
             workposition ON workposition._id = employee.WorkPosition_id
         LEFT JOIN
             role ON role._id = employee.RoleId
-        WHERE  employee.IsDeleted = 1 AND employee.DistrictId ${DistrictId ? `= ${DistrictId}` : "IS NULL"};
+        WHERE  employee.IsDeleted = 1 
+        AND 
+        ${DistrictId ? `employee.DistrictId = ${DistrictId}`
+                :
+                `(employee.DistrictId IS NULL OR employee.RoleId = 1)`}
         `
         connection.query(query, callback)
     },
@@ -94,8 +105,8 @@ const EmployeeModel = {
     },
     // xoa vao thung rac
     deleteEmployeeToTrash: (id, userId, callback) => {
-        const query = `UPDATE employee SET IsDeleted = 1 , DeletedUser_id = ${userId} , DeletionTime = CURRENT_TIMESTAMP  WHERE _id = ?`
-        connection.query(query, id, callback)
+        const query = `UPDATE employee SET IsDeleted = 1 , DeletedUser_id = ${userId} , DeletionTime = CURRENT_TIMESTAMP  WHERE _id = ${id}`
+        connection.query(query, callback)
     },
     // xoa
     deleteEmployee: (id, callback) => {

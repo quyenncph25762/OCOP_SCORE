@@ -132,6 +132,7 @@ class ProductmanageController {
     }
     create(req, res) {
         const cookie = req.cookies
+        console.log(req.body.IsActive)
         if (cookie?.User) {
             const UserDataCookie = jwt.verify(cookie.User, SECRET_CODE)
             AccountModel.fetchOneUser(UserDataCookie?._id, (err, User) => {
@@ -141,7 +142,7 @@ class ProductmanageController {
                     })
                 }
                 const product = {
-                    IsActive: req.body.IsActive === "true" ? 1 : 0,
+                    IsActive: Number(req.body.IsActive),
                     Avatar: req?.file ? req.file.path : "/Uploads/productDefault.jpg",
                     CreatorUser_id: req.body.CreatorUser_id,
                     Code: req.body.Code,

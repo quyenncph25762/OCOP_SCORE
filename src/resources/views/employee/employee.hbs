@@ -113,12 +113,12 @@
                                         WorkPosition=../WorkPosition Role=../Role District=../District
                                         User=../User}}
                                         {{!-- end-modal --}}
-                                        {{#ifCondAndNot ../User._id this._id this.RoleId 1}}
+                                        {{#ifCondNot ../User._id this._id}}
                                         <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Xóa">
                                             <ion-icon id="icon_moveToTrash" name="trash-outline" data-id="{{this._id}}">
                                             </ion-icon>
                                         </span>
-                                        {{/ifCondAndNot}}
+                                        {{/ifCondNot}}
                                     </td>
                                 </tr>
                                 {{/each }}

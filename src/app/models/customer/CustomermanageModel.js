@@ -57,9 +57,9 @@ const CustomerManageController = {
         district.Name AS district_name, 
         ward.Name AS ward_name 
             FROM customer 
-            JOIN city ON city._id = customer.City_id 
-            JOIN district ON district._id = customer.District_id 
-            JOIN ward ON ward._id = customer.Ward_id 
+            LEFT JOIN city ON city._id = customer.City_id 
+            LEFT JOIN district ON district._id = customer.District_id 
+            LEFT JOIN ward ON ward._id = customer.Ward_id 
             WHERE customer.Isdeleted = 1 AND customer.District_id ${DistrictId ? `= ${DistrictId}` : `IS NULL`};
         `;
         connection.query(query, callback);

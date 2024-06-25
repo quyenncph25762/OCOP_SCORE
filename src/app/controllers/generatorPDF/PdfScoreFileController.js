@@ -144,10 +144,15 @@ class PdfScoreFileController {
          font-family: 'Times New Roman', Times, serif !important;
          width: 100%;
          font-size:16px !important;
+          
         }
         p {
             margin: 0 !important;
+            
         }
+            tr{
+            
+            }
     </style>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
 </head>
@@ -215,7 +220,6 @@ class PdfScoreFileController {
                             <tr key="${index}">
                                 ${item.scoreTempDetail_isScore ? `
                                     <td style="border:none">
-                                       <div style="margin-top:11px">
                                         ${item.scoreTempDetail_maxScore === item.Score ? '☒' : '☐'}
                                        </div>
                                     </td>

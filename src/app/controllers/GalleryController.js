@@ -13,24 +13,33 @@ class GalleryController {
     }
     create = async (req, res) => {
         const productDetailIds = req.body.productDetail_id; // Sẽ là một mảng các id
+        // Bảo đảm productDetailIds luôn là một mảng
+        const productDetailIdsArray = Array.isArray(productDetailIds) ? productDetailIds : [productDetailIds];
         const files = req.files;
 
-        if (!Array.isArray(productDetailIds) || productDetailIds.length !== files.length) {
-            return res.status(400).json({
-                message: "Số lượng productDetail_id và files không khớp"
-            });
-        }
+        // if (!Array.isArray(productDetailIds) || productDetailIds.length !== files.length) {
+        //     // return res.status(400).json({
+        //     //     message: "Số lượng productDetail_id và files không khớp"
+        //     // });
+        //     console.log('1 phần tử')
+        // }
+
         const galleryItems = files.map((file, index) => ({
-            productDetail_id: Number(productDetailIds[index]),
+            productDetail_id: Number(productDetailIdsArray[index]),
             imgUrl: file.path,
             imgName: file.originalname
         }));
+
         if (galleryItems.length > 0) {
             for (const item of galleryItems) {
                 await GalleryModel.createGallery(item)
             }
             return res.status(200).json({
                 message: "Tạo thành công"
+            })
+        } else {
+            return res.status(200).json({
+                message: "Không có file nào thay đổi"
             })
         }
 

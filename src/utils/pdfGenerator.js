@@ -15,6 +15,7 @@ async function generatePDF(htmlContent, nameFile, res) {
         await page.pdf(
             {
                 format: 'A4',
+              
                 margin: {
                     bottom: '2cm',
                     top: '2cm',

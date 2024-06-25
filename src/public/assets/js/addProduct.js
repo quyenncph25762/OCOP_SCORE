@@ -7,7 +7,7 @@ async function handleAdd() {
     const ProductYearId = document.getElementById("ProductYearId").value
     const Code = document.getElementById("Code").value
     const Note = document.getElementById("Note").value
-    const IsActive = document.getElementById("IsActive").value
+    const IsActive = document.getElementById("IsActive").checked
     const Avatar = document.getElementById("Avatar")
     const CreatorUser_id = document.getElementById("CreatorUser_id")
     if (showToastAndReturn(Name.trim() === "", 'Tên không được để trống')) {
@@ -28,7 +28,7 @@ async function handleAdd() {
     formData.append('Description', Description);
     formData.append('ProductYearId', ProductYearId);
     formData.append('Code', Code);
-    formData.append('IsActive', IsActive);
+    formData.append('IsActive', IsActive === true ? 1 : 0);
     formData.append('Note', Note);
     formData.append('Avatar', Avatar?.files[0]);
     formData.append('ProductGroup_id', ProductGroup_id);
@@ -84,6 +84,7 @@ async function handleAdd() {
         for (i = 0; i < data.length; i++) {
             const AttachFile = document.querySelector(`#AttachFile${data[i]._id}`);
             for (const file of AttachFile.files) {
+
                 formGallery.append("productDetail_id", dataProductDetail?.resultsArray
                 [i]?._id)
                 formGallery.append("imgUrl", file)

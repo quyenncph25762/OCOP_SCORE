@@ -24,6 +24,7 @@ class UserPageController {
                             message: `Loi truy xuat ${err}`
                         })
                     }
+                    console.log(Employee)
                     RoleModal.fetchAllRole((err, Role) => {
                         if (err) {
                             return res.status(500).json({
@@ -47,25 +48,14 @@ class UserPageController {
                         message: `Looi truy xuat ${err}`
                     })
                 }
-                if (User[0].DistrictId) {
-                    EmployeeModal.fetchAllEmployeeFromTrash((err, Employee) => {
-                        if (err) {
-                            return res.status(500).json({
-                                message: `Looi truy xuat ${err}`
-                            })
-                        }
-                        res.render("userPage/trash", { User: User[0], Employee: Employee })
-                    })
-                } else {
-                    EmployeeModal.fetchAllEmployeeFromTrashIsNull((err, Employee) => {
-                        if (err) {
-                            return res.status(500).json({
-                                message: `Looi truy xuat ${err}`
-                            })
-                        }
-                        res.render("userPage/trash", { User: User[0], Employee: Employee })
-                    })
-                }
+                EmployeeModal.fetchAllEmployeeFromTrash(User[0].DistrictId, (err, Employee) => {
+                    if (err) {
+                        return res.status(500).json({
+                            message: `Looi truy xuat ${err}`
+                        })
+                    }
+                    res.render("userPage/trash", { User: User[0], Employee: Employee })
+                })
             })
         }
     }

@@ -1,8 +1,9 @@
+
 // Xử lý sự kiện khi người dùng chọn tệp
 $(document).on('change', '.file-input', function () {
     var files = $(this)[0].files;
     var selectedFilesContainer = $(this).closest('.col-md-12').find('.selected-files');
-
+  
     // Hiển thị các tệp đã chọn mà không xóa các tệp đã chọn trước đó
     for (var i = 0; i < files.length; i++) {
         var fileName = files[i].name;
