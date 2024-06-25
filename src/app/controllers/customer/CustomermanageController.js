@@ -23,6 +23,7 @@ class CustomerManageController {
                     if (err) {
                         console.log('Lỗi truy vấn', err)
                     }
+                    console.log(data)
                     ProvinceModel.getAllProvince((err, Province) => {
                         if (err) {
                             return res.status(500).json({

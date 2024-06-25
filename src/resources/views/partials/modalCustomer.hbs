@@ -14,6 +14,7 @@
                     <div class="form-row">
                         {{!-- creatorUser --}}
                         <input type="text" name="CreatorUser_id" id="CreatorUser_id" value="{{User._id}}" hidden>
+                        <input type="hidden" id="UserDisTrict" value="{{User.DistrictId}}">
                         {{!-- Code --}}
                         <div class="col-md-2 mb-3">
                             <label for="Code">Code</label>
@@ -109,6 +110,7 @@
         const District_id = document.getElementById("District_id").value
         const Ward_id = document.getElementById("Ward_id").value
         const CreatorUser_id = document.getElementById("CreatorUser_id").value
+        const UserDisTrict = document.getElementById("UserDisTrict").value
         if (Name.trim() === "") {
             $.toast({
                 position: "top-right",
@@ -122,44 +124,47 @@
             });
             return
         }
-        if (City_id.trim() === "") {
-            $.toast({
-                position: "top-right",
-                heading: 'WARNING!',
-                text: "Tỉnh không được để trống",
-                icon: 'warning',
-                loader: true,
-                loaderBg: '#f2a654',
-                showHideTransition: 'slide',
-                stack: 4
-            });
-            return
-        }
-        if (District_id.trim() === "") {
-            $.toast({
-                position: "top-right",
-                heading: 'WARNING!',
-                text: "Huyện không được để trống",
-                icon: 'warning',
-                loader: true,
-                loaderBg: '#f2a654',
-                showHideTransition: 'slide',
-                stack: 4
-            });
-            return
-        }
-        if (Ward_id.trim() === "") {
-            $.toast({
-                position: "top-right",
-                heading: 'WARNING!',
-                text: "Xã không được để trống",
-                icon: 'warning',
-                loader: true,
-                loaderBg: '#f2a654',
-                showHideTransition: 'slide',
-                stack: 4
-            });
-            return
+        if (UserDisTrict) {
+            if (City_id.trim() === "") {
+                $.toast({
+                    position: "top-right",
+                    heading: 'WARNING!',
+                    text: "Tỉnh không được để trống",
+                    icon: 'warning',
+                    loader: true,
+                    loaderBg: '#f2a654',
+                    showHideTransition: 'slide',
+                    stack: 4
+                });
+                return
+            }
+            if (District_id.trim() === "") {
+                $.toast({
+                    position: "top-right",
+                    heading: 'WARNING!',
+                    text: "Huyện không được để trống",
+                    icon: 'warning',
+                    loader: true,
+                    loaderBg: '#f2a654',
+                    showHideTransition: 'slide',
+                    stack: 4
+                });
+                return
+            }
+            if (Ward_id.trim() === "") {
+                $.toast({
+                    position: "top-right",
+                    heading: 'WARNING!',
+                    text: "Xã không được để trống",
+                    icon: 'warning',
+                    loader: true,
+                    loaderBg: '#f2a654',
+                    showHideTransition: 'slide',
+                    stack: 4
+                });
+                return
+            }
+
         }
         const form = {
             Code: Code,
@@ -168,11 +173,12 @@
             SubName: SubName,
             Phone: Phone,
             Email: Email,
-            City_id: City_id,
-            District_id: District_id,
-            Ward_id: Ward_id,
-            CreatorUser_id: City_id
+            City_id: City_id || null,
+            District_id: District_id || null,
+            Ward_id: Ward_id || null,
+            CreatorUser_id: CreatorUser_id
         }
+        console.log(form)
         const res = await fetch("/customer-manage/create", {
             method: "POST",
             body: JSON.stringify(form),

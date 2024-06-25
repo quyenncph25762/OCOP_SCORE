@@ -7,11 +7,11 @@ const CustomerManageController = {
         ward.Name AS ward_name 
         FROM 
             customer 
-        JOIN 
+        LEFT JOIN 
             city ON city._id = customer.City_id 
-        JOIN 
+        LEFT JOIN 
             district ON district._id = customer.District_id 
-        JOIN 
+        LEFT JOIN 
             ward ON ward._id = customer.Ward_id 
         WHERE 
             customer.Isdeleted = 0 AND customer.District_id ${districtId ? `= ${districtId}` : `IS NULL`}  ORDER BY customer._id DESC;
