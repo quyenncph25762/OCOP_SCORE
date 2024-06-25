@@ -2057,7 +2057,7 @@ label {
 
 .form-control:disabled,
 .form-control[readonly] {
-    background-color: rgba(21, 14, 14, 0.45);
+    background-color: #ccc !important;
     opacity: 1;
 }
 

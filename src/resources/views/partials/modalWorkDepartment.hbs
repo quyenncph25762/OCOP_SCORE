@@ -17,7 +17,7 @@
                         <div class="col-md-4 mb-3">
                             <label for="code">Mã</label>
                             <input value="{{this.code}}" id="code{{this._id}}" name="code" type="text"
-                                class="form-control" id="code" required>
+                                class="form-control" id="code" disabled required>
                         </div>
                         {{!-- title --}}
                         <div class="col-md-8 mb-3">
@@ -65,7 +65,7 @@
                         {{!-- code --}}
                         <div class="col-md-4 mb-3">
                             <label for="code">Mã</label>
-                            <input name="code" value="" type="text" class="form-control" id="code" required>
+                            <input name="code" value="" type="text" class="form-control" id="code" disabled required>
                         </div>
                         {{!-- title --}}
                         <div class="col-md-8 mb-3">
@@ -112,6 +112,19 @@
         const title = document.getElementById("title").value
         const description = document.getElementById("description").value
         const creatorUser_id = document.getElementById("creatorUser_id").value
+        if (title.trim() === "") {
+            $.toast({
+                position: "top-right",
+                heading: 'WARNING!',
+                text: "Tên phòng ban không được để trống",
+                icon: 'warning',
+                loader: true,
+                loaderBg: '#f2a654',
+                showHideTransition: 'slide',
+                stack: 4
+            });
+            return
+        }
         const form = {
             title: title,
             code: code,
@@ -157,6 +170,19 @@
         const title = document.getElementById(`title${id}`).value
         const description = document.getElementById(`description${id}`).value
         const code = document.getElementById(`code${id}`).value
+        if (title.trim() === "") {
+            $.toast({
+                position: "top-right",
+                heading: 'WARNING!',
+                text: "Tên phòng ban không được để trống",
+                icon: 'warning',
+                loader: true,
+                loaderBg: '#f2a654',
+                showHideTransition: 'slide',
+                stack: 4
+            });
+            return
+        }
         const form = {
             title: title,
             code: code,

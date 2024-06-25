@@ -113,6 +113,19 @@
         const statusRole = document.getElementById("statusRole").checked
         const noteRole = document.getElementById("noteRole").value
         const creatorUser_id = document.getElementById("creatorUser_id").value
+        if (titleRole.trim() === "") {
+            $.toast({
+                position: "top-right",
+                heading: 'WARNING!',
+                text: "Tên vai trò không được để trống",
+                icon: 'warning',
+                loader: true,
+                loaderBg: '#f2a654',
+                showHideTransition: 'slide',
+                stack: 4
+            });
+            return
+        }
         const formData = new FormData()
         formData.append("title", titleRole)
         formData.append("status", statusRole)
@@ -157,6 +170,19 @@
         const title = document.getElementById(`title${id}`).value
         const status = document.getElementById(`status${id}`).checked
         const note = document.getElementById(`note${id}`).value
+        if (title.trim() === "") {
+            $.toast({
+                position: "top-right",
+                heading: 'WARNING!',
+                text: "Tên vai trò không được để trống",
+                icon: 'warning',
+                loader: true,
+                loaderBg: '#f2a654',
+                showHideTransition: 'slide',
+                stack: 4
+            });
+            return
+        }
         const formData = new FormData()
         formData.append("title", title)
         formData.append("status", status)
