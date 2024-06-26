@@ -83,7 +83,7 @@ const ScoreCommitteeModel = {
     // cap nhat Active
     updateIsActive: (id, scoreCommittee) => {
         return new Promise((resolve, reject) => {
-            const query = `UPDATE scoreCommittee SET IsActive = ${scoreCommittee.IsActive} WHERE _id = ${id}`
+            const query = `UPDATE scorecommittee SET IsActive = ${scoreCommittee.IsActive} WHERE _id = ${id}`
             if (!connection) {
                 return reject(new Error("Database connection is not established"));
             }
