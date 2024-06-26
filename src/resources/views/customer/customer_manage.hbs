@@ -63,8 +63,8 @@
                     <div class="" style="display: flex;flex-direction: column">
                       <p style="text-wrap: wrap;font-size: 12px;text-transform: uppercase;" class="text-black-custom">
                         {{this.Name}}</p>
-                      <p
-                        style="text-wrap: wrap;font-size: 12px;text-transform: uppercase;color: #B5B5C3;font-weight: 700;">
+                      <p style="text-wrap: wrap;font-size: 12px;text-transform: uppercase;font-weight: 700;"
+                        class="text-hightlight">
                         {{this.SubName}}</p>
                     </div>
                   </td>
@@ -303,15 +303,22 @@
             confirm: {
               text: 'Confirm',
               btnClass: 'btn-red',
-              action: function () {
+              action: async function () {
+                const arrId = []
                 for (let btnCheck of btnsCheck) {
                   if (btnCheck.checked) {
                     const id = btnCheck.dataset.idcheckbox
-                    fetch(`/customer-manage/${id}`, {
-                      method: 'DELETE'
-                    })
+                    arrId.push(id)
                   }
                 }
+                console.log(arrId)
+                await fetch(`/customer-manage/removeAll`, {
+                  method: 'POST',
+                  body: JSON.stringify(arrId),
+                  headers: {
+                    "Content-Type": "application/json"
+                  }
+                })
                 localStorage.setItem('toast', JSON.stringify({
                   position: "top-right",
                   heading: 'Xóa thành công',

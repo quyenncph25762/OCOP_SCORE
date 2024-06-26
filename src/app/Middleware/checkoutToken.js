@@ -1,7 +1,8 @@
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
 const Permission = require('../models/permission/permissionModle')
-const Employee = require('../models/employee/EmployeeModel')
+const Employee = require('../models/employee/EmployeeModel');
+const WelcomeController = require("../controllers/clients/WelcomeController");
 // Import fetch nếu bạn đang sử dụng node-fetch
 dotenv.config();
 const SECRET_CODE = process.env.SECRET_CODE; // Sửa SECRET_CODE để lấy từ process.env
@@ -80,24 +81,40 @@ const checkout = (NamePermission) => {
                                             return item.NamePermission
                                         })
                                         res.locals.permission = permission
-
                                         next()
-
                                     }
                                 })
-
                             }
                             else {
-                                res.redirect('back')
-
+                                Permission.getAllPermissionBy_Role_And_Name(data[0]?.RoleId, 'Client', (err, results) => {
+                                    if (err) {
+                                        console.log('Error', err)
+                                    }
+                                    else {
+                                        if (results.length > 0) {
+                                            Permission.getAllPermissionBy_Role(data[0].RoleId, (err, result) => {
+                                                if (err) {
+                                                    console.log('Error', err)
+                                                }
+                                                else {
+                                                    var permission = result.map(item => {
+                                                        return item.NamePermission
+                                                    })
+                                                    res.locals.permission = permission
+                                                    WelcomeController.index(req, res, next);
+                                                }
+                                            })
+                                        }
+                                        else {
+                                            res.redirect('/auth/loginPage')
+                                        }
+                                    }
+                                })
                             }
                         }
                     })
                 }
             })
-        }
-        else {
-            res.redirect('/auth/loginPage')
         }
     }
 

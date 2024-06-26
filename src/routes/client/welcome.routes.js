@@ -4,7 +4,7 @@ const ScoreFileController = require('../../app/controllers/clients/ScoreFileCont
 const router = express.Router();
 
 router.get("/welcome", WelcomeController.index)
-router.get("/", WelcomeController.index)
+// router.get("/", WelcomeController.index)
 
 
 

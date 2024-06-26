@@ -144,8 +144,8 @@
                         <div class="row" style="margin: 20px 0;font-size: 13px;">
                             <div class="col-sm-3" style="padding: 0;">
                                 <label for="">Tổ phòng ban</label>
-                                <select name="" id="WorkDepartmentFilterUpdate"
-                                    class="form-control js-example-basic-single">
+                                <select name="" id="WorkDepartmentFilterUpdate" class="form-control selectpicker"
+                                    data-live-search="true">
                                     <option value="" selected>Tất cả</option>
                                     {{#each WorkDepartment}}
                                     <option value="{{this._id}}">{{this.title}}</option>
@@ -154,8 +154,8 @@
                             </div>
                             <div class="col-sm-3" style="padding: 0;margin-left: 10px;">
                                 <label for="">Vị trí chức danh</label>
-                                <select name="" id="WorkPositionFilterUpdate"
-                                    class="form-control js-example-basic-single">
+                                <select name="" id="WorkPositionFilterUpdate" class="form-control selectpicker"
+                                    data-live-search="true">
                                     <option value="" selected>Tất cả</option>
                                     {{#each WorkPosition}}
                                     <option value="{{this._id}}" {{#ifCond this.IsActive 0}}disabled{{/ifCond}}>
@@ -235,8 +235,10 @@
 
 
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+{{!--
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> --}}
+{{!--
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> --}}
 {{!-- checkbox post--}}
 <script>
     window.dataLayer = window.dataLayer || [];
@@ -302,8 +304,10 @@
             const optionToRemove = select.querySelector(`option[value="${value}"]`);
             if (optionToRemove) {
                 select.removeChild(optionToRemove);
+                $('.selectpicker').selectpicker('refresh');
             }
         });
+
 
         // Thêm các tùy chọn mới
         optionsToAdd.forEach(option => {
@@ -312,6 +316,7 @@
             optionElement.text = option.FullName;
             select.add(optionElement);
         });
+        $('.selectpicker').selectpicker('refresh');
         // Đặt lại giá trị đã chọn
         select.value = selectedId;
     };
@@ -334,6 +339,9 @@
         // Lọc ra các nhân viên chưa được chọn
         const filterEmployee = employees.filter(item => !arrEmployeeId.includes(item._id));
         // Cập nhật các phần tử select với các tùy chọn mới
+        $('.bootstrap-select').each(function () {
+            $(this).removeClass('listEmployee');
+        });
         const listEmployeeSelects = document.querySelectorAll('.listEmployee');
         listEmployeeSelects.forEach(select => {
             const selectedId = selectedIds[select.id];
@@ -396,9 +404,9 @@
             </td>
             <td style="">
                 <div class="form-group">
-                    <select id="ValidatedRankDetail_${room}" name="validateRank" class="form-control CommitteeRole"
+                    <select id="ValidatedRankDetail_${room}" name="validateRank" class="form-control CommitteeRole selectpicker"
                             style="transform: translateY(10px); max-width: 200px; max-height: 200px; overflow-y: hidden; font-size:12px"
-                            data-target="#navbar-example2" data-offset="0">
+                            data-target="#navbar-example2" data-offset="0" data-live-seach="true">
                         <option value="1">Chủ tịch</option>
                         <option value="2" selected>Thành viên</option>
                         <option value="3">Tư vấn viên</option>
@@ -407,9 +415,9 @@
             </td>
             <td style="font-size:12px">
                 <div class="form-group">
-                    <select id="Employee_id_${room}" name="validateRank" class="form-control listEmployee"
+                    <select id="Employee_id_${room}" name="validateRank" class="form-control listEmployee selectpicker"
                             style="transform: translateY(10px); max-height: 200px; overflow-y: hidden; font-size:12px"
-                            data-target="#navbar-example2" data-offset="0">
+                            data-target="#navbar-example2" data-offset="0" data-live-search="true">
                         <option selected>Không xác định</option>
                     </select>
                 </div>
@@ -421,9 +429,6 @@
             </td>
         `;
             objTo.appendChild(divtest);
-            $(function () {
-                $('.selectpicker').selectpicker();
-            });
         });
 
         // Thông báo kết quả thêm thành viên
@@ -474,7 +479,9 @@
             const employee = await response.json();
             const filterEmployee = employee.filter(item => !arrEmployeeId.includes(item._id));
             ListEmployee = filterEmployee;
-
+            $('.bootstrap-select').each(function () {
+                $(this).removeClass('listEmployee');
+            });
             const listEmployeeSelects = document.querySelectorAll(".listEmployee");
             listEmployeeSelects.forEach(select => {
                 updateSelectOptions(select, ListEmployee, select.value);
@@ -515,6 +522,9 @@
     var arrEmployeeAll = [];
     const getSelectedEmployeeIdsUpdate = () => {
         const selectedIds = {};
+        $('.bootstrap-select').each(function () {
+            $(this).removeClass('listSecEmployee');
+        });
         const listEmployeeSelects = document.querySelectorAll('.listSecEmployee');
         listEmployeeSelects.forEach(select => {
             selectedIds[select.id] = select.value;
@@ -535,6 +545,7 @@
             if (optionToRemove) {
                 select.removeChild(optionToRemove);
             }
+            $('.selectpicker').selectpicker('refresh');
         });
 
         // Thêm các tùy chọn mới
@@ -544,7 +555,7 @@
             optionElement.text = option.FullName;
             select.add(optionElement);
         });
-
+        $('.selectpicker').selectpicker('refresh');
         // Đặt lại giá trị đã chọn
         select.value = selectedId;
     };
@@ -566,9 +577,14 @@
         const memberData = Array.from(document.querySelectorAll(".memberCount.newMember,.memberData")).map(e => Number(e.getAttribute("data-id")));
         // Lọc ra các nhân viên chưa được chọn
         const filterEmployee = employees.filter(item => !memberData.includes(item._id));
+
+        $('.bootstrap-select').each(function () {
+            $(this).removeClass('listSecEmployee');
+        });
         // Cập nhật các phần tử select với các tùy chọn mới
         const listEmployeeSelects = document.querySelectorAll('.listSecEmployee');
         listEmployeeSelects.forEach(select => {
+            console.log(select)
             const selectedId = selectedIds[select.id];
             updateSelectOptionsUpdate(select, filterEmployee, selectedId);
         });
@@ -577,7 +593,6 @@
     async function handleChooseUpdate(id) {
         const arrEmployee = [];
         const btnsCheck = document.querySelectorAll(`.checkUpdate${id}`);
-        console.log(btnsCheck)
         // lay ra id cua scoreCommitteeDetail 
         const employeeById = Array.from(document.querySelectorAll(".memberCount.newMember,.memberData")).map(e => e.getAttribute("data-id"));
         const employeeByIdNumber = employeeById.map(Number);
@@ -625,20 +640,20 @@
                 <td>
                     <div style="display: flex;flex-direction: column">
                         <p style="font-weight:600;font-size:13px;text-wrap:wrap;">${item.FullName ? item.FullName : ""}</p>
-                        <p style="color:#e7e9f0">${item.Email ? item.Email : ""}</p>
+                        <p style="">${item.Email ? item.Email : ""}</p>
                     </div>
                 </td>
                 <td style="max-width:200px">
                     <div style="display: flex;flex-direction: column">
                         <p style="font-weight:600;font-size:13px;text-wrap:wrap;">${item.workdepartment_name ? item.workdepartment_name : ""}</p>
-                        <p style="color:#e7e9f0">${item.workposition_name ? item.workposition_name : ""}</p>
+                        <p style="">${item.workposition_name ? item.workposition_name : ""}</p>
                     </div>
                 </td>
                 <td style="max-width: 130px;">
                     <div class="form-group">
-                        <select id="ValidatedRankDetail_${room}" name="validateRank" class="form-control CommitteeRole CommitteeRole_newMember"
+                        <select id="ValidatedRankDetail_${room}" name="validateRank" class="form-control CommitteeRole CommitteeRole_newMember selectpicker"
                                 style="transform: translateY(10px); max-width: 200px; max-height: 200px; overflow-y: hidden; font-size:12px"
-                                data-target="#navbar-example2" data-offset="0">
+                                data-target="#navbar-example2" data-offset="0" data-live-search="true">
                             <option value="1">Chủ tịch</option>
                             <option value="2" selected>Thành viên</option>
                             <option value="3">Tư vấn viên</option>
@@ -661,9 +676,6 @@
                 </td>
             `;
             objTo.appendChild(divtest);
-            $(function () {
-                $('.selectpicker').selectpicker();
-            });
         });
         //tim toi select
         let countEmployee = 0;
@@ -700,6 +712,9 @@
 
     async function remove_education_fields_update(rid) {
         //element listSecEmployee
+        $('.bootstrap-select').each(function () {
+            $(this).removeClass('listSecEmployee');
+        });
         const listSecEmployeeSelects = document.querySelectorAll(".listSecEmployee");
         //element member data
         let memberData = Array.from(document.querySelectorAll(".memberData")).map(e => Number(e.getAttribute("data-id")))

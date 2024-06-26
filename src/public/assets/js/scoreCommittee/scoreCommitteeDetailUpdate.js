@@ -37,6 +37,12 @@ const handleUpdateScoreCommittee = async (id) => {
         await deleteScoreCommitteeDetail(arrIdScoreCommittDetail)
     }
     // update scoreTempDetail
+    $('.bootstrap-select').each(function () {
+        $(this)
+            .removeClass(`CommitteeRole${id}`)
+            .removeClass(`memberData`)
+            .removeClass(`listEmployee${id}`);
+    });
     // idScoreTempDetail
     let idScoreCommittDetail = Array.from(document.querySelectorAll(`.memberData`)).map(e => e.getAttribute("data-idscorecommitteedetail"))
     idScoreCommittDetail = idScoreCommittDetail.map(Number)
@@ -65,6 +71,12 @@ const handleUpdateScoreCommittee = async (id) => {
     await updateScoreCommitteeDetail(arrResponse)
 
     // doi update xong thi them nhung scoreCommitteeDetail nao chua co
+    $('.bootstrap-select').each(function () {
+        $(this).removeClass(`CommitteeRole${id}`)
+            .removeClass(`listSecEmployee_newMember`)
+            .removeClass(`newMember`)
+            .removeClass(`CommitteeRole_newMember`);
+    });
     // vai tro cua hoi dong
     let CommitteeRole_newMember = Array.from(document.querySelectorAll(".CommitteeRole_newMember")).map(e => e.value)
     CommitteeRole_newMember = CommitteeRole_newMember.map(Number)

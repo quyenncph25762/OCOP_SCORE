@@ -108,15 +108,41 @@ const EmployeeModel = {
         const query = `UPDATE employee SET IsDeleted = 1 , DeletedUser_id = ${userId} , DeletionTime = CURRENT_TIMESTAMP  WHERE _id = ${id}`
         connection.query(query, callback)
     },
+    // xoa vao thung rac nhieu
+    deleteEmployeeToTrashAll: (id, userId) => {
+        return new Promise((resolve, reject) => {
+            const query = `UPDATE employee SET IsDeleted = 1 , DeletedUser_id = ${userId} , DeletionTime = CURRENT_TIMESTAMP  WHERE _id = ${id}`
+            connection.query(query, (err, results) => {
+                if (err) {
+                    return reject(err)
+                }
+                return resolve(results)
+            })
+        })
+
+    },
     // xoa
     deleteEmployee: (id, callback) => {
         const query = `DELETE FROM employee WHERE _id=${id}`
-        connection.query(query, id, callback)
+        connection.query(query, callback)
     },
     // khoi phuc
     revertEmployee: (id, callback) => {
         const query = `UPDATE employee SET IsDeleted = 0 WHERE _id=${id}`
         connection.query(query, id, callback)
+    },
+    // khoi phuc nhieu
+    revertEmployee: (id) => {
+        return new Promise((resolve, reject) => {
+            const query = `UPDATE employee SET IsDeleted = 0 WHERE _id=${id}`
+            connection.query(query, (err, results) => {
+                if (err) {
+                    return reject(err)
+                }
+                return resolve(results)
+            })
+
+        })
     },
     // lay 1 doi tuong
     getOneEmployee: (id, callback) => {

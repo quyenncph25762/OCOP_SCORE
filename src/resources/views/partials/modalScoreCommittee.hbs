@@ -46,17 +46,18 @@
                             style="display: flex; justify-content: center;align-items: center;">
                             {{#ifCond IsActive 1}}
                             <input name="status" type="checkbox" class="custom-control-input" id="IsActive{{this._id}}"
-                                checked>
+                                checked disabled>
                             <label class="custom-control-label block" for="IsActive{{this._id}}">Áp dụng</label>
                             {{else}}
-                            <input name="status" type="checkbox" class="custom-control-input" id="IsActive{{this._id}}">
+                            <input name="status" type="checkbox" class="custom-control-input" id="IsActive{{this._id}}"
+                                disabled>
                             <label class="custom-control-label block" for="IsActive{{this._id}}">Áp dụng</label>
                             {{/ifCond}}
                         </div>
                         <div class="col-md-4">
                             <label for="yearReviewId{{this._id}}">Thời gian</label>
-                            <select name="" class="form-control selectpicker" data-live-search="true"
-                                id="yearReviewId{{this._id}}">
+                            <select name="" class="form-control selectpicker" id="yearReviewId{{this._id}}"
+                                data-live-search="true">
                                 {{#each YearReview}}
                                 <option value="{{this._id}}" {{#ifCond this._id
                                     ../this.yearReviewId}}selected{{/ifCond}}>
@@ -169,12 +170,13 @@
                         </div>
                         <div class="custom-control custom-switch col-md-3"
                             style="display: flex; justify-content: center;align-items: center;">
-                            <input name="status" type="checkbox" class="custom-control-input" id="IsActive" checked>
+                            <input name="status" type="checkbox" class="custom-control-input" id="IsActive" checked
+                                disabled>
                             <label class="custom-control-label block" for="IsActive">Áp dụng</label>
                         </div>
                         <div class="col-md-4">
                             <label for="yearReviewId">Thời gian</label>
-                            <select name="" class="form-control " id="yearReviewId">
+                            <select name="" class="form-control selectpicker" id="yearReviewId" data-live-search="true">
                                 {{#each YearReview}}
                                 <option value="{{this._id}}">{{this.yearName}}</option>
                                 {{/each}}
@@ -243,6 +245,7 @@
         </div>
     </div>
 </div>
+{{> modalListEmployee}}
 {{/if}}
 
 <script src="/assets/js/scoreCommitteeAdd.js"></script>
@@ -294,20 +297,20 @@
             <td></td>
             <td style="max-width: 130px;">
                 <div class="form-group">
-                    <select id="ValidatedRankDetail_${room}" name="validateRank" class="form-control CommitteeRole"
+                    <select id="ValidatedRankDetail_${room}" name="validateRank" class="form-control CommitteeRole selectpicker"
                             style="transform: translateY(10px); max-width: 200px; max-height: 200px; overflow-y: hidden;font-size:12px"
-                            data-target="#navbar-example2" data-offset="0">
+                            data-target="#navbar-example2" data-offset="0" data-live-search="true">
                         <option value="1">Chủ tịch</option>    
                         <option value="2" selected>Thành viên</option>
                         <option value="3">Tư vấn viên</option>
                     </select>
                 </div>
             </td>
-            <td style="max-width: 250px;font-size:12px">
+            <td style="max-width: 200px;font-size:12px">
                 <div class="form-group">
-                    <select id="Employee_id_${room}" name="validateRank" class="form-control listEmployee"
+                    <select id="Employee_id_${room}" name="validateRank" class="form-control selectpicker listEmployee"
                             style="transform: translateY(10px); max-width: 200px; max-height: 200px; overflow-y: hidden;font-size:12px"
-                            data-target="#navbar-example2" data-offset="0">
+                            data-target="#navbar-example2" data-offset="0" data-live-search="true">
                             <option checked>Không xác định</option>
                     </select >
                 </div >
@@ -363,9 +366,9 @@
             <td></td>
             <td style="max-width: 130px;">
                 <div class="form-group">
-                    <select id="ValidatedRankDetail_${room}" name="validateRank" class="form-control CommitteeRole CommitteeRole_newMember"
+                    <select id="ValidatedRankDetail_${room}" name="validateRank" class="form-control CommitteeRole CommitteeRole_newMember selectpicker"
                             style="transform: translateY(10px); max-width: 200px; max-height: 200px; overflow-y: hidden;font-size:12px"
-                            data-target="#navbar-example2" data-offset="0">
+                            data-target="#navbar-example2" data-offset="0" data-live-search="true">
                         <option value="1">Chủ tịch</option>    
                         <option value="2" selected>Thành viên</option>
                         <option value="3">Tư vấn viên</option>
@@ -374,7 +377,7 @@
             </td>
             <td style="max-width: 250px;font-size:12px">
                 <div class="form-group">
-                    <select id="Employee_id_${room}" name="validateRank" class="form-control listSecEmployee listEmployee listSecEmployee_newMember " 
+                    <select id="Employee_id_${room}" name="validateRank" class="form-control listSecEmployee listEmployee listSecEmployee_newMember selectpicker" 
                             style="transform: translateY(10px); max-width: 200px; max-height: 200px; overflow-y: hidden;font-size:12px"
                             data-target="#navbar-example2" data-offset="0" data-live-search="true">
                             <option selected>Không xác định</option>
@@ -392,7 +395,9 @@
         divtest.innerHTML = tableBody();
         objTo.appendChild(divtest)
         $(function () {
-            $('.selectpicker').selectpicker();
+            $('.bootstrap-select').each(function () {
+                $(this).removeClass('listEmployee');
+            });
         });
     }
     // update

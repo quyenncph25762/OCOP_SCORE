@@ -335,8 +335,9 @@ class ScoreCommitteController {
                         // console.log(`listScoreFile:`, listScoreFile)
                         // loc nhung employee = null va khac voi id cua nguoi tao ra hoi dong de xoa
                         const listEmployeeFilter = listScoreFile.filter((scorefile) => !scorefile.Employee_id && scorefile.forEmployeeId != User[0]._id || scorefile.Status < 2)
+                        console.log(listEmployeeFilter)
                         await listEmployeeFilter.forEach(async (scorefile) => {
-                            await ScoreFileModel.remove(scorefile._id)
+                            await ScoreFileModel.removeScoreFileIsNull(scorefile._id)
                         })
                         // Cap nhat IsActive
                         await ScoreCommitteeModel.updateIsActive(id, req.body)

@@ -19,11 +19,10 @@
                     data-target="#exampleModal">Thêm
                     mới</button>
                 {{> modalScoreCommittee}}
-                {{> modalListEmployee}}
+
             </ul>
         </div>
     </div>
-
     <div class="row" style="display: contents;">
         <div class="col-lg-6" style="max-width: 100%;">
             <div class="card">
@@ -56,7 +55,7 @@
                                     <div class="" style="display: flex;flex-direction: column;">
                                         <p class="text-black-custom mb-0" style="font-size: 14px;font-weight: 600;">
                                             {{this.Name}}</p>
-                                        <p style="color: #B5B5C3; font-weight: 700;">Chủ tịch HĐ:
+                                        <p style="font-weight: 700;" class="text-hightlight">Chủ tịch HĐ:
                                             {{#if employee_name}}
                                             {{employee_name}}
                                             {{else}}

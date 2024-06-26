@@ -13,10 +13,14 @@ router.post("/add", CheckController.checkout('Employee'), upload.single("Avatar"
 router.get("/trash", CheckController.checkout('Employee'), EmployeeController.getAllEmployeeFromTrash)
 // remove to trash
 router.delete("/removeToTrash/:id", CheckController.checkout('Employee'), EmployeeController.removeToTrash)
-// delete
+// remove to trash all
+router.post("/removeToTrashAll", EmployeeController.removeToTrashAll)
 router.delete("/remove/:id", CheckController.checkout('Employee'), EmployeeController.remove)
+// delete All
 // revert
 router.patch("/revert/:id", CheckController.checkout('Employee'), EmployeeController.revert)
+// revertAll
+router.post("/revertAll", CheckController.checkout('Employee'), EmployeeController.revertAll)
 // update
 router.post("/update/:id", CheckController.checkout('Employee'), upload.single("Avatar"), EmployeeController.update)
 // filter employee

@@ -4,7 +4,8 @@
         <div class="row" style="max-width: 100%; display: contents;">
             <ul class="search-customer"
                 style="list-style: none; display:flex; justify-content: space-between; align-items: center;">
-                <button class="btn btn-danger btnDeleteAll btnDisabled" style="float: left;">Xóa mục đã chọn</button>
+                <button class="btn btn-danger btnDeleteAll btnDisabled" style="float: left;opacity: 0;">Xóa mục đã
+                    chọn</button>
                 <div class="import_customer_button"
                     style="list-style: none; display:flex; justify-content: space-between; align-items: center;">
                     <button class="btn btn-info" data-toggle="modal" data-target="#exampleModal">Thêm mới</button>
@@ -22,7 +23,8 @@
                 <div class="card-body">
                     <div class="d-flex align-items">
                         <h5 class="card-title">Danh sách vai trò</h5>
-                        <span class="d-inline-block ml-3" tabindex="0" data-toggle="tooltip" title="Thùng rác của bạn">
+                        <span class="d-inline-block ml-3" tabindex="0" data-toggle="tooltip" title="Thùng rác của bạn"
+                            style="opacity: 0;">
                             <a href="/role/trash">
                                 <ion-icon name="trash-outline">
                                 </ion-icon>
@@ -33,12 +35,12 @@
                         <table id="myTable" class="table datatables table-bordered table-hover table-striped">
                             <thead>
                                 <tr>
-                                    <th {{#ifCond Role.length 0}}hidden{{/ifCond}}>
+                                    {{!-- <th {{#ifCond Role.length 0}}hidden{{/ifCond}} style="">
                                         <div class="checkbox-wrapper-42 checkbox">
                                             <input id="checkAll" type="checkbox" class="check" />
                                             <label class="cbx" for="checkAll"></label>
                                         </div>
-                                    </th>
+                                    </th> --}}
                                     <th hidden>#</th>
                                     <th>Active</th>
                                     <th>Tên vai trò</th>
@@ -49,13 +51,13 @@
                             <tbody>
                                 {{#each Role}}
                                 <tr>
-                                    <td>
+                                    {{!-- <td>
                                         <div class="checkbox-wrapper-42 checkbox">
                                             <input id="cbx-42{{this._id}}" type="checkbox" class="check"
                                                 data-idCheckBox="{{this._id}}" />
                                             <label class="cbx" for="cbx-42{{this._id}}"></label>
                                         </div>
-                                    </td>
+                                    </td> --}}
                                     <td hidden>{{@index}}</td>
                                     <td>
                                         {{#ifCond this.status 1}}
@@ -80,9 +82,8 @@
                                             </button>
                                             {{> modalRole}}
                                         </div>
-                                        <div class="delete_action">
-                                            <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
-                                                title="Xóa chủ thể">
+                                        <div class="delete_action" style="opacity: 0;">
+                                            <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Xóa">
                                                 <ion-icon id="icon_moveToTrash" name="trash-outline"
                                                     data-id="{{this._id}}">
                                                 </ion-icon>
@@ -112,6 +113,7 @@
     $(function () {
         var data = [
             { "id": "Dashboard", "parent": "#", "text": "Dashbroad" },
+            { "id": "Client", "parent": "#", "text": "Client" },
             { "id": "Structure", "parent": "#", "text": "Cơ cấu tổ chức" },
             { "id": "Employee", "parent": "#", "text": "Quản lý cán bộ" },
             { "id": "Year", "parent": "#", "text": "Năm đánh giá" },
@@ -145,10 +147,12 @@
                 type: 'GET'
             })
                 .then(results => {
+
                     // update permission
                     $(function () {
                         var data = [
                             { "id": "Dashboard", "parent": "#", "text": "Dashbroad" },
+                            { "id": "Client", "parent": "#", "text": "Client" },
                             { "id": "Structure", "parent": "#", "text": "Cơ cấu tổ chức" },
                             { "id": "Employee", "parent": "#", "text": "Quản lý cán bộ" },
                             { "id": "Year", "parent": "#", "text": "Năm đánh giá" },
