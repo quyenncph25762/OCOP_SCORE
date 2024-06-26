@@ -113,6 +113,7 @@
     $(function () {
         var data = [
             { "id": "Dashboard", "parent": "#", "text": "Dashbroad" },
+            { "id": "Client", "parent": "#", "text": "Client" },
             { "id": "Structure", "parent": "#", "text": "Cơ cấu tổ chức" },
             { "id": "Employee", "parent": "#", "text": "Quản lý cán bộ" },
             { "id": "Year", "parent": "#", "text": "Năm đánh giá" },
@@ -146,10 +147,12 @@
                 type: 'GET'
             })
                 .then(results => {
+
                     // update permission
                     $(function () {
                         var data = [
                             { "id": "Dashboard", "parent": "#", "text": "Dashbroad" },
+                            { "id": "Client", "parent": "#", "text": "Client" },
                             { "id": "Structure", "parent": "#", "text": "Cơ cấu tổ chức" },
                             { "id": "Employee", "parent": "#", "text": "Quản lý cán bộ" },
                             { "id": "Year", "parent": "#", "text": "Năm đánh giá" },

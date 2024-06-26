@@ -5,6 +5,7 @@ const PermissionModel = {
         connection.query(query, Role_id, callback)
     },
     getAllPermissionBy_Role_And_Name: (Role_id, Name, callback) => {
+        console.log(Name)
         const query = `SELECT role_permission.*
         FROM role_permission
         JOIN role ON role_permission.Role_id = role._id

@@ -8,7 +8,19 @@
             </li>
             </ul>
         </div>
-        <p>Xin chào client</p>
+        <div class="alert" role="alert" style="background-color: #fff;text-align: center;padding: 40px;">
+            <img style="max-width: 800px; max-height: 700px;object-fit: cover;margin-left: 50%;transform: translateX(-50%);"
+                src="/Uploads/imgClient.png" alt="">
+            <div class="mt-3">
+                <p style="font-size: 16px;margin-bottom: 4px;">Xin chào <strong>{{User.FullName}}!</strong></p>
+                <p class="text-muted">Chào mừng đến với phần mềm chấm điểm OCOP</p>
+                <a href="/scorefile" style="margin-top: 10px;">
+                    <button class="btn btn-info">
+                        Đến trang chấm điểm
+                    </button>
+                </a>
+            </div>
+        </div>
     </div>
 </div>
 {{> footer}}

@@ -13,6 +13,13 @@
       </a>
     </li>
     {{/hasPermission}}
+    {{#hasPermission 'Client' permission}}
+    <li>
+      <a href="/">
+        <i class="zmdi zmdi-view-dashboard"></i> <span>Trang chủ</span>
+      </a>
+    </li>
+    {{/hasPermission}}
     {{#hasPermission 'Structure' permission}}
     {{!-- co cau to chuc --}}
     <li>

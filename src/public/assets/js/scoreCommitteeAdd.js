@@ -30,12 +30,16 @@ const handleAdd = async () => {
     }
     const responseAddScoreCommitt = await res.json()
 
-    console.log(responseAddScoreCommitt)
     if (responseAddScoreCommitt) {
         // lay id scoreCommittee vua them 
         const IdScoreCommittee = responseAddScoreCommitt.ScoreCommittee._id
         // Them scoreCommittee detail
         // vai tro cua hoi dong
+        $('.bootstrap-select').each(function () {
+            $(this).removeClass('CommitteeRole')
+                .removeClass('memberCount')
+                .removeClass('listEmployee');
+        });
         let CommitteeRole = Array.from(document.querySelectorAll(".CommitteeRole")).map(e => e.value)
         CommitteeRole = CommitteeRole.map(Number)
         // Lay id employeeId
@@ -46,6 +50,7 @@ const handleAdd = async () => {
         listSecEmployee = listSecEmployee.map(Number)
         const arrResponse = []
         for (let i = 0; i < listEmployee.length; i++) {
+            console.log(CommitteeRole[i])
             const form = {
                 // id scoreCommitee vua them
                 ScoreCommittee_id: IdScoreCommittee,

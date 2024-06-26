@@ -51,6 +51,10 @@
     .form-row>[class*=col-] {
         padding-left: 19px !important;
     }
+
+    .bootstrap-select:not(.input-group-btn) {
+        display: block;
+    }
 </style>
 {{> header}}
 <div class="content-wrapper">
@@ -85,21 +89,22 @@
                                 <div class="row">
                                     <div class="col-sm-3">
                                         <label for="">Năm đánh giá</label>
-                                        <select name="" id="YearFilter" class="form-control js-example-basic-single">
-                                            <option value="" style="color: white;">Tất cả</option>
+                                        <select name="" id="YearFilter" class="form-control selectpicker"
+                                            data-live-search="true">
+                                            <option value="" style="">Tất cả</option>
                                             {{#each Review}}
-                                            <option value="{{this._id}}" style="color: white;" {{#ifCond this.status
+                                            <option value="{{this._id}}" style="" {{#ifCond this.status
                                                 0}}disabled{{/ifCond}}>{{this.yearName}}</option>
                                             {{/each}}
                                         </select>
                                     </div>
                                     <div class="col-sm-3">
                                         <label for="">Nhóm sản phẩm</label>
-                                        <select name="" id="productGroupFilter"
-                                            class="form-control js-example-basic-single">
-                                            <option value="" style="color: white;">Tất cả</option>
+                                        <select name="" id="productGroupFilter" class="form-control selectpicker"
+                                            data-live-search="true">
+                                            <option value="" style="">Tất cả</option>
                                             {{#each ProductGroup}}
-                                            <option value="{{this._id}}" style="color: white;" {{#ifCond this.IsActive
+                                            <option value="{{this._id}}" style="" {{#ifCond this.IsActive
                                                 0}}disabled{{/ifCond}}>
                                                 {{this.Name}}</option>
                                             {{/each}}

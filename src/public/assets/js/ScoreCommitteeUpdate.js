@@ -71,20 +71,20 @@ const handleGetOneScoreCommittee = async (id) => {
             </td>
             <td style="max-width: 130px;">
                 <div class="form-group">
-                    <select id="ValidatedRankDetail_${room}" name="validateRank" class="form-control CommitteeRole${id}"
+                    <select id="ValidatedRankDetail_${room}" name="validateRank" class="form-control CommitteeRole${id} selectpicker"
                             style="transform: translateY(10px); max-width: 200px; max-height: 200px; overflow-y: hidden;font-size:12px"
-                            data-target="#navbar-example2" data-offset="0">
+                            data-target="#navbar-example2" data-offset="0" data-live-search="true">
                         <option value="1" ${employee.CommitteeRole === 1 ? "selected" : ""}>Chủ tịch</option>    
                         <option value="2" ${employee.CommitteeRole === 2 ? "selected" : ""}>Thành viên</option>
                         <option value="3" ${employee.CommitteeRole === 3 ? "selected" : ""}>Tư vấn viên</option>
                     </select>
                 </div>
             </td>
-            <td style="max-width: 250px;font-size:12px">
+            <td style="max-width: 200px;font-size:12px">
                 <div class="form-group">
-                    <select id="Employee_id_${room}" name="validateRank" class="form-control listEmployee${id} listSecEmployee"
+                    <select id="Employee_id_${room}" name="validateRank" class="form-control listEmployee${id} listSecEmployee selectpicker"
                             style="transform: translateY(10px); max-width: 200px; max-height: 200px; overflow-y: hidden;font-size:12px"
-                            data-target="#navbar-example2" data-offset="0">
+                            data-target="#navbar-example2" data-offset="0" data-live-search="true">
                             <option selected>Không xác định</option>
                             ${filteredSecEmployee.map((item) => {
             return ` <option value="${item._id}" ${item._id === employee.SecUserId ? "selected" : ""}>${item.FullName}</option>`
@@ -100,7 +100,9 @@ const handleGetOneScoreCommittee = async (id) => {
         </tr >
         `
     }
-
+    $(function () {
+        $('.selectpicker').selectpicker();
+    });
 }
 
 

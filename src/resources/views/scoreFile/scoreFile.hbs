@@ -40,7 +40,14 @@
     }
 
     /* For tablets */
+    @media screen and (max-width: 1025px) {
 
+        .statusLabelDanger,
+        .statusLabelWarning,
+        .statusLabelSuccess {
+            padding: 4px 5px !important;
+        }
+    }
 
     /* For laptops and larger screens */
     @media only screen and (min-width: 1024px) {
@@ -109,8 +116,8 @@
                                             data-toggle="modal" data-target="#exampleModal">
                                             {{this.product_name}}
                                         </li>
-                                        <p style="color: #B5B5C3; font-size: 13px; text-wrap: wrap;"
-                                            class="nameProduct">
+                                        <p style="font-size: 13px; text-wrap: wrap;"
+                                            class="nameProduct text-hightlight">
                                             Chủ thể: {{toUpperCase this.customer_name}}
                                         </p>
                                     </ul>
