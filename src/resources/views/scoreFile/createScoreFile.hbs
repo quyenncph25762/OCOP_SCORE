@@ -44,6 +44,71 @@
                 <div class="card shadow">
                     {{!-- product --}}
                     <div class="card-body" id="product-container">
+                        <div class="">
+                            <input type="hidden" value="{{Product._id}}" id="Product_id">
+                            <input type="hidden" id="Customer_id" value="{{Product.Customer_id}}">
+                            <img name="Avatar" style="width: 100%;height: 150px;" src="{{Product.Avatar}}" alt="">
+                        </div>
+                        <p name="Name" class="title-scoreTempDetail text-black-custom" style="font-size:16px">
+                            {{Product.Name}}</p>
+                        <div class="my-4" style="border-top: 1px dashed #ccc;"></div>
+                        <div class="" style="font-size: 16px;">
+                            <div class="d-flex justify-content-between">
+                                <p style="font-size: 12px;min-width: 75px">Chủ thể:</p>
+                                <p class="text-muted"
+                                    style="font-weight: 600;font-size: 12px;opacity: 0.7;text-transform: uppercase">
+                                    {{Product.customer_name}}</p>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <p style="font-size: 12px;min-width: 75px">Nhóm sản phẩm:</p>
+                                <p class="text-muted" style="font-weight: 600;font-size: 13px;opacity: 0.7">
+                                    {{Product.productGroup_name}}</p>
+                            </div>
+                        </div>
+                        {{!-- Phần A --}}
+                        <div class="" style="border-top: 1px dashed #ccc;padding: 20px 0;font-weight: 600;">
+                            <div class="d-flex align-items-center justify-content-between box-partA">
+                                <p> Phần A:</p>
+                                <div class="d-flex" style="color: rgb(48, 190, 150);">
+                                    <p class="partA"></p>/
+                                    <p class="totalPartA"></p>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center justify-content-between box-partB">
+                                <p> Phần B:</p>
+                                <div class="d-flex" style="color: rgb(48, 190, 150)">
+                                    <p class="partB"></p>/
+                                    <p class="totalPartB"></p>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center justify-content-between box-partC">
+                                <p> Phần C:</p>
+                                <div class="d-flex" style="color: rgb(48, 190, 150)">
+                                    <p class="partC"></p>/
+                                    <p class="totalPartC"></p>
+                                </div>
+                            </div>
+                            {{!-- <div class="d-flex align-items-center justify-content-between box-partD">
+                                <p> Phần D:</p>
+                                <div class="d-flex" style="color: rgb(24, 93, 170)">
+                                    <p class="partD"></p>/
+                                    <p class="totalPartD"></p>
+                                </div>
+                            </div> --}}
+                            <div class="d-flex align-items-center justify-content-between">
+                                <p> Tổng điểm:</p>
+                                <div class="d-flex" style="color: rgb(232, 67, 67)">
+                                    <p class="TotalAfter"></p>/
+                                    <p class="TotalBefore"></p>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center justify-content-between">
+                                <p> Xếp hạng OCOP:</p>
+                                <p class="startOcop text-hightlight">
+                                    {{!-- <ion-icon name="star"></ion-icon> --}}
+                                </p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -60,8 +125,8 @@
                                         <th scope="col">
                                             Số điểm
                                         </th>
-                                        <th scope="col">
-                                            File đính kèm
+                                        <th scope="col" style="max-width:80px;">
+                                            <p style="word-break: break;" class="mb-0">File</p>
                                         </th>
                                         <th scope="col">
                                             Chọn

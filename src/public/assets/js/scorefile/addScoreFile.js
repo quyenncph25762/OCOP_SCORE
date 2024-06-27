@@ -104,19 +104,7 @@ const handleAddScoreFile = async () => {
                 console.log("Lỗi khi thêm scoreFileDetail")
                 return
             }
-            let RankOcop = 0
-            if (TotalAfter >= 90) {
-                RankOcop = 5
-            } else if (TotalAfter >= 70) {
-                RankOcop = 4
-            } else if (TotalAfter >= 50) {
-                RankOcop = 3
-            } else if (TotalAfter >= 30) {
-                RankOcop = 2
-            } else {
-                RankOcop = 1
-            }
-            const newRankOcop = await checkingRankOcop(RankOcop, scoreFileId)
+            const newRankOcop = document.querySelector(".startOcop").children.length
             // ADD SCOREFILE
             const now = Date.now();
             const date = new Date(now);
@@ -127,7 +115,7 @@ const handleAddScoreFile = async () => {
                 Employee_id: Number(CreatorUser_id),
                 EmployeeUserId: Number(CreatorUser_id),
                 ScoreDate: date,
-                RankOcop: newRankOcop,
+                RankOcop: Number(newRankOcop),
                 Note: Note,
                 Code: Code,
                 ScoreTotal: TotalAfter,
@@ -173,106 +161,6 @@ async function FuncListScoreDetailByScoreFile(ScoreFile_id) {
     return await response.json()
 }
 
-// hàm tính điểm câu hỏi liệt
-async function checkingRankOcop(RankOcop, ScoreFile_id) {
-    try {
-        if (RankOcop == 1) {
-            return RankOcop = 1
-        }
-        if (RankOcop === 2) {
-            return RankOcop = 2
-        } else if (RankOcop === 3) {
-            const results = await checkScoreFileDetail(ScoreFile_id, RankOcop)
-            return results ? results : RankOcop
-        } else if (RankOcop === 4) {
-            const results = await checkScoreFileDetail(ScoreFile_id, RankOcop)
-            return results ? results : RankOcop
-        } else {
-            const results = await checkScoreFileDetail(ScoreFile_id, RankOcop)
-            return results ? results : RankOcop
-        }
-    } catch (error) {
-        console.log(error)
-    }
-}
-// hàm check những scorefileDetail nào đã check và check xem những scoreDetail đó có bỏ qua số sao nào không 
-async function checkScoreFileDetail(scoreFileId, RankOcop) {
-    // lay ra danh sach scorefileDetail da cham
-    const response = await fetch(`/scoreFileDetail/IsScoreByScoreFile/${scoreFileId}`, {
-        method: "GET"
-    })
-    if (!response.ok) {
-        console.log(`ERR: checkScoreFileDetail`)
-        return
-    }
-    const data = await response.json()
-    // lay ra scoretempdetail trong scorefiledetail do
-    const listScoreChecked = data.map((scoreDetail) => scoreDetail._id)
-    // dieu neu rank ocop = 3   
-    if (RankOcop === 2) {
-        return checkRank(RankOcop, listScoreChecked, scoreFileId)
-    } else if (RankOcop === 3) {
-        return checkRank(RankOcop, listScoreChecked, scoreFileId)
-    } else if (RankOcop === 4) {
-        return checkRank(RankOcop, listScoreChecked, scoreFileId)
-    } else {
-        return checkRank(RankOcop, listScoreChecked, scoreFileId)
-    }
-
-}
-
-async function checkRank(RankOcop, listScoreChecked, scoreFileId) {
-    if (RankOcop > 3) {
-        const list3sao = await listScoreFileDetail3sao(scoreFileId)
-        const containsRank = listScoreChecked.some(id => list3sao.includes(id));
-        if (containsRank) {
-            return RankOcop = 3
-        } else {
-            if (RankOcop = 5) {
-                const list4sao = await listScoreFileDetail4sao(scoreFileId)
-                const containsRank = listScoreChecked.some(id => list4sao.includes(id));
-                if (containsRank) {
-                    return RankOcop - 1
-                } else {
-                    return RankOcop
-                }
-            }
-            return RankOcop
-        }
-    } else if (RankOcop === 3) {
-        const list3sao = await listScoreFileDetail3sao(scoreFileId)
-        console.log(list3sao)
-        console.log(listScoreChecked)
-        for (const id of list3sao) {
-            const results = listScoreChecked.includes(id)
-            console.log(results)
-            if (!results) {
-                return RankOcop - 1
-            }
-        }
-        return RankOcop
-    } else {
-        return RankOcop
-    }
-    // const containsRank5 = listScoreChecked.some(id => arrRank.includes(id) && RankOcop === 3);
-    // for (const id of arrRank) {
-    //     const results = listScoreChecked.includes(id)
-    //     if (!results) {
-    //         return RankOcop - 1
-    //     }
-    // }
-}
-
-async function listScoreFileDetail3sao(ScoreFile_id) {
-    const listScoreDetail = await FuncListScoreDetailByScoreFile(ScoreFile_id)
-    const listScoreDetailFilter = listScoreDetail.filter((scoreDetail) => scoreDetail.scoreTempDetail_validateRank === 3).map((id) => id._id)
-    return listScoreDetailFilter
-}
-async function listScoreFileDetail4sao(ScoreFile_id) {
-    const listScoreDetail = await FuncListScoreDetailByScoreFile(ScoreFile_id)
-    const listScoreDetailFilter = listScoreDetail.filter((scoreDetail) => scoreDetail.scoreTempDetail_validateRank === 4).map((id) => id._id)
-    return listScoreDetailFilter
-}
 
 // list scoreFileDetail by ScoreFile
 async function FuncListScoreDetailByScoreFile(ScoreFile_id) {

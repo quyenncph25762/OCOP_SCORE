@@ -187,10 +187,19 @@ class ScoreFileController {
                                     message: err
                                 })
                             }
+
                             // tim ra scorefile cua secUserId
                             const scoreFileSecUserId = listScoreFile?.filter((employee) => employee.Employee_id === scoreCommitteeDetailFilter[0]?.SecUserId)
+                            ProductModel.getProductbyId(productId, (err, Product) => {
+                                if (err) {
+                                    return res.status(500).json({
+                                        message: err
+                                    })
+                                }
+                                console.log(Product[0])
+                                res.render("scoreFile/createScoreFile", { User: User[0], scoreCommitteeDetail: scoreCommitteeDetailFilter ? scoreCommitteeDetailFilter[0] : [], productId: productId, scorefileId: scoreFileSecUserId ? scoreFileSecUserId[0] : [], Product: Product[0] })
+                            })
                             // sau khi tim dc thi thuc hien truyen vao handlebars
-                            res.render("scoreFile/createScoreFile", { User: User[0], scoreCommitteeDetail: scoreCommitteeDetailFilter ? scoreCommitteeDetailFilter[0] : [], productId: productId, scorefileId: scoreFileSecUserId ? scoreFileSecUserId[0] : [] })
                         })
 
 

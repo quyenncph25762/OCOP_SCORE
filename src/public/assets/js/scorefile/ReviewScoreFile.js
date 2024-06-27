@@ -41,14 +41,14 @@ async function handleGetScoreFileDetail(ScoreFile_id, product_id, tbodyScoreFile
             }
     
                 ${listScoreFileDetail[i].scoreTempDetail_maxScore >= 0 && listScoreFileDetail[i].scoreTempDetail_isScore ?
-                `<td style="font-style: italic; font-weight: 600;">
+                `<td style="font-style: italic; font-weight: 600;text-align: center">
                         <p class="text-red">(${listScoreFileDetail[i].scoreTempDetail_maxScore} điểm)</p>
                     </td>` :
                 `<td></td>`
             }
     
                 ${listScoreFileDetail[i].scoreTempDetail_productDetailId ?
-                `<td data-toggle="modal" data-target="#exampleModalProductDetail" onclick="handleShowAttachFile(${product_id}, ${listScoreFileDetail[i].scoreTempDetail_productDetailId})">
+                `<td data-toggle="modal" data-target="#exampleModalProductDetail" onclick="handleShowAttachFile(${product_id}, ${listScoreFileDetail[i].scoreTempDetail_productDetailId})" style="text-align: center;max-width:80px">
                         <ion-icon name="attach-outline"></ion-icon>
                     </td>` :
                 `<td></td>`
