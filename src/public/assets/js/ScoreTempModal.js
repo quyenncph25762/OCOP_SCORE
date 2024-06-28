@@ -30,7 +30,7 @@ async function handleclickDetail(id) {
                         <td style="font-weight: 400;text-wrap: wrap;max-width: 500px; word-wrap: break-word; overflow-wrap: break-word;color:#808080" class="test" >
                             ${item.Name}
                         </td>
-                        <td class="point" style="font-style: italic; color: rgb(232, 67, 67);font-weight: 600;">
+                        <td class="point" style="font-style: italic; color: red;font-weight: 600;">
                             (${item.MaxScore} điểm)
                         </td>
                         <td>

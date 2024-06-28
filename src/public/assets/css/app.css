@@ -1,6 +1,6 @@
 tbody td {
     text-align: left;
-    color: var(--color-main) !important;
+    color: var(--color-main);
 }
 
 th {
@@ -36,9 +36,12 @@ body {
     background-color: var(--background-body);
 }
 
-:not(.input-group)>.bootstrap-select.form-control:not([class*=col-]) {
+button.btn.dropdown-toggle.btn-light,
+button.btn.dropdown-toggle.btn-light.bs-placeholder {
     border: 1px solid #d1d1d1
 }
+
+:not(.input-group)>.bootstrap-select.form-control:not([class*=col-]) {}
 
 
 /* Styles for modal overlay */
@@ -487,9 +490,10 @@ input.form-control.input-headerTable.w-100 {
     justify-content: center;
 }
 
+
 .statusLabelSuccess {
     background: #04b962;
-    padding: 3px 0px;
+    padding: 3px 4px;
     border-radius: 8px;
     color: #fff;
     display: flex;
@@ -927,9 +931,6 @@ input.form-control.input-headerTable.w-100 {
 }
 
 /* select custom */
-.inner.show {}
-
-.dropdown-menu.show {
-
-    /* transform: translateY(38px) !important */
+.panel-body {
+    overflow-x: auto;
 }

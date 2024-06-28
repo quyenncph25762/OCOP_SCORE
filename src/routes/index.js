@@ -25,7 +25,8 @@ const scoreCommitteeDetailRouter = require("./scoreCommitteeDetail.routes")
 const scoreFileRouter = require("./scoreFile.routes")
 const scoreFileDetailRouter = require("./scoreFileDetail.routes")
 const userPageRouter = require("./userPage.routes")
-const pdfRouter = require("./pdfRoutes.routes")
+const pdfRouter = require("./pdfRoutes.routes");
+const PageNotFoundController = require('../app/controllers/PageNotFoundController');
 function route(app) {
     // pdf
     app.use("/pdf", pdfRouter)
@@ -78,6 +79,9 @@ function route(app) {
     app.use('/year-review', reviewYearRouter);
 
     app.use('/', siteRouter);
+
+    // page not found
+    app.all('*', PageNotFoundController.index);
 }
 
 module.exports = route;

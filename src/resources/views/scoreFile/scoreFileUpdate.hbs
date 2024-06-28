@@ -97,9 +97,9 @@
                 </div>
             </div>
             <div class="col-sm-9 list_citationUpdate" style="overflow-y: auto;height: 100vh;font-size: 12px;">
-                <div class="col-12">
-                    <div class="card shadow">
-                        <div class="card-body">
+                <div class="card shadow">
+                    <div class="card-body">
+                        <div class="table-responsive">
                             <table class="table table-bordered table-striped table-hover table-scoreTemp">
                                 <thead class="sticky-top"
                                     style="backdrop-filter: blur(5px);background-color: transparent">
@@ -147,17 +147,28 @@
 {{> footer}}
 <script src="/assets/js/scorefile/ScoreFileUpdate.js"></script>
 <script>
-    (function () {
-        let codeValueProductGroup = document.querySelector(".Code");
-        function generateRandomCode(length) {
-            let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789';
-            let code = '';
-            for (let i = 0; i < length; i++) {
-                code += characters.charAt(Math.floor(Math.random() * characters.length));
-            }
-            return code;
+    document.addEventListener("DOMContentLoaded", () => {
+        const toastData = localStorage.getItem('toast');
+        if (toastData) {
+            const toast = JSON.parse(toastData);
+            $.toast(toast);
+            localStorage.removeItem('toast');
         }
-        let codeRandom = generateRandomCode(8);
-        codeValueProductGroup.value = codeRandom;
-    })();
+    })
+</script>
+<script>
+
+        (function () {
+            let codeValueProductGroup = document.querySelector(".Code");
+            function generateRandomCode(length) {
+                let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789';
+                let code = '';
+                for (let i = 0; i < length; i++) {
+                    code += characters.charAt(Math.floor(Math.random() * characters.length));
+                }
+                return code;
+            }
+            let codeRandom = generateRandomCode(8);
+            codeValueProductGroup.value = codeRandom;
+        })();
 </script>

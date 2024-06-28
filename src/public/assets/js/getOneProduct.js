@@ -33,7 +33,7 @@ const handleShowListCitationUpdate = async (id) => {
                 const dataGallery = await resGallery.json()
                 const listImg = dataGallery.map((gallery) => {
                     return `<div class="file-item">
-                    <a href="${gallery.imgUrl}" class="gallery-items" style="max-width:100px; overflow: hidden">${gallery.imgName}</a> 
+                    <a href="${gallery.imgUrl}" class="gallery-items" style="max-width:100px; overflow: hidden" target="_blank">${gallery.imgName}</a> 
                     <ion-icon onClick="handleIdGallery('${gallery._id}')" name="trash-outline" class="remove-file-button"></ion-icon>
                     </div>`
                 }).join("")

@@ -58,12 +58,10 @@
                 style="list-style: none; display:flex; justify-content: space-between; align-items: center;padding: 0;">
                 <div class="import_customer_button"
                     style="list-style: none; display:flex; justify-content: space-between; align-items: center;">
-                    <a href="/scorefile">
-                        <button class="btn btn-light" style="display: flex;align-items: center;">
-                            <ion-icon name="arrow-undo-outline" style="margin-right: 8px;margin-bottom: 0;"></ion-icon>
-                            <p style="margin: 0;">Trở về danh sách phiếu chấm</p>
-                        </button>
-                    </a>
+                    <button class="btn btn-light" style="display: flex;align-items: center;" onclick="handleBack()">
+                        <ion-icon name="arrow-undo-outline" style="margin-right: 8px;margin-bottom: 0;"></ion-icon>
+                        <p style="margin: 0;">Trở về</p>
+                    </button>
                 </div>
             </ul>
             </li>
@@ -171,9 +169,9 @@
                 </div>
             </div>
             <div class="col-lg-9 col-sm-12 list_citationUpdate" style="overflow-y: auto;height: 100vh;font-size: 12px;">
-                <div class="col-12">
-                    <div class="card shadow">
-                        <div class="card-body">
+                <div class="card shadow">
+                    <div class="card-body">
+                        <div class="table-responsive">
                             <table class="table table-bordered table-striped table-hover table-scoreTemp">
                                 <thead class="sticky-top" style="backdrop-filter: blur(5px);background: transparent;">
                                     <tr>
@@ -237,4 +235,10 @@
             let codeRandom = generateRandomCode(8);
             codeValueProductGroup.value = codeRandom;
         })();
+</script>
+{{!-- handleback --}}
+<script>
+    function handleBack() {
+        window.history.back()
+    }
 </script>

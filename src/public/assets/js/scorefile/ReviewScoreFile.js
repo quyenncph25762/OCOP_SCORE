@@ -176,7 +176,7 @@ async function handleAddScoreFile(userId, scoreFileId, ScoreCommitee_id, product
             loader: true,
             loaderBg: '#9EC600',
             stack: 4,
-            text: `Hiện bạn đang có phiếu , không thể chấm theo thư kí <a href='/scoreFile/updateScoreFile?productId=${productId}&productgroupId=${productgroupId}&ScoreFile_id=${idScoreFileUpdate}'>Xem phiếu của bạn</a>`,
+            text: `Hiện bạn đang có phiếu , không thể chấm theo thư kí`,
             allowToastClose: true
         }));
         hideLoading()
@@ -244,7 +244,7 @@ async function handleAddScoreFile(userId, scoreFileId, ScoreCommitee_id, product
             localStorage.setItem('toast', JSON.stringify({
                 position: "top-right",
                 heading: 'SUCCESS',
-                text: 'Đã thêm thành công',
+                text: 'Đã tham khảo phiếu của thư kí thành công',
                 icon: 'success',
                 loader: true,
                 loaderBg: '#9EC600',

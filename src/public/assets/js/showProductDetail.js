@@ -13,14 +13,16 @@ async function handleProductDetail(id) {
             if (resGallery.ok) {
                 const gallery = await resGallery.json();
                 const attachFile = gallery.map(item => {
-                    return `<a href="${item.imgUrl}" class="gallery-items" style="width:100px;overflow:hidden">${item.imgName}</a>`;
+                    return `<a href="${item.imgUrl}" target="_blank" class="gallery-items" style="font-size:12px">${item.imgName}</a>`;
                 }).join("");
                 body.innerHTML += `
                     <tr>
                         <td>${i}</td>
-                        <td>${ProductDetail.ProductDetail_Name}</td>
-                        <td style="color: red;"><p>(*)</p></td>
-                        <td style="width: 100px;overflow:hidden">
+                        <td style="max-width:300px">
+                            <p style="break-word:break;text-wrap:wrap">${ProductDetail.ProductDetail_Name}</p>
+                        </td>
+                        <td style="color: red;text-align:center;" style="width:100px"><p>(*)</p></td>
+                        <td style="overflow:hidden;max-width:300px">
                             <div class="container">
                                 <div class="row">
                                     <div class="selected-files listGallery">
