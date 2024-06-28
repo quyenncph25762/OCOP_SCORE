@@ -50,5 +50,4 @@ RUN npm install
 COPY . .
 EXPOSE 3000
 
-# Chạy ứng dụng với quyền root và tùy chọn --no-sandbox
 CMD ["node", "src/index.js"]

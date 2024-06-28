@@ -22,6 +22,8 @@ services:
       - "3008:3000"
     depends_on:
       - mysql
+    volumes:
+      - ./Uploads:/usr/src/app/Uploads
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     restart: always
