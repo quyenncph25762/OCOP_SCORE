@@ -934,3 +934,16 @@ input.form-control.input-headerTable.w-100 {
 .panel-body {
     overflow-x: auto;
 }
+
+.cusorContains {
+    cursor: no-drop;
+}
+
+.bootstrap-select .dropdown-menu {
+    max-height: 200px;
+    /* Chiều cao tối đa */
+    overflow-y: auto;
+    /* Hiển thị thanh cuộn khi nội dung vượt quá chiều cao */
+}
+
+/* CSS cho layout */

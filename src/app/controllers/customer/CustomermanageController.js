@@ -18,12 +18,10 @@ class CustomerManageController {
                         message: err
                     })
                 }
-
                 CustomerManagerModel.getAllCustomer(User[0].DistrictId, (err, data) => {
                     if (err) {
                         console.log('Lỗi truy vấn', err)
                     }
-                    console.log(data)
                     ProvinceModel.getAllProvince((err, Province) => {
                         if (err) {
                             return res.status(500).json({
@@ -94,7 +92,7 @@ class CustomerManageController {
                         message: err
                     })
                 }
-                CustomerManagerModel.findCustomerAdd(User[0]?.DistrictId, req.body, (err, results) => {
+                CustomerManagerModel.findCustomerAdd(req.body, (err, results) => {
                     if (err) {
                         console.log(err)
                         return res.status(500).json({
@@ -118,7 +116,7 @@ class CustomerManageController {
                     }
                     else {
                         return res.status(400).json({
-                            message: "Không thể thêm giá trị đã tồn tại"
+                            message: "Tên chủ thể đã tồn tại"
                         })
                     }
                 })
@@ -161,11 +159,12 @@ class CustomerManageController {
                         message: err
                     })
                 }
-                CustomerManagerModel.findCustomerUpdate(customer_id, User[0]?.DistrictId, req.body, (err, data) => {
+                CustomerManagerModel.findCustomerUpdate(customer_id, req.body, (err, data) => {
                     if (err) {
                         return res.status(500).json({ success: false, message: 'Lỗi truy vấn' });
                     }
                     if (data.length === 0) {
+                        console.log(req.body)
                         CustomerManagerModel.updateCustomer(customer_id, req.body, (err, result) => {
                             if (err) {
                                 // Xử lý lỗi nếu có
@@ -179,7 +178,7 @@ class CustomerManageController {
                         });
                     } else {
                         return res.status(400).json({
-                            message: "Không thể thêm giá trị đã tồn tại"
+                            message: "Tên chủ thể đã tồn tại"
                         })
                     }
                 })

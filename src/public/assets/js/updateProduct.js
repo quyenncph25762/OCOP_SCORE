@@ -14,7 +14,6 @@ const handleUpdate = async (id) => {
         const imagePreview = document.getElementById(`avatarPreview${id}`)
         const AttachFile = Array.from(document.querySelectorAll("#AttachFile")).map(e => e.files)
         const ProductDetailId = Array.from(document.querySelectorAll("#AttachFile")).map(e => e.getAttribute("data-productDetailId"))
-
         const fileUrl = Avatar.files && Avatar.files[0] ? URL.createObjectURL(Avatar.files[0]) : imagePreview.src;
         const index = fileUrl.indexOf("/Uploads/");
         let relativePath = "";
@@ -36,15 +35,18 @@ const handleUpdate = async (id) => {
             body: form,
         })
         if (!response.ok) {
-            localStorage.setItem('toast', JSON.stringify({
+            const data = await response.json()
+            $.toast({
                 position: "top-right",
-                heading: 'Lỗi cập nhật sản phẩm',
-                text: 'Đã xảy ra lỗi cập nhật sản phẩm',
-                icon: 'error',
+                heading: 'WARNING!',
+                text: data.message,
+                icon: 'warning',
                 loader: true,
                 loaderBg: '#9EC600',
                 stack: 4
-            }));
+            })
+            hideLoading()
+            return
         }
         const arrResponseDelete = []
         for (const idGallery of ArrId) {
@@ -54,12 +56,10 @@ const handleUpdate = async (id) => {
             await funcDeleteGallery(arrResponseDelete)
             window.location.replace("/product-manage")
         }
-        // const responseJson = await response.json()
         const formGalleryNew = new FormData()
         for (let i = 0; i < AttachFile.length; i++) {
             if (AttachFile[i].length > 0) {
                 for (const gallery of AttachFile[i]) {
-                  
                     formGalleryNew.append("imgUrl", gallery)
                     formGalleryNew.append("productDetail_id", ProductDetailId[i])
                 }
@@ -79,7 +79,7 @@ const handleUpdate = async (id) => {
             loaderBg: '#9EC600',
             stack: 4
         }));
-        window.location.replace("/product-manage")
+        window.location.reload()
     }
 }
 

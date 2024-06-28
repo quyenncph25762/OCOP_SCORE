@@ -385,42 +385,18 @@
         const roleId = document.getElementById(`roleId${id}`).value
         const District = document.getElementById(`District${id}`).value
 
-        if (FullName.trim() === "") {
-            $.toast({
-                position: "top-right",
-                heading: 'WARNING!',
-                text: "Tên cán bộ không được để trống",
-                icon: 'warning',
-                loader: true,
-                loaderBg: '#f2a654',
-                showHideTransition: 'slide',
-                stack: 4
-            });
+        if (errorMessage(FullName.trim() === "", "Tên cán bộ không được để trống")) {
             return
         }
-        if (UserName.trim() === "") {
-            $.toast({
-                position: "top-right",
-                heading: 'WARNING!',
-                text: "Tên đăng nhập không được để trống",
-                icon: 'warning',
-                loader: true,
-                loaderBg: '#f2a654',
-                showHideTransition: 'slide',
-                stack: 4
-            });
+        if (errorMessage(WorkDepartment_id.trim() === "", "Phòng ban không được để trống")) {
             return
-        } else if (UserName.length < 6) {
-            $.toast({
-                position: "top-right",
-                heading: 'WARNING!',
-                text: "Tên đăng nhập phải lớn hơn hoặc bằng 6",
-                icon: 'warning',
-                loader: true,
-                loaderBg: '#f2a654',
-                showHideTransition: 'slide',
-                stack: 4
-            });
+        }
+        if (errorMessage(WorkPosition_id.trim() === "", "Vị trí chức danh không được để trống")) {
+            return
+        }
+        if (errorMessage(UserName.trim() === "", "Tên cán bộ không được để trống")) {
+            return
+        } else if (errorMessage(UserName.length < 5, "Tên đăng nhập phải lớn hơn hoặc bằng 5")) {
             return
         }
         //cat url
@@ -509,7 +485,7 @@
         }
         if (errorMessage(UserName.trim() === "", "Tên cán bộ không được để trống")) {
             return
-        } else if (errorMessage(UserName.length < 6, "Tên đăng nhập phải lớn hơn hoặc bằng 6")) {
+        } else if (errorMessage(UserName.length < 5, "Tên đăng nhập phải lớn hơn hoặc bằng 5")) {
             return
         }
         const formData = new FormData()

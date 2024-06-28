@@ -40,7 +40,7 @@
                         <div class="row" style="margin: 20px 0;">
                             <div class="col-sm-3" style="padding: 0;">
                                 <label for="">Tổ phòng ban</label>
-                                <select name="state" id="WorkDepartmentFilter" class="form-control selectpicker"
+                                <select name="state" id="WorkDepartmentFilterUpdate" class="form-control selectpicker"
                                     data-live-search="true">
                                     <option value="" selected>Tất cả</option>
                                     {{#each WorkDepartment}}
@@ -50,7 +50,7 @@
                             </div>
                             <div class="col-sm-3" style="padding: 0;margin-left: 10px;">
                                 <label for="">Vị trí chức danh</label>
-                                <select name="" id="WorkPositionFilter" class="form-control selectpicker"
+                                <select name="" id="WorkPositionFilterUpdate" class="form-control selectpicker"
                                     data-live-search="true">
                                     <option value="" selected>Tất cả</option>
                                     {{#each WorkPosition}}
@@ -144,7 +144,7 @@
                         <div class="row" style="margin: 20px 0;font-size: 13px;">
                             <div class="col-sm-3" style="padding: 0;">
                                 <label for="">Tổ phòng ban</label>
-                                <select name="" id="WorkDepartmentFilterUpdate" class="form-control selectpicker"
+                                <select name="" id="WorkDepartmentFilter" class="form-control selectpicker"
                                     data-live-search="true">
                                     <option value="" selected>Tất cả</option>
                                     {{#each WorkDepartment}}
@@ -154,7 +154,7 @@
                             </div>
                             <div class="col-sm-3" style="padding: 0;margin-left: 10px;">
                                 <label for="">Vị trí chức danh</label>
-                                <select name="" id="WorkPositionFilterUpdate" class="form-control selectpicker"
+                                <select name="" id="WorkPositionFilter" class="form-control selectpicker"
                                     data-live-search="true">
                                     <option value="" selected>Tất cả</option>
                                     {{#each WorkPosition}}
@@ -175,7 +175,7 @@
                                 </div> --}}
                             </th>
                             <th scope="col" hidden>WorkDepartment_id</th>
-                            <th scope="col" hidden>WorkPosition_id </th>
+                            <th scope="col" hidden>WorkPosition_id</th>
                             <th scope="col">Avatar</th>
                             <th scope="col">Tên</th>
                             <th scope="col">Giới tính</th>
@@ -194,7 +194,7 @@
                                 </div>
                             </td>
                             <td hidden>{{this.WorkDepartment_id}}</td>
-                            <td hidden>{{this.WorkPosition_id }}</td>
+                            <td hidden>{{this.WorkPosition_id}}</td>
                             <td style="text-align: center;">
                                 {{#if this.Avatar}}
                                 <img src={{this.Avatar}}
