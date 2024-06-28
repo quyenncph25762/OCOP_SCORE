@@ -168,7 +168,7 @@ function handleOnChange() {
     // ham chia theo cau hoi
     // nhung cau hoi co max la 3 sao
     const listCrieriaMax3sao = funcListCriteria3sao(arrScoreTempDetail)
-    // nhung cau hoi co max la 4 sao
+    // nhung cau hoi co điểm 4 và 5
     const listCriteriaMax4sao = funcListCriteria4sao(arrScoreTempDetail)
     const btnsRadio = Array.from(document.querySelectorAll(".btnsRadio"))
     // lọc ra những scoreTempDetail nào đã checked
@@ -381,7 +381,6 @@ function funcListCriteria4sao(arrScoreTempDetail) {
 }
 
 function checkRankFilter(list3sao, list4sao, list5sao, RankOcop, arrChecked, listCrieriaMax3sao, listCriteriaMax4sao) {
-
     if (RankOcop === 3) {
         for (const item of list3sao) {
             const results = arrChecked.includes(Number(item._id))
