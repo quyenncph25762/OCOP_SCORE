@@ -200,7 +200,7 @@ p {
 a {
     color: #3F4254;
     outline: none !important;
-    font-size: 13px !important;
+    font-size: 12px !important;
 
 }
 
@@ -980,6 +980,16 @@ body.bg-theme16 {
     text-transform: uppercase;
     box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .075);
 }
+
+button.btn.btn-light {
+    border: 1px solid #f1f1f1;
+}
+
+
+
+/* .button.btn.dropdown-toggle.btn-light {
+    padding: 0;
+} */
 
 .btn-link {
     color: #14abef;
@@ -2037,6 +2047,7 @@ label {
 }
 
 .form-control {
+    font-size: 13px;
     border: 1px solid #d1d1d1;
     background-color: rgba(255, 255, 255, 0.2);
     color: var(--color-main) !important;
