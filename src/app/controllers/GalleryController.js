@@ -16,7 +16,7 @@ class GalleryController {
         // Bảo đảm productDetailIds luôn là một mảng
         const productDetailIdsArray = Array.isArray(productDetailIds) ? productDetailIds : [productDetailIds];
         const files = req.files;
-
+        console.log(files)
         // if (!Array.isArray(productDetailIds) || productDetailIds.length !== files.length) {
         //     // return res.status(400).json({
         //     //     message: "Số lượng productDetail_id và files không khớp"
@@ -27,7 +27,7 @@ class GalleryController {
         const galleryItems = files.map((file, index) => ({
             productDetail_id: Number(productDetailIdsArray[index]),
             imgUrl: file.path,
-            imgName: file.originalname
+            imgName: file.filename
         }));
 
         if (galleryItems.length > 0) {

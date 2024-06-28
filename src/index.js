@@ -18,6 +18,11 @@ app.use(bodyParser.json())
 
 //Connect to DB quyennc
 db.connection;
+//
+app.use((req, res, next) => {
+    res.charset = 'utf-8';
+    next();
+});
 
 //static file
 app.use(express.static(path.join(__dirname, 'public'))); //tự load các file tĩnh trong thư mục public
