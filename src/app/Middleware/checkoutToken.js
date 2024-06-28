@@ -118,9 +118,7 @@ const checkout = (NamePermission) => {
         } else {
             res.redirect('/auth/loginPage')
         }
-        else {
-            res.redirect('/auth/loginPage')
-        }
+
     }
 
 }
