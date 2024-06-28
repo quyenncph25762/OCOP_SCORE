@@ -162,13 +162,14 @@ function repeatStarUpdate(number) {
 async function handleAddScoreFile(userId, scoreFileId, ScoreCommitee_id, productId, productgroupId) {
     showLoading()
     const getOneScoreFile = await FuncGetOneScoreFile(scoreFileId)
+    console.log(getOneScoreFile)
     const listScoreFile = await FuncListScoreFileDetail(scoreFileId)
     // ham tim ra scorefile cua userid dang dang nhap
     const idScoreFileUpdate = await filterScoreFileId(userId, ScoreCommitee_id)
     // func kiem tra xem idScoreFile cua user dang nhap co scorefiledetail chua neu co roi k cho cham theo 
     const checkScoreFile = await FuncListScoreFileDetail(idScoreFileUpdate)
     if (checkScoreFile.length > 0) {
-        $.toast({
+        localStorage.setItem('toast', JSON.stringify({
             position: "top-right",
             heading: 'WARNING!',
             icon: "warning",
@@ -177,8 +178,9 @@ async function handleAddScoreFile(userId, scoreFileId, ScoreCommitee_id, product
             stack: 4,
             text: `Hiện bạn đang có phiếu , không thể chấm theo thư kí <a href='/scoreFile/updateScoreFile?productId=${productId}&productgroupId=${productgroupId}&ScoreFile_id=${idScoreFileUpdate}'>Xem phiếu của bạn</a>`,
             allowToastClose: true
-        });
+        }));
         hideLoading()
+        window.location.reload()
         return
     }
     // lấy tất cả trường của scorefile getOne

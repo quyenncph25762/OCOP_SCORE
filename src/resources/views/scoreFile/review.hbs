@@ -82,7 +82,7 @@
                         {{!-- Nếu là admin thì k hiện --}}
                         {{!-- {{#ifCondNot User.RoleId 1}} --}}
                         {{!-- Tài khoản người dùng mà khác với scorefile người đang xem thì hiện --}}
-                        {{#ifCondNot User._id ScoreFile.Employee_id}}
+                        {{#if scoreCommitteeDetailFilter.UserId}}
                         <button class="btn btn-info" type="button"
                             onclick="handleAddScoreFile('{{User._id}}','{{ScoreFile._id}}','{{ScoreFile.ScoreCommitee_id}}','{{Product_id}}','{{this.productgroup_id}}')">Chấm
                             điểm theo thư
@@ -91,7 +91,7 @@
                             title="Phiếu của bạn lập tức chấm theo thư kí">
                             <ion-icon name="alert-circle-outline" style="font-weight: 600;"></ion-icon>
                         </span>
-                        {{/ifCondNot}}
+                        {{/if}}
                     </div>
                 </div>
                 {{!-- product info --}}

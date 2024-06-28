@@ -63,7 +63,7 @@ async function handleResultScoreFiles(idScoreCommittee, productId) {
                     <td>
                         <div class="d-flex" style="gap: 10px;">
                             <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Xem chi tiết">
-                                <a href="/scoreFile/reviewPage?productId=${scorefile.Product_id}&ScoreFile_id=${scorefile._id}">
+                                <a href="/scoreFile/reviewPage?productId=${scorefile.Product_id}&ScoreFile_id=${scorefile._id}&scorecommitee=${scorefile.ScoreCommitee_id}">
                                     <ion-icon name="eye-outline"></ion-icon>
                                 </a>
                             </span>

@@ -249,7 +249,27 @@ class ScoreFileController {
                 if (!ScoreFile) {
                     return res.status(400).json("Khong co scorefile nao")
                 }
-                res.render("scoreFile/review", { User: User[0], ScoreFile: ScoreFile[0] })
+                // lay ra id hoi dong
+                const idScoreCommitee = Number(req.query.scorecommitee)
+                if (idScoreCommitee) {
+                    ScoreCommitteeDetailModel.getByScoreCommittee(idScoreCommitee, async (err, listScoreCommitteeDetail) => {
+                        if (err) {
+                            return res.status(500).json({
+                                message: err
+                            })
+                        }
+                        // thuc hien tim ra id hoi dong chi tiet bang cach loc xem co userid nao === voi user.id dang dang nhap khong
+                        const scoreCommitteeDetailFilter = listScoreCommitteeDetail?.filter((item) => item.SecUserId === ScoreFile[0].Employee_id && item.UserId === User[0]._id)
+                        // console.log(ScoreFile[0].Employee_id)
+                        //  danh sach User 
+
+                        res.render("scoreFile/review", { User: User[0], ScoreFile: ScoreFile[0], scoreCommitteeDetailFilter: scoreCommitteeDetailFilter ? scoreCommitteeDetailFilter[0] : [] })
+                    })
+                } else {
+                    return res.status(400).json({
+                        message: idScoreCommitee
+                    })
+                }
             })
         }
 

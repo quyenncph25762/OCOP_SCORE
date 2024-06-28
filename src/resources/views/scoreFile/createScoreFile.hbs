@@ -28,7 +28,8 @@
                         {{else}}
                         <span class="d-inline-block ml-3" tabindex="0" data-toggle="tooltip"
                             title="Tham khảo phiếu chấm">
-                            <a href="/scoreFile/reviewPage?productId={{productId}}&ScoreFile_id={{scorefileId._id}}">
+                            <a
+                                href="/scoreFile/reviewPage?productId={{productId}}&ScoreFile_id={{scorefileId._id}}&scorecommitee={{scorefileId.ScoreCommitee_id}}">
                                 <ion-icon name="documents-outline"></ion-icon>
                             </a>
                         </span>
@@ -144,6 +145,10 @@
                                 Ý kiến của người đánh giá</p>
                             <textarea name="" id="Note"
                                 style="width: 100%;background-color: #fff;padding: 12px;color: #000;"></textarea>
+                            <div class="import_customer_button mt-3"
+                                style="list-style: none; display:flex; justify-content: end; align-items: center;">
+                                <button class="btn btn-info" onclick="handleUpdate()">Cập nhật phiếu</button>
+                            </div>
                         </div>
                     </div>
                 </div>
