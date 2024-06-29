@@ -47,7 +47,8 @@
                                     <div class="row">
                                         <input type="text" class="form-control" id="CodeCreate" hidden>
                                         <div class="col-sm-9 mb-3">
-                                            <label for="UserNameCreate">Tên truy cập</label>
+                                            <label for="UserNameCreate">Tên truy cập <span
+                                                    style="color: red;">*</span></label>
                                             <input type="text" class="form-control" id="UserNameCreate">
                                         </div>
                                         <div class="custom-control custom-switch col-md-3"
@@ -60,11 +61,12 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-sm-6 mb-3">
-                                            <label for="FullNameCreate">Họ và tên</label>
+                                            <label for="FullNameCreate">Họ và tên <span
+                                                    style="color: red;">*</span></label>
                                             <input type="text" class="form-control" id="FullNameCreate">
                                         </div>
                                         <div class="col-sm-6 mb-3">
-                                            <label for="RoleIdCreate">Vai trò</label>
+                                            <label for="RoleIdCreate">Vai trò <span style="color: red;">*</span></label>
                                             <select name="" id="RoleIdCreate" class="form-control selectpicker"
                                                 data-live-search="true">
                                                 {{#each Role}}
@@ -84,11 +86,12 @@
                                     <input type="text" class="form-control" id="PhoneCreate">
                                 </div>
                                 <div class="col-sm-6 mb-3">
-                                    <label for="PasswordNewCreate">Mật khẩu</label>
+                                    <label for="PasswordNewCreate">Mật khẩu <span style="color: red;">*</span></label>
                                     <input type="password" class="form-control" id="PasswordNewCreate">
                                 </div>
                                 <div class="col-sm-6 mb-3">
-                                    <label for="ConfirmPasswordCreate">Xác nhận mật khẩu</label>
+                                    <label for="ConfirmPasswordCreate">Xác nhận mật khẩu <span
+                                            style="color: red;">*</span></label>
                                     <input type="password" class="form-control" id="ConfirmPasswordCreate">
                                 </div>
                                 <p class="col-sm-6" style="font-style: italic;color: #F64E60;font-size: 13px;">* Kiểm
@@ -165,30 +168,19 @@
         const DistrictId = document.getElementById("DistrictId").value
         const IsActive = document.getElementById("IsActiveCreate").checked
         const Avatar = document.getElementById("AvatarCreate")
-        if (Password.length < 6 || ConfirmPassword.length < 6) {
-            $.toast({
-                position: "top-right",
-                heading: 'Warning',
-                text: 'Mật khẩu phải từ 6 kí tự',
-                icon: 'warning',
-                loader: true,
-                loaderBg: '#f2a654',
-                showHideTransition: 'slide',
-                stack: 4
-            });
+        if (errorMessage(UserName.trim() === "", "Tên đăng nhập không được để trống")) {
             return
         }
-        if (Password !== ConfirmPassword) {
-            $.toast({
-                position: "top-right",
-                heading: 'Warning',
-                text: 'Mật khẩu và mật khẩu xác nhận không khớp!',
-                icon: 'warning',
-                loader: true,
-                loaderBg: '#f2a654',
-                showHideTransition: 'slide',
-                stack: 4
-            });
+        if (errorMessage(FullName.trim() === "", "Họ và tên không được để trống")) {
+            return
+        }
+        if (errorMessage(RoleId.trim() === "", "Vai trò không được để trống")) {
+            return
+        }
+        if (errorMessage(Password.length < 6 || ConfirmPassword.length < 6, 'Mật khẩu phải từ 6 kí tự')) {
+            return
+        }
+        if (errorMessage(Password !== ConfirmPassword, 'Mật khẩu và mật khẩu xác nhận không khớp!')) {
             return
         }
 
@@ -234,6 +226,22 @@
                 stack: 4
             });
         }
+    }
+    function errorMessage(error, message) {
+        if (error) {
+            $.toast({
+                position: "top-right",
+                heading: 'WARNING!',
+                text: message,
+                icon: 'warning',
+                loader: true,
+                loaderBg: '#f2a654',
+                showHideTransition: 'slide',
+                stack: 4
+            });
+            return true
+        }
+        return false
     }
 </script>
 {{!-- code random --}}

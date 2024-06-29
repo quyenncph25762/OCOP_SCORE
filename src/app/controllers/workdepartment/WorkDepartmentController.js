@@ -100,7 +100,7 @@ class WorkDepartmentController {
                             })
                         } else {
                             return res.status(400).json({
-                                message: "Ten da ton tai"
+                                message: "Tên phòng ban đã tồn tại"
                             })
                         }
                     }
@@ -241,7 +241,7 @@ class WorkDepartmentController {
                             })
                         } else {
                             return res.status(400).json({
-                                message: "Name đã tồn tại"
+                                message: "Tên phòng ban đã tồn tại"
                             })
                         }
                     }

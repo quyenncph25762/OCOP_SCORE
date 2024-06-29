@@ -33,13 +33,13 @@
                             <div class="form-row">
                                 <!-- code -->
                                 <div class="col-md-4 mb-3">
-                                    <label for="Code">Mã</label>
+                                    <label for="Code">Mã <span style="color: red;">*</span></label>
                                     <input type="text" name="Code" class="form-control" id="Code{{ScoreTemp._id}}"
                                         value="{{ScoreTemp.Code}}" required>
                                 </div>
                                 <!-- name group product -->
                                 <div class="col-md-8 mb-3">
-                                    <label for="Name">Tên phiếu chấm</label>
+                                    <label for="Name">Tên phiếu chấm <span style="color: red;">*</span></label>
                                     <input type="text" class="form-control" id="Name{{ScoreTemp._id}}" name="Name"
                                         value="{{ScoreTemp.Name}}" required>
                                 </div>
@@ -61,10 +61,10 @@
                                 </div>
                                 <!-- group product -->
                                 <div class="custom-control custom-switch col-md-10">
-                                    <label for="ProductGroup_id">Nhóm sản phẩm</label>
+                                    <label for="ProductGroup_id">Nhóm sản phẩm<span style="color: red;">*</span></label>
                                     <select name="ProductGroup_id" class="custom-select my-1 form-control selectpicker"
                                         id="ProductGroup_id{{ScoreTemp._id}}" data-live-search="true">
-                                        <option value="" selected>Choose...</option>
+                                        <option value="" selected>--</option>
                                         {{#each productGroup}}
                                         <option value="{{this._id}}" {{#ifCond this.IsActive 0}}disabled{{/ifCond}}
                                             {{#ifCond this._id ../ScoreTemp.ProductGroup_id }}selected{{/ifCond}}>

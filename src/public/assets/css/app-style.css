@@ -2552,10 +2552,11 @@ thead {
     position: relative;
     display: block;
     padding: .5rem .75rem;
- 
+
     line-height: 1.25;
     color: rgba(57, 39, 39, 0.85);
-    background-color: rgb(137 136 136 / 39%);;
+    background-color: rgb(137 136 136 / 39%);
+    ;
     border: 0px solid #ffffff00;
     box-shadow: 0 0.125rem 0.25rem rgba(80, 73, 73, 0.06);
 }
@@ -3261,7 +3262,7 @@ thead {
 }
 
 .bg-danger {
-    background-color: #f43643 !important;
+    background-color: #f43643;
 }
 
 .bg-dark {

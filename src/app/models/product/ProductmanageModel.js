@@ -23,7 +23,6 @@ const ProductmanageController = {
         connection.query(query, [DistrictId], callback);
 
     },
-
     getProductbyId: (id, callback) => {
         const query = `
     SELECT 
@@ -59,7 +58,7 @@ const ProductmanageController = {
     // delete to trash
     deleteToTrashProduct: (product_id, userId) => {
         return new Promise((resolve, reject) => {
-            const query = `UPDATE product SET IsDeleted = 1 , DeleterUser_id = ${userId} , DeletionTime = CURRENT_TIMESTAMP  WHERE _id = ${product_id} `;
+            const query = `UPDATE product SET IsDeleted = 1 , DeleterUser_id = ${userId} WHERE _id = ${product_id} `;
             if (!connection) {
                 return reject(new Error("Database connection is not established"));
             }
@@ -89,7 +88,7 @@ const ProductmanageController = {
     // delete forever
     destroyProduct: (id) => {
         return new Promise((resolve, reject) => {
-            const query = `DELETE FROM product WHERE _id = ${id}`
+            const query = `UPDATE product SET IsDeleted = 1 WHERE _id = ${id} `
             if (!connection) {
                 return reject(new Error("Database connection is not established"));
             }

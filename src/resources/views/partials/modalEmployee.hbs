@@ -57,26 +57,23 @@
                     </div>
                     <div class="col-md-9">
                         <div class="form-row">
-                            {{!-- code --}}
+                            {{!-- username --}}
                             <div class="col-md-6 mb-3">
-                                <label for="UserName">Tên đăng nhập</label>
+                                <label for="UserName">Tên đăng nhập <span style="color: red;">*</span></label>
                                 <input value="{{this.UserName}}" name="UserName" type="text" class="form-control"
                                     id="UserName{{this._id}}" required>
                             </div>
                             {{!-- Email --}}
                             <div class="col-md-6 mb-3">
-                                <label for="Email">E-mail</label>
+                                <label for="Email">E-mail <span style="color: red;">*</span></label>
                                 <input value="{{this.Email}}" name="Email" type="text" class="form-control"
                                     id="Email{{this._id}}" required>
                             </div>
                             {{!-- fullName --}}
                             <div class="col-md-12 mb-3 mt-3">
-                                <label for="FullName">Họ và tên</label>
+                                <label for="FullName">Họ và tên <span style="color: red;">*</span></label>
                                 <input value="{{this.FullName}}" name="FullName" type="text" class="form-control"
                                     id="FullName{{this._id}}" required>
-                                <span
-                                    style="color: #de2935;font-size: 14px;font-style: italic;margin-top: 5px;font-weight: 600;"
-                                    id="messageErrorUpdate{{this._id}}"></span>
                             </div>
                             {{!-- birthDay --}}
                             <div class="col-md-6 mb-3 mt-3">
@@ -90,7 +87,6 @@
                                 <input value="{{this.Phone}}" name="Phone" type="data" class="form-control"
                                     id="Phone{{this._id}}">
                             </div>
-
                         </div>
                     </div>
                     {{!-- address --}}
@@ -99,10 +95,10 @@
                         <input value="{{this.Address}}" name="Address" type="data" class="form-control"
                             id="Address{{this._id}}">
                     </div>
-                    {{!-- Customer --}}
+                    {{!-- department --}}
                     <div class="col-md-3 mb-3 mt-3">
                         <label for="WorkDepartment_id">Tổ / Phòng
-                            ban</label>
+                            ban <span style="color: red;">*</span></label>
                         <select id="WorkDepartment_id{{this._id}}" name="WorkDepartment_id"
                             class="form-control selectpicker" required>
                             {{#each WorkDepartMent}}
@@ -115,7 +111,7 @@
                     {{!-- workPostitionId--}}
                     <div class="col-md-3 mb-3 mt-3">
                         <label for="WorkPosition_id">Vị trí chức
-                            danh</label>
+                            danh <span style="color: red;">*</span></label>
                         <select id="WorkPosition_id{{this._id}}" name="WorkPosition_id"
                             class="form-control selectpicker" data-live-search="true">
                             {{#each WorkPosition}}
@@ -216,19 +212,19 @@
                     </div>
                     <div class="col-md-9">
                         <div class="form-row">
-                            {{!-- code --}}
+                            {{!-- username --}}
                             <div class="col-md-6 mb-3">
-                                <label for="UserName">Tên đăng nhập</label>
+                                <label for="UserName">Tên đăng nhập <span style="color: red;">*</span></label>
                                 <input name="UserName" type="text" class="form-control" id="UserName" required>
                             </div>
                             {{!-- Email --}}
                             <div class="col-md-6 mb-3">
-                                <label for="Email">E-mail</label>
+                                <label for="Email">E-mail <span style="color: red;">*</span></label>
                                 <input name="Email" type="text" class="form-control" id="Email" required>
                             </div>
                             {{!-- fullName --}}
                             <div class="col-md-12 mb-3 mt-3">
-                                <label for="FullName">Họ và tên</label>
+                                <label for="FullName">Họ và tên <span style="color: red;">*</span></label>
                                 <input name="FullName" type="text" class="form-control" id="FullName" required>
                                 <span
                                     style="color: #de2935;font-size: 14px;font-style: italic;margin-top: 5px;font-weight: 600;"
@@ -254,7 +250,7 @@
                     </div>
                     {{!-- WorkDepartment_id --}}
                     <div class="col-md-3 mb-3 mt-3">
-                        <label for="WorkDepartment_id">Tổ / Phòng ban</label>
+                        <label for="WorkDepartment_id">Tổ / Phòng ban <span style="color: red;">*</span></label>
                         <select id="WorkDepartment_id" name="WorkDepartment_id" class="form-control selectpicker"
                             data-live-search="true" required>
                             {{#each WorkDepartMent}}
@@ -266,7 +262,7 @@
                     </div>
                     {{!-- workPostitionId--}}
                     <div class="col-md-3 mb-3 mt-3">
-                        <label for="WorkPosition_id">Vị trí chức danh</label>
+                        <label for="WorkPosition_id">Vị trí chức danh <span style="color: red;">*</span></label>
                         <select id="WorkPosition_id" name="WorkPosition_id" class="form-control selectpicker"
                             data-live-search="true">
                             {{#each WorkPosition}}
@@ -276,7 +272,6 @@
                         </select>
                     </div>
                     {{!-- Huyện --}}
-
                     {{#if User.DistrictId}}
                     <div class=""></div>
                     {{else}}
@@ -293,7 +288,7 @@
                     {{/if}}
                     {{!-- role --}}
                     <div class="col-md-3 mb-3 mt-3">
-                        <label for="roleId">Vai trò</label>
+                        <label for="roleId">Vai trò <span style="color: red;">*</span></label>
                         <select id="roleId" name="roleId" class="form-control selectpicker">
                             {{#each Role}}
                             <option value="{{this._id}}" {{#ifCond this.status 0}}disabled{{/ifCond}}>
@@ -394,6 +389,9 @@
         if (errorMessage(WorkPosition_id.trim() === "", "Vị trí chức danh không được để trống")) {
             return
         }
+        if (errorMessage(roleId.trim() === "", "Vai trò không được để trống")) {
+            return
+        }
         if (errorMessage(UserName.trim() === "", "Tên cán bộ không được để trống")) {
             return
         } else if (errorMessage(UserName.length < 5, "Tên đăng nhập phải lớn hơn hoặc bằng 5")) {
@@ -481,6 +479,9 @@
             return
         }
         if (errorMessage(WorkPosition_id.trim() === "", "Vị trí chức danh không được để trống")) {
+            return
+        }
+        if (errorMessage(roleId.trim() === "", "Vai trò không được để trống")) {
             return
         }
         if (errorMessage(UserName.trim() === "", "Tên cán bộ không được để trống")) {

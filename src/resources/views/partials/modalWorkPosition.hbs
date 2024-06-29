@@ -15,13 +15,13 @@
                     <div class="form-row">
                         {{!-- code --}}
                         <div class="col-md-4 mb-3">
-                            <label for="Code">Mã</label>
+                            <label for="Code">Mã <span style="color: red;">*</span></label>
                             <input value="{{this.Code}}" name="Code" type="text" class="form-control"
-                                id="Code{{this._id}}" required>
+                                id="Code{{this._id}}" required disabled>
                         </div>
                         {{!-- Name --}}
                         <div class="col-md-8 mb-3">
-                            <label for="Name">Tên vị trí , chức danh</label>
+                            <label for="Name">Tên vị trí , chức danh <span style="color: red;">*</span></label>
                             <input value="{{this.Name}}" name="Name" type="text" class="form-control"
                                 id="Name{{this._id}}" required>
                             <span
@@ -89,12 +89,12 @@
                         <input type="text" name="CreatorUser_id" id="CreatorUser_id" value="{{User._id}}" hidden>
                         {{!-- code --}}
                         <div class="col-md-4 mb-3">
-                            <label for="Code">Mã</label>
+                            <label for="Code">Mã <span style="color: red;">*</span></label>
                             <input name="Code" type="text" class="form-control" id="code" required>
                         </div>
                         {{!-- name --}}
                         <div class="col-md-8 mb-3">
-                            <label for="Name">Tên vị trí , chức danh</label>
+                            <label for="Name">Tên vị trí , chức danh <span style="color: red;">*</span></label>
                             <input name="Name" type="text" class="form-control" id="Name" required>
                             <span
                                 style="color: #de2935;font-size: 14px;font-style: italic;margin-top: 5px;font-weight: 600;"
@@ -152,17 +152,8 @@
         const IsActive = document.getElementById("IsActive").checked
         const Note = document.getElementById("Note").value
         const creatorUser_id = document.getElementById("CreatorUser_id").value
-        if (Name.trim() === "") {
-            $.toast({
-                position: "top-right",
-                heading: 'WARNING!',
-                text: 'Tên không được để trống',
-                icon: 'warning',
-                loader: true,
-                loaderBg: '#f2a654',
-                showHideTransition: 'slide',
-                stack: 4
-            });
+        if (errorMessage(Name.trim() === "", "Tên vị trí , chức danh không được để trống")) {
+            return
         }
         const form = {
             Code: code,
@@ -214,6 +205,9 @@
         const IsManager = document.getElementById(`IsManager${id}`).checked
         const IsActive = document.getElementById(`IsActive${id}`).checked
         const Note = document.getElementById(`Note${id}`).value
+        if (errorMessage(Name.trim() === "", "Tên vị trí , chức danh không được để trống")) {
+            return
+        }
         const form = {
             Code: code,
             Name: Name,
@@ -255,5 +249,22 @@
                 stack: 4
             });
         }
+    }
+
+    function errorMessage(error, message) {
+        if (error) {
+            $.toast({
+                position: "top-right",
+                heading: 'WARNING!',
+                text: message,
+                icon: 'warning',
+                loader: true,
+                loaderBg: '#f2a654',
+                showHideTransition: 'slide',
+                stack: 4
+            });
+            return true
+        }
+        return false
     }
 </script>

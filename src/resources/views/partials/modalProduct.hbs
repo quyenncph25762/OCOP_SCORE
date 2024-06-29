@@ -155,13 +155,13 @@
                         <div class="form-row col-sm-12 col-md-12 col-xl-9 form_productUpdate{{this._id}}">
                             {{!-- code --}}
                             <div class="col-md-2 mb-3">
-                                <label for="Code">Mã</label>
+                                <label for="Code">Mã <span style="color: red;">*</span></label>
                                 <input value="{{this.Code}}" name="Code" type="text" class="form-control"
                                     id="Code{{this._id}}" disabled required>
                             </div>
                             {{!-- title --}}
                             <div class="col-md-8 mb-3">
-                                <label for="Name">Tên sản phẩm</label>
+                                <label for="Name">Tên sản phẩm <span style="color: red;">*</span></label>
                                 <input value="{{this.Name}}" name="Name" type="text" class="form-control"
                                     id="Name{{this._id}}" required>
                             </div>
@@ -188,7 +188,7 @@
                             </div>
                             {{!-- Customer --}}
                             <div class="col-md-6 mb-3 mt-3">
-                                <label for="Customer_id">Chủ thể</label>
+                                <label for="Customer_id">Chủ thể <span style="color: red;">*</span></label>
                                 <select id="Customer_id{{this._id}}" name="Customer_id"
                                     class="form-control selectProductAdd selectpicker" data-live-search="true">
                                     {{#each Customer}}
@@ -199,7 +199,7 @@
                             </div>
                             {{!-- Product- group --}}
                             <div class="col-md-6 mb-3 mt-3">
-                                <label for="note">Nhóm sản phẩm</label>
+                                <label for="note">Nhóm sản phẩm <span style="color: red;">*</span></label>
                                 <select id="ProductGroup_id{{this._id}}" name="ProductGroup_id"
                                     class="form-control selectProductAdd selectpicker" data-live-search="true">
                                     {{#each ProductGroup}}
@@ -211,7 +211,7 @@
                             </div>
                             {{!-- Year Review --}}
                             <div class="col-md-3 mb-3 mt-3">
-                                <label for="ProductYearId">Năm đánh giá</label>
+                                <label for="ProductYearId">Năm đánh giá <span style="color: red;">*</span></label>
                                 <select id="ProductYearId{{this._id}}" name="ProductYearId"
                                     class="form-control selectProductAdd selectpicker" data-live-search="true">
                                     {{#each Review}}
@@ -326,12 +326,12 @@
                         <div class="form-row col-xl-9 col-sm-12 col-md-12 col-lg-12 form_product">
                             {{!-- code --}}
                             <div class="col-md-2 mb-3">
-                                <label for="Code">Mã</label>
+                                <label for="Code">Mã <span style="color: red;">*</span></label>
                                 <input name="Code" type="text" class="form-control" id="Code" disabled required>
                             </div>
                             {{!-- title --}}
                             <div class="col-md-8 mb-3">
-                                <label for="Name">Tên sản phẩm</label>
+                                <label for="Name">Tên sản phẩm <span style="color: red;">*</span></label>
                                 <input name="Name" type="text" class="form-control" id="Name" required>
                                 <span
                                     style="color: #de2935;font-size: 14px;font-style: italic;margin-top: 5px;font-weight: 600;"
@@ -350,7 +350,7 @@
                             </div>
                             {{!-- Customer --}}
                             <div class="col-md-6 mb-3 mt-3">
-                                <label for="Customer_id">Chủ thể</label>
+                                <label for="Customer_id">Chủ thể <span style="color: red;">*</span></label>
                                 <select id="Customer_id" name="Customer_id" class="form-control selectpicker"
                                     data-live-search="true">
                                     {{#each Customer}}
@@ -360,7 +360,7 @@
                             </div>
                             {{!-- Product- group --}}
                             <div class="col-md-6 mb-3 mt-3">
-                                <label for="note">Nhóm sản phẩm</label>
+                                <label for="note">Nhóm sản phẩm <span style="color: red;">*</span></label>
                                 <select id="ProductGroup_id" name="ProductGroup_id" class="form-control selectpicker"
                                     data-live-search="true">
                                     {{#each ProductGroup}}
@@ -371,7 +371,7 @@
                             </div>
                             {{!-- Year Review --}}
                             <div class="col-md-3 mb-3 mt-3">
-                                <label for="ProductYearId">Năm đánh giá</label>
+                                <label for="ProductYearId">Năm đánh giá <span style="color: red;">*</span></label>
                                 <select id="ProductYearId" name="ProductYearId" class="form-control selectpicker"
                                     data-live-search="true">
                                     {{#each Review}}

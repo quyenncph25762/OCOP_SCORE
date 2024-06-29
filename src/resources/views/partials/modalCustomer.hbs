@@ -1,3 +1,105 @@
+{{#if this._id}}
+{{!-- modal update --}}
+<div class="modal fade" id="exampleModal{{this._id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="width: 800px;">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Cập nhật chủ thể</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-row">
+                        {{!-- Code --}}
+                        <div class="col-md-2 mb-3">
+                            <label for="Code">Code</label>
+                            <input value="{{this.Code}}" name="Code" type="text" class="form-control"
+                                id="Code{{this._id}}" disabled required>
+                        </div>
+                        {{!-- Name --}}
+                        <div class="col-md-6 mb-3">
+                            <label for="Name">Tên chủ thể<span style="color: red;">*</span></label>
+                            <input value="{{this.Name}}" name="Name" type="text" class="form-control"
+                                id="Name{{this._id}}" required>
+                        </div>
+                        {{!-- status --}}
+                        <div class="col-md-4 mb-3">
+                            <label for="SubName">Người đại diện<span style="color: red;">*</span></label>
+                            <input value="{{this.SubName}}" name="SubName" type="text" class="form-control"
+                                id="SubName{{this._id}}" required>
+                        </div>
+                        {{!-- code --}}
+                        <div class="col-md-6 mb-3">
+                            <label for="Phone">Số điện thoại</label>
+                            <input value="{{this.Phone}}" name="Phone" type="text" class="form-control"
+                                id="Phone{{this._id}}" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="Email">Email</label>
+                            <input value="{{this.Email}}" name="Email" type="email" class="form-control"
+                                id="Email{{this._id}}" required>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="customer_email">Tỉnh/Thành phố</label>
+                            <select name="City_id state" id="City_id{{this._id}}"
+                                onchange="handleChooseUpdateCity(this.value,'{{this.City_id}}','{{this._id}}')"
+                                class="form-control selectpicker" data-live-search="true">
+                                <option value="" selected>--</option>
+                                {{#each Province}}
+                                <option value="{{this._id}}" data-tokens="{{this._id}}" {{#ifCond ../this.City_id
+                                    this._id}}selected{{/ifCond}}>
+                                    {{this.Name}}
+                                </option>
+                                {{/each}}
+                            </select>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="customer_email">Quận / Huyện</label>
+                            <select name="District_id state" id="District_id{{this._id}}"
+                                class="form-control selectpicker"
+                                onchange="handleChooseUpdateDistrict(this.value,'{{this.District_id}}','{{this._id}}')"
+                                data-live-search="true">
+                                <option value="" selected>--</option>
+                                {{#each District}}
+                                <option value="{{this._id}}" {{#ifCond ../this.District_id
+                                    this._id}}selected{{/ifCond}}>{{this.Name}}
+                                </option>
+                                {{/each}}
+                            </select>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="customer_email">Xã / Phường</label>
+                            <select name="Ward_id state" id="Ward_id{{this._id}}" class="form-control selectpicker"
+                                data-live-search="true">
+                                <option value="" selected>--</option>
+                                {{#each Ward}}
+                                <option value="{{this._id}}" {{#ifCond ../this.Ward_id this._id}}selected{{/ifCond}}>
+                                    {{this.Name}}
+                                </option>
+                                </option>
+                                {{/each}}
+                            </select>
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            <label for="Address">Address</label>
+                            <input value="{{this.Address}}" name="Address" type="text" class="form-control"
+                                id="Address{{this._id}}" required>
+                        </div>
+                </form>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Đóng</button>
+                    <button onclick="handleUpdate('{{this._id}}')" class="btn btn-warning">Câp nhật chủ
+                        thể</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{{/if}}
+
 {{!-- post --}}
 <div class="modal fade" id="modalCustomerAdd" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
@@ -23,12 +125,12 @@
                         </div>
                         {{!-- title --}}
                         <div class="col-md-6 mb-3">
-                            <label for="Name">Tên chủ thể</label>
+                            <label for="Name">Tên chủ thể <span style="color: red;">*</span></label>
                             <input name="Name" type="text" class="form-control" id="Name" required>
                         </div>
                         {{!-- SubName --}}
                         <div class="col-md-4 mb-3">
-                            <label for="SubName">Người đại diện</label>
+                            <label for="SubName">Người đại diện <span style="color: red;">*</span></label>
                             <input name="SubName" type="text" class="form-control" id="SubName" required>
                             <span
                                 style="color: #de2935;font-size: 14px;font-style: italic;margin-top: 5px;font-weight: 600;"
@@ -98,6 +200,7 @@
     codeValue.value = codeRandom
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"></script>
+{{!-- actions add --}}
 <script>
     async function handleAdd() {
         const Code = document.getElementById("Code").value
@@ -111,19 +214,19 @@
         const Ward_id = document.getElementById("Ward_id").value
         const CreatorUser_id = document.getElementById("CreatorUser_id").value
         const UserDisTrict = document.getElementById("UserDisTrict").value
-        if (Name.trim() === "") {
-            $.toast({
-                position: "top-right",
-                heading: 'WARNING!',
-                text: "Tên chủ thể không được để trống",
-                icon: 'warning',
-                loader: true,
-                loaderBg: '#f2a654',
-                showHideTransition: 'slide',
-                stack: 4
-            });
+        if (errorMessage(Name.trim() === "", "Tên Chủ không được để trống")) {
             return
         }
+        if (errorMessage(Name.trim().length < 6, "Tên chủ thể phải lớn hơn hoặc bằng 6")) {
+            return
+        }
+        if (errorMessage(SubName.trim() === "", "Tên người đại diện không được để trống")) {
+            return
+        }
+        if (errorMessage(SubName.trim().length < 6, "Tên người đại diện phải lớn hơn hoặc bằng 6")) {
+            return
+        }
+        //Nếu là tài khoản huyện thì có validate xã huyện tỉnh
         if (UserDisTrict) {
             if (City_id.trim() === "") {
                 $.toast({
@@ -215,4 +318,89 @@
         }
     }
     //update
+    async function handleUpdate(id) {
+        const Code = document.getElementById(`Code${id}`).value
+        const Name = document.getElementById(`Name${id}`).value
+        const Address = document.getElementById(`Address${id}`).value
+        const SubName = document.getElementById(`SubName${id}`).value
+        const Phone = document.getElementById(`Phone${id}`).value
+        const Email = document.getElementById(`Email${id}`).value
+        const City_id = document.getElementById(`City_id${id}`).value
+        const District_id = document.getElementById(`District_id${id}`).value
+        const Ward_id = document.getElementById(`Ward_id${id}`).value
+        if (errorMessage(Name.trim() === "", "Tên Chủ không được để trống")) {
+            return
+        }
+        if (errorMessage(Name.trim().length < 6, "Tên chủ thể phải lớn hơn hoặc bằng 6")) {
+            return
+        }
+        if (errorMessage(SubName.trim() === "", "Tên người đại diện không được để trống")) {
+            return
+        }
+        if (errorMessage(SubName.trim().length < 6, "Tên người đại diện phải lớn hơn hoặc bằng 6")) {
+            return
+        }
+        const form = {
+            Code: Code,
+            Name: Name,
+            Address: Address,
+            SubName: SubName,
+            Phone: Phone,
+            Email: Email,
+            City_id: City_id || null,
+            District_id: District_id || null,
+            Ward_id: Ward_id || null,
+        }
+        const res = await fetch(`/customer-manage/${id}/update`, {
+            method: "POST",
+            body: JSON.stringify(form),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+        if (res.ok) {
+            const data = await res.json()
+            localStorage.setItem('toast', JSON.stringify({
+                position: "top-right",
+                heading: 'Cập nhật thành công',
+                text: 'Đã cập nhật thành công',
+                icon: 'success',
+                loader: true,
+                loaderBg: '#9EC600',
+                stack: 4,
+                showHideTransition: 'slide'
+            }));
+            window.location.replace("/customer-manage")
+        } else {
+            const data = await res.json()
+            $.toast({
+                position: "top-right",
+                heading: 'Cập nhật thất bại thất bại',
+                text: data.message || 'Đã có lỗi xảy ra',
+                icon: 'error',
+                loader: true,
+                loaderBg: '#f2a654',
+                showHideTransition: 'slide',
+                stack: 4
+            });
+        }
+    }
+
+    function errorMessage(error, message) {
+        if (error) {
+            $.toast({
+                position: "top-right",
+                heading: 'WARNING!',
+                text: message,
+                icon: 'warning',
+                loader: true,
+                loaderBg: '#f2a654',
+                showHideTransition: 'slide',
+                stack: 4
+            });
+            return true
+        }
+        return false
+
+    }
 </script>

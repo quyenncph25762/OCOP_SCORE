@@ -12,6 +12,9 @@ async function handleUpdate(id) {
         if (funcValidate(ProductGroup_id.trim() === "", "Tên nhóm sản phẩm không được để trống")) {
             return
         }
+        if (funcValidate(Code.trim() === "", "Mã không được để trống")) {
+            return
+        }
         const ScoreTemp = {
             Code: Code,
             Name: Name,

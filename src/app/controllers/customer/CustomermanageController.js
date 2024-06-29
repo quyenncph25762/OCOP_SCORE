@@ -148,7 +148,7 @@ class CustomerManageController {
                     }
                     else {
                         return res.status(400).json({
-                            message: "Tên chủ thể đã tồn tại"
+                            message: "Số điện thoại chủ thể đã tồn tại"
                         })
                     }
                 })
@@ -210,7 +210,7 @@ class CustomerManageController {
                         });
                     } else {
                         return res.status(400).json({
-                            message: "Tên chủ thể đã tồn tại"
+                            message: "Số điện thoại chủ thể đã tồn tại"
                         })
                     }
                 })

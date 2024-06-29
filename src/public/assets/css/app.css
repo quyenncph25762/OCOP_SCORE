@@ -4,7 +4,7 @@ tbody td {
 }
 
 th {
-    text-align: left !important;
+    text-align: left;
 }
 
 body {
@@ -953,4 +953,43 @@ table tbody {
 /* CSS cho layout */
 .btn-click:hover {
     background-color: rgba(236, 235, 235, 0.618);
+}
+
+.row-top-home {
+    padding: 20px 0;
+    gap: 20px;
+    /* display: flex;
+    flex-wrap: nowrap;
+    gap: 20px;
+   
+    box-shadow: none;
+    border: none; */
+    /* background-color: transparent !important; */
+}
+
+.bg-success,
+.bg-info,
+.bg-warning,
+.bg-danger {
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.bg-success {
+    background-color: #1BC5BD !important;
+    color: white !important;
+}
+
+.text-white {
+    color: white !important;
+}
+
+.bg-info {
+    background-color: #6daffe !important;
+    color: white !important;
+
+}
+
+.bg-warning {
+    background-color: #ff8800 !important;
 }

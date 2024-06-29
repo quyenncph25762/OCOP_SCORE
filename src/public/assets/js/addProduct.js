@@ -12,7 +12,7 @@ async function handleAdd() {
     const CreatorUser_id = document.getElementById("CreatorUser_id").value
     const DistrictId = document.getElementById("DistrictId").value
 
-    if (showToastAndReturn(Name.trim() === "", 'Tên không được để trống')) {
+    if (showToastAndReturn(Name.trim() === "", 'Tên sản phẩm không được để trống')) {
         return;
     }
     if (showToastAndReturn(ProductYearId.trim() === "", 'Hãy nhập số năm của sản phẩm')) {

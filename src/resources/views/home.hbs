@@ -3,194 +3,196 @@
 <div class="content-wrapper">
   <div class="container-fluid">
     <!--Start Dashboard Content-->
-    <div class="card mt-3">
+    <div class="card mt-3" style="background-color: #f4f4f5;box-shadow: none;">
       <div class="card-content">
-        <div class="row row-group m-0">
-          <div class="col-12 col-lg-6 col-xl-3 border-light">
+        <div class="row m-0 row-top-home" style="display: flex; flex-wrap: nowrap;">
+          <div class="col-12 col-lg-6 col-xl-3 border-light bg-danger" style="flex: 1;">
             <div class="card-body">
-              <h5 class="text-white mb-0">{{CountCustomer}}
+              <h5 class="text-white mb-0">
+                {{CountCustomer}}
               </h5>
               <div class="progress my-3" style="height:3px;">
                 <div class="progress-bar" style="width:100%"></div>
               </div>
-              <p class="mb-0 text-white small-font">Chủ thể <span class="float-right"></p>
+              <h5 class="mb-0 text-white small-font">Chủ thể <span class="float-right"></span></h5>
             </div>
           </div>
-          <div class="col-12 col-lg-6 col-xl-3 border-light">
+          <div class="col-12 col-lg-6 col-xl-3 border-light bg-success" style="flex: 1;">
             <div class="card-body">
               <h5 class="text-white mb-0">{{countRankOcop3sao}}
               </h5>
-              <div class="progress my-3" style="height:3px;">
+              <div class="progress my-3" style="height:3px;background-color: #fff;">
                 <div class="progress-bar" style="width:{{RankOcop3SaoPercent}}%"></div>
               </div>
-              <p class="mb-0 text-white small-font">Sản phẩm 3 sao <span class="float-right">{{RankOcop3SaoPercent}}%
+              <h5 class="mb-0 text-white small-font">Sản phẩm 3 sao <span class="float-right">{{RankOcop3SaoPercent}}%
                 </span>
-              </p>
+              </h5>
             </div>
           </div>
-          <div class="col-12 col-lg-6 col-xl-3 border-light">
+          <div class="col-12 col-lg-6 col-xl-3 border-light bg-info" style="flex: 1;">
             <div class="card-body">
               <h5 class="text-white mb-0">{{countRankOcop4sao}}
               </h5>
-              <div class="progress my-3" style="height:3px;">
+              <div class="progress my-3" style="height:3px;background-color: #fff;">
                 <div class="progress-bar" style="width:{{RankOcop4SaoPercent}}%"></div>
               </div>
-              <p class="mb-0 text-white small-font">Sản phẩm 4 sao <span class="float-right">{{RankOcop4SaoPercent}}%
-              </p>
+              <h5 class="mb-0 text-white small-font">Sản phẩm 4 sao <span class="float-right">{{RankOcop4SaoPercent}}%
+              </h5>
             </div>
           </div>
-          <div class="col-12 col-lg-6 col-xl-3 border-light">
+          <div class="col-12 col-lg-6 col-xl-3 border-light bg-warning" style="flex: 1;">
             <div class="card-body">
               <h5 class="text-white mb-0">{{countRankOcop5sao}}
               </h5>
-              <div class="progress my-3" style="height:3px;">
+              <div class="progress my-3" style="height:3px;background-color: #fff;">
                 <div class="progress-bar" style="width:{{RankOcop5SaoPercent}}%"></div>
               </div>
-              <p class="mb-0 text-white small-font">Sản phẩm 5 sao <span
-                  class="float-right">{{RankOcop5SaoPercent}}%</span></p>
+              <h5 class="mb-0 text-white small-font">Sản phẩm 5 sao <span
+                  class="float-right">{{RankOcop5SaoPercent}}%</span></h5>
             </div>
           </div>
         </div>
+
       </div>
-    </div>
 
-    <div class="row">
-      <div class="col-12 col-lg-8 col-xl-8">
-        <div class="card">
-          {{!-- <div class="d-flex align-items-center card-header">
-            <div class="">Biểu đồ tổng lượng sản phẩm ocop theo hạng sao
-            </div>
-            <label class="col-form-label text-right col-lg-3 col-sm-12">Năm:</label>
-            <div class="col-lg-4 col-md-9 col-sm-12">
-              <select class="form-control js-example-basic-single" id="selectYear" onchange="HandleClick()"
-                data-DistrictId="{{User.DistrictId}}">
-                {{#each YearReview}}
-                <option value="{{this._id}}" data-YearId="{{this._id}}">{{this.yearName}}</option>
-                {{/each}}
-              </select>
-            </div>
-          </div>
-          <div class="card-body">
-            <ul class="list-inline">
-              <li class="list-inline-item"><i class="fa fa-circle mr-2 text-white"></i>Sản phẩm 3 sao</li>
-              <li class="list-inline-item"><i class="fa fa-circle mr-2 text-success"></i>Sản phẩm 4 sao</li>
-              <li class="list-inline-item"><i class="fa fa-circle mr-2 text-light"></i>Sản phẩm 5 sao</li>
-            </ul>
-            <div class="chart-container-1">
-              <canvas id="chart1"></canvas>
-            </div>
-          </div> --}}
-
-          <div class="row m-0 row-group text-center border-top border-light-3">
-            <div class="col-12 col-lg-6">
-              <div class="p-3">
-                <p class="mb-0">Tổng số sản phẩm hiện có</p>
-                <h5 class="mb-0">{{countAllProduct}}</h5>
+      <div class="row">
+        <div class="col-12 col-lg-8 col-xl-8">
+          <div class="card">
+            {{!-- <div class="d-flex align-items-center card-header">
+              <div class="">Biểu đồ tổng lượng sản phẩm ocop theo hạng sao
+              </div>
+              <label class="col-form-label text-right col-lg-3 col-sm-12">Năm:</label>
+              <div class="col-lg-4 col-md-9 col-sm-12">
+                <select class="form-control js-example-basic-single" id="selectYear" onchange="HandleClick()"
+                  data-DistrictId="{{User.DistrictId}}">
+                  {{#each YearReview}}
+                  <option value="{{this._id}}" data-YearId="{{this._id}}">{{this.yearName}}</option>
+                  {{/each}}
+                </select>
               </div>
             </div>
-            {{!-- <div class="col-12 col-lg-4">
-              <div class="p-3">
-                <h5 class="mb-0">15:48</h5>
-                <small class="mb-0">Tổng số sản phẩm dự kiến <span> <i class="fa fa-arrow-up"></i> 12.65%</span></small>
+            <div class="card-body">
+              <ul class="list-inline">
+                <li class="list-inline-item"><i class="fa fa-circle mr-2 text-white"></i>Sản phẩm 3 sao</li>
+                <li class="list-inline-item"><i class="fa fa-circle mr-2 text-success"></i>Sản phẩm 4 sao</li>
+                <li class="list-inline-item"><i class="fa fa-circle mr-2 text-light"></i>Sản phẩm 5 sao</li>
+              </ul>
+              <div class="chart-container-1">
+                <canvas id="chart1"></canvas>
               </div>
             </div> --}}
-            <div class="col-12 col-lg-6 ">
-              <div class="p-3">
-                <p class="mb-0">Tổng số chủ thể</p>
-                <h5 class="mb-0">{{CountCustomer}}</h5>
+
+            <div class="row m-0 row-group text-center border-top border-light-3">
+              <div class="col-12 col-lg-6">
+                <div class="p-3">
+                  <p class="mb-0">Tổng số sản phẩm hiện có</p>
+                  <h5 class="mb-0">{{countAllProduct}}</h5>
+                </div>
               </div>
+              {{!-- <div class="col-12 col-lg-4">
+                <div class="p-3">
+                  <h5 class="mb-0">15:48</h5>
+                  <small class="mb-0">Tổng số sản phẩm dự kiến <span> <i class="fa fa-arrow-up"></i>
+                      12.65%</span></small>
+                </div>
+              </div> --}}
+              <div class="col-12 col-lg-6 ">
+                <div class="p-3">
+                  <p class="mb-0">Tổng số chủ thể</p>
+                  <h5 class="mb-0">{{CountCustomer}}</h5>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12 col-lg-12">
+              <div class="card">
+                <div class="card-header">Số liệu theo Quận/Huyện
+                </div>
+                <div class="table-responsive">
+                  <table class="table align-items-center table-flush table-borderless">
+                    <thead>
+                      <tr>
+                        <th>Quận/Huyện</th>
+                        <th>1 sao</th>
+                        <th>2 sao</th>
+                        <th>3 sao</th>
+                        <th>4 sao</th>
+                        <th>5 sao</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {{#each productByDistrict}}
+                      <tr>
+                        <td>{{this.Name}}</td>
+                        <td>
+                          <strong>{{this.RankOcop_1}}</strong>
+                        </td>
+                        <td>
+                          <strong>{{this.RankOcop_2}}</strong>
+                        </td>
+                        <td>
+                          <strong>{{this.RankOcop_3}}</strong>
+                        </td>
+                        <td>
+                          <strong>{{this.RankOcop_4}}</strong>
+                        </td>
+                        <td>
+                          <strong>{{this.RankOcop_5}}</strong>
+                        </td>
+                      </tr>
+                      {{/each}}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div><!--End Row-->
+        </div>
+
+        <div class="col-12 col-lg-4 col-xl-4">
+          <div class="card">
+            <div class="card-header">Biểu đồ tỷ lệ sản phẩm ocop theo vùng
+            </div>
+            <div class="card-body">
+              <div class="chart-container-2">
+                <canvas id="chart2"></canvas>
+              </div>
+            </div>
+            <div class="table-responsive" style="max-height: 256px; overflow-y: auto;border-top: 1px solid #ccc;">
+              <table class="table align-items-center">
+                <tbody>
+                  {{#each rateProductOcopByDistrict}}
+                  <tr>
+                    <td><i class="fa fa-circle text-white mr-2"></i>{{this.DistrictName}}</td>
+                    <td>{{this.percentProductByDistrict}}%</td>
+                  </tr>
+                  {{/each}}
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
-        <div class="row">
-          <div class="col-12 col-lg-12">
-            <div class="card">
-              <div class="card-header">Số liệu theo Quận/Huyện
-              </div>
-              <div class="table-responsive">
-                <table class="table align-items-center table-flush table-borderless">
-                  <thead>
-                    <tr>
-                      <th>Quận/Huyện</th>
-                      <th>1 sao</th>
-                      <th>2 sao</th>
-                      <th>3 sao</th>
-                      <th>4 sao</th>
-                      <th>5 sao</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {{#each productByDistrict}}
-                    <tr>
-                      <td>{{this.Name}}</td>
-                      <td>
-                        <strong>{{this.RankOcop_1}}</strong>
-                      </td>
-                      <td>
-                        <strong>{{this.RankOcop_2}}</strong>
-                      </td>
-                      <td>
-                        <strong>{{this.RankOcop_3}}</strong>
-                      </td>
-                      <td>
-                        <strong>{{this.RankOcop_4}}</strong>
-                      </td>
-                      <td>
-                        <strong>{{this.RankOcop_5}}</strong>
-                      </td>
-                    </tr>
-                    {{/each}}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div><!--End Row-->
-      </div>
-
-      <div class="col-12 col-lg-4 col-xl-4">
-        <div class="card">
-          <div class="card-header">Biểu đồ tỷ lệ sản phẩm ocop theo vùng
-          </div>
-          <div class="card-body">
-            <div class="chart-container-2">
-              <canvas id="chart2"></canvas>
-            </div>
-          </div>
-          <div class="table-responsive" style="max-height: 256px; overflow-y: auto;border-top: 1px solid #ccc;">
-            <table class="table align-items-center">
-              <tbody>
-                {{#each rateProductOcopByDistrict}}
-                <tr>
-                  <td><i class="fa fa-circle text-white mr-2"></i>{{this.DistrictName}}</td>
-                  <td>{{this.percentProductByDistrict}}%</td>
-                </tr>
-                {{/each}}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </div><!--End Row-->
+      </div><!--End Row-->
 
 
+    </div>
+    <!-- End container-fluid-->
   </div>
-  <!-- End container-fluid-->
-</div>
-<!--End content-wrapper-->
+  <!--End content-wrapper-->
 
-{{> footer}}
-<!-- Index js -->
+  {{> footer}}
+  <!-- Index js -->
 
 
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const toastData = localStorage.getItem('toast');
-    if (toastData) {
-      const toast = JSON.parse(toastData);
-      console.log(toast)
-      $.toast(toast);
-      localStorage.removeItem('toast');
-    }
-  })
-</script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const toastData = localStorage.getItem('toast');
+      if (toastData) {
+        const toast = JSON.parse(toastData);
+        console.log(toast)
+        $.toast(toast);
+        localStorage.removeItem('toast');
+      }
+    })
+  </script>

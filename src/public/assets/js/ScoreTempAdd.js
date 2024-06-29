@@ -5,17 +5,14 @@ async function handleAdd() {
     const ProductGroup_id = document.getElementById("ProductGroup_id").value
     const Note = document.getElementById("Note").value
     const CreatorUser_id = document.getElementById("CreatorUser_id").value
-    if (Name.trim() === "") {
-        $.toast({
-            position: "top-right",
-            heading: 'WARNING!',
-            icon: "warning",
-            loader: true,
-            loaderBg: '#9EC600',
-            stack: 4,
-            text: `Tên phiếu không được để trống`,
-            allowToastClose: true
-        });
+    console.log(ProductGroup_id)
+    if (errorMessage(Name.trim() === "", `Tên phiếu không được để trống`)) {
+        return
+    }
+    if (errorMessage(Code.trim() === "", `Mã phiếu không được để trống`)) {
+        return
+    }
+    if (errorMessage(ProductGroup_id.trim() === "", `Nhóm sản phẩm không được để trống`)) {
         return
     }
     const ScoreTemp = {
@@ -94,4 +91,21 @@ async function funcAddScoreTempDetail(arrRes) {
     } catch (error) {
         console.log(error)
     }
-} 
+}
+
+function errorMessage(error, message) {
+    if (error) {
+        $.toast({
+            position: "top-right",
+            heading: 'WARNING!',
+            icon: "warning",
+            loader: true,
+            loaderBg: '#9EC600',
+            stack: 4,
+            text: message,
+            allowToastClose: true
+        });
+        return true
+    }
+    return false
+}

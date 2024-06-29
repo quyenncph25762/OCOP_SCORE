@@ -31,12 +31,12 @@
                                 <input type="text" id="CreatorUser_id" value="{{User._id}}" hidden>
                                 <!-- code -->
                                 <div class="col-md-4 mb-3">
-                                    <label for="Code">Mã</label>
+                                    <label for="Code">Mã <span style="color: red;">*</span></label>
                                     <input type="text" name="Code" class="form-control" id="Code" value="" required>
                                 </div>
                                 <!-- name group product -->
                                 <div class="col-md-8 mb-3">
-                                    <label for="Name">Tên phiếu chấm</label>
+                                    <label for="Name">Tên phiếu chấm <span style="color: red;">*</span></label>
                                     <input type="text" class="form-control" id="Name" name="Name" value="">
                                 </div>
                                 <!-- active -->
@@ -49,11 +49,12 @@
                                 </div>
                                 <!-- group product -->
                                 <div class="custom-control custom-switch col-md-10">
-                                    <label for="ProductGroup_id">Nhóm sản phẩm</label>
+                                    <label for="ProductGroup_id">Nhóm sản phẩm <span
+                                            style="color: red;">*</span></label>
                                     <select name="ProductGroup_id state"
                                         class="custom-select my-1 form-control selectpicker" data-live-search="true"
                                         id="ProductGroup_id">
-                                        <option selected>Choose...</option>
+                                        <option value="" selected>--</option>
                                         {{#each productGroup}}
                                         <option value="{{this._id}}" data-tokens="{{this._id}}" {{#ifCond this.IsActive
                                             0}}disabled{{/ifCond}}>

@@ -45,7 +45,8 @@
                                     <div class="row">
                                         <input type="text" class="form-control" id="CodeUpdate" hidden>
                                         <div class="col-sm-9 mb-3">
-                                            <label for="UserName">Tên truy cập</label>
+                                            <label for="UserName">Tên truy cập <span
+                                                    style="color: red;">*</span></label>
                                             <input value="{{this.UserName}}" type="text" class="form-control"
                                                 id="UserNameUpdate{{this._id}}">
                                         </div>
@@ -69,12 +70,12 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-sm-6 mb-3">
-                                            <label for="Code">Họ và tên</label>
+                                            <label for="Code">Họ và tên <span style="color: red;">*</span></label>
                                             <input type="text" class="form-control" value="{{this.FullName}}"
                                                 id="FullNameUpdate{{this._id}}">
                                         </div>
                                         <div class="col-sm-6 mb-3">
-                                            <label for="Code">Vai trò</label>
+                                            <label for="Code">Vai trò <span style="color: red;">*</span></label>
                                             <select name="" id="RoleIdUpdate{{this._id}}"
                                                 class="form-control selectpicker" data-live-search="true">
                                                 {{#each Role}}
@@ -142,31 +143,20 @@
             const PasswordOld = document.getElementById(`PasswordOld${idUser}`).value
             const Password = document.getElementById(`PasswordNewUpdate${idUser}`).value
             const ConfirmPassword = document.getElementById(`ConfirmPasswordUpdate${idUser}`).value
-            if (Password.length >= 1 && Password.length < 6 || ConfirmPassword.length >= 1 && ConfirmPassword.length < 6) {
-                console.log(Password.length)
-                $.toast({
-                    position: "top-right",
-                    heading: 'Warning',
-                    text: 'Mật khẩu phải từ 6 kí tự',
-                    icon: 'warning',
-                    loader: true,
-                    loaderBg: '#f2a654',
-                    showHideTransition: 'slide',
-                    stack: 4
-                });
+            // người dùng nhập mật khẩu thì mới chạy vào điều kiện này , còn không thì sẽ bỏ qua
+            if (errorMessage(Password.length >= 1 && Password.length < 6 || ConfirmPassword.length >= 1 && ConfirmPassword.length < 6, 'Mật khẩu phải từ 6 kí tự')) {
                 return
             }
-            if (Password !== ConfirmPassword) {
-                $.toast({
-                    position: "top-right",
-                    heading: 'Warning',
-                    text: 'Mật khẩu và mật khẩu xác nhận không khớp!',
-                    icon: 'warning',
-                    loader: true,
-                    loaderBg: '#f2a654',
-                    showHideTransition: 'slide',
-                    stack: 4
-                });
+            if (errorMessage(Password !== ConfirmPassword, 'Mật khẩu và mật khẩu xác nhận không khớp!')) {
+                return
+            }
+            if (errorMessage(UserName.trim() === "", "Tên đăng nhập không được để trống")) {
+                return
+            }
+            if (errorMessage(FullName.trim() === "", "Họ và tên không được để trống")) {
+                return
+            }
+            if (errorMessage(RoleId.trim() === "", "Vai trò không được để trống")) {
                 return
             }
             const formUser = {
@@ -176,6 +166,7 @@
                 Email: Email,
                 IsActive: IsActive === true ? 1 : 0,
                 Phone: Phone,
+                //nếu password người dùng k nhập , thì sẽ lấy mật khẩu cũ của người dùng
                 Password: Password.trim() === "" ? PasswordOld : CryptoJS.SHA256(Password).toString()
             }
             const response = await fetch(`/users/update/${idUser}`, {
@@ -211,5 +202,21 @@
                 });
             }
         }
+    }
+    function errorMessage(error, message) {
+        if (error) {
+            $.toast({
+                position: "top-right",
+                heading: 'Warning',
+                text: message,
+                icon: 'warning',
+                loader: true,
+                loaderBg: '#f2a654',
+                showHideTransition: 'slide',
+                stack: 4
+            });
+            return true
+        }
+        return false
     }
 </script>

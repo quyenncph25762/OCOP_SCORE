@@ -4,11 +4,11 @@ const handleAdd = async () => {
     const yearReviewId = document.getElementById("yearReviewId").value
     const Note = document.getElementById("Note").value
     const CreatorUser_id = document.getElementById("CreatorUser_id").value
-    if (Name.trim() === "") {
-        document.querySelector("#ErrorName").innerHTML = "Tên không được để trống"
+    if (errorMessage(Name.trim() === "", 'Tên hội đồng không được để trống')) {
         return
-    } else {
-        document.querySelector("#ErrorName").innerHTML = ""
+    }
+    if (errorMessage(yearReviewId.trim() === "", 'Năm đánh giá không được để trống')) {
+        return
     }
     const ScoreCommittee = {
         Name: Name,
@@ -124,4 +124,21 @@ const handleAdd = async () => {
         }
         window.location.reload()
     }
+}
+
+function errorMessage(error, message) {
+    if (error) {
+        $.toast({
+            position: "top-right",
+            heading: 'WARNING!',
+            text: message,
+            icon: 'warning',
+            loader: true,
+            loaderBg: '#f2a654',
+            showHideTransition: 'slide',
+            stack: 4
+        });
+        return true
+    }
+    return false
 }

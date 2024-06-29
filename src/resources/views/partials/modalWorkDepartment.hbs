@@ -15,13 +15,13 @@
                     <div class="form-row">
                         {{!-- code --}}
                         <div class="col-md-4 mb-3">
-                            <label for="code">Mã</label>
+                            <label for="code">Mã <span style="color: red;">*</span></label>
                             <input value="{{this.code}}" id="code{{this._id}}" name="code" type="text"
                                 class="form-control" id="code" disabled required>
                         </div>
                         {{!-- title --}}
                         <div class="col-md-8 mb-3">
-                            <label for="title">Tên phòng ban</label>
+                            <label for="title">Tên phòng ban <span style="color: red;">*</span></label>
                             <input value="{{this.title}}" name="title" type="text" class="form-control"
                                 id="title{{this._id}}" required>
                             <span
@@ -64,12 +64,12 @@
                         <input id="creatorUser_id" type="text" value="{{User._id}}" name="creatorUser_id" hidden>
                         {{!-- code --}}
                         <div class="col-md-4 mb-3">
-                            <label for="code">Mã</label>
+                            <label for="code">Mã <span style="color: red;">*</span></label>
                             <input name="code" value="" type="text" class="form-control" id="code" disabled required>
                         </div>
                         {{!-- title --}}
                         <div class="col-md-8 mb-3">
-                            <label for="title">Tên phòng ban</label>
+                            <label for="title">Tên phòng ban <span style="color: red;">*</span></label>
                             <input name="title" type="text" class="form-control" id="title" required>
                             <span
                                 style="color: #de2935;font-size: 14px;font-style: italic;margin-top: 5px;font-weight: 600;"
@@ -112,17 +112,7 @@
         const title = document.getElementById("title").value
         const description = document.getElementById("description").value
         const creatorUser_id = document.getElementById("creatorUser_id").value
-        if (title.trim() === "") {
-            $.toast({
-                position: "top-right",
-                heading: 'WARNING!',
-                text: "Tên phòng ban không được để trống",
-                icon: 'warning',
-                loader: true,
-                loaderBg: '#f2a654',
-                showHideTransition: 'slide',
-                stack: 4
-            });
+        if (errorMessage(title.trim() === "", "Tên phòng ban không được để trống")) {
             return
         }
         const form = {
@@ -170,17 +160,7 @@
         const title = document.getElementById(`title${id}`).value
         const description = document.getElementById(`description${id}`).value
         const code = document.getElementById(`code${id}`).value
-        if (title.trim() === "") {
-            $.toast({
-                position: "top-right",
-                heading: 'WARNING!',
-                text: "Tên phòng ban không được để trống",
-                icon: 'warning',
-                loader: true,
-                loaderBg: '#f2a654',
-                showHideTransition: 'slide',
-                stack: 4
-            });
+        if (errorMessage(title.trim() === "", "Tên phòng ban không được để trống")) {
             return
         }
         const form = {
@@ -222,5 +202,21 @@
                 stack: 4
             });
         }
+    }
+    function errorMessage(error, message) {
+        if (error) {
+            $.toast({
+                position: "top-right",
+                heading: 'WARNING!',
+                text: message,
+                icon: 'warning',
+                loader: true,
+                loaderBg: '#f2a654',
+                showHideTransition: 'slide',
+                stack: 4
+            });
+            return true
+        }
+        return false
     }
 </script>

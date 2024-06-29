@@ -37,7 +37,7 @@ const CustomerManageController = {
         `;
         const values = '%' + search + '%'
         // const query = 'SELECT * FROM customer WHERE Isdeleted = 0';
-        connection.query(query,[values,values], callback)
+        connection.query(query, [values, values], callback)
     },
     getCustomerbyId: (callback) => {
         const query = 'SELECT Name, Phone, Address * FROM customer WHERE _id = ?';
@@ -56,13 +56,13 @@ const CustomerManageController = {
     },
     // tim khach hang
     findCustomerAdd: (Customer, callback) => {
-        const query = `SELECT * FROM customer WHERE Name = ?`;
-        const values = [Customer.Name];
+        const query = `SELECT * FROM customer WHERE Phone = ? AND Phone != ""`;
+        const values = [Customer.Phone];
         connection.query(query, values, callback);
     },
     findCustomerUpdate: (id, Customer, callback) => {
-        const query = `SELECT * FROM customer WHERE Name = ? AND _id != ${id} `;
-        const values = [Customer.Name];
+        const query = `SELECT * FROM customer WHERE Phone = ? AND Phone != "" AND _id != ${id} `;
+        const values = [Customer.Phone];
         connection.query(query, values, callback);
     },
     // xoa customer to trash

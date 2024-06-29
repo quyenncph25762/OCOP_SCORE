@@ -122,9 +122,11 @@
                                     <th scope="col" hidden>IdYear</th>
                                     <th scope="col"></th>
                                     <th scope="col">Tên sản phẩm</th>
-                                    <th scope="col" style="max-width: 120px;">Nhóm sản phẩm</th>
-                                    <th scope="col" style="max-width: 100px;">Rank OCOP</th>
-                                    <th scope="col" style="max-width: 80px;">Năm đánh giá</th>
+                                    <th scope="col" style="max-width: 150px;">Nhóm sản phẩm</th>
+                                    <th scope="col" style="max-width: 100px;" class="text-center">Rank OCOP</th>
+                                    <th scope="col" style="max-width: 80px;">
+                                        <p style="text-wrap:wrap;word-wrap: break-word;">Năm đánh giá</p>
+                                    </th>
                                     <th scope="col" style="max-width: 120px;">Chủ thể</th>
                                 </tr>
                             </thead>
@@ -161,7 +163,7 @@
                                     <td class="text-hightlight">Không xác định</td>
                                     {{/ifCond}}
                                     {{#ifCond this.RankOcop null}}
-                                    <td class="text-hightlight">Chưa xếp hạng</td>
+                                    <td class="text-hightlight text-center">Chưa xếp hạng</td>
                                     {{else}}
                                     <td style="max-width: 100px;">
                                         <div class="text-center">
