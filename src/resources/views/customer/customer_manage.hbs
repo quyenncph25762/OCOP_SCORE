@@ -32,8 +32,19 @@
               </a>
             </span>
           </div>
+
+          <div style="max-width: 200px;margin-bottom: -40px;position: relative;z-index: 99;cursor: pointer;">
+            <label for="">Lọc theo: Quận / Huyện</label>
+            <select name="" id="productCustomerFilter" class="form-control selectpicker" data-live-search="true">
+              <option value="" style="">Tất cả</option>
+              {{#each District}}
+              <option value="{{this._id}}">{{this.Name}}
+              </option>
+              {{/each}}
+            </select>
+          </div>
           <div class="table-responsive">
-            <table id="myTable" class="table datatables table-bordered table-hover table-striped">
+            <table id="myTableCustomer" class="table datatables table-bordered table-hover table-striped">
               <thead>
                 <tr>
                   <th {{#ifCond Customer.length 0}}hidden{{/ifCond}}>
@@ -42,7 +53,7 @@
                       <label class="cbx" for="checkAll"></label>
                     </div>
                   </th>
-                  <th scope="col" hidden>#</th>
+                  <th hidden>DistrictId</th>
                   <th scope="col">Chủ thể</th>
                   <th scope="col">Điện thoại</th>
                   <th scope="col">Địa chỉ</th>
@@ -52,13 +63,16 @@
               <tbody>
                 {{#each Customer}}
                 <tr>
+
                   <td>
                     <div class="checkbox-wrapper-42 checkbox">
                       <input id="cbx-42{{this._id}}" type="checkbox" class="check" data-idCheckBox="{{this._id}}" />
                       <label class="cbx" for="cbx-42{{this._id}}"></label>
                     </div>
                   </td>
-                  <td hidden>{{@index}}</td>
+                  <td hidden>
+                    {{this.District_id}}
+                  </td>
                   <td style="max-width: 200px">
                     <div class="" style="display: flex;flex-direction: column">
                       <p style="text-wrap: wrap;font-size: 12px;text-transform: uppercase;" class="text-black-custom">
@@ -359,9 +373,9 @@
         SubName: SubName,
         Phone: Phone,
         Email: Email,
-        City_id: City_id,
-        District_id: District_id,
-        Ward_id: Ward_id,
+        City_id: City_id || null,
+        District_id: District_id || null,
+        Ward_id: Ward_id || null,
       }
       const res = await fetch(`/customer-manage/${id}/update`, {
         method: "POST",

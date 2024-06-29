@@ -14,7 +14,7 @@ const CustomerManageController = {
         LEFT JOIN 
             ward ON ward._id = customer.Ward_id 
         WHERE 
-            customer.Isdeleted = 0 AND customer.District_id ${districtId ? `= ${districtId}` : `IS NULL`}  ORDER BY customer._id DESC;
+            customer.Isdeleted = 0  ${districtId ? `AND customer.District_id = ${districtId}` : ``} ORDER BY customer._id DESC;
         `;
         // const query = 'SELECT * FROM customer WHERE Isdeleted = 0';
         connection.query(query, callback)
@@ -35,13 +35,13 @@ const CustomerManageController = {
         connection.query(query, values, callback);
     },
     // tim khach hang
-    findCustomerAdd: (DistrictId, Customer, callback) => {
-        const query = `SELECT * FROM customer WHERE Name = ? AND customer.District_id ${DistrictId ? ` = ${DistrictId}` : `IS NULL`}`;
+    findCustomerAdd: (Customer, callback) => {
+        const query = `SELECT * FROM customer WHERE Name = ?`;
         const values = [Customer.Name];
         connection.query(query, values, callback);
     },
-    findCustomerUpdate: (id, DistrictId, Customer, callback) => {
-        const query = `SELECT * FROM customer WHERE Name = ? AND customer.District_id ${DistrictId ? ` = ${DistrictId}` : `IS NULL`} AND _id != ${id} `;
+    findCustomerUpdate: (id, Customer, callback) => {
+        const query = `SELECT * FROM customer WHERE Name = ? AND _id != ${id} `;
         const values = [Customer.Name];
         connection.query(query, values, callback);
     },
@@ -73,7 +73,7 @@ const CustomerManageController = {
             LEFT JOIN city ON city._id = customer.City_id 
             LEFT JOIN district ON district._id = customer.District_id 
             LEFT JOIN ward ON ward._id = customer.Ward_id 
-            WHERE customer.Isdeleted = 1 AND customer.District_id ${DistrictId ? `= ${DistrictId}` : `IS NULL`};
+            WHERE customer.Isdeleted = 1  ${DistrictId ? `AND customer.District_id = ${DistrictId}` : ``};
         `;
         connection.query(query, callback);
     },

@@ -270,7 +270,6 @@ class ProductmanageController {
             console.log(error)
         }
     }
-
     // xoa vinh vien
     delete = async (req, res) => {
         try {
@@ -350,6 +349,7 @@ class ProductmanageController {
                     Avatar: req.file ? req.file.path : req.body.Avatar,
                     ...req.body
                 };
+
                 ProductmanageModel.updateProduct(product_id, updatedData, (err, result) => {
                     if (err) {
                         console.log(err)
@@ -364,7 +364,7 @@ class ProductmanageController {
                 });
             } else {
                 return res.status(400).json({
-                    message: "Sản phẩm đã tồn tại"
+                    message: "Tên sản phẩm đã tồn tại"
                 })
             }
         })
@@ -415,7 +415,7 @@ class ProductmanageController {
                 });
             } else {
                 return res.status(400).json({
-                    message: "Sản phẩm đã tồn tại"
+                    message: "Tên sản phẩm đã tồn tại"
                 })
             }
         })

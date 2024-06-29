@@ -27,13 +27,7 @@ async function handleResultScoreFiles(idScoreCommittee, productId) {
         !ArrSecUserId.includes(scorefile.Employee_id)
     );
     // Gọi hàm tính điểm chênh lệch phiếu k lớn hơn 10
-    const alert = caculatorScoreEmployee(filterScoreFile)
-    if (alert) {
-        document.querySelector(".alert").innerHTML = "Điểm hội đồng chấm chênh lệch quá 10 điểm"
-        btnUpdate.disabled = true
-    } else {
-        btnUpdate.disabled = false
-    }
+
     // console.log(`Employee đã chấm: `, filterScoreFile)
     employeeScored.innerHTML = `(${filterScoreFile.length}/${filterScoreFileScoreCommit.length})`
 
@@ -97,10 +91,19 @@ async function handleResultScoreFiles(idScoreCommittee, productId) {
                 </p>
                 </td>
                 <td>
-                <p style="text-align:center;font-weight: 600" class="text-black-custom">${Number(Math.floor(AverageRankOcop)) > 2 ? "Đạt" : "Không đạt"}</p>
+                <p style="text-align:center;font-weight: 600" class="text-black-custom results">${Number(Math.floor(AverageRankOcop)) > 2 ? "Đạt" : "Không đạt"}</p>
                 </td>
             </tr>
         `;
+    }
+    const alert = caculatorScoreEmployee(filterScoreFile)
+    if (alert) {
+        document.querySelector(".alert").innerHTML = "Điểm hội đồng chấm chênh lệch quá 10 điểm"
+        document.querySelector(".results").innerHTML = "Không đạt"
+        btnUpdate.classList.add("cusorContains")
+        btnUpdate.disabled = true
+    } else {
+        btnUpdate.disabled = false
     }
 }
 function repeatStar(number) {

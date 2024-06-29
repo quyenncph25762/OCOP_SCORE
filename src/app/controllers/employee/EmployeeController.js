@@ -254,7 +254,6 @@ class EmployeeControllers {
     update(req, res, next) {
         const id = req.params.id
         const cookie = req.cookies
-        console.log(req.body)
         if (cookie?.User) {
             const UserDataCookie = jwt.verify(cookie.User, SECRET_CODE)
             AccountModel.fetchOneUser(UserDataCookie?._id, (err, User) => {
