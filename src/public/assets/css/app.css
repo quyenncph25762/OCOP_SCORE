@@ -947,3 +947,6 @@ input.form-control.input-headerTable.w-100 {
 }
 
 /* CSS cho layout */
+.btn-click:hover {
+    background-color: rgba(236, 235, 235, 0.618);
+}
