@@ -39,6 +39,9 @@
                             <select name="District state" class="form-control selectpicker" data-live-search="true"
                                 id="District">
                                 <option value="{{null}}" selected>Hệ thống</option>
+                                {{#each Province}}
+                                <option value="{{this._id}}" data-tokens="{{this._id}}">Tỉnh {{this.Name}}</option>
+                                {{/each}}
                                 {{#each District}}
                                 <option value="{{this._id}}" data-tokens="{{this._id}}">{{this.Name}}</option>
                                 {{/each}}
@@ -102,13 +105,14 @@
             }
         })
         if (!response.ok) {
+            const data = await response.json()
             if (response.status === 403) {
                 $.toast({
                     position: "top-right",
                     heading: 'ERROR!',
                     icon: "error",
                     loader: true,
-                    text: 'Tài khoản người dùng đã bị khóa',
+                    text: data.message,
                     allowToastClose: true
                 });
                 return

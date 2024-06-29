@@ -5,6 +5,7 @@ const EmployeeModel = require("../../models/employee/EmployeeModel");
 const mailer = require("../../../utils/mailer");
 const { token } = require("morgan");
 const DistrictModel = require("../../models/District");
+const ProvinceModel = require("../../models/Province");
 dotenv.config();
 const { SECRET_CODE } = process.env
 class AuthController {
@@ -15,7 +16,13 @@ class AuthController {
                 res.status(500).json({ error: 'Internal Server Error' });
                 return;
             }
-            res.render("auth/login", { District: District })
+            ProvinceModel.getAllProvince((err, Province) => {
+                if (err) {
+                    res.status(500).json({ error: 'Internal Server Error' });
+                    return;
+                }
+                res.render("auth/login", { District: District, Province: Province })
+            })
         })
     }
     // dang nhap
@@ -38,6 +45,11 @@ class AuthController {
             if (account && account.isLock === 1) {
                 return res.status(403).json({
                     message: "Tài khoản của bạn đã bị khóa"
+                })
+            }
+            if (account && account.IsDeleted === 1) {
+                return res.status(403).json({
+                    message: "Tài khoản hiện không tồn tại"
                 })
             }
             const token = jwt.sign({ _id: account._id }, SECRET_CODE, { expiresIn: "1d" })

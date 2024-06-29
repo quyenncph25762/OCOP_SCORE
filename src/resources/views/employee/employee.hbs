@@ -103,6 +103,7 @@
                                     {{else}}
                                     <td class="text-hightlight">Không xác định</td>
                                     {{/ifCond}}
+                                    {{!-- icon edit --}}
                                     <td scope="row">
                                         {{#ifCondNot ../User.id 1}}
                                         <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
@@ -120,7 +121,23 @@
                                             <ion-icon id="icon_moveToTrash" name="trash-outline" data-id="{{this._id}}">
                                             </ion-icon>
                                         </span>
+                                        {{#ifCond this.isLock 0}}
+                                        {{!-- khoa --}}
+                                        <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
+                                            title="Khóa tài khoản">
+                                            <ion-icon name="lock-closed-outline"
+                                                onclick="handleLockUser('{{this._id}}')"></ion-icon>
+                                        </span>
+                                        {{else}}
+                                        {{!-- mo khoa --}}
+                                        <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
+                                            title="Mở khóa tài khoản">
+                                            <ion-icon name="lock-open-outline"
+                                                onclick="handleOpenUser('{{this._id}}')"></ion-icon>
+                                        </span>
+                                        {{/ifCond}}
                                         {{/ifCondNot}}
+
                                     </td>
                                 </tr>
                                 {{/each }}
@@ -293,4 +310,113 @@
             });
         })
     })
+</script>
+{{!-- khoa tai khoan --}}
+<script>
+    //Khóa tài khoản
+    async function handleLockUser(iduser) {
+        const response = await fetch(`/auth/get/${iduser}`, {
+            method: "GET"
+        })
+        if (!response.ok) {
+            console.log("Khong thẻ lấy đc id tài khoản")
+            return
+        }
+        const user = await response.json()
+        $.confirm({
+            title: '<ion-icon name="help-circle-outline"></ion-icon>',
+            content: `Bạn xác nhận khóa tài khoản: (${user.FullName})?`,
+            buttons: {
+                confirm: {
+                    text: 'Confirm',
+                    btnClass: 'btn-blue',
+                    action: async function () {
+                        try {
+                            const response = await fetch(`/users/lockUserById/${iduser}`, {
+                                method: "PATCH",
+                                body: JSON.stringify({
+                                    isLock: 1
+                                }),
+                                headers: {
+                                    "Content-Type": "application/json"
+                                }
+                            })
+                            if (!response.ok) {
+                                console.log("Lỗi khi thực hiện khóa tài khoản")
+                                return
+                            }
+                            localStorage.setItem('toast', JSON.stringify({
+                                position: "top-right",
+                                heading: 'SUCCESS',
+                                text: `Đã khóa tài khoản ${user.FullName}!`,
+                                icon: 'success',
+                                loader: true,
+                                loaderBg: '#9EC600',
+                                stack: 4
+                            }));
+                            window.location.reload()
+                        } catch (error) {
+                            console.log(error)
+                        }
+                    }
+                },
+                cancel: function () {
+                    $.alert('Đã hủy!');
+                }
+            }
+        });
+    }
+    //Mở khóa tài khoản
+    async function handleOpenUser(iduser) {
+        const response = await fetch(`/auth/get/${iduser}`, {
+            method: "GET"
+        })
+        if (!response.ok) {
+            console.log("Khong thẻ lấy đc id tài khoản")
+            return
+        }
+        const user = await response.json()
+        $.confirm({
+            title: '<ion-icon name="help-circle-outline"></ion-icon>',
+            content: `Bạn xác nhận mở khóa tài khoản: (${user.FullName})?`,
+            buttons: {
+                confirm: {
+                    text: 'Confirm',
+                    btnClass: 'btn-blue',
+                    action: async function () {
+                        try {
+                            const response = await fetch(`/users/lockUserById/${iduser}`, {
+                                method: "PATCH",
+                                body: JSON.stringify({
+                                    isLock: 0
+                                }),
+                                headers: {
+                                    "Content-Type": "application/json"
+                                }
+                            })
+                            if (!response.ok) {
+                                console.log("Lỗi khi thực hiện mở khóa tài khoản")
+                                return
+                            }
+                            localStorage.setItem('toast', JSON.stringify({
+                                position: "top-right",
+                                heading: 'SUCCESS',
+                                text: `Đã mở khóa tài khoản ${user.FullName}!`,
+                                icon: 'success',
+                                loader: true,
+                                loaderBg: '#9EC600',
+                                stack: 4
+                            }));
+                            window.location.reload()
+                        } catch (error) {
+                            console.log(error)
+                        }
+                    }
+                },
+                cancel: function () {
+                    $.alert('Đã hủy!');
+                }
+            }
+        });
+    }
 </script>

@@ -151,7 +151,7 @@ class EmployeeControllers {
                                 WorkPosition_id: Number(req.body.WorkPosition_id),
                                 roleId: Number(req.body.roleId),
                                 CreatorUser_id: Number(req.body.CreatorUser_id),
-                                DistrictId: req.body.DistrictId === '0' ? null : Number(req.body.DistrictId)
+                                DistrictId: User[0].DistrictId
                             }, (err, data) => {
                                 if (err) {
                                     return res.status(500).json({
@@ -281,7 +281,7 @@ class EmployeeControllers {
                                 WorkDepartment_id: req.body.WorkDepartment_id,
                                 WorkPosition_id: req.body.WorkPosition_id,
                                 roleId: req.body.roleId,
-                                DistrictId: req.body.DistrictId || null
+                                DistrictId: User[0].DistrictId
                             }), (err, result) => {
                                 if (err) {
                                     return res.status(400).json({

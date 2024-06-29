@@ -3,6 +3,8 @@ const EmployeeModal = require("../models/employee/EmployeeModel")
 const RoleModal = require("../models/role/RoleModel")
 const jwt = require("jsonwebtoken")
 const dotenv = require("dotenv")
+const DistrictModel = require("../models/District")
+const ProvinceModel = require("../models/Province")
 dotenv.config();
 const { SECRET_CODE } = process.env
 
@@ -18,20 +20,33 @@ class UserPageController {
                         message: `Looi truy xuat ${err}`
                     })
                 }
-                AccountModel.fetchAllUser(User[0].DistrictId, (err, Employee) => {
+                AccountModel.fetchAllUser((err, Employee) => {
                     if (err) {
                         return res.status(500).json({
                             message: `Loi truy xuat ${err}`
                         })
                     }
-                    console.log(Employee)
                     RoleModal.fetchAllRole((err, Role) => {
                         if (err) {
                             return res.status(500).json({
                                 message: `Looi truy xuat ${err}`
                             })
                         }
-                        res.render("userPage/userPage", { User: User[0], Employee: Employee, Role: Role })
+                        DistrictModel.getAllDistrict((err, district) => {
+                            if (err) {
+                                return res.status(500).json({
+                                    message: err
+                                })
+                            }
+                            ProvinceModel.getAllProvince((err, Province) => {
+                                if (err) {
+                                    return res.status(500).json({
+                                        message: err
+                                    })
+                                }
+                                res.render("userPage/userPage", { User: User[0], Employee: Employee, Role: Role, District: district, Province: Province })
+                            })
+                        })
                     })
                 })
             })
@@ -87,7 +102,7 @@ class UserPageController {
                                 RoleId: Number(req.body.RoleId),
                                 IsActive: Number(req.body.IsActive),
                                 CreatorUser_id: Number(req.body.CreatorUser_id),
-                                DistrictId: req.body.DistrictId ? Number(req.body.DistrictId) : null
+                                DistrictId: req.body.DistrictId || null
                             }, (err, data) => {
                                 if (err) {
                                     console.log(err)

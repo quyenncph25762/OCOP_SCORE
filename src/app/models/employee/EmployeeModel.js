@@ -83,8 +83,8 @@ const EmployeeModel = {
                     WHEN Phone = ? THEN 'Phone'
                 END as conflictField
             FROM employee 
-            WHERE (_id != ?)
-            AND (UserName = ? OR Email = ? OR Phone = ?)
+            WHERE _id != ?
+            AND (UserName = ? OR Email = ? OR Phone = ?) AND Phone != ""
         `;
         const values = [employee.UserName, employee.Email, employee.Phone, id, employee.UserName, employee.Email, employee.Phone];
         connection.query(query, values, callback);
@@ -98,7 +98,7 @@ const EmployeeModel = {
                     WHEN Phone = ? THEN 'Phone'
                 END as conflictField
             FROM employee 
-            WHERE (UserName = ? OR Email = ? OR Phone = ?)
+            WHERE (UserName = ? OR Email = ? OR Phone = ?) AND Phone != ""
         `;
         const values = [employee.UserName, employee.Email, employee.Phone, employee.UserName, employee.Email, employee.Phone];
         connection.query(query, values, callback);

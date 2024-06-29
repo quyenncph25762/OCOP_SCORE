@@ -1,22 +1,16 @@
 const connection = require("../../config/db")
 
 const AccountModel = {
-    fetchAllUser: (districtId, callBack) => {
+    fetchAllUser: (callBack) => {
         const query = `
         SELECT employee.*,
-        workdepartment.title AS workdepartment_name,
-        workposition.Name AS workposition_name,
         role.title AS role_name,
         DATE_FORMAT(employee.DoB, '%Y-%m-%d') AS formattedDoB
             FROM
         employee
-        LEFT JOIN
-            workdepartment ON workdepartment._id = employee.WorkDepartment_id
-        LEFT JOIN
-            workposition ON workposition._id = employee.WorkPosition_id
-        LEFT JOIN
+        JOIN
             role ON role._id = employee.RoleId
-        WHERE employee.IsDeleted = 0 AND (employee.DistrictId ${districtId ? `= ${districtId}` : `IS NULL OR employee.RoleId = 1`}) ORDER BY employee._id DESC;
+        WHERE employee.IsDeleted = 0 AND employee.WorkDepartment_id IS NULL AND employee.WorkPosition_id IS NULL ORDER BY employee._id DESC;
         `
         connection.query(query, callBack)
     },
@@ -29,7 +23,7 @@ const AccountModel = {
             employee
         JOIN 
         role ON role._id = employee.RoleId
-        WHERE UserName = ? AND Password = ? AND DistrictId ${District ? `= ${District}` : "IS NULL"}
+        WHERE  UserName = ? AND Password = ? AND DistrictId ${District ? `= ${District}` : "IS NULL"}
         `
         connection.query(query, [UserName, Password, District], callback)
     },
@@ -112,9 +106,9 @@ const AccountModel = {
     },
     // update nguoi dung
     updateUser: (id, employee, callback) => {
-        const query = `UPDATE employee SET FullName = ? , UserName = ? , Email = ? , Phone = ? , RoleId = ? , Password = ?,  IsActive = ? WHERE _id = ${id}`
+        const query = `UPDATE employee SET FullName = ? , UserName = ? , Email = ? , Phone = ? , RoleId = ? , Password = ?,  IsActive = ? , DistrictId = ? WHERE _id = ${id}`
         console.log(query)
-        const values = [employee.FullName, employee.UserName, employee.Email, employee.Phone, employee.RoleId, employee.Password, employee.IsActive]
+        const values = [employee.FullName, employee.UserName, employee.Email, employee.Phone, employee.RoleId, employee.Password, employee.IsActive, employee.DistrictId]
         connection.query(query, values, callback)
     },
     // lock User

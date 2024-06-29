@@ -44,13 +44,18 @@
                                 <div class="col-sm-9">
                                     <div class="row">
                                         <input type="text" class="form-control" id="CodeUpdate" hidden>
-                                        <div class="col-sm-9 mb-3">
+                                        <div class="col-sm-4 mb-3">
                                             <label for="UserName">Tên truy cập <span
                                                     style="color: red;">*</span></label>
                                             <input value="{{this.UserName}}" type="text" class="form-control"
                                                 id="UserNameUpdate{{this._id}}">
                                         </div>
-                                        <div class="custom-control custom-switch col-md-3"
+                                        <div class="col-sm-5 mb-3">
+                                            <label for="Code">Họ và tên <span style="color: red;">*</span></label>
+                                            <input type="text" class="form-control" value="{{this.FullName}}"
+                                                id="FullNameUpdate{{this._id}}">
+                                        </div>
+                                        <div class="custom-control custom-switch col-sm-3"
                                             style="display: flex; justify-content: center;align-items: center;">
                                             {{#ifCond this.IsActive 1}}
                                             <input name="IsActiveUpdate{{this._id}}" type="checkbox"
@@ -69,11 +74,30 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-sm-6 mb-3">
-                                            <label for="Code">Họ và tên <span style="color: red;">*</span></label>
-                                            <input type="text" class="form-control" value="{{this.FullName}}"
-                                                id="FullNameUpdate{{this._id}}">
+                                        {{!-- Huyen --}}
+                                        {{#if User.DistrictId}}
+                                        <input type="hidden" id="District{{this._id}}" value="{{User.DistrictId}}"
+                                            type="text">
+                                        {{else}}
+                                        <div class="col-md-6 mb-3">
+                                            <label for="District">Tài khoản vùng</label>
+                                            <select id="District{{this._id}}" name="District"
+                                                class="form-control selectpicker" data-live-search="true">
+                                                <option value="" selected>Hệ thống</option>
+                                                {{#each Province}}
+                                                <option value="{{this._id}}" {{#ifCond this.IsDeleted
+                                                    0}}disabled{{/ifCond}}>
+                                                    Tỉnh {{this.Name}}</option>
+                                                {{/each}}
+                                                {{#each District}}
+                                                <option data-tokens="{{this._id}}" value="{{this._id}}" {{#ifCond
+                                                    this.status 0}}disabled{{/ifCond}} {{#ifCond this._id
+                                                    ../this.DistrictId}}selected{{/ifCond}}>
+                                                    {{this.Name}}</option>
+                                                {{/each}}
+                                            </select>
                                         </div>
+                                        {{/if}}
                                         <div class="col-sm-6 mb-3">
                                             <label for="Code">Vai trò <span style="color: red;">*</span></label>
                                             <select name="" id="RoleIdUpdate{{this._id}}"
@@ -127,10 +151,8 @@
         </div>
     </div>
 </div>
-
 {{!-- avatar file reader --}}
 {{!-- actions cap nhat user --}}
-
 <script>
     async function handleUpdateUser(idUser) {
         if (idUser) {
@@ -143,6 +165,7 @@
             const PasswordOld = document.getElementById(`PasswordOld${idUser}`).value
             const Password = document.getElementById(`PasswordNewUpdate${idUser}`).value
             const ConfirmPassword = document.getElementById(`ConfirmPasswordUpdate${idUser}`).value
+            const District = document.getElementById(`District${idUser}`).value
             // người dùng nhập mật khẩu thì mới chạy vào điều kiện này , còn không thì sẽ bỏ qua
             if (errorMessage(Password.length >= 1 && Password.length < 6 || ConfirmPassword.length >= 1 && ConfirmPassword.length < 6, 'Mật khẩu phải từ 6 kí tự')) {
                 return
@@ -166,6 +189,7 @@
                 Email: Email,
                 IsActive: IsActive === true ? 1 : 0,
                 Phone: Phone,
+                DistrictId: District || null,
                 //nếu password người dùng k nhập , thì sẽ lấy mật khẩu cũ của người dùng
                 Password: Password.trim() === "" ? PasswordOld : CryptoJS.SHA256(Password).toString()
             }
@@ -187,7 +211,7 @@
                     showHideTransition: 'slide',
                     stack: 4
                 }));
-                window.location.replace("/users")
+                window.location.reload()
             } else {
                 const data = await response.json()
                 $.toast({

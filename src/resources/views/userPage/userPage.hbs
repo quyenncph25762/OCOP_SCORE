@@ -88,22 +88,24 @@
                                                 <ion-icon name="create-outline" data-toggle="modal"
                                                     data-target="#modalUpdateUser{{this._id}}"></ion-icon>
                                             </span>
-                                            {{> modalUpdateUser Role=../Role}}
+                                            {{> modalUpdateUser District=../District Role=../Role Province=../Province}}
                                             {{#ifCondNot ../User._id this._id}}
                                             {{#ifCond this.isLock 0}}
+                                            {{!-- khoa --}}
                                             <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
                                                 title="Khóa tài khoản">
                                                 <ion-icon name="lock-closed-outline"
                                                     onclick="handleLockUser('{{this._id}}')"></ion-icon>
                                             </span>
                                             {{else}}
+                                            {{!-- mo khoa --}}
                                             <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
                                                 title="Mở khóa tài khoản">
                                                 <ion-icon name="lock-open-outline"
                                                     onclick="handleOpenUser('{{this._id}}')"></ion-icon>
                                             </span>
                                             {{/ifCond}}
-
+                                            {{!-- icon trash --}}
                                             <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Xóa">
                                                 <ion-icon id="icon_moveToTrash" data-userName="{{this.UserName}}"
                                                     name="trash-outline" data-id="{{this._id}}">

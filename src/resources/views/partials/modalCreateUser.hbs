@@ -31,7 +31,7 @@
                             <p style="font-size: 16px;margin-bottom: 18px;">Thông tin người dùng</p>
                             <div class="row">
                                 <input type="text" hidden id="CreatorUser_idCreate" value="{{User._id}}">
-                                <input type="text" hidden id="DistrictId" value="{{User.DistrictId}}">
+                                {{!-- <input type="text" hidden id="DistrictId" value="{{User.DistrictId}}"> --}}
                                 <div class="col-sm-3 mb-3" style="position: relative;">
                                     <div data-toggle="tooltip" data-html="true" title="Xóa ảnh" onclick="removeUpload()"
                                         style="position: absolute;top: 0;right: 0;">
@@ -46,10 +46,15 @@
                                 <div class="col-sm-9">
                                     <div class="row">
                                         <input type="text" class="form-control" id="CodeCreate" hidden>
-                                        <div class="col-sm-9 mb-3">
+                                        <div class="col-sm-4 mb-3">
                                             <label for="UserNameCreate">Tên truy cập <span
                                                     style="color: red;">*</span></label>
                                             <input type="text" class="form-control" id="UserNameCreate">
+                                        </div>
+                                        <div class="col-sm-5 mb-3">
+                                            <label for="FullNameCreate">Họ và tên <span
+                                                    style="color: red;">*</span></label>
+                                            <input type="text" class="form-control" id="FullNameCreate">
                                         </div>
                                         <div class="custom-control custom-switch col-md-3"
                                             style="display: flex; justify-content: center;align-items: center;">
@@ -60,11 +65,28 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-sm-6 mb-3">
-                                            <label for="FullNameCreate">Họ và tên <span
-                                                    style="color: red;">*</span></label>
-                                            <input type="text" class="form-control" id="FullNameCreate">
+                                        {{!-- Huyện --}}
+                                        {{#if User.DistrictId}}
+                                        <div class=""></div>
+                                        {{else}}
+                                        <div class="col-md-6 mb-3">
+                                            <label for="DistrictId">Tài khoản vùng</label>
+                                            <select id="DistrictId" name="DistrictId" class="form-control selectpicker"
+                                                data-live-search="true">
+                                                <option value="" selected>Hệ thống</option>
+                                                {{#each Province}}
+                                                <option value="{{this._id}}" {{#ifCond this.IsDeleted
+                                                    0}}disabled{{/ifCond}}>
+                                                    Tỉnh {{this.Name}}</option>
+                                                {{/each}}
+                                                {{#each District}}
+                                                <option value="{{this._id}}" {{#ifCond this.IsDeleted
+                                                    0}}disabled{{/ifCond}}>
+                                                    {{this.Name}}</option>
+                                                {{/each}}
+                                            </select>
                                         </div>
+                                        {{/if}}
                                         <div class="col-sm-6 mb-3">
                                             <label for="RoleIdCreate">Vai trò <span style="color: red;">*</span></label>
                                             <select name="" id="RoleIdCreate" class="form-control selectpicker"
@@ -212,7 +234,7 @@
                 showHideTransition: 'slide',
                 stack: 4
             }));
-            window.location.replace("/users")
+            window.location.reload()
         } else {
             const data = await response.json()
             $.toast({
