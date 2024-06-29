@@ -82,8 +82,9 @@
                     <div class="d-flex align-items">
                         <h5 class="card-title">Danh sách sản phẩm</h5>
                     </div>
-                    <div class="row" style="margin-bottom: -40px;position: relative;z-index: 99;cursor: pointer;">
-                        <div class="col-sm-3">
+                    <div class="row">
+                        <div class="col-sm-2"
+                            style="max-width: 200px;margin-bottom: -40px;position: relative;z-index: 99;cursor: pointer;">
                             <label for="">Lọc theo: Năm đánh giá</label>
                             <select name="" id="YearFilter" class="form-control selectpicker" data-live-search="true">
                                 <option value="" style="">Tất cả</option>
@@ -93,7 +94,8 @@
                                 {{/each}}
                             </select>
                         </div>
-                        <div class="col-sm-3">
+                        <div class="col-sm-2"
+                            style="max-width: 200px;margin-bottom: -40px;position: relative;z-index: 99;cursor: pointer;">
                             <label for="">Lọc theo: Nhóm sản phẩm</label>
                             <select name="" id="productGroupFilter" class="form-control selectpicker"
                                 data-live-search="true">
@@ -158,7 +160,7 @@
                                     {{else}}
                                     <td class="text-hightlight">Không xác định</td>
                                     {{/ifCond}}
-                                    {{#ifCond this.RankOcop NULL}}
+                                    {{#ifCond this.RankOcop null}}
                                     <td class="text-hightlight">Chưa xếp hạng</td>
                                     {{else}}
                                     <td style="max-width: 100px;">
@@ -168,7 +170,7 @@
                                             {{/repeat}}
                                             <p
                                                 style="color: #B5B5C3;font-weight: 600;font-size: 12px;text-align: center;">
-                                                3
+                                                {{this.RankOcop}}
                                                 sao</p>
                                         </div>
                                     </td>

@@ -5,7 +5,8 @@ const ReviewModel = require("../../models/yearreview/YearReviewModel")
 const AccountModel = require("../../models/Account")
 const ProductDetail = require("../../models/product/ProductDetailModel")
 const jwt = require("jsonwebtoken")
-const dotenv = require("dotenv")
+const dotenv = require("dotenv");
+const DistrictModel = require('../../models/District');
 dotenv.config();
 const { SECRET_CODE } = process.env
 class ProductmanageController {
@@ -44,15 +45,18 @@ class ProductmanageController {
                                     }
                                     ProductDetail.getAllProductDetailLimit((err, ProductDetail) => {
                                         if (err) {
-                                            return res.status(400).json({
+                                            return res.status(500).json({
                                                 message: `${err}: ProductControllers => productDetail`
                                             })
                                         }
-                                        if (!User?.[0]) {
-                                            res.redirect("/auth/loginPage")
-                                        } else {
-                                            res.render('product_manage', { Product: data, Customer: Customer, ProductGroup: ProductGroup, Review: Review, User: User[0], ProductDetail: ProductDetail });
-                                        }
+                                        DistrictModel.getAllDistrict((err, district) => {
+                                            if (err) {
+                                                return res.status(500).json({
+                                                    message: `${err}: ProductControllers => district`
+                                                })
+                                            }
+                                            res.render('product_manage', { Product: data, Customer: Customer, ProductGroup: ProductGroup, Review: Review, User: User[0], ProductDetail: ProductDetail, District: district });
+                                        })
                                     })
                                 })
                             })
@@ -132,7 +136,6 @@ class ProductmanageController {
     }
     create(req, res) {
         const cookie = req.cookies
-        console.log(req.body.IsActive)
         if (cookie?.User) {
             const UserDataCookie = jwt.verify(cookie.User, SECRET_CODE)
             AccountModel.fetchOneUser(UserDataCookie?._id, (err, User) => {
@@ -152,8 +155,9 @@ class ProductmanageController {
                     ProductGroup_id: req.body.ProductGroup_id,
                     ProductYearId: req.body.ProductYearId,
                     Note: req.body.Note,
-                    DistrictId: User[0]?.DistrictId
+                    DistrictId: req.body.DistrictId || User[0].DistrictId
                 }
+                console.log(product)
                 ProductmanageModel.findProductAdd(product, (err, results) => {
                     if (err) {
                         console.log('Lỗi truy vấn', err);
@@ -335,39 +339,48 @@ class ProductmanageController {
     }
     // update product
     update(req, res) {
+        const cookie = req.cookies
         const product_id = req.params.id
-        ProductmanageModel.findProductUpdate(product_id, req.body, (err, data) => {
-            if (err) {
-                console.log(err)
-                return res.status(500).json({
-                    message: "Lỗi try vấn"
-                })
-            }
-            if (data.length === 0) {
-                const updatedData = {
-                    IsActive: Number(req.body.IsActive),
-                    Avatar: req.file ? req.file.path : req.body.Avatar,
-                    ...req.body
-                };
-
-                ProductmanageModel.updateProduct(product_id, updatedData, (err, result) => {
+        if (cookie?.User) {
+            const UserDataCookie = jwt.verify(cookie.User, SECRET_CODE)
+            AccountModel.fetchOneUser(UserDataCookie?._id, (err, User) => {
+                if (err) {
+                    return res.status(400).json({
+                        message: err
+                    })
+                }
+                ProductmanageModel.findProductUpdate(product_id, req.body, (err, data) => {
                     if (err) {
-                        console.log(err)
+
                         return res.status(500).json({
-                            message: "Lỗi try vấn"
-                        })
-                    } else {
-                        return res.status(203).json({
-                            message: "Câp nhật thành công"
+                            message: "Lỗi truy vấn"
                         })
                     }
-                });
-            } else {
-                return res.status(400).json({
-                    message: "Tên sản phẩm đã tồn tại"
+                    if (data.length === 0) {
+                        ProductmanageModel.updateProduct(product_id, User[0].DistrictId, {
+                            IsActive: Number(req.body.IsActive),
+                            Avatar: req.file ? req.file.path : req.body.Avatar,
+                            DistrictId: req.body.DistrictId || User[0].DistrictId,
+                            ...req.body
+                        }, (err, result) => {
+                            if (err) {
+                                return res.status(500).json({
+                                    message: "Lỗi truy vấn"
+                                })
+                            } else {
+                                return res.status(203).json({
+                                    message: "Câp nhật thành công"
+                                })
+                            }
+                        });
+                    } else {
+                        return res.status(400).json({
+                            message: "Tên sản phẩm đã tồn tại"
+                        })
+                    }
                 })
-            }
-        })
+            })
+        }
     }
     // duyet san pham
     updateStatus(req, res) {
@@ -376,7 +389,7 @@ class ProductmanageController {
             if (err) {
                 console.log(err)
                 return res.status(500).json({
-                    message: "Lỗi try vấn"
+                    message: "Lỗi truy vấn"
                 })
             }
             return res.status(203).json({
@@ -386,40 +399,41 @@ class ProductmanageController {
     }
     // update rankOcop Product
     // update product
-    update(req, res) {
-        const product_id = req.params.id
-        ProductmanageModel.findProductUpdate(product_id, req.body, (err, data) => {
-            if (err) {
-                console.log(err)
-                return res.status(500).json({
-                    message: "Lỗi try vấn"
-                })
-            }
-            if (data.length === 0) {
-                const updatedData = {
-                    IsActive: Number(req.body.IsActive),
-                    Avatar: req.file ? req.file.path : req.body.Avatar,
-                    ...req.body
-                };
-                ProductmanageModel.updateProduct(product_id, updatedData, (err, result) => {
-                    if (err) {
-                        console.log(err)
-                        return res.status(500).json({
-                            message: "Lỗi try vấn"
-                        })
-                    } else {
-                        return res.status(203).json({
-                            message: "Câp nhật thành công"
-                        })
-                    }
-                });
-            } else {
-                return res.status(400).json({
-                    message: "Tên sản phẩm đã tồn tại"
-                })
-            }
-        })
-    }
+    // update(req, res) {
+    //     const product_id = req.params.id
+    //     ProductmanageModel.findProductUpdate(product_id, req.body, (err, data) => {
+    //         if (err) {
+    //             console.log(err)
+    //             return res.status(500).json({
+    //                 message: "Lỗi truy vấn"
+    //             })
+    //         }
+    //         if (data.length === 0) {
+    //             const updatedData = {
+    //                 IsActive: Number(req.body.IsActive),
+    //                 Avatar: req.file ? req.file.path : req.body.Avatar,
+    //                 DistrictId: req.body.DistrictId || User[0].DistrictId,
+    //                 ...req.body
+    //             };
+    //             ProductmanageModel.updateProduct(product_id, updatedData, (err, result) => {
+    //                 if (err) {
+    //                     console.log(err)
+    //                     return res.status(500).json({
+    //                         message: "Lỗi truy vấn"
+    //                     })
+    //                 } else {
+    //                     return res.status(203).json({
+    //                         message: "Câp nhật thành công"
+    //                     })
+    //                 }
+    //             });
+    //         } else {
+    //             return res.status(400).json({
+    //                 message: "Tên sản phẩm đã tồn tại"
+    //             })
+    //         }
+    //     })
+    // }
     updateRankOcop(req, res) {
         const productId = req.params.id
         console.log(req.body)
@@ -427,7 +441,7 @@ class ProductmanageController {
             if (err) {
                 console.log(err)
                 return res.status(500).json({
-                    message: "Lỗi try vấn"
+                    message: "Lỗi truy vấn"
                 })
             }
             return res.status(203).json({

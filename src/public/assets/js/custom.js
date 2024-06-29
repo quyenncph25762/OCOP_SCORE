@@ -184,6 +184,14 @@ $(document).ready(function () {
         table.column(2).search(year).draw();
     });
 });
+// Lọc year trong bảng product
+// $(document).ready(function () {
+//     var table = $('#myTableFilterProduct').DataTable();
+//     $('#productYearFilter').on('change', function (e) {
+//         var year = $(this).val();
+//         table.column(2).search(year).draw();
+//     });
+// });
 
 // loc table employee
 $(document).ready(function () {
@@ -221,6 +229,14 @@ $(document).ready(function () {
 $(document).ready(function () {
     var table = $('#myTableCustomer').DataTable();
     $('#productCustomerFilter').on('change', function (e) {
+        var DistrictId = $(this).val();
+        table.column(1).search(DistrictId).draw();
+    });
+});
+// Lọc chủ thể theo Huyện
+$(document).ready(function () {
+    var table = $('#myTableFilterProduct').DataTable();
+    $('#productDistrictFilter').on('change', function (e) {
         var DistrictId = $(this).val();
         table.column(1).search(DistrictId).draw();
     });

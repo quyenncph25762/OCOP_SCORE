@@ -18,12 +18,11 @@ const ProductmanageController = {
     JOIN
         yearreview ON yearreview._id = product.ProductYearId
     WHERE 
-        product.IsDeleted = 0 AND product.DistrictId ${DistrictId ? `= ${DistrictId}` : `IS NULL`} ORDER BY product._id DESC;
+        product.IsDeleted = 0  ${DistrictId ? `AND product.DistrictId = ${DistrictId}` : ``} ORDER BY product._id DESC;
         `;
         connection.query(query, [DistrictId], callback);
 
     },
-
 
     getProductbyId: (id, callback) => {
         const query = `
@@ -122,15 +121,15 @@ const ProductmanageController = {
     JOIN
         yearreview ON yearreview._id = product.ProductYearId
     WHERE 
-        product.DistrictId ${DistrictId ? `= ${DistrictId}` : `IS NULL`} AND product.IsDeleted = 1;
+         ${DistrictId ? `product.DistrictId = ${DistrictId} AND` : ``}  product.IsDeleted = 1;
         `
         connection.query(query, callback)
     },
 
     // updateProduct
-    updateProduct: (id, product, callback) => {
-        const query = 'UPDATE product SET Name = ?,Code = ?, ProductGroup_id = ? , Customer_id = ?, ProductYearId = ?, Note = ? , Description = ? ,  Avatar = ? ,  IsActive = ?  WHERE _id = ?';
-        const values = [product.Name, product.Code, product.ProductGroup_id, product.Customer_id, product.ProductYearId, product.Note, product.Description, product.Avatar, product.IsActive, id];
+    updateProduct: (id, UserDistrictId, product, callback) => {
+        const query = 'UPDATE product SET Name = ?,Code = ?, ProductGroup_id = ? , Customer_id = ?, ProductYearId = ?, Note = ? , Description = ? ,  Avatar = ? ,  IsActive = ? ,DistrictId = ?  WHERE _id = ?';
+        const values = [product.Name, product.Code, product.ProductGroup_id, product.Customer_id, product.ProductYearId, product.Note, product.Description, product.Avatar, product.IsActive, product.DistrictId || UserDistrictId, id];
         connection.query(query, values, callback);
     },
     // update Status Product

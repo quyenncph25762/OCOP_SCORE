@@ -12,6 +12,7 @@ const handleUpdate = async (id) => {
         const Note = document.getElementById(`Note${id}`)
         const Avatar = document.getElementById(`avatar${id}`)
         const imagePreview = document.getElementById(`avatarPreview${id}`)
+        const DistrictId = document.getElementById(`DistrictId${id}`).value
         const AttachFile = Array.from(document.querySelectorAll("#AttachFile")).map(e => e.files)
         const ProductDetailId = Array.from(document.querySelectorAll("#AttachFile")).map(e => e.getAttribute("data-productDetailId"))
         const fileUrl = Avatar.files && Avatar.files[0] ? URL.createObjectURL(Avatar.files[0]) : imagePreview.src;
@@ -30,6 +31,7 @@ const handleUpdate = async (id) => {
         form.append("ProductGroup_id", ProductGroup_id.value)
         form.append("ProductYearId", ProductYearId.value)
         form.append("Note", Note.value)
+        form.append("DistrictId", DistrictId || "")
         const response = await fetch(`/product-manage/${id}/update`, {
             method: "PATCH",
             body: form,

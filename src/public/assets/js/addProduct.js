@@ -10,6 +10,8 @@ async function handleAdd() {
     const IsActive = document.getElementById("IsActive").checked
     const Avatar = document.getElementById("Avatar")
     const CreatorUser_id = document.getElementById("CreatorUser_id").value
+    const DistrictId = document.getElementById("DistrictId").value
+
     if (showToastAndReturn(Name.trim() === "", 'Tên không được để trống')) {
         return;
     }
@@ -34,6 +36,7 @@ async function handleAdd() {
     formData.append('ProductGroup_id', ProductGroup_id);
     formData.append('Customer_id', Customer_id);
     formData.append('CreatorUser_id', CreatorUser_id);
+    formData.append('DistrictId', DistrictId || "");
     const res = await fetch("/product-manage/create", {
         method: "POST",
         body: formData
@@ -104,7 +107,7 @@ async function handleAdd() {
             loaderBg: '#9EC600',
             stack: 4
         }));
-        window.location.replace("/product-manage")
+        window.location.reload()
     }
 }
 

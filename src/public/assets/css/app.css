@@ -847,6 +847,10 @@ input.form-control.input-headerTable.w-100 {
     display: none;
 }
 
+table tbody {
+    font-size: 13px;
+}
+
 @media only screen and (min-width: 768px) and (max-width: 1180px) {
     .box-icons {
         display: flex;

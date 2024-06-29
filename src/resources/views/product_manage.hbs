@@ -90,6 +90,32 @@
               </a>
             </span>
           </div>
+          {{#ifCond User.DistrictId null}}
+          <div class="row">
+            <div style="max-width: 200px;margin-bottom: -40px;position: relative;z-index: 99;cursor: pointer;"
+              class="col-2">
+              <label for="">Lọc theo: Quận / Huyện</label>
+              <select name="" id="productDistrictFilter" class="form-control selectpicker" data-live-search="true">
+                <option value="" style="">Tất cả</option>
+                {{#each District}}
+                <option value="{{this._id}}">{{this.Name}}
+                </option>
+                {{/each}}
+              </select>
+            </div>
+            {{!-- <div style="max-width: 200px;margin-bottom: -40px;position: relative;z-index: 99;cursor: pointer;"
+              class="col-2">
+              <label for="">Năm đánh giá</label>
+              <select name="" id="productYearFilter" class="form-control selectpicker" data-live-search="true">
+                <option value="" style="">Tất cả</option>
+                {{#each Review}}
+                <option value="{{this._id}}">{{this.yearName}}
+                </option>
+                {{/each}}
+              </select>
+            </div> --}}
+          </div>
+          {{/ifCond}}
           <div class="table-responsive">
             <table id="myTableFilterProduct" class="table datatables table-bordered table-hover table-striped">
               <thead>
@@ -102,6 +128,8 @@
                       </div>
                     </div>
                   </th>
+                  <th hidden>DistrictId</th>
+                  <th hidden>YearId</th>
                   <th scope="col" style="display: none;">Mã sản phẩm</th>
                   <th scope="col" style="max-width: 50px;"></th>
                   <th scope="col">Tên sản phẩm</th>
@@ -120,12 +148,14 @@
                       <label class="cbx" for="cbx-42{{this._id}}"></label>
                     </div>
                   </td>
+                  <td hidden>{{this.DistrictId}}</td>
+                  <td hidden>{{this.YearId}}</td>
                   <td style="max-width: 70px;">
                     <img style="width: 50px;height: 50px;border-radius: 50%;border: 1px solid #ccc;"
                       src="{{this.Avatar}}" alt="">
                   </td>
                   <td class="codeColumn" style="display: none;">{{this.Code}}</td>
-                  <td>
+                  <td style="max-width: 250px;">
                     <div style="display: flex;flex-direction: column;">
                       <p onclick="handleProductDetail('{{this._id}}')" class="text-hightlight"
                         style="font-size: 14px;cursor: pointer;" data-toggle="modal"
@@ -170,7 +200,8 @@
                         <ion-icon name="create-outline" data-toggle="modal"
                           data-target="#exampleModal{{this._id}}"></ion-icon>
                       </span>
-                      {{> modalProduct ProductGroup=../ProductGroup Customer=../Customer Review=../Review}}
+                      {{> modalProduct ProductGroup=../ProductGroup Customer=../Customer Review=../Review
+                      District=../District User=../User}}
                       {{!-- icon eye --}}
                       <span onclick="handleProductDetail('{{this._id}}')" class="d-inline-block" tabindex="0"
                         data-toggle="tooltip" title="Xem chi tiết">
