@@ -11,7 +11,7 @@ class CustomerManageController {
     index(req, res) {
         const cookie = req.cookies
         const page = parseInt(req.query.page) || 1; // Trang hiện tại
-        const pageSize = 1; // Kích thước trang
+        const pageSize = 10; // Kích thước trang
         const startIndex = (page - 1) * pageSize;
         const endIndex = page * pageSize;
         const search = req.query.searchName || ''
