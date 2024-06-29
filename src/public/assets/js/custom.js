@@ -28,11 +28,11 @@ $(document).ready(function () {
     });
     // table customer
     $('#myTableCustomer').dataTable({
-        "paging": true, // Bật tính năng phân trang
+        "paging": false, // Bật tính năng phân trang
         "lengthChange": false, // Bật tính năng thay đổi số lượng dòng trên mỗi trang
         "searching": true, // Bật tính năng tìm kiếm
         "ordering": false, // Bật tính năng sắp xếp
-        "info": true, // Hiển thị thông tin số trang, số dòng trên trang
+        "info": false, // Hiển thị thông tin số trang, số dòng trên trang
         "autoWidth": false, // Tắt tính năng tự động thay đổi kích thước cột
 
         "language": {
@@ -59,11 +59,11 @@ $(document).ready(function () {
 
     // table employee
     $('#myTableEmployee').dataTable({
-        "paging": true, // Bật tính năng phân trang
-        "lengthChange": true, // Bật tính năng thay đổi số lượng dòng trên mỗi trang
+        "paging": false, // Bật tính năng phân trang
+        "lengthChange": false, // Bật tính năng thay đổi số lượng dòng trên mỗi trang
         "searching": true, // Bật tính năng tìm kiếm
         "ordering": false, // Bật tính năng sắp xếp
-        "info": true, // Hiển thị thông tin số trang, số dòng trên trang
+        "info": false, // Hiển thị thông tin số trang, số dòng trên trang
         "autoWidth": false, // Tắt tính năng tự động thay đổi kích thước cột
 
         "language": {
@@ -84,11 +84,11 @@ $(document).ready(function () {
     });
     // table employee update
     $('#myTableEmployeeUpdate').dataTable({
-        "paging": true, // Bật tính năng phân trang
-        "lengthChange": true, // Bật tính năng thay đổi số lượng dòng trên mỗi trang
+        "paging": false, // Bật tính năng phân trang
+        "lengthChange": false, // Bật tính năng thay đổi số lượng dòng trên mỗi trang
         "searching": true, // Bật tính năng tìm kiếm
         "ordering": false, // Bật tính năng sắp xếp
-        "info": true, // Hiển thị thông tin số trang, số dòng trên trang
+        "info": false, // Hiển thị thông tin số trang, số dòng trên trang
         "autoWidth": false, // Tắt tính năng tự động thay đổi kích thước cột
 
         "language": {
@@ -137,11 +137,11 @@ $(document).ready(function () {
     });
     // table FilterProduct
     $('#myTableFilterProduct').dataTable({
-        "paging": true, // Bật tính năng phân trang
+        "paging": false, // Bật tính năng phân trang
         "lengthChange": false, // Bật tính năng thay đổi số lượng dòng trên mỗi trang
         "searching": true, // Bật tính năng tìm kiếm
         "ordering": false, // Bật tính năng sắp xếp
-        "info": true, // Hiển thị thông tin số trang, số dòng trên trang
+        "info": false, // Hiển thị thông tin số trang, số dòng trên trang
         "autoWidth": false, // Tắt tính năng tự động thay đổi kích thước cột
 
         "language": {
