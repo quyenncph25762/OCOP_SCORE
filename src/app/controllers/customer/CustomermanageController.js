@@ -10,6 +10,11 @@ const { SECRET_CODE } = process.env
 class CustomerManageController {
     index(req, res) {
         const cookie = req.cookies
+        const page = parseInt(req.query.page) || 1; // Trang hiện tại
+        const pageSize = 1; // Kích thước trang
+        const startIndex = (page - 1) * pageSize;
+        const endIndex = page * pageSize;
+        const search = req.query.searchName || ''
         if (cookie?.User) {
             const UserDataCookie = jwt.verify(cookie.User, SECRET_CODE)
             AccountModel.fetchOneUser(UserDataCookie?._id, (err, User) => {
@@ -40,7 +45,34 @@ class CustomerManageController {
                                         message: "Lỗi truy vấn"
                                     })
                                 }
-                                res.render('customer/customer_manage', { Customer: data, User: User[0], Province: Province, District: District, Ward: Ward });
+                                else {
+                                    console.log(data)
+                                    const totalPages = Math.ceil(data.length / pageSize);
+                                    const pages = Array.from({ length: totalPages }, (_, index) => {
+                                        return {
+                                            number: index + 1,
+                                            active: index + 1 === page,
+                                            isDots: index + 1 > 5
+                                        };
+                                    });
+                                    const paginatedData = data.slice(startIndex, endIndex);
+                                    // Chuẩn bị dữ liệu để truyền vào template
+                                    const viewData = {
+                                        search: search,
+                                        Customer: paginatedData,
+                                        User: User[0],
+                                        Province: Province,
+                                        District: District,
+                                        Ward: Ward,
+                                        pagination: {
+                                            prev: page > 1 ? page - 1 : null,
+                                            next: endIndex < data.length ? page + 1 : null,
+                                            pages: pages,
+                                        },
+                                    };
+                                    res.render('customer/customer_manage', viewData);
+                                }
+
                             })
                         })
                     })

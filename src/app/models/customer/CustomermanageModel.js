@@ -19,6 +19,26 @@ const CustomerManageController = {
         // const query = 'SELECT * FROM customer WHERE Isdeleted = 0';
         connection.query(query, callback)
     },
+    getAllCustomerBySearch: (search, districtId, callback) => {
+        const query = `SELECT customer.*, 
+        city.Name AS city_name, 
+        district.Name AS district_name, 
+        ward.Name AS ward_name 
+        FROM 
+            customer 
+        LEFT JOIN 
+            city ON city._id = customer.City_id 
+        LEFT JOIN 
+            district ON district._id = customer.District_id 
+        LEFT JOIN 
+            ward ON ward._id = customer.Ward_id 
+        WHERE 
+            customer.Isdeleted = 0 AND customer.Name LIKE ? OR customer.Address LIKE ?  ${districtId ? `AND customer.District_id = ${districtId}` : ``}   ORDER BY customer._id DESC;
+        `;
+        const values = '%' + search + '%'
+        // const query = 'SELECT * FROM customer WHERE Isdeleted = 0';
+        connection.query(query,[values,values], callback)
+    },
     getCustomerbyId: (callback) => {
         const query = 'SELECT Name, Phone, Address * FROM customer WHERE _id = ?';
         connection.query(query, callback);
