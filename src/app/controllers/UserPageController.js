@@ -44,6 +44,11 @@ class UserPageController {
                                         message: err
                                     })
                                 }
+                                const start = performance.now();
+                                // Gọi middleware và xử lý request
+                                const end = performance.now();
+                                const duration = end - start;
+                                console.log(`Thời gian phản hồi của request là: ${duration} ms`);
                                 res.render("userPage/userPage", { User: User[0], Employee: Employee, Role: Role, District: district, Province: Province })
                             })
                         })
@@ -52,6 +57,17 @@ class UserPageController {
             })
         }
 
+    }
+    getAll(req, res) {
+        AccountModel.fetchAllUser((err, User) => {
+            if (err) {
+                return res.status(500).json({
+                    message: `Looi truy xuat ${err}`
+                })
+            }
+            console.log(User)
+            return res.status(200).json(User)
+        })
     }
     trash(req, res) {
         const cookie = req.cookies

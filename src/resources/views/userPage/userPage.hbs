@@ -79,10 +79,12 @@
                                     </td>
                                     <td>
                                         <div class="icons">
-                                            <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
+                                            {{!-- phan quyen --}}
+                                            {{!-- <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
                                                 title="Phân quyền">
                                                 <ion-icon name="list-outline"></ion-icon>
-                                            </span>
+                                            </span> --}}
+                                            {{!-- update --}}
                                             <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
                                                 title="Chỉnh sửa">
                                                 <ion-icon name="create-outline" data-toggle="modal"
@@ -194,6 +196,7 @@
             return
         }
         const user = await response.json()
+        console.log(user)
         $.confirm({
             title: '<ion-icon name="help-circle-outline"></ion-icon>',
             content: `Bạn xác nhận khóa tài khoản: (${user.FullName})?`,

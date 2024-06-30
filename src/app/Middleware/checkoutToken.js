@@ -65,7 +65,13 @@ const checkout = (NamePermission) => {
             Employee.getOneEmployee(payload._id, (err, data) => {
                 if (err) {
                     console.log('Error', err)
+                    res.clearCookie('User');
                 } else {
+                    // kiem tra xem tai khoan co khoa khong ? , neu ma khoa thi nhay ve trang dang nhap va xoa het token
+                    if (data && data[0].isLock === 1) {
+                        res.clearCookie()
+                        return res.redirect("/auth/loginPage")
+                    }
                     Permission.getAllPermissionBy_Role_And_Name(data[0]?.RoleId, NamePermission, (err, results) => {
                         if (err) {
                             console.log('Error', err)
