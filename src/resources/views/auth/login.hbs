@@ -88,6 +88,14 @@
 <script src="assets/js/app-script.js"></script> --}}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"></script>
 <script>
+    document.addEventListener('keypress', (event) => {
+        if (event.keyCode === 13) {
+            // 13 là mã phím Enter
+           
+            handleLogin(); // Gọi hàm đăng nhập khi nhấn Enter
+        }
+    })
+
     async function handleLogin() {
         const UserName = document.querySelector("#FullName").value
         const password = document.querySelector("#Password").value

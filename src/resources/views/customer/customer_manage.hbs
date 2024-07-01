@@ -24,7 +24,7 @@
       <div class="card">
         <div class="card-body">
           <div class="d-flex align-items">
-            <h5 class="card-title">Danh sách chủ thể</h5>
+            <h5 class="card-title">Danh sách chủ thể </h5>
             <span class="d-inline-block ml-3" tabindex="0" data-toggle="tooltip" title="Thùng rác của bạn">
               <a href="/customer-manage/trash">
                 <ion-icon name="trash-outline">
@@ -32,27 +32,38 @@
               </a>
             </span>
           </div>
-          <div class="row justify-content-end mb-4">
-            {{!-- <div class=" col-2" style="cursor: pointer">
+          <div class="row justify-content-between mb-4">
+            <div class=" col-2" style="cursor: pointer">
+              {{#if done}}
               <label for="">Lọc theo: Quận / Huyện</label>
-              <select name="" id="" class="form-control selectpicker" data-live-search="true">
-                <option value="" style="">Tất cả</option>
-                {{#each District}}
-                <option value="{{this._id}}">{{this.Name}}
-                </option>
-                {{/each}}
-              </select>
-            </div> --}}
+              <form id="formAddress" action="/customer-manage" method="GET">
+                <select name="Address" id="searchAddress" search="{{search}}" address="{{searchAddress}}"
+                  class="form-control selectpicker" data-live-search="true">
+                  <option value="" style="">Tất cả</option>
+
+                  {{#each District}}
+                  <option value="{{this._id}}" {{isSelected this._id ../searchAddress}}>
+                    {{ this.Name}}
+                  </option>
+                  {{/each}}
+                </select>
+              </form>
+              {{/if}}
+            </div>
+
             <div class="col-3">
-              <form action="GET" method="/customer-manage"></form>
-              <div class="input-group ">
-                <input type="text" style="font-size: 18px;" class="form-control" placeholder="Tìm kiếm chủ thể..."
-                  aria-label="Recipient's username" aria-describedby="basic-addon2" name="searchName">
-                <div class="input-group-append">
-                  <button class="btn btn-click" type="button"><ion-icon name="search-outline"
-                      style="font-size: 18px;"></ion-icon></button>
+              <label for=""></label>
+              <form action="/customer-manage" method="GET">
+                <div class="input-group ">
+                  <input type="text" style="font-size: 18px;" class="form-control" placeholder="Tìm kiếm chủ thể..."
+                    aria-label="Recipient's username" aria-describedby="basic-addon2" name="searchName"
+                    value="{{search}}">
+                  <div class="input-group-append">
+                    <button class="btn btn-click" type="submit"><ion-icon name="search-outline"
+                        style="font-size: 18px;"></ion-icon></button>
+                  </div>
                 </div>
-              </div>
+              </form>
             </div>
           </div>
 
@@ -128,7 +139,7 @@
                 <ul class="pagination center">
                   {{#if pagination.prev}}
                   <li class="page-item">
-                    <a class="page-link" href="/customer-manage?page={{pagination.prev}}" aria-label="Previous">
+                    <a class="page-link" onclick="changePage({{pagination.prev}})" aria-label="Previous">
                       <span aria-hidden="true">&laquo;</span>
                     </a>
                   </li>
@@ -136,13 +147,14 @@
 
                   {{#each pagination.pages}}
                   <li class="page-item {{#if this.active}}active{{/if}}">
-                    <a class="page-link" href="/customer-manage?page={{this.number}}">{{this.number}}</a>
+                    <a class="page-link" onclick="changePage({{this.number}})">{{this.number}}
+                    </a>
                   </li>
                   {{/each}}
 
                   {{#if pagination.next}}
                   <li class="page-item">
-                    <a class="page-link" href="/customer-manage?page={{pagination.next}}" aria-label="Next">
+                    <a class="page-link" onclick="changePage({{pagination.next}})" aria-label="Next">
                       <span aria-hidden="true">&raquo;</span>
                     </a>
                   </li>
@@ -163,6 +175,7 @@
   <script src="/assets/js/custom.js"></script>
   <script src="/assets/js/customer/Address.js"></script>
   <script>
+
     window.dataLayer = window.dataLayer || [];
     function gtag() {
       dataLayer.push(arguments);
@@ -177,7 +190,22 @@
   <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
   {{!-- action delete --}}
   <script>
+    const searchAddress = document.getElementById('searchAddress')
+    const search = searchAddress.getAttribute('search')
+    const address = searchAddress.getAttribute('address')
+    function changePage(page) {
+      window.location.href = `/customer-manage?page=${page}&searchName=${search}&Address=${address}`;
+    }
+
     document.addEventListener("DOMContentLoaded", () => {
+
+
+      // get address
+
+      searchAddress.addEventListener('change', function () {
+        const form = document.getElementById('formAddress')
+        form.submit()
+      })
       const toastData = localStorage.getItem('toast');
       if (toastData) {
         const toast = JSON.parse(toastData);

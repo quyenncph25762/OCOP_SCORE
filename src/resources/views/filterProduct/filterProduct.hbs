@@ -82,31 +82,35 @@
                     <div class="d-flex align-items">
                         <h5 class="card-title">Danh sách sản phẩm</h5>
                     </div>
-                    <div class="row">
-                        <div class="col-sm-2"
-                            style="max-width: 200px;margin-bottom: -40px;position: relative;z-index: 99;cursor: pointer;">
-                            <label for="">Lọc theo: Năm đánh giá</label>
-                            <select name="" id="YearFilter" class="form-control selectpicker" data-live-search="true">
-                                <option value="" style="">Tất cả</option>
-                                {{#each Review}}
-                                <option value="{{this._id}}" style="" {{#ifCond this.status 0}}disabled{{/ifCond}}>
-                                    {{this.yearName}}</option>
-                                {{/each}}
-                            </select>
+                    <form id="filterProduct" action="/filterProduct" method="GET">
+                        <div class="row mb-5">
+                            <div class="col-sm-2"
+                                style="max-width: 200px;margin-bottom: -40px;position: relative;z-index: 99;cursor: pointer;">
+                                <label for="">Lọc theo: Năm đánh giá</label>
+                                <select name="YearFilter" id="YearFilter" data="{{YearFilter}}"
+                                    class="form-control selectpicker" data-live-search="true">
+                                    <option value="" style="">Tất cả</option>
+                                    {{#each Review}}
+                                    <option value="{{this._id}}" style="" {{isSelected this._id ../YearFilter}}>
+                                        {{this.yearName}}</option>
+                                    {{/each}}
+                                </select>
+                            </div>
+                            <div class="col-sm-2"
+                                style="max-width: 200px;margin-bottom: -40px;position: relative;z-index: 99;cursor: pointer;">
+                                <label for="">Lọc theo: Nhóm sản phẩm</label>
+                                <select name="productGroupFilter" id="productGroupFilter" data="{{productGroupFilter}}"
+                                    class="form-control selectpicker" data-live-search="true">
+                                    <option value="" style="">Tất cả</option>
+                                    {{#each ProductGroup}}
+                                    <option value="{{this._id}}" {{isSelected this._id ../productGroupFilter}}>
+                                        {{this.Name}}</option>
+                                    {{/each}}
+                                </select>
+                            </div>
+
                         </div>
-                        <div class="col-sm-2"
-                            style="max-width: 200px;margin-bottom: -40px;position: relative;z-index: 99;cursor: pointer;">
-                            <label for="">Lọc theo: Nhóm sản phẩm</label>
-                            <select name="" id="productGroupFilter" class="form-control selectpicker"
-                                data-live-search="true">
-                                <option value="" style="">Tất cả</option>
-                                {{#each ProductGroup}}
-                                <option value="{{this._id}}" style="" {{#ifCond this.IsActive 0}}disabled{{/ifCond}}>
-                                    {{this.Name}}</option>
-                                {{/each}}
-                            </select>
-                        </div>
-                    </div>
+                    </form>
                     <div class="table-responsive">
                         <table id="myTableFilterProduct"
                             class="table datatables table-bordered table-hover table-striped">
@@ -199,6 +203,39 @@
                             </tbody>
                         </table>
                     </div>
+                    <div class="col-lg-12 ">
+                        <div class=" ">
+                            <nav aria-label="Page navigation ">
+                                <ul class="pagination center">
+                                    {{#if pagination.prev}}
+                                    <li class="page-item">
+                                        <a class="page-link" onclick="changePage({{pagination.prev}})"
+                                            aria-label="Previous">
+                                            <span aria-hidden="true">&laquo;</span>
+                                        </a>
+                                    </li>
+                                    {{/if}}
+
+                                    {{#each pagination.pages}}
+                                    <li class="page-item {{#if this.active}}active{{/if}}">
+                                        <a class="page-link" onclick="changePage({{this.number}})">{{this.number}}
+                                        </a>
+                                    </li>
+                                    {{/each}}
+
+                                    {{#if pagination.next}}
+                                    <li class="page-item">
+                                        <a class="page-link" onclick="changePage({{pagination.next}})"
+                                            aria-label="Next">
+                                            <span aria-hidden="true">&raquo;</span>
+                                        </a>
+                                    </li>
+                                    {{/if}}
+                                </ul>
+                            </nav>
+                        </div>
+
+                    </div>
                 </div>
             </div>
         </div><!--End Row-->
@@ -226,6 +263,24 @@
     <script src="/assets/js/showProductDetail.js"></script>
     {{!-- actions --}}
     <script>
+        const YearFilter = document.getElementById('YearFilter')
+        const productGroupFilter = document.getElementById('productGroupFilter')
+        const form = document.getElementById("filterProduct")
+        const valYear = YearFilter.getAttribute('data')
+        const valGroup = productGroupFilter.getAttribute('data')
+        function changePage(page) {
+            window.location.href = `filterProduct?page=${page}&YearFilter=${valYear}&productGroupFilter=${valGroup}`;
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+
+            YearFilter.addEventListener('change', () => {
+                form.submit()
+            })
+            productGroupFilter.addEventListener('change', () => {
+                form.submit()
+            })
+        })
+
         //sendFile
         const btnsCheck = document.querySelectorAll(".check")
         const btnSubmitFile = document.querySelector(".btnSubmitFile")

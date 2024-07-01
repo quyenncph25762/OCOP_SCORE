@@ -23,6 +23,58 @@ const ProductmanageController = {
         connection.query(query, [DistrictId], callback);
 
     },
+    getAllProductBySearch: (search, DistrictId, callback) => {
+        const query = `SELECT 
+        product.*,
+        customer.Name AS customer_name,
+        productgroup.Name AS productGroup_name,
+        yearreview.yearName AS yearName,
+        customer.IsDeleted AS customer_IsDeleted,
+        productgroup.IsDeleted AS productgroup_IsDeleted,
+        yearreview.isDeleted AS yearreview_IsDeleted
+    FROM 
+        product
+    JOIN 
+        customer ON customer._id = product.Customer_id
+    JOIN 
+        productgroup ON productgroup._id = product.ProductGroup_id
+    JOIN
+        yearreview ON yearreview._id = product.ProductYearId
+    WHERE 
+        product.IsDeleted = 0 AND product.Name LIKE ?  ${DistrictId ? `AND product.DistrictId = ${DistrictId}` : ``} ORDER BY product._id DESC;
+        `;
+
+        const values = '%' + search + '%'
+        connection.query(query, [values], callback);
+    },
+
+    getAllProductBySearch_Year_Group: (year, group, DistrictId, callback) => {
+        const query = `SELECT 
+        product.*,
+        customer.Name AS customer_name,
+        productgroup.Name AS productGroup_name,
+        yearreview.yearName AS yearName,
+        customer.IsDeleted AS customer_IsDeleted,
+        productgroup.IsDeleted AS productgroup_IsDeleted,
+        yearreview.isDeleted AS yearreview_IsDeleted
+    FROM 
+        product
+    JOIN 
+        customer ON customer._id = product.Customer_id
+    JOIN 
+        productgroup ON productgroup._id = product.ProductGroup_id
+    JOIN
+        yearreview ON yearreview._id = product.ProductYearId
+    WHERE 
+        product.IsDeleted = 0 AND product.ProductYearId LIKE ? AND product.ProductGroup_id LIKE ?  ${DistrictId ? `AND product.DistrictId = ${DistrictId}` : ``} ORDER BY product._id DESC;
+        `;
+
+        const Searchyear = '%' + year + '%'
+        const Searchgroup = '%' + group + '%'
+        connection.query(query, [Searchyear, Searchgroup], callback);
+    },
+
+
     getProductbyId: (id, callback) => {
         const query = `
     SELECT 
