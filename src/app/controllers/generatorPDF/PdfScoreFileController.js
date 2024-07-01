@@ -9,6 +9,7 @@ class PdfScoreFileController {
             const scorefileId = req.params.scorefileId
             const scoreFileFount = await ScoreFileModel.getOne(scorefileId)
             const ScoreFile = scoreFileFount ? scoreFileFount[0] : []
+            console.log(ScoreFile)
             // lay danh sach scorefiledetail by scorefileId
             const ListScoreFileDetail = await ScoreDetailModel.getByScoreFileId(scorefileId)
 
@@ -162,7 +163,7 @@ class PdfScoreFileController {
         <table style="width:100%;border-collapse:collapse;">
             <tr>
                 <td style="font-size:18px;border:none;margin-bottom:0px">
-                    <p style="margin-bottom:0px">${ScoreFile.product_district ? ScoreFile.product_district : "Hệ thống"}</p>
+                    <p style="margin-bottom:0px">${ScoreFile.product_province === 1 ? `Tỉnh ${ScoreFile.cityCustomer_name}` : districtCustomer_name}</p>
                     <div style="max-width:200px;margin-left:11px">
                     <p style="font-weight:bold;">${ScoreFile.scorecommitee_name}</p>
                     </div>

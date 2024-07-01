@@ -46,6 +46,7 @@
                     {{!-- product --}}
                     <div class="card-body" id="product-container">
                         <div class="">
+                            <input type="hidden" id="productIsProvince" value="{{Product.IsProvince}}">
                             <input type="hidden" value="{{Product._id}}" id="Product_id">
                             <input type="hidden" id="Customer_id" value="{{Product.Customer_id}}">
                             <img name="Avatar" style="width: 100%;height: 150px;" src="{{Product.Avatar}}" alt="">

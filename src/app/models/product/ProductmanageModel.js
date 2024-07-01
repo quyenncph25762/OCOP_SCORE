@@ -142,6 +142,19 @@ const ProductmanageController = {
         const query = 'UPDATE product SET RankOcop = ? , TotalScore = ?, IsPassed = ?  WHERE _id = ?';
         const values = [product.RankOcop, product.ScoreTotal, product.IsPassed, id];
         connection.query(query, values, callback);
+    },
+    // updateIsProvinceProduct
+    updateIsProvinceProduct: (id) => {
+        return new Promise((resolve, reject) => {
+            const query = `UPDATE product SET IsProvince = 1 WHERE _id = ${id}`;
+            connection.query(query, (err, results) => {
+                if (err) {
+                    return reject(err)
+                }
+                return resolve(results)
+            });
+
+        })
     }
 
 }

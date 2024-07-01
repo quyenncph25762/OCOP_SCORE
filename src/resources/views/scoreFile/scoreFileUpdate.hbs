@@ -4,7 +4,7 @@
         <div class="row" style="max-width: 100%; display: contents;">
             <ul class="search-customer"
                 style="list-style: none; display:flex; justify-content: space-between; align-items: center;padding: 0;">
-                <a href="/scorefile">
+                <a href="{{#ifCond ScoreFile.product_province 0}}/scorefile{{else}}/scoreFileProvince{{/ifCond}}">
                     <button class="btn btn-light" style="display: flex;align-items: center;">
                         <ion-icon name="arrow-undo-outline" style="margin-right: 8px;margin-bottom: 0;"></ion-icon>
                         <p style="margin: 0;">Trở về danh sách phiếu chấm</p>
@@ -28,6 +28,7 @@
                         <div class="">
                             <input type="hidden" value="${productId}" id="Product_id">
                             <input type="hidden" id="Customer_id" value="${Product.Customer_id}">
+                            <input type="hidden" id="product_province" value="{{ScoreFile.product_province}}">
                             <img name="Avatar" style="width: 100%;height: 150px;" src="{{ScoreFile.product_avatar}}"
                                 alt="">
                         </div>

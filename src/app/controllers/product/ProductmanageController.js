@@ -397,6 +397,18 @@ class ProductmanageController {
             })
         })
     }
+    // gui phieu len tinh
+    updateIsProvince = async (req, res) => {
+        try {
+            const productId = req.params.id
+            await ProductmanageModel.updateIsProvinceProduct(productId)
+            return res.status(201).json({
+                message: "Cập nhật trạng thái thành công"
+            })
+        } catch (error) {
+            console.log(error)
+        }
+    }
     // update rankOcop Product
     // update product
     // update(req, res) {

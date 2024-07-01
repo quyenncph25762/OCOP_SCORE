@@ -66,6 +66,7 @@
                             <tbody>
                                 {{#each ScoreFile}}
                                 <tr class="tr-{{this._id}}">
+
                                     <th scope="row" class="col-image">
                                         <div class="approved">
                                             <img src="{{this.product_avatar}}" alt=""
@@ -186,22 +187,10 @@
                                             {{/ifCond}}
                                             {{#ifCond this.Status 1}}
                                             <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
-                                                title="Chuyển vào thùng rác">
+                                                title="Chấm lại">
                                                 <ion-icon style="" class="icon_moveToTrash" name="trash-outline"
                                                     data-id="{{this._id}}"></ion-icon>
                                             </span>
-                                            {{/ifCond}}
-                                            {{!-- Nếu là admin mới được duyệt phiếu lên tỉnh --}}
-                                            {{!-- icons gui phieu len tinh --}}
-                                            {{#ifCond ../User.RoleId 1}}
-                                            {{!-- và product rankocop phải đạt 4 và 5 sao --}}
-                                            {{#ifCondOr product_RankOcop 4 product_RankOcop 5}}
-                                            <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
-                                                title="Gửi phiếu lên tỉnh">
-                                                <ion-icon name="send-outline"
-                                                    onclick="handleSend('{{this._id}}','{{this.Product_id}}')"></ion-icon>
-                                            </span>
-                                            {{/ifCondOr}}
                                             {{/ifCond}}
                                             {{!-- {{/ifCondNot}} --}}
                                         </div>
@@ -320,7 +309,5 @@
 
 
 </script>
-{{!-- dropdown --}}
 <script>
-
 </script>

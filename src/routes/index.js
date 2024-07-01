@@ -22,8 +22,12 @@ const clientRouter = require("./client/welcome.routes")
 const scoreTempDetailRouter = require("./scoreTempDetail.routes")
 const scoreCommitteeRouter = require("./scoreCommittee.routes")
 const scoreCommitteeDetailRouter = require("./scoreCommitteeDetail.routes")
+// scorefile
 const scoreFileRouter = require("./scoreFile.routes")
 const scoreFileDetailRouter = require("./scoreFileDetail.routes")
+// scorefile province
+const scoreFileRouterProvinceRouter = require("./scoreFileProvince.routes")
+// const scoreFileDetailRouter = require("./scoreFileDetail.routes")
 const userPageRouter = require("./userPage.routes")
 const pdfRouter = require("./pdfRoutes.routes");
 const PageNotFoundController = require('../app/controllers/PageNotFoundController');
@@ -37,6 +41,8 @@ function route(app) {
     // scoreFile
     app.use("/scoreFile", scoreFileRouter)
     app.use("/scoreFileDetail", scoreFileDetailRouter)
+    // scoreFileProvince
+    app.use("/scoreFileProvince", scoreFileRouterProvinceRouter)
     // ScoreCommitteeDetail`
     app.use("/scoreCommitteeDetail", scoreCommitteeDetailRouter)
     // scoreCommittee

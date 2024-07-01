@@ -1,10 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const ScoreFileController = require('../app/controllers/clients/ScoreFileController');
-const CheckController = require("../app/Middleware/checkoutToken")
+const CheckController = require("../app/Middleware/checkoutToken");
+const ScoreFileProvinceController = require('../app/controllers/ScoreFileProvince/ScoreFileProvinceController');
 
 // scoreFile
-router.get("/", CheckController.checkout('Score'), ScoreFileController.index)
+router.get("/", CheckController.checkout('Score'), ScoreFileProvinceController.index)
 // scoreFile get One
 router.get("/getOne/:id", CheckController.checkout('Score'), ScoreFileController.getOneController)
 // scoreFile From Trash
@@ -36,7 +37,7 @@ router.patch("/remove/:id", CheckController.checkout('Score'), ScoreFileControll
 // revert
 router.patch("/revert/:id", CheckController.checkout('Score'), ScoreFileController.revert)
 // hanh dong gui phieu len tinh
-router.patch("/scoreFileToProvince/:ScoreFileId/:ProductId", CheckController.checkout('Score'), ScoreFileController.SendToProvince)
+// router.patch("/scoreFileToProvince/:ScoreFileId", CheckController.checkout('Score'), ScoreFileController.SendToProvince)
 
 
 module.exports = router;

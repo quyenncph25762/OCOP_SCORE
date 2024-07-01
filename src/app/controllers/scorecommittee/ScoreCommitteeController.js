@@ -196,124 +196,157 @@ class ScoreCommitteController {
     }
     // update IsDefault
     updateIsDefault = async (req, res) => {
+        const cookie = req.cookies
         const id = req.params.id
-        // cap nhat cham diem
-        ScoreCommitteeModel.updateIsDefaultScoreCommittee(id, req.body, async (err, results) => {
-            if (err) {
-                return res.status(500).json({
-                    message: err
-                })
-            }
-            // lay danh sach scoreCommiteeDetail
-            ScoreCommitteeDetailModel.getByScoreCommittee(id, (err, listScoreCommitteeDetail) => {
+        if (cookie?.User) {
+            const UserDataCookie = jwt.verify(cookie.User, SECRET_CODE)
+            AccountModel.fetchOneUser(UserDataCookie?._id, (err, User) => {
                 if (err) {
                     return res.status(500).json({
                         message: err
                     })
                 }
-
-                // tao ra 1 mang chua id llistScoreCommitteeDetail
-                const listEmployeeId = Array.from(
-                    new Set(listScoreCommitteeDetail
-                        .map(employee => [employee.UserId, employee.SecUserId])
-                        .flat()
-                        .filter(id => id !== undefined && id !== null && id !== 0))
-                )
-                // console.log(`listScoreCommitteeDetail:`, listEmployeeId)
-                // lay scorefile theo status = 0
-                ScoreFileModel.getScoreFileByStatus(async (err, data) => {
+                // cap nhat cham diem
+                ScoreCommitteeModel.updateIsDefaultScoreCommittee(id, req.body, async (err, results) => {
                     if (err) {
                         return res.status(500).json({
                             message: err
                         })
                     }
-                    // lay danh sach admin de admin co the xem dc phieu 
-                    EmployeeModel.getAllAdmin(async (err, employeesAdmin) => {
+                    // lay danh sach scoreCommiteeDetail
+                    ScoreCommitteeDetailModel.getByScoreCommittee(id, (err, listScoreCommitteeDetail) => {
                         if (err) {
                             return res.status(500).json({
                                 message: err
                             })
                         }
+                        // tao ra 1 mang chua id llistScoreCommitteeDetail
+                        const listEmployeeId = Array.from(
+                            new Set(listScoreCommitteeDetail
+                                .map(employee => [employee.UserId, employee.SecUserId])
+                                .flat()
+                                .filter(id => id !== undefined && id !== null && id !== 0))
+                        )
+                        // console.log(`listScoreCommitteeDetail:`, listEmployeeId)
+                        // lay scorefile theo status = 0
+                        ScoreFileModel.getScoreFileByStatus(async (err, data) => {
+                            if (err) {
+                                return res.status(500).json({
+                                    message: err
+                                })
+                            }
+                            // console.log(`listScoreCommitteeDetail:`, listScoreCommitteeDetail)
+                            // console.log(`data:`, data)
+                            // lay danh sach admin de admin co the xem dc phieu 
+                            EmployeeModel.getAllAdmin(async (err, employeesAdmin) => {
+                                if (err) {
+                                    return res.status(500).json({
+                                        message: err
+                                    })
+                                }
+                                // lay ra id admin cua huyen 
+                                // const listEmployeAdminId = employeesAdmin.filter((admin) => admin.DistrictId === User[0]?.DistrictId).map((item) => item._id)
 
-                        // loc scorefile nhung employee nao dang o trong scorecommitteeDetail
-                        const dataFilter = Array.from(new Set(data.filter((item) => listEmployeeId.includes(item.forEmployeeId))))
-                        await filterEmployee(dataFilter, listEmployeeId, id)
-                        // nhung scorefile nao k co trong scoreCommittee thi them scoreCommittee tranh truong hop get all scorefile status = 0
-                        const dataFilterDifferent = data.filter((item) => !listEmployeeId.includes(item.forEmployeeId))
-                        const formScoreFile = {
-                            ScoreCommitee_id: id,
-                            IsActive: 1
-                        }
-                        await dataFilter.forEach(async (element) => {
-                            if (!element.ScoreCommitee_id || element.ScoreCommitee_id === Number(id)) {
-                                // thuc hien cap nhat trang thai cham diem cho scorefile
-                                await ScoreFileModel.updateScoreCommitteOnScoreFile(element._id, formScoreFile, (err, result) => {
-                                    if (err) {
-                                        return res.status(500).json({
-                                            message: err
-                                        })
-                                    }
-                                })
-                            }
-                        })
-                        // console.log(`Nhung em ployee k co trong scorecommitt:`, dataFilterDifferent)
-                        // thuc hien chi update scoreCommittee 
-                        await dataFilterDifferent.forEach(async (element) => {
-                            if (!element.ScoreCommitee_id || element.ScoreCommitee_id === Number(id)) {
-                                // thuc hien cap nhat trang thai cham diem cho scorefile
-                                await ScoreFileModel.updateScoreCommitteOnScoreFile(element._id, {
+                                //  thuc hien push vao mang listEmployyee(nhung employee trong scorecommitteeDetail)
+                                // for (const id of listEmployeAdminId) {
+                                //     listEmployeeId.push(id)
+                                // }
+                                // loc scorefile nhung employee nao dang o trong scorecommitteeDetail
+                                const dataFilter = Array.from(new Set(data.filter((item) => listEmployeeId.includes(item.forEmployeeId))))
+                                await filterEmployee(dataFilter, listEmployeeId, id)
+                                // nhung scorefile nao k co trong scoreCommittee thi them scoreCommittee tranh truong hop get all scorefile status = 0
+                                const dataFilterDifferent = data.filter((item) => !listEmployeeId.includes(item.forEmployeeId))
+
+                                const formScoreFile = {
                                     ScoreCommitee_id: id,
-                                    IsActive: 0
-                                }, (err, result) => {
-                                    if (err) {
-                                        return res.status(500).json({
-                                            message: err
+                                    IsActive: 1
+                                }
+                                await dataFilter.forEach(async (element) => {
+                                    if (!element.ScoreCommitee_id || element.ScoreCommitee_id === Number(id)) {
+                                        // thuc hien cap nhat trang thai cham diem cho scorefile
+                                        await ScoreFileModel.updateScoreCommitteOnScoreFile(element._id, formScoreFile, (err, result) => {
+                                            if (err) {
+                                                return res.status(500).json({
+                                                    message: err
+                                                })
+                                            }
                                         })
                                     }
                                 })
-                            }
-                        })
-                        return res.status(203).json({
-                            message: "Cập nhật thành công"
+                                // console.log(`Nhung em ployee k co trong scorecommitt:`, dataFilterDifferent)
+                                // thuc hien chi update scoreCommittee 
+                                await dataFilterDifferent.forEach(async (element) => {
+                                    if (!element.ScoreCommitee_id || element.ScoreCommitee_id === Number(id)) {
+                                        // thuc hien cap nhat trang thai cham diem cho scorefile
+                                        await ScoreFileModel.updateScoreCommitteOnScoreFile(element._id, {
+                                            ScoreCommitee_id: id,
+                                            IsActive: 0
+                                        }, (err, result) => {
+                                            if (err) {
+                                                return res.status(500).json({
+                                                    message: err
+                                                })
+                                            }
+                                        })
+                                    }
+                                })
+                                return res.status(203).json({
+                                    message: "Cập nhật thành công"
+                                })
+                            })
                         })
                     })
                 })
             })
-        })
+        }
+
+
 
         // ham xu li loc nhung employee chua co scorefile trong hoi dong roi them vao
         async function filterEmployee(listScoreFile, listEmployeeId, idScoreCommittee) {
-            // lay ra nhung id cua employee da co scorefile trong hoi dong cham
-            const arrId = listScoreFile.map((item) => item.forEmployeeId)
-            // lay ra arr productid de them vao employee moi
-            // loc ra nhung scorefile nao dang cham , neu ma san pham do cham xong het roi thi se khong dc set
-            const arrProductId = Array.from(new Set(listScoreFile.filter((scorefile) => scorefile.Product_id && (scorefile.Status === 0 || scorefile.Status === 1)).map((item) => item.Product_id)))
-            // Loc ra id chua co scorefile trong hoi dong
-            console.log(`arrProductId:`, arrProductId)
-            const filterEmployeeId = listEmployeeId.filter((item) => !arrId.includes(item))
-            if (filterEmployeeId.length > 0) {
-                for (const employee of filterEmployeeId) {
-                    // 1 employee them nhieu scorefile theo product_id
-                    for (let i = 0; i < arrProductId.length; i++) {
-                        ScoreFileModel.create({
-                            forEmployeeId: employee,
-                            IsActive: 1,
-                            ScoreCommitee_id: idScoreCommittee,
-                            Status: 0,
-                            Product_id: Number(arrProductId[i]),
-                            CreatorUser_id: Number(employee),
-                        }, (err) => {
-                            if (err) {
-                                return res.status(500).json({
-                                    message: "Lỗi truy vấn"
-                                })
-                            }
-                        })
+            // Nếu k có listScoreFile nào thì sẽ gọi phiếu của admin push vào để lấy mảng listscorefile rồi lọc bên dưới
+            ScoreFileModel.getScoreFileByScoreCommitteeAll(idScoreCommittee, (err, data) => {
+                if (err) {
+                    return res.status(500).json({
+                        message: "Lỗi truy vấn"
+                    })
+                }
+                if (listScoreFile.length === 0) {
+                    listScoreFile.push(data[0])
+                }
+                console.log(`listScoreFile:`, listScoreFile)
+                // lay ra nhung id cua employee da co scorefile trong hoi dong cham
+                const arrId = listScoreFile.map((item) => item.forEmployeeId)
+                // lay ra arr productid de them vao employee moi
+                // loc ra nhung scorefile nao dang cham , neu ma san pham do cham xong het roi thi se khong dc set
+                const arrProductId = Array.from(new Set(listScoreFile.filter((scorefile) => scorefile.Product_id && (scorefile.Status === 0 || scorefile.Status === 1)).map((item) => item.Product_id)))
+                // Loc ra id chua co scorefile trong hoi dong
+                const filterEmployeeId = listEmployeeId.filter((item) => !arrId.includes(item))
+                if (filterEmployeeId.length > 0) {
+                    for (const employee of filterEmployeeId) {
+                        // 1 employee them nhieu scorefile theo product_id
+                        for (let i = 0; i < arrProductId.length; i++) {
+                            ScoreFileModel.create({
+                                forEmployeeId: employee,
+                                IsActive: 1,
+                                ScoreCommitee_id: idScoreCommittee,
+                                Status: 0,
+                                Product_id: Number(arrProductId[i]),
+                                CreatorUser_id: Number(employee),
+                            }, (err) => {
+                                if (err) {
+                                    return res.status(500).json({
+                                        message: "Lỗi truy vấn"
+                                    })
+                                }
+                            })
+                        }
                     }
                 }
-            }
+            })
         }
     }
+
     // update IsActive
     updateIsActive = async (req, res) => {
         try {
@@ -337,7 +370,7 @@ class ScoreCommitteController {
                         const listEmployeeFilter = listScoreFile.filter((scorefile) => !scorefile.Employee_id && scorefile.forEmployeeId != User[0]._id || scorefile.Status < 2)
                         console.log(listEmployeeFilter)
                         await listEmployeeFilter.forEach(async (scorefile) => {
-                            await ScoreFileModel.removeScoreFileIsNull(scorefile._id)
+                            await ScoreFileModel.removeScoreFile(scorefile._id)
                         })
                         // Cap nhat IsActive
                         await ScoreCommitteeModel.updateIsActive(id, req.body)

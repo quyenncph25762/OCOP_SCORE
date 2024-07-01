@@ -6,6 +6,8 @@ const EmployeeModel = require("../../models/employee/EmployeeModel")
 const jwt = require("jsonwebtoken")
 const dotenv = require("dotenv")
 const ScoreCommitteeDetailModel = require("../../models/scoreCommittee/ScoreCommitteeDetailModel")
+const ScoreDetailModel = require("../../models/scorefile/ScoreFileDetailModel")
+const DistrictModel = require("../../models/District")
 dotenv.config();
 const { SECRET_CODE } = process.env
 
@@ -120,32 +122,49 @@ class ScoreFileController {
                         message: err
                     })
                 }
-                EmployeeModel.fetchAllEmployeeByDistrict(User[0]?.DistrictId, async (err, employees) => {
+                EmployeeModel.fetchAllEmployeeByDistrict(User[0]?.DistrictId, (err, employees) => {
                     if (err) {
                         console.log(err)
                         return res.status(500).json({
                             message: "Lỗi truy vấn"
                         })
                     }
-                    // loc ra nhung employee khong bi khoa
-                    const employeeFilter = employees.filter((employee) => employee.isLock === 0)
-                    await employeeFilter.forEach(async (employee) => {
-                        ScoreFileModel.create({
-                            forEmployeeId: employee._id,
-                            IsActive: 0,
-                            Status: 0,
-                            DistrictId: User[0]?.DistrictId,
-                            ...req.body
-                        }, (err, results) => {
-                            if (err) {
-                                return res.status(500).json({
-                                    message: "Lỗi truy vấn"
-                                })
+                    // goi ra admin , de admin co phieu cham
+                    EmployeeModel.getAllAdmin(async (err, Admin) => {
+                        if (err) {
+                            return res.status(500).json({
+                                message: "Lỗi truy vấn"
+                            })
+                        }
+                        // loc ra nhung admin trong hoi dong cua huyen
+                        const listAdminFilterId = Admin.filter((employee) => employee.DistrictId === User[0].DistrictId)
+                        if (listAdminFilterId.length > 0) {
+                            for (const id of listAdminFilterId) {
+                                employees.push(id)
                             }
+                        }
+                        console.log(`listAdminFilterId:`, listAdminFilterId)
+                        console.log(`employees:`, employees)
+                        // loc ra nhung employee khong bi khoa
+                        const employeeFilter = employees.filter((employee) => employee.isLock === 0)
+                        await employeeFilter.forEach(async (employee) => {
+                            ScoreFileModel.create({
+                                forEmployeeId: employee._id,
+                                IsActive: 0,
+                                Status: 0,
+                                DistrictId: User[0]?.DistrictId,
+                                ...req.body
+                            }, (err, results) => {
+                                if (err) {
+                                    return res.status(500).json({
+                                        message: "Lỗi truy vấn"
+                                    })
+                                }
+                            })
+                        });
+                        return res.status(200).json({
+                            message: "Them thanh cong"
                         })
-                    });
-                    return res.status(200).json({
-                        message: "Them thanh cong"
                     })
                 })
             })
@@ -223,6 +242,7 @@ class ScoreFileController {
                 const idScoreFile = Number(req.query.ScoreFile_id)
 
                 const ScoreFile = await ScoreFileModel.getOne(idScoreFile)
+                console.log(`ScoreFile:`, ScoreFile)
                 if (!ScoreFile) {
                     return res.status(400).json({
                         message: "Khong co scorefile nao"
@@ -360,7 +380,78 @@ class ScoreFileController {
         }
 
     }
+    // gui phieu len tinh
+    SendToProvince = async (req, res) => {
+        try {
+            console.log(1)
+            const cookie = req.cookies
+            if (cookie?.User) {
+                const UserDataCookie = jwt.verify(cookie.User, SECRET_CODE)
+                AccountModel.fetchOneUser(UserDataCookie?._id, async (err, User) => {
+                    if (err) {
+                        return res.status(500).json({
+                            message: err
+                        })
+                    }
+                    const ScoreFileId = req.params.ScoreFileId
+                    const ProductId = req.params.ProductId
+                    // xoa scoredetailModel
+                    await ScoreDetailModel.removeAll(ScoreFileId)
+                    // xoa scorefile
+                    await ScoreFileModel.removeScoreFileByProduct(ProductId)
 
+                    // tim tỉnh của huyện user gửi lên tỉnh
+                    const CityId = await DistrictModel.getOneDistrict(User[0]?.DistrictId)
+                    EmployeeModel.fetchAllEmployeeByDistrict(CityId[0].City_id, (err, Employee) => {
+                        if (err) {
+                            return res.status(500).json({
+                                message: err
+                            })
+                        }
+                        EmployeeModel.getAllAdmin(async (err, Admin) => {
+                            if (err) {
+                                console.log(err)
+                                return res.status(500).json({
+                                    message: err
+                                })
+                            }
+                            if (Admin.length > 0) {
+                                const listAdminFilter = Admin.filter((admin) => admin.DistrictId === CityId[0].City_id)
+                                for (const admin of listAdminFilter) {
+                                    Employee.push(admin)
+                                }
+                                // loc ra nhung employee khong bi khoa
+                                const employeeFilter = Employee.filter((employee) => employee.isLock === 0)
+                                await employeeFilter.forEach(async (employee) => {
+                                    ScoreFileModel.create({
+                                        forEmployeeId: employee._id,
+                                        CreatorUser_id: User[0]._id,
+                                        Product_id: ProductId,
+                                        IsActive: 0,
+                                        Status: 0,
+                                        DistrictId: CityId[0].City_id,
+                                        ...req.body
+                                    }, (err, results) => {
+                                        if (err) {
+                                            console.log(err)
+                                            return res.status(500).json({
+                                                message: "Lỗi truy vấn"
+                                            })
+                                        }
+                                    })
+                                });
+                                return res.status(201).json({
+                                    message: "Gui thanh cong"
+                                })
+                            }
+                        })
+                    })
+                })
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
 }
 
 module.exports = new ScoreFileController

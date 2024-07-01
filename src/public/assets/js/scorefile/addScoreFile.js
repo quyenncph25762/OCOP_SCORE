@@ -8,8 +8,7 @@ const handleAddScoreFile = async () => {
         const Note = document.getElementById("Note").value
         const ScoreTemp_id = Array.from(document.querySelectorAll(".ScoreTemp_id"))[0].value
         const Code = document.querySelector(".Code").value
-        // const response = await fetch(`/scoreTemp/add`)
-
+        const productIsProvince = document.getElementById("productIsProvince").value
         const ScoreTempDetail = document.querySelectorAll("[id^=ScoreTempDetail]")
         const arrScoreTempDetail = []
         for (const item of ScoreTempDetail) {
@@ -145,7 +144,13 @@ const handleAddScoreFile = async () => {
                 loaderBg: '#9EC600',
                 stack: 4
             }));
-            window.location.replace("/scoreFile")
+            if (Number(productIsProvince) === 0) {
+                window.location.replace("/scoreFile")
+                return
+            } else {
+                window.location.replace("/scoreFileProvince")
+                return
+            }
         }
     }
 }

@@ -319,8 +319,14 @@ async function handleUpdate() {
         showHideTransition: 'slide',
         stack: 4
     }));
-
-    window.location.replace("/scoreFile")
+    const productIsProvince = document.getElementById("product_province").value
+    if (Number(productIsProvince) === 0) {
+        window.location.replace("/scoreFile")
+        return
+    } else {
+        window.location.replace("/scoreFileProvince")
+        return
+    }
 }
 
 // func cap nhat ScoreTotal 

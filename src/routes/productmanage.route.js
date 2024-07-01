@@ -10,6 +10,8 @@ const CheckController = require("../app/Middleware/checkoutToken")
 router.patch("/updateRankOcop/:id", CheckController.checkout('Product'), productmanageController.updateRankOcop)
 // update status product
 router.patch("/updateStatus/:id", CheckController.checkout('Product'), productmanageController.updateStatus)
+// update IsProvince
+router.patch("/updateIsProvince/:id", CheckController.checkout('Product'), productmanageController.updateIsProvince)
 // khoi phuc
 router.patch("/revert/:id", CheckController.checkout('Product'), productmanageController.revert)
 // khoi phuc

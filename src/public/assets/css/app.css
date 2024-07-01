@@ -426,6 +426,12 @@ ion-icon[name="arrow-undo-outline"] {
     cursor: pointer;
 }
 
+ion-icon[name="send-outline"] {
+    color: rgb(48, 190, 150);
+    font-size: 20px;
+    cursor: pointer;
+}
+
 ion-icon[name="star"] {
     font-size: 16px;
     cursor: pointer;
@@ -441,6 +447,7 @@ ion-icon[name="checkmark-circle-outline"] {
     cursor: pointer;
     color: rgb(0, 162, 255);
 }
+
 
 ion-icon[name="help-circle-outline"] {
     color: rgb(0, 187, 255);

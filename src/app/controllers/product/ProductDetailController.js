@@ -57,7 +57,7 @@ class ProductDetailController {
             for (const productDetail of req.body) {
                 const results = await ProductDetailModel.createProductDetail(productDetail)
                 const resultData = await new Promise((resolve, reject) => {
-                    ProductDetailModel.getProductDetailById(results.insertId, (err, data) => {
+                    ProductDetailModel.getProductDetailById(results?.insertId, (err, data) => {
                         if (err) {
                             reject(err);
                         } else {

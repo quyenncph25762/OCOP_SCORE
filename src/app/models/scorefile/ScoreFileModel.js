@@ -83,6 +83,8 @@ const ScoreFileModel = {
     SELECT 
         scorefile.*,
         product.Name AS product_name,
+        product.RankOcop AS product_RankOcop,
+        product.IsProvince AS product_IsProvince,
         product.Avatar AS product_avatar,
         customer.Name AS customer_name,
         productgroup.Name AS productgroup_name,   
@@ -104,7 +106,7 @@ const ScoreFileModel = {
     LEFT JOIN 
         scorecommittee ON scorecommittee._id = scorefile.Scorecommitee_id
     WHERE 
-        scorefile.IsDeleted = 0 AND scorefile.Product_id IS NOT NULL AND scorefile.forEmployeeId = ?
+        scorefile.IsDeleted = 0 AND scorefile.Product_id IS NOT NULL AND product.IsProvince = 0 AND scorefile.forEmployeeId = ?
     ORDER BY 
         scorefile._id DESC
 `;
@@ -143,6 +145,7 @@ const ScoreFileModel = {
             scorefile.*,
             product.Name AS product_name,
             product.Code AS product_code,
+            product.IsProvince AS product_province,
             district.Name AS product_district,
             product.Avatar AS product_avatar,
             customer.Name AS customer_name,
@@ -238,9 +241,21 @@ const ScoreFileModel = {
         })
     },
     // xoa phieu co employee_id = null va status < 2
-    removeScoreFileIsNull: (id) => {
+    removeScoreFile: (id) => {
         return new Promise((resolve, reject) => {
             const query = `DELETE FROM scorefile  WHERE _id = ${id}`
+            connection.query(query, (err, result) => {
+                if (err) {
+                    return reject(err)
+                }
+                return resolve(result)
+            })
+        })
+    },
+    // removeScoreFile By Product
+    removeScoreFileByProduct: (productId) => {
+        return new Promise((resolve, reject) => {
+            const query = `DELETE FROM scorefile WHERE scorefile.Product_id = ${productId}`
             connection.query(query, (err, result) => {
                 if (err) {
                     return reject(err)
