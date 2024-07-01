@@ -15,6 +15,7 @@ class CustomerManageController {
         const startIndex = (page - 1) * pageSize;
         const endIndex = page * pageSize;
         const search = req.query.searchName || ''
+        const searchAddress = req.query.Address
         if (cookie?.User) {
             const UserDataCookie = jwt.verify(cookie.User, SECRET_CODE)
             AccountModel.fetchOneUser(UserDataCookie?._id, (err, User) => {
@@ -23,7 +24,8 @@ class CustomerManageController {
                         message: err
                     })
                 }
-                CustomerManagerModel.getAllCustomer(User[0].DistrictId, (err, data) => {
+
+                CustomerManagerModel.getAllCustomerBySearch(search, searchAddress ? searchAddress : User[0].DistrictId, (err, data) => {
                     if (err) {
                         console.log('Lỗi truy vấn', err)
                     }
@@ -46,7 +48,7 @@ class CustomerManageController {
                                     })
                                 }
                                 else {
-                                    console.log(data)
+
                                     const totalPages = Math.ceil(data.length / pageSize);
                                     const pages = Array.from({ length: totalPages }, (_, index) => {
                                         return {
@@ -58,7 +60,9 @@ class CustomerManageController {
                                     const paginatedData = data.slice(startIndex, endIndex);
                                     // Chuẩn bị dữ liệu để truyền vào template
                                     const viewData = {
+                                        done: User[0].DistrictId ? false : true,
                                         search: search,
+                                        searchAddress: searchAddress,
                                         Customer: paginatedData,
                                         User: User[0],
                                         Province: Province,

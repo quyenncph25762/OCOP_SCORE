@@ -33,11 +33,11 @@ const CustomerManageController = {
         LEFT JOIN 
             ward ON ward._id = customer.Ward_id 
         WHERE 
-            customer.Isdeleted = 0 AND customer.Name LIKE ? OR customer.Address LIKE ?  ${districtId ? `AND customer.District_id = ${districtId}` : ``}   ORDER BY customer._id DESC;
+            customer.Isdeleted = 0 AND customer.Name LIKE ?   ${districtId ? `AND customer.District_id = ${districtId}` : ``}   ORDER BY customer._id DESC;
         `;
         const values = '%' + search + '%'
         // const query = 'SELECT * FROM customer WHERE Isdeleted = 0';
-        connection.query(query,[values,values], callback)
+        connection.query(query,[values], callback)
     },
     getCustomerbyId: (callback) => {
         const query = 'SELECT Name, Phone, Address * FROM customer WHERE _id = ?';

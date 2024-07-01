@@ -47,10 +47,14 @@ Handlebars.registerHelper('hasPermission', function (permission, permissions, op
         return options.inverse(this);
     }
 });
-
+Handlebars.registerHelper('isSelected', (optionValue, selectedValue) => {
+    return optionValue == selectedValue ? 'selected' : '';
+});
 // helpers
 Handlebars.registerHelper('ifCond', function (v1, v2, options) {
+
     if (v1 === v2) {
+
         return options.fn(this);
     }
     return options.inverse(this);
