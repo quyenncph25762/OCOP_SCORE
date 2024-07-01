@@ -67,8 +67,12 @@ const checkout = (NamePermission) => {
                     console.log('Error', err)
                     res.clearCookie('User');
                 } else {
+                    if (data.length === 0) {
+                        res.clearCookie()
+                        return res.redirect("/auth/loginPage")
+                    }
                     // kiem tra xem tai khoan co khoa khong ? , neu ma khoa thi nhay ve trang dang nhap va xoa het token
-                    if (data && data[0].isLock === 1) {
+                    if (data && data[0]?.isLock === 1) {
                         res.clearCookie()
                         return res.redirect("/auth/loginPage")
                     }

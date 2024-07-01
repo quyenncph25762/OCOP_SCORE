@@ -29,7 +29,6 @@ const EmployeeModel = {
         `
         connection.query(query, callback)
     },
-
     // get ra tat ca tai khoan admin
     getAllAdmin(callback) {
         const query = `SELECT employee.*,
@@ -74,33 +73,32 @@ const EmployeeModel = {
         connection.query(query, values, callback)
     },
     // tim can bo
-    findEmployeeUpdate: (id, employee, callback) => {
+    findEmployeeUpdate: (DistrictId, id, employee, callback) => {
         const query = `
             SELECT 
                 CASE 
                     WHEN UserName = ? THEN 'UserName'
                     WHEN Email = ? THEN 'Email'
-                    WHEN Phone = ? THEN 'Phone'
                 END as conflictField
             FROM employee 
-            WHERE _id != ?
-            AND (UserName = ? OR Email = ? OR Phone = ?) AND Phone != ""
+            WHERE _id != ${id}
+            AND ${DistrictId ? `DistrictId = ${DistrictId} AND ((UserName = ?)` : `DistrictId IS NULL AND ((UserName = ?)`} OR Email = ?)
         `;
-        const values = [employee.UserName, employee.Email, employee.Phone, id, employee.UserName, employee.Email, employee.Phone];
+        const values = [employee.UserName, employee.Email, employee.UserName, employee.Email];
+        console.log(query)
         connection.query(query, values, callback);
     },
-    findEmployeeAdd: (employee, callback) => {
+    findEmployeeAdd: (DistrictId, employee, callback) => {
         const query = `
             SELECT 
                 CASE 
                     WHEN UserName = ? THEN 'UserName'
                     WHEN Email = ? THEN 'Email'
-                    WHEN Phone = ? THEN 'Phone'
                 END as conflictField
             FROM employee 
-            WHERE (UserName = ? OR Email = ? OR Phone = ?) AND Phone != ""
+            WHERE ((${DistrictId ? `DistrictId = ${DistrictId} AND UserName = ?` : `DistrictId IS NULL AND UserName = ?`}) OR Email = ?)
         `;
-        const values = [employee.UserName, employee.Email, employee.Phone, employee.UserName, employee.Email, employee.Phone];
+        const values = [employee.UserName, employee.Email, employee.UserName, employee.Email];
         connection.query(query, values, callback);
     },
     // xoa vao thung rac

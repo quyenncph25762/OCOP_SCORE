@@ -129,7 +129,7 @@ class EmployeeControllers {
                         message: err
                     })
                 }
-                EmployeeModel.findEmployeeAdd(req.body, (err, data) => {
+                EmployeeModel.findEmployeeAdd(User[0].DistrictId, req.body, (err, data) => {
                     if (err) {
                         return res.status(500).json({
                             message: "Loi truy van"
@@ -164,6 +164,7 @@ class EmployeeControllers {
                                 }
                             })
                         } else {
+
                             const conflictFields = data.map(row => row.conflictField).join(', ');
                             return res.status(400).json({
                                 message: `${conflictFields} đã tồn tại`
@@ -262,7 +263,7 @@ class EmployeeControllers {
                         message: err
                     })
                 }
-                EmployeeModel.findEmployeeUpdate(id, req.body, (err, data) => {
+                EmployeeModel.findEmployeeUpdate(User[0].DistrictId, id, req.body, (err, data) => {
                     if (err) {
                         return res.status(500).json({
                             message: "Loi truy van"
